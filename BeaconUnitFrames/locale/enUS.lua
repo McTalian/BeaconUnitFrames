@@ -12,6 +12,16 @@ local L = LibStub("AceLocale-3.0"):NewLocale(ns.localeName, "enUS", true)
 --- To add translations, simply uncomment the line(s) and replace the English text after the equal sign (=) with the translated value.
 
 --#region v1.0.0
+L["Close"] = "Close"
+L["Coming Soon"] = "Coming Soon"
+L["EnablePlayerPortrait"] = "Enable or disable the player's portrait on the unit frame."
+L["Frame"] = "Frame"
+L["Portrait"] = "Portrait"
+L["Show/Hide Minimap Icon"] = "Show/Hide Minimap Icon"
+L["Use Full Frame Width"] = "Use Full Frame Width"
+L["UseFullPlayerFrameWidthDesc"] = "When enabled, the health and resource bars will stretch the full width of the player frame, hiding the portrait."
+L["X Offset"] = "X Offset"
+L["Y Offset"] = "Y Offset"
 --#endregion
 
 return L

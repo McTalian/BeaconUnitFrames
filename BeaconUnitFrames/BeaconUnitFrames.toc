@@ -4,7 +4,7 @@
 ## Version: @project-version@
 ## Notes: A light in the darkness of Midnight.|n|n|cffFFC700Slash command: /buf, /beacon|r
 ## SavedVariables: BUFDB
-## IconTexture: Interface/AddOns/BeaconUnitFrames/Icons/logo
+## IconTexture: Interface/AddOns/BeaconUnitFrames/icons/logo
 ## Category: Unit Frames
 ## Category-deDE: Einheitenfenster
 ## Category-esES: Marcos de unidades
@@ -27,4 +27,11 @@ embeds.xml
 #@end-no-lib-strip@
 
 core.lua
+
 locale/locales.xml
+db.lua
+options.lua
+
+contextMenu.lua
+
+unitFrames/index.xml
