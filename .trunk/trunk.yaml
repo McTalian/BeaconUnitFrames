@@ -34,3 +34,9 @@ actions:
     - trunk-check-pre-push
     - trunk-fmt-pre-commit
     - trunk-upgrade-available
+  definitions:
+    - id: organize-translations
+      triggers:
+        - git_hooks: [pre-commit]
+
+      run: uv run .scripts/organize_translations.py
