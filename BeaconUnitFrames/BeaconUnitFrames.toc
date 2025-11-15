@@ -1,0 +1,30 @@
+## Interface: 110205, 120000
+## Title: |c66FFFF00Beacon|r UnitFrames
+## Author: McTalian
+## Version: @project-version@
+## Notes: A light in the darkness of Midnight.|n|n|cffFFC700Slash command: /buf, /beacon|r
+## SavedVariables: BUFDB
+## IconTexture: Interface/AddOns/BeaconUnitFrames/Icons/logo
+## Category: Unit Frames
+## Category-deDE: Einheitenfenster
+## Category-esES: Marcos de unidades
+## Category-esMX: Marcos de unidades
+## Category-frFR: Portraits d'unités
+## Category-itIT: Riquadri delle unità
+## Category-koKR: 개체창
+## Category-ptBR: Quadros de unidade
+## Category-ruRU: Рамки юнитов
+## Category-zhCN: 单位框体
+## Category-zhTW: 單位框架
+## X-GitHub: https://github.com/Mctalian/BeaconUnitFrames
+## X-Discord: https://discord.gg/czRYVWhe33
+## X-Curse-Project-ID: 
+## X-WoWI-ID: 
+## X-Wago-ID: 
+
+#@no-lib-strip@
+embeds.xml
+#@end-no-lib-strip@
+
+core.lua
+locale/locales.xml
