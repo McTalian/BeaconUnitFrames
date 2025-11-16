@@ -11,6 +11,9 @@ local BUF = LibStub("AceAddon-3.0"):NewAddon(addonName, "AceConsole-3.0", "AceEv
 ns.BUF = BUF
 
 ns.localeName = addonName .. "Locale"
+
+function ns.noop() end
+
 ns.lsm = LibStub("LibSharedMedia-3.0")
 ns.acd = LibStub("AceConfigDialog-3.0") --[[@as AceConfigDialog-3.0]]
 ns.brokerIcon = LibStub("LibDBIcon-1.0")

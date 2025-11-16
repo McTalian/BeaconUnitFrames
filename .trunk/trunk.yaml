@@ -40,3 +40,6 @@ actions:
         - git_hooks: [pre-commit]
 
       run: uv run .scripts/organize_translations.py
+tools:
+  enabled:
+    - stylua@2.3.1
