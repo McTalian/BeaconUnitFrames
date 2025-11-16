@@ -106,6 +106,11 @@ BUFPlayer.ManaCoeffs = {
     maskYOffset = 2 / ns.dbDefaults.profile.unitFrames.player.manaBar.height,
 }
 
+function BUFPlayer:RefreshManaConfig()
+    self:SetManaPosition()
+    self:SetManaSize()
+end
+
 function BUFPlayer:SetManaSize()
     local width = ns.db.profile.unitFrames.player.manaBar.width
     local height = ns.db.profile.unitFrames.player.manaBar.height

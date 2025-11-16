@@ -48,15 +48,12 @@ function BUFPlayer:OnEnable()
 end
 
 function BUFPlayer:RefreshConfig()
-    self:SetFrameSize()
-    self:ShowHidePortrait()
-    self:SetNameFont()
-    self:SetHealthPosition()
-    self:SetHealthSize()
-    self:SetHealthStatusBarTexture()
-    self:SetHealthColor()
-    self:SetManaPosition()
-    self:SetManaSize()
+    self:RefreshFrameConfig()
+    self:RefreshPortraitConfig()
+    self:RefreshNameConfig()
+    self:RefreshLevelConfig()
+    self:RefreshHealthConfig()
+    self:RefreshManaConfig()
 end
 
 -- local BUF = _G.BeaconUnitFrames

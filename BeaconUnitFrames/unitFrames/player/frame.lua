@@ -61,6 +61,10 @@ ns.options.args.unitFrames.args.player.args.frame = {
     },
 }
 
+function BUFPlayer:RefreshFrameConfig()
+    self:SetFrameSize()
+end
+
 function BUFPlayer:SetFrameSize()
     local width = ns.db.profile.unitFrames.player.frame.width
     local height = ns.db.profile.unitFrames.player.frame.height

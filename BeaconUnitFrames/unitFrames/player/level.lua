@@ -9,3 +9,7 @@ local BUFPlayer = ns.BUFPlayer
 
 ---@class BUFDbSchema.UF.Player
 ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
+
+function BUFPlayer:RefreshLevelConfig()
+    -- Currently no level configuration to refresh
+end

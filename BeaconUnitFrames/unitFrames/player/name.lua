@@ -137,6 +137,10 @@ ns.options.args.unitFrames.args.player.args.playerName = {
     }
 }
 
+function BUFPlayer:RefreshNameConfig()
+    self:SetNameFont()
+end
+
 function BUFPlayer:SetNameFont()
     local useFontObjects = ns.db.profile.unitFrames.player.name.useFontObjects
     if useFontObjects then

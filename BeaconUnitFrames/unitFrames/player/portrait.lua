@@ -43,6 +43,10 @@ ns.options.args.unitFrames.args.player.args.portrait = {
     },
 }
 
+function BUFPlayer:RefreshPortraitConfig()
+    self:ShowHidePortrait()
+end
+
 function BUFPlayer:ShowHidePortrait()
     local show = ns.db.profile.unitFrames.player.portrait.enabled
     if show then

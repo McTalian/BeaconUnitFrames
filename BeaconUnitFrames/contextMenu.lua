@@ -30,7 +30,7 @@ function ns.menu:OpenOptions(button)
 			table.insert(tmpMenu, item)
 		end
 		table.insert(tmpMenu, {
-			text = ns.L["Close"],
+			text = CLOSE,
 			func = function()
 				CloseDropDownMenus()
 			end,
