@@ -48,26 +48,10 @@ function BUFPlayer:OnEnable()
 end
 
 function BUFPlayer:RefreshConfig()
-    self:RefreshFrameConfig()
-    self:RefreshPortraitConfig()
-    self:RefreshNameConfig()
-    self:RefreshLevelConfig()
-    self:RefreshHealthConfig()
-    self:RefreshManaConfig()
+    self.Frame:RefreshConfig()
+    self.Portrait:RefreshConfig()
+    self.Name:RefreshConfig()
+    self.Level:RefreshConfig()
+    self.Health:RefreshConfig()
+    self.Mana:RefreshConfig()
 end
-
--- local BUF = _G.BeaconUnitFrames
--- local t = BUF.lsm:Fetch("statusbar", "Blizzard")
--- local hb = PlayerFrame_GetHealthBar()
--- hb:SetStatusBarTexture(t)
--- local _, c = UnitClass("player")
--- local r,g,b,hex = GetClassColor(c)
--- hb:SetStatusBarColor(r, g, b, 1.0)
-
--- PlayerName:ClearAllPoints()
--- PlayerName:SetPoint("BOTTOMLEFT", healthBarContainer, "TOPLEFT", 4, 1)
--- PlayerLevelText:ClearAllPoints()
--- PlayerLevelText:SetPoint("BOTTOMRIGHT", healthBarContainer, "TOPRIGHT", -4, 1)
-
--- restLoop.RestTexture:ClearAllPoints()
--- restLoop.RestTexture:SetPoint("BOTTOMLEFT", PlayerLevelText, "TOPRIGHT")

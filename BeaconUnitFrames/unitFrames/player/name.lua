@@ -7,6 +7,11 @@ ns = ns
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
 
+---@class BUFPlayer.Name
+local BUFPlayerName = {}
+
+BUFPlayer.Name = BUFPlayerName
+
 ---@class BUFDbSchema.UF.Player
 ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
 
@@ -48,241 +53,156 @@ local nameOrder = {
     FONT_SHADOW_OFFSET_Y = 13,
 }
 
-ns.options.args.unitFrames.args.player.args.playerName = {
+local playerName = {
     type = "group",
+    handler = BUFPlayerName,
     name = CALENDAR_PLAYER_NAME,
     order = BUFPlayer.optionsOrder.NAME,
     inline = true,
-    args = {
-        width = {
-            type = "range",
-            name = HUD_EDIT_MODE_SETTING_CHAT_FRAME_WIDTH,
-            min = 20,
-            max = 300,
-            step = 1,
-            bigStep = 5,
-            set = function(info, value)
-                ns.db.profile.unitFrames.player.name.width = value
-                ns.BUFPlayer:UpdateNamePositionAndSize()
-            end,
-            get = function(info)
-                return ns.db.profile.unitFrames.player.name.width
-            end,
-            order = nameOrder.WIDTH,
-        },
-        height = {
-            type = "range",
-            name = HUD_EDIT_MODE_SETTING_CHAT_FRAME_HEIGHT,
-            min = 8,
-            max = 100,
-            step = 1,
-            bigStep = 2,
-            set = function(info, value)
-                ns.db.profile.unitFrames.player.name.height = value
-                ns.BUFPlayer:UpdateNamePositionAndSize()
-            end,
-            get = function(info)
-                return ns.db.profile.unitFrames.player.name.height
-            end,
-            order = nameOrder.HEIGHT,
-        },
-        xOffset = {
-            type = "range",
-            name = ns.L["X Offset"],
-            min = -200,
-            max = 400,
-            step = 1,
-            bigStep = 5,
-            set = function(info, value)
-                ns.db.profile.unitFrames.player.name.xOffset = value
-                ns.BUFPlayer:UpdateNamePositionAndSize()
-            end,
-            get = function(info)
-                return ns.db.profile.unitFrames.player.name.xOffset
-            end,
-            order = nameOrder.X_OFFSET,
-        },
-        yOffset = {
-            type = "range",
-            name = ns.L["Y Offset"],
-            min = -200,
-            max = 200,
-            step = 1,
-            bigStep = 5,
-            set = function(info, value)
-                ns.db.profile.unitFrames.player.name.yOffset = value
-                ns.BUFPlayer:UpdateNamePositionAndSize()
-            end,
-            get = function(info)
-                return ns.db.profile.unitFrames.player.name.yOffset
-            end,
-            order = nameOrder.Y_OFFSET,
-        },
-        useFontObjects = {
-            type = "toggle",
-            name = ns.L["Use Font Objects"],
-            desc = ns.L["UseFontObjectsDesc"],
-            set = function(info, value)
-                ns.db.profile.unitFrames.player.name.useFontObjects = value
-                ns.BUFPlayer:SetNameFont()
-            end,
-            get = function(info)
-                return ns.db.profile.unitFrames.player.name.useFontObjects
-            end,
-            order = nameOrder.USE_FONT_OBJECTS,
-        },
-        fontObject = {
-            type = "select",
-            name = ns.L["Font Object"],
-            desc = ns.L["FontObjectDesc"],
-            values = ns.FontObjectOptions,
-            disabled = function()
-                return ns.db.profile.unitFrames.player.name.useFontObjects == false
-            end,
-            set = function(info, value)
-                ns.db.profile.unitFrames.player.name.fontObject = value
-                ns.BUFPlayer:SetNameFont()
-            end,
-            get = function(info)
-                return ns.db.profile.unitFrames.player.name.fontObject
-            end,
-            order = nameOrder.FONT_OBJECT,
-        },
-        fontColor = {
-            type = "color",
-            name = ns.L["Font Color"],
-            hasAlpha = true,
-            set = function(info, r, g, b, a)
-                ns.db.profile.unitFrames.player.name.fontColor = { r, g, b, a }
-                ns.BUFPlayer:SetNameFontColor()
-            end,
-            get = function(info)
-                local r, g, b, a = unpack(ns.db.profile.unitFrames.player.name.fontColor)
-                return r, g, b, a
-            end,
-            order = nameOrder.FONT_COLOR,
-        },
-        fontFace = {
-            type = "select",
-            name = ns.L["Font Face"],
-            dialogControl = "LSM30_Font",
-            values = function()
-                return ns.lsm:HashTable(ns.lsm.MediaType.FONT)
-            end,
-            disabled = function()
-                return ns.db.profile.unitFrames.player.name.useFontObjects == true
-            end,
-            set = function(info, value)
-                ns.db.profile.unitFrames.player.name.fontFace = value
-                ns.BUFPlayer:SetNameFont()
-            end,
-            get = function(info)
-                return ns.db.profile.unitFrames.player.name.fontFace
-            end,
-            order = nameOrder.FONT_FACE,
-        },
-        fontSize = {
-            type = "range",
-            name = FONT_SIZE,
-            min = 4,
-            softMin = 8,
-            softMax = 72,
-            max = 144,
-            step = 1,
-            bigStep = 2,
-            disabled = function()
-                return ns.db.profile.unitFrames.player.name.useFontObjects == true
-            end,
-            set = function(info, value)
-                ns.db.profile.unitFrames.player.name.fontSize = value
-                ns.BUFPlayer:SetNameFont()
-            end,
-            get = function(info)
-                return ns.db.profile.unitFrames.player.name.fontSize
-            end,
-            order = nameOrder.FONT_SIZE,
-        },
-        fontFlags = {
-            type = "multiselect",
-            name = ns.L["Font Flags"],
-            values = ns.FontFlagsOptions,
-            disabled = function()
-                return ns.db.profile.unitFrames.player.name.useFontObjects == true
-            end,
-            set = function(info, key, value)
-                ns.db.profile.unitFrames.player.name.fontFlags[key] = value
-                ns.BUFPlayer:SetNameFont()
-            end,
-            get = function(info, key)
-                return ns.db.profile.unitFrames.player.name.fontFlags[key]
-            end,
-            order = nameOrder.FONT_FLAGS,
-        },
-        shadowColor = {
-            type = "color",
-            name = ns.L["Font Shadow Color"],
-            hasAlpha = true,
-            disabled = function()
-                return ns.db.profile.unitFrames.player.name.useFontObjects == true
-            end,
-            set = function(info, r, g, b, a)
-                ns.db.profile.unitFrames.player.name.fontShadowColor = { r, g, b, a }
-                BUFPlayer:SetNameFontShadow()
-            end,
-            get = function(info)
-                local r, g, b, a = unpack(ns.db.profile.unitFrames.player.name.fontShadowColor)
-                return r, g, b, a
-            end,
-            order = nameOrder.FONT_SHADOW_COLOR,
-        },
-        shadowOffsetX = {
-            type = "range",
-            name = ns.L["Font Shadow Offset X"],
-            min = -10,
-            max = 10,
-            step = 1,
-            bigStep = 1,
-            disabled = function()
-                return ns.db.profile.unitFrames.player.name.useFontObjects == true
-            end,
-            set = function(info, value)
-                ns.db.profile.unitFrames.player.name.fontShadowOffsetX = value
-                BUFPlayer:SetNameFontShadow()
-            end,
-            get = function(info)
-                return ns.db.profile.unitFrames.player.name.fontShadowOffsetX
-            end,
-            order = nameOrder.FONT_SHADOW_OFFSET_X,
-        },
-        shadowOffsetY = {
-            type = "range",
-            name = ns.L["Font Shadow Offset Y"],
-            min = -10,
-            max = 10,
-            step = 1,
-            bigStep = 1,
-            disabled = function()
-                return ns.db.profile.unitFrames.player.name.useFontObjects == true
-            end,
-            set = function(info, value)
-                ns.db.profile.unitFrames.player.name.fontShadowOffsetY = value
-                BUFPlayer:SetNameFontShadow()
-            end,
-            get = function(info)
-                return ns.db.profile.unitFrames.player.name.fontShadowOffsetY
-            end,
-            order = nameOrder.FONT_SHADOW_OFFSET_Y,
-        },
-    }
+    args = {}
 }
 
-function BUFPlayer:RefreshNameConfig()
-    self:UpdateNamePositionAndSize()
-    self:SetNameFont()
-    self:SetNameFontShadow()
+ns.AddSizingOptions(playerName.args, nameOrder)
+ns.AddPositioningOptions(playerName.args, nameOrder)
+ns.AddFontOptions(playerName.args, nameOrder)
+
+ns.options.args.unitFrames.args.player.args.playerName = playerName
+
+function BUFPlayerName:SetWidth(info, value)
+    ns.db.profile.unitFrames.player.name.width = value
+    self:UpdatePositionAndSize()
 end
 
-function BUFPlayer:UpdateNamePositionAndSize()
+function BUFPlayerName:GetWidth(info)
+    return ns.db.profile.unitFrames.player.name.width
+end
+
+function BUFPlayerName:SetHeight(info, value)
+    ns.db.profile.unitFrames.player.name.height = value
+    self:UpdatePositionAndSize()
+end
+
+function BUFPlayerName:GetHeight(info)
+    return ns.db.profile.unitFrames.player.name.height
+end
+
+function BUFPlayerName:SetXOffset(info, value)
+    ns.db.profile.unitFrames.player.name.xOffset = value
+    self:UpdatePositionAndSize()
+end
+
+function BUFPlayerName:GetXOffset(info)
+    return ns.db.profile.unitFrames.player.name.xOffset
+end
+
+function BUFPlayerName:SetYOffset(info, value)
+    ns.db.profile.unitFrames.player.name.yOffset = value
+    self:UpdatePositionAndSize()
+end
+
+function BUFPlayerName:GetYOffset(info)
+    return ns.db.profile.unitFrames.player.name.yOffset
+end
+
+function BUFPlayerName:SetUseFontObjects(info, value)
+    ns.db.profile.unitFrames.player.name.useFontObjects = value
+    self:SetFont()
+end
+
+function BUFPlayerName:GetUseFontObjects(info)
+    return ns.db.profile.unitFrames.player.name.useFontObjects
+end
+
+function BUFPlayerName:SetFontObject(info, value)
+    ns.db.profile.unitFrames.player.name.fontObject = value
+    self:SetFont()
+end
+
+function BUFPlayerName:GetFontObject(info)
+    return ns.db.profile.unitFrames.player.name.fontObject
+end
+
+function BUFPlayerName:SetFontColor(info, r, g, b, a)
+    ns.db.profile.unitFrames.player.name.fontColor = { r, g, b, a }
+    self:UpdateFontColor()
+end
+
+function BUFPlayerName:GetFontColor(info)
+    local r, g, b, a = unpack(ns.db.profile.unitFrames.player.name.fontColor)
+    return r, g, b, a
+end
+
+function BUFPlayerName:SetFontFace(info, value)
+    ns.db.profile.unitFrames.player.name.fontFace = value
+    self:SetFont()
+end
+
+function BUFPlayerName:GetFontFace(info)
+    return ns.db.profile.unitFrames.player.name.fontFace
+end
+
+function BUFPlayerName:SetFontSize(info, value)
+    ns.db.profile.unitFrames.player.name.fontSize = value
+    self:SetFont()
+end
+
+function BUFPlayerName:GetFontSize(info)
+    return ns.db.profile.unitFrames.player.name.fontSize
+end
+
+function BUFPlayerName:SetFontFlag(info, key, value)
+    ns.db.profile.unitFrames.player.name.fontFlags[key] = value
+    self:SetFont()
+end
+
+function BUFPlayerName:GetFontFlag(info, key)
+    return ns.db.profile.unitFrames.player.name.fontFlags[key]
+end
+
+function BUFPlayerName:SetShadowColor(info, r, g, b, a)
+    ns.db.profile.unitFrames.player.name.fontShadowColor = { r, g, b, a }
+    self:SetFontShadow()
+end
+
+function BUFPlayerName:GetShadowColor(info)
+    local r, g, b, a = unpack(ns.db.profile.unitFrames.player.name.fontShadowColor)
+    return r, g, b, a
+end
+
+function BUFPlayerName:SetShadowOffsetX(info, value)
+    ns.db.profile.unitFrames.player.name.fontShadowOffsetX = value
+    self:SetFontShadow()
+end
+
+function BUFPlayerName:GetShadowOffsetX(info)
+    return ns.db.profile.unitFrames.player.name.fontShadowOffsetX
+end
+
+function BUFPlayerName:SetShadowOffsetY(info, value)
+    ns.db.profile.unitFrames.player.name.fontShadowOffsetY = value
+    self:SetFontShadow()
+end
+
+function BUFPlayerName:GetShadowOffsetY(info)
+    return ns.db.profile.unitFrames.player.name.fontShadowOffsetY
+end
+
+-- Disabled functions
+function BUFPlayerName:IsCustomFontDisabled(info)
+    return ns.db.profile.unitFrames.player.name.useFontObjects == false
+end
+
+function BUFPlayerName:IsFontObjectEnabled(info)
+    return ns.db.profile.unitFrames.player.name.useFontObjects == true
+end
+
+function BUFPlayerName:RefreshConfig()
+    self:UpdatePositionAndSize()
+    self:SetFont()
+    self:SetFontShadow()
+end
+
+function BUFPlayerName:UpdatePositionAndSize()
     local width = ns.db.profile.unitFrames.player.name.width
     local height = ns.db.profile.unitFrames.player.name.height
     local xOffset = ns.db.profile.unitFrames.player.name.xOffset
@@ -292,7 +212,7 @@ function BUFPlayer:UpdateNamePositionAndSize()
     PlayerName:SetHeight(height)
 end
 
-function BUFPlayer:SetNameFont()
+function BUFPlayerName:SetFont()
     local useFontObjects = ns.db.profile.unitFrames.player.name.useFontObjects
     if useFontObjects then
         local fontObject = ns.db.profile.unitFrames.player.name.fontObject
@@ -310,15 +230,15 @@ function BUFPlayer:SetNameFont()
         print("Setting name font to:", fontPath, fontSize, fontFlags)
         PlayerName:SetFont(fontPath, fontSize, fontFlags)
     end
-    BUFPlayer:SetNameFontColor()
+    self:UpdateFontColor()
 end
 
-function BUFPlayer:SetNameFontColor()
+function BUFPlayerName:UpdateFontColor()
     local r, g, b, a = unpack(ns.db.profile.unitFrames.player.name.fontColor)
     PlayerName:SetTextColor(r, g, b, a)
 end
 
-function BUFPlayer:SetNameFontShadow()
+function BUFPlayerName:SetFontShadow()
     local useFontObjects = ns.db.profile.unitFrames.player.name.useFontObjects
     if useFontObjects then
         -- Font objects handle shadow internally

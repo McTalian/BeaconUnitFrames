@@ -7,6 +7,11 @@ ns = ns
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
 
+---@class BUFPlayer.Health
+local BUFPlayerHealth = {}
+
+BUFPlayer.Health = BUFPlayerHealth
+
 ---@class BUFDbSchema.UF.Player
 ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
 
@@ -52,234 +57,174 @@ local backgroundOrder = {
     CLASS_COLOR = 5,
 }
 
-ns.options.args.unitFrames.args.player.args.healthBar = {
+local healthBar = {
     type = "group",
+    handler = BUFPlayerHealth,
     name = HEALTH,
     order = BUFPlayer.optionsOrder.HEALTH,
     inline = true,
     args = {
-        width = {
-            type = "range",
-            name = HUD_EDIT_MODE_SETTING_CHAT_FRAME_WIDTH,
-            min = 1,
-            softMin = 50,
-            softMax = 800,
-            max = 1000000000,
-            step = 1,
-            bigStep = 10,
-            set = function(info, value)
-                ns.db.profile.unitFrames.player.healthBar.width = value
-                ns.BUFPlayer:SetHealthSize()
-            end,
-            get = function(info)
-                return ns.db.profile.unitFrames.player.healthBar.width
-            end,
-            order = healthBarOrder.WIDTH,
-        },
-        height = {
-            type = "range",
-            name = HUD_EDIT_MODE_SETTING_CHAT_FRAME_HEIGHT,
-            min = 1,
-            softMin = 5,
-            softMax = 200,
-            max = 1000000000,
-            step = 1,
-            bigStep = 5,
-            set = function(info, value)
-                ns.db.profile.unitFrames.player.healthBar.height = value
-                ns.BUFPlayer:SetHealthSize()
-            end,
-            get = function(info)
-                return ns.db.profile.unitFrames.player.healthBar.height
-            end,
-            order = healthBarOrder.HEIGHT,
-        },
-        xOffset = {
-            type = "range",
-            name = ns.L["X Offset"],
-            min = -500,
-            softMin = -200,
-            softMax = 200,
-            max = 500,
-            step = 1,
-            bigStep = 5,
-            set = function(info, value)
-                ns.db.profile.unitFrames.player.healthBar.xOffset = value
-                ns.BUFPlayer:SetHealthPosition()
-            end,
-            get = function(info)
-                return ns.db.profile.unitFrames.player.healthBar.xOffset
-            end,
-            order = healthBarOrder.X_OFFSET,
-        },
-        yOffset = {
-            type = "range",
-            name = ns.L["Y Offset"],
-            min = -500,
-            softMin = -200,
-            softMax = 200,
-            max = 500,
-            step = 1,
-            bigStep = 5,
-            set = function(info, value)
-                ns.db.profile.unitFrames.player.healthBar.yOffset = value
-                ns.BUFPlayer:SetHealthPosition()
-            end,
-            get = function(info)
-                return ns.db.profile.unitFrames.player.healthBar.yOffset
-            end,
-            order = healthBarOrder.Y_OFFSET,
-        },
-        frameLevel = {
-            type = "range",
-            name = ns.L["Frame Level"],
-            min = 0,
-            max = 10000,
-            step = 1,
-            bigStep = 10,
-            set = function(info, value)
-                ns.db.profile.unitFrames.player.healthBar.frameLevel = value
-                ns.BUFPlayer:SetHealthBarLevel()
-            end,
-            get = function(info)
-                return ns.db.profile.unitFrames.player.healthBar.frameLevel
-            end,
-            order = healthBarOrder.FRAME_LEVEL,
-        },
         foreground = {
             type = "group",
             name = ns.L["Foreground"],
             inline = true,
             order = healthBarOrder.FOREGROUND,
-            args = {
-                useStatusBarTexture = {
-                    type = "toggle",
-                    name = ns.L["Use Status Bar Texture"],
-                    desc = ns.L["UseStatusBarTextureDesc"],
-                    set = function(info, value)
-                        ns.db.profile.unitFrames.player.healthBar.useStatusBarTexture = value
-                        ns.BUFPlayer:SetHealthStatusBarTexture()
-                    end,
-                    get = function(info)
-                        return ns.db.profile.unitFrames.player.healthBar.useStatusBarTexture
-                    end,
-                    order = foregroundOrder.USE_STATUS_BAR_TEXTURE,
-                },
-                statusBarTexture = {
-                    type = "select",
-                    name = ns.L["Status Bar Texture"],
-                    dialogControl = "LSM30_Statusbar",
-                    values = function()
-                        return ns.lsm:HashTable(ns.lsm.MediaType.STATUSBAR)
-                    end,
-                    disabled = function()
-                        return ns.db.profile.unitFrames.player.healthBar.useStatusBarTexture == false
-                    end,
-                    set = function(info, value)
-                        ns.db.profile.unitFrames.player.healthBar.statusBarTexture = value
-                        ns.BUFPlayer:SetHealthStatusBarTexture()
-                    end,
-                    get = function(info)
-                        return ns.db.profile.unitFrames.player.healthBar.statusBarTexture
-                    end,
-                    order = foregroundOrder.STATUS_BAR_TEXTURE,
-                },
-                useCustomColor = {
-                    type = "toggle",
-                    name = ns.L["Use Custom Color"],
-                    desc = ns.L["UseCustomColorDesc"],
-                    set = function(info, value)
-                        ns.db.profile.unitFrames.player.healthBar.useCustomColor = value
-                        ns.BUFPlayer:SetHealthColor()
-                    end,
-                    get = function(info)
-                        return ns.db.profile.unitFrames.player.healthBar.useCustomColor
-                    end,
-                    order = foregroundOrder.USE_CUSTOM_COLOR,
-                },
-                customColor = {
-                    type = "color",
-                    name = ns.L["Custom Color"],
-                    hasAlpha = true,
-                    disabled = function()
-                        return ns.db.profile.unitFrames.player.healthBar.useCustomColor == false
-                    end,
-                    set = function(info, r, g, b, a)
-                        ns.db.profile.unitFrames.player.healthBar.customColor = { r, g, b, a }
-                        ns.BUFPlayer:SetHealthColor()
-                    end,
-                    get = function(info)
-                        local r, g, b, a = unpack(ns.db.profile.unitFrames.player.healthBar.customColor)
-                        return r, g, b, a
-                    end,
-                    order = foregroundOrder.CUSTOM_COLOR,
-                },
-                useClassColor = {
-                    type = "toggle",
-                    name = ns.L["Use Class Color"],
-                    desc = ns.L["UseClassColorDesc"],
-                    set = function(info, value)
-                        ns.db.profile.unitFrames.player.healthBar.useClassColor = value
-                        ns.BUFPlayer:SetHealthColor()
-                    end,
-                    get = function(info)
-                        return ns.db.profile.unitFrames.player.healthBar.useClassColor
-                    end,
-                    order = foregroundOrder.CLASS_COLOR,
-                },
-            },
+            args = {}
         },
         background = {
             type = "group",
+            handler = BUFPlayerHealth,
             name = BACKGROUND,
             inline = true,
             order = healthBarOrder.BACKGROUND,
-            args = {
-                useBackgroundTexture = {
-                    type = "toggle",
-                    name = ns.L["Use Background Texture"],
-                    desc = ns.L["UseBackgroundTextureDesc"],
-                    set = function(info, value)
-                        ns.db.profile.unitFrames.player.healthBar.useBackgroundTexture = value
-                        ns.BUFPlayer:SetHealthBarBackgroundTexture()
-                    end,
-                    get = function(info)
-                        return ns.db.profile.unitFrames.player.healthBar.useBackgroundTexture
-                    end,
-                    order = backgroundOrder.USE_BACKGROUND_TEXTURE,
-                },
-                backgroundTexture = {
-                    type = "select",
-                    name = ns.L["Background Texture"],
-                    dialogControl = "LSM30_Background",
-                    values = function()
-                        return ns.lsm:HashTable(ns.lsm.MediaType.BACKGROUND)
-                    end,
-                    disabled = function()
-                        return ns.db.profile.unitFrames.player.healthBar.useBackgroundTexture == false
-                    end,
-                    set = function(info, value)
-                        ns.db.profile.unitFrames.player.healthBar.backgroundTexture = value
-                        ns.BUFPlayer:SetHealthBarBackgroundTexture()
-                    end,
-                    get = function(info)
-                        return ns.db.profile.unitFrames.player.healthBar.backgroundTexture
-                    end,
-                    order = backgroundOrder.BACKGROUND_TEXTURE,
-                },
-            },
+            args = {}
         },
     },
 }
 
-BUFPlayer.HealthCoeffs = {
+ns.AddSizingOptions(healthBar.args, healthBarOrder)
+ns.AddPositioningOptions(healthBar.args, healthBarOrder)
+ns.AddFrameLevelOption(healthBar.args, healthBarOrder)
+
+ns.AddStatusBarForegroundOptions(healthBar.args.foreground.args, foregroundOrder)
+
+ns.AddBackgroundTextureOptions(healthBar.args.background.args, backgroundOrder)
+
+ns.options.args.unitFrames.args.player.args.healthBar = healthBar
+
+-- Handler methods for health bar options
+function BUFPlayerHealth:SetWidth(info, value)
+    ns.db.profile.unitFrames.player.healthBar.width = value
+    BUFPlayerHealth:SetHealthSize()
+end
+
+function BUFPlayerHealth:GetWidth(info)
+    return ns.db.profile.unitFrames.player.healthBar.width
+end
+
+function BUFPlayerHealth:SetHeight(info, value)
+    ns.db.profile.unitFrames.player.healthBar.height = value
+    BUFPlayerHealth:SetHealthSize()
+end
+
+function BUFPlayerHealth:GetHeight(info)
+    return ns.db.profile.unitFrames.player.healthBar.height
+end
+
+function BUFPlayerHealth:SetXOffset(info, value)
+    ns.db.profile.unitFrames.player.healthBar.xOffset = value
+    BUFPlayerHealth:SetHealthPosition()
+end
+
+function BUFPlayerHealth:GetXOffset(info)
+    return ns.db.profile.unitFrames.player.healthBar.xOffset
+end
+
+function BUFPlayerHealth:SetYOffset(info, value)
+    ns.db.profile.unitFrames.player.healthBar.yOffset = value
+    BUFPlayerHealth:SetHealthPosition()
+end
+
+function BUFPlayerHealth:GetYOffset(info)
+    return ns.db.profile.unitFrames.player.healthBar.yOffset
+end
+
+function BUFPlayerHealth:SetFrameLevel(info, value)
+    ns.db.profile.unitFrames.player.healthBar.frameLevel = value
+    BUFPlayerHealth:SetHealthBarLevel()
+end
+
+function BUFPlayerHealth:GetFrameLevel(info)
+    return ns.db.profile.unitFrames.player.healthBar.frameLevel
+end
+
+-- Foreground options
+function BUFPlayerHealth:SetUseStatusBarTexture(info, value)
+    ns.db.profile.unitFrames.player.healthBar.useStatusBarTexture = value
+    BUFPlayerHealth:SetHealthStatusBarTexture()
+end
+
+function BUFPlayerHealth:GetUseStatusBarTexture(info)
+    return ns.db.profile.unitFrames.player.healthBar.useStatusBarTexture
+end
+
+function BUFPlayerHealth:SetStatusBarTexture(info, value)
+    ns.db.profile.unitFrames.player.healthBar.statusBarTexture = value
+    BUFPlayerHealth:SetHealthStatusBarTexture()
+end
+
+function BUFPlayerHealth:GetStatusBarTexture(info)
+    return ns.db.profile.unitFrames.player.healthBar.statusBarTexture
+end
+
+function BUFPlayerHealth:SetUseCustomColor(info, value)
+    ns.db.profile.unitFrames.player.healthBar.useCustomColor = value
+    BUFPlayerHealth:SetHealthColor()
+end
+
+function BUFPlayerHealth:GetUseCustomColor(info)
+    return ns.db.profile.unitFrames.player.healthBar.useCustomColor
+end
+
+function BUFPlayerHealth:SetCustomColor(info, r, g, b, a)
+    ns.db.profile.unitFrames.player.healthBar.customColor = { r, g, b, a }
+    BUFPlayerHealth:SetHealthColor()
+end
+
+function BUFPlayerHealth:GetCustomColor(info)
+    local r, g, b, a = unpack(ns.db.profile.unitFrames.player.healthBar.customColor)
+    return r, g, b, a
+end
+
+function BUFPlayerHealth:SetUseClassColor(info, value)
+    ns.db.profile.unitFrames.player.healthBar.useClassColor = value
+    BUFPlayerHealth:SetHealthColor()
+end
+
+function BUFPlayerHealth:GetUseClassColor(info)
+    return ns.db.profile.unitFrames.player.healthBar.useClassColor
+end
+
+-- Background options
+function BUFPlayerHealth:SetUseBackgroundTexture(info, value)
+    ns.db.profile.unitFrames.player.healthBar.useBackgroundTexture = value
+    BUFPlayerHealth:SetHealthBarBackgroundTexture()
+end
+
+function BUFPlayerHealth:GetUseBackgroundTexture(info)
+    return ns.db.profile.unitFrames.player.healthBar.useBackgroundTexture
+end
+
+function BUFPlayerHealth:SetBackgroundTexture(info, value)
+    ns.db.profile.unitFrames.player.healthBar.backgroundTexture = value
+    BUFPlayerHealth:SetHealthBarBackgroundTexture()
+end
+
+function BUFPlayerHealth:GetBackgroundTexture(info)
+    return ns.db.profile.unitFrames.player.healthBar.backgroundTexture
+end
+
+-- Disabled functions
+function BUFPlayerHealth:IsStatusBarTextureDisabled(info)
+    return ns.db.profile.unitFrames.player.healthBar.useStatusBarTexture == false
+end
+
+function BUFPlayerHealth:IsCustomColorDisabled(info)
+    return ns.db.profile.unitFrames.player.healthBar.useCustomColor == false
+end
+
+function BUFPlayerHealth:IsBackgroundTextureDisabled(info)
+    return ns.db.profile.unitFrames.player.healthBar.useBackgroundTexture == false
+end
+
+BUFPlayerHealth.coeffs = {
     maskWidth = 1.05,
     maskHeight = 1.0,
     maskXOffset = (-2 / ns.dbDefaults.profile.unitFrames.player.healthBar.width),
     maskYOffset = 6 / ns.dbDefaults.profile.unitFrames.player.healthBar.height,
 }
 
-function BUFPlayer:RefreshHealthConfig()
+function BUFPlayerHealth:RefreshConfig()
     self:SetHealthPosition()
     self:SetHealthSize()
     self:SetHealthStatusBarTexture()
@@ -288,62 +233,68 @@ function BUFPlayer:RefreshHealthConfig()
     self:SetHealthBarBackgroundTexture()
 end
 
-function BUFPlayer:SetHealthSize()
+function BUFPlayerHealth:SetHealthSize()
+    local parent = BUFPlayer
     local width = ns.db.profile.unitFrames.player.healthBar.width
     local height = ns.db.profile.unitFrames.player.healthBar.height
-    PixelUtil.SetWidth(self.healthBarContainer, width, 18)
-    PixelUtil.SetHeight(self.healthBarContainer, height, 18)
-    PixelUtil.SetWidth(self.healthBar, width, 18)
-    PixelUtil.SetHeight(self.healthBar, height, 18)
-    PixelUtil.SetWidth(self.healthBarContainer.HealthBarMask, width * self.HealthCoeffs.maskWidth, 18)
-    PixelUtil.SetHeight(self.healthBarContainer.HealthBarMask, height * self.HealthCoeffs.maskHeight, 18)
-    self.healthBarContainer.HealthBarMask:SetPoint("TOPLEFT", width * self.HealthCoeffs.maskXOffset, 6 * self.HealthCoeffs.maskYOffset)
+    PixelUtil.SetWidth(parent.healthBarContainer, width, 18)
+    PixelUtil.SetHeight(parent.healthBarContainer, height, 18)
+    PixelUtil.SetWidth(parent.healthBar, width, 18)
+    PixelUtil.SetHeight(parent.healthBar, height, 18)
+    PixelUtil.SetWidth(parent.healthBarContainer.HealthBarMask, width * self.coeffs.maskWidth, 18)
+    PixelUtil.SetHeight(parent.healthBarContainer.HealthBarMask, height * self.coeffs.maskHeight, 18)
+    parent.healthBarContainer.HealthBarMask:SetPoint("TOPLEFT", width * self.coeffs.maskXOffset, 6 * self.coeffs.maskYOffset)
 end
 
-function BUFPlayer:SetHealthPosition()
+function BUFPlayerHealth:SetHealthPosition()
+    local parent = BUFPlayer
     local xOffset = ns.db.profile.unitFrames.player.healthBar.xOffset
     local yOffset = ns.db.profile.unitFrames.player.healthBar.yOffset
-    self.healthBarContainer:SetPoint("TOPLEFT", xOffset, yOffset)
+    parent.healthBarContainer:SetPoint("TOPLEFT", xOffset, yOffset)
 end
 
-function BUFPlayer:SetHealthBarLevel()
+function BUFPlayerHealth:SetHealthBarLevel()
+    local parent = BUFPlayer
     local frameLevel = ns.db.profile.unitFrames.player.healthBar.frameLevel
-    self.healthBar:SetFrameLevel(frameLevel)
+    parent.healthBar:SetFrameLevel(frameLevel)
 end
 
-function BUFPlayer:SetHealthStatusBarTexture()
+function BUFPlayerHealth:SetHealthStatusBarTexture()
+    local parent = BUFPlayer
     local useCustomTexture = ns.db.profile.unitFrames.player.healthBar.useStatusBarTexture
     if useCustomTexture then
         local texturePath = ns.lsm:Fetch(ns.lsm.MediaType.STATUSBAR, ns.db.profile.unitFrames.player.healthBar.statusBarTexture)
         if not texturePath then
             texturePath = ns.lsm:Fetch(ns.lsm.MediaType.STATUSBAR, "Blizzard") or "Interface\\Buttons\\WHITE8x8"
         end
-        self.healthBar:SetStatusBarTexture(texturePath)
+        parent.healthBar:SetStatusBarTexture(texturePath)
         self:SetHealthBarLevel()
     end
 end
 
-function BUFPlayer:SetHealthColor()
+function BUFPlayerHealth:SetHealthColor()
+    local parent = BUFPlayer
     local useCustomColor = ns.db.profile.unitFrames.player.healthBar.useCustomColor
     local useClassColor = ns.db.profile.unitFrames.player.healthBar.useClassColor
     if useClassColor then
         local _, class = UnitClass("player")
         local r, g, b = GetClassColor(class)
-        self.healthBar:SetStatusBarColor(r, g, b, 1.0)
+        parent.healthBar:SetStatusBarColor(r, g, b, 1.0)
     elseif useCustomColor then
         local r, g, b, a = unpack(ns.db.profile.unitFrames.player.healthBar.customColor)
-        self.healthBar:SetStatusBarColor(r, g, b, a)
+        parent.healthBar:SetStatusBarColor(r, g, b, a)
     end
 end
 
-function BUFPlayer:SetHealthBarBackgroundTexture()
+function BUFPlayerHealth:SetHealthBarBackgroundTexture()
+    local parent = BUFPlayer
     local useBackgroundTexture = ns.db.profile.unitFrames.player.healthBar.useBackgroundTexture
     if useBackgroundTexture then
         local texturePath = ns.lsm:Fetch(ns.lsm.MediaType.BACKGROUND, ns.db.profile.unitFrames.player.healthBar.backgroundTexture)
         if not texturePath then
             texturePath = ns.lsm:Fetch(ns.lsm.MediaType.BACKGROUND, "Solid") or "Interface\\Buttons\\WHITE8x8"
         end
-        self.healthBar.Background:SetTexture(texturePath)
-        self.healthBar.Background:Show()
+        parent.healthBar.Background:SetTexture(texturePath)
+        parent.healthBar.Background:Show()
     end
 end

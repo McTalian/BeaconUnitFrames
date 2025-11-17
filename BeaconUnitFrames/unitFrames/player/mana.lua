@@ -7,6 +7,11 @@ ns = ns
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
 
+---@class BUFPlayer.Mana
+local BUFPlayerMana = {}
+
+BUFPlayer.Mana = BUFPlayerMana
+
 ---@class BUFDbSchema.UF.Player
 ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
 
@@ -16,115 +21,98 @@ ns.dbDefaults.profile.unitFrames.player.manaBar = {
     height = 10,
     xOffset = 85,
     yOffset = -61,
+    frameLevel = 3,
 }
 
-ns.options.args.unitFrames.args.player.args.manaBar = {
+local manaOrder = {
+    WIDTH = 1,
+    HEIGHT = 2,
+    X_OFFSET = 3,
+    Y_OFFSET = 4,
+    FRAME_LEVEL = 5,
+}
+
+local manaBar = {
     type = "group",
+    handler = BUFPlayerMana,
     name = MANA,
     order = BUFPlayer.optionsOrder.MANA,
     inline = true,
-    args = {
-        width = {
-            type = "range",
-            name = HUD_EDIT_MODE_SETTING_CHAT_FRAME_WIDTH,
-            min = 1,
-            softMin = 50,
-            softMax = 800,
-            max = 1000000000,
-            step = 1,
-            bigStep = 10,
-            set = function(info, value)
-                ns.db.profile.unitFrames.player.manaBar.width = value
-                ns.BUFPlayer:SetManaSize()
-            end,
-            get = function(info)
-                return ns.db.profile.unitFrames.player.manaBar.width
-            end,
-            order = 1,
-        },
-        height = {
-            type = "range",
-            name = HUD_EDIT_MODE_SETTING_CHAT_FRAME_HEIGHT,
-            min = 1,
-            softMin = 5,
-            softMax = 200,
-            max = 1000000000,
-            step = 1,
-            bigStep = 5,
-            set = function(info, value)
-                ns.db.profile.unitFrames.player.manaBar.height = value
-                ns.BUFPlayer:SetManaSize()
-            end,
-            get = function(info)
-                return ns.db.profile.unitFrames.player.manaBar.height
-            end,
-            order = 2,
-        },
-        xOffset = {
-            type = "range",
-            name = ns.L["X Offset"],
-            min = -500,
-            softMin = -200,
-            softMax = 200,
-            max = 500,
-            step = 1,
-            bigStep = 5,
-            set = function(info, value)
-                ns.db.profile.unitFrames.player.manaBar.xOffset = value
-                ns.BUFPlayer:SetManaPosition()
-            end,
-            get = function(info)
-                return ns.db.profile.unitFrames.player.manaBar.xOffset
-            end,
-            order = 3,
-        },
-        yOffset = {
-            type = "range",
-            name = ns.L["Y Offset"],
-            min = -500,
-            softMin = -200,
-            softMax = 200,
-            max = 500,
-            step = 1,
-            bigStep = 5,
-            set = function(info, value)
-                ns.db.profile.unitFrames.player.manaBar.yOffset = value
-                ns.BUFPlayer:SetManaPosition()
-            end,
-            get = function(info)
-                return ns.db.profile.unitFrames.player.manaBar.yOffset
-            end,
-            order = 4,
-        },
-    },
+    args = {}
 }
 
-BUFPlayer.ManaCoeffs = {
+-- Add sizing options
+ns.AddSizingOptions(manaBar.args, manaOrder)
+ns.AddPositioningOptions(manaBar.args, manaOrder)
+ns.AddFrameLevelOption(manaBar.args, manaOrder)
+
+ns.options.args.unitFrames.args.player.args.manaBar = manaBar
+
+-- Handler methods for mana bar options
+function BUFPlayerMana:SetWidth(info, value)
+    ns.db.profile.unitFrames.player.manaBar.width = value
+    BUFPlayerMana:SetManaSize()
+end
+
+function BUFPlayerMana:GetWidth(info)
+    return ns.db.profile.unitFrames.player.manaBar.width
+end
+
+function BUFPlayerMana:SetHeight(info, value)
+    ns.db.profile.unitFrames.player.manaBar.height = value
+    BUFPlayerMana:SetManaSize()
+end
+
+function BUFPlayerMana:GetHeight(info)
+    return ns.db.profile.unitFrames.player.manaBar.height
+end
+
+function BUFPlayerMana:SetXOffset(info, value)
+    ns.db.profile.unitFrames.player.manaBar.xOffset = value
+    BUFPlayerMana:SetManaPosition()
+end
+
+function BUFPlayerMana:GetXOffset(info)
+    return ns.db.profile.unitFrames.player.manaBar.xOffset
+end
+
+function BUFPlayerMana:SetYOffset(info, value)
+    ns.db.profile.unitFrames.player.manaBar.yOffset = value
+    BUFPlayerMana:SetManaPosition()
+end
+
+function BUFPlayerMana:GetYOffset(info)
+    return ns.db.profile.unitFrames.player.manaBar.yOffset
+end
+
+BUFPlayerMana.coeffs = {
     maskWidth = 1.05,
     maskHeight = 1.0,
     maskXOffset = (-2 / ns.dbDefaults.profile.unitFrames.player.manaBar.width),
     maskYOffset = 2 / ns.dbDefaults.profile.unitFrames.player.manaBar.height,
 }
 
-function BUFPlayer:RefreshManaConfig()
+function BUFPlayerMana:RefreshConfig()
     self:SetManaPosition()
     self:SetManaSize()
 end
 
-function BUFPlayer:SetManaSize()
+function BUFPlayerMana:SetManaSize()
+    local player = BUFPlayer
     local width = ns.db.profile.unitFrames.player.manaBar.width
     local height = ns.db.profile.unitFrames.player.manaBar.height
-    PixelUtil.SetWidth(self.manaBarArea, width, 18)
-    PixelUtil.SetHeight(self.manaBarArea, height, 18)
-    PixelUtil.SetWidth(self.manaBar, width, 18)
-    PixelUtil.SetHeight(self.manaBar, height, 18)
-    PixelUtil.SetWidth(self.manaBar.ManaBarMask, width * self.ManaCoeffs.maskWidth, 18)
-    PixelUtil.SetHeight(self.manaBar.ManaBarMask, height * self.ManaCoeffs.maskHeight, 18)
-    self.manaBar.ManaBarMask:SetPoint("TOPLEFT", width * self.ManaCoeffs.maskXOffset, 2 * self.ManaCoeffs.maskYOffset)
+    PixelUtil.SetWidth(player.manaBarArea, width, 18)
+    PixelUtil.SetHeight(player.manaBarArea, height, 18)
+    PixelUtil.SetWidth(player.manaBar, width, 18)
+    PixelUtil.SetHeight(player.manaBar, height, 18)
+    PixelUtil.SetWidth(player.manaBar.ManaBarMask, width * self.coeffs.maskWidth, 18)
+    PixelUtil.SetHeight(player.manaBar.ManaBarMask, height * self.coeffs.maskHeight, 18)
+    player.manaBar.ManaBarMask:SetPoint("TOPLEFT", width * self.coeffs.maskXOffset, 2 * self.coeffs.maskYOffset)
 end
 
-function BUFPlayer:SetManaPosition()
+function BUFPlayerMana:SetManaPosition()
+    local player = BUFPlayer
     local xOffset = ns.db.profile.unitFrames.player.manaBar.xOffset
     local yOffset = ns.db.profile.unitFrames.player.manaBar.yOffset
-    self.manaBar:SetPoint("TOPLEFT", xOffset, yOffset)
+    player.manaBar:SetPoint("TOPLEFT", xOffset, yOffset)
 end
