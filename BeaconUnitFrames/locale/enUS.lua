@@ -13,8 +13,15 @@ local L = LibStub("AceLocale-3.0"):NewLocale(ns.localeName, "enUS", true)
 
 --#region v1.0.0
 L["Background Texture"] = "Background Texture"
+L["Circular Portrait"] = "Circular Portrait"
+L["CircularPortraitDesc"] = "When enabled, the portrait will be displayed with a circular mask."
 L["Coming Soon"] = "Coming Soon"
 L["Custom Color"] = "Custom Color"
+L["EnableCornerIndicator"] = "Enable Corner Indicator"
+L["EnableCornerIndicatorDesc"] = "When enabled, the corner indicator will be shown on the portrait."
+L["EnableFrameFlash"] = "Enable Frame Flash"
+L["EnableFrameTexture"] = "Enable Frame Texture"
+L["EnableStatusTexture"] = "Enable Status Texture"
 L["EnablePlayerPortrait"] = "Enable or disable the player's portrait on the unit frame."
 L["Font Color"] = "Font Color"
 L["Font Face"] = "Font Face"

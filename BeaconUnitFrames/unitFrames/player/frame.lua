@@ -14,6 +14,9 @@ ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.playe
 ns.dbDefaults.profile.unitFrames.player.frame = {
     width = 232,
     height = 100,
+    enableFrameFlash = true,
+    enableFrameTexture = true,
+    enableStatusTexture = true,
 }
 
 ns.options.args.unitFrames.args.player.args.frame = {
@@ -58,6 +61,42 @@ ns.options.args.unitFrames.args.player.args.frame = {
             end,
             order = 2,
         },
+        frameFlash = {
+            type = "toggle",
+            name = ns.L["EnableFrameFlash"],
+            set = function(info, value)
+                ns.db.profile.unitFrames.player.frame.enableFrameFlash = value
+                ns.BUFPlayer:SetFrameFlash()
+            end,
+            get = function(info)
+                return ns.db.profile.unitFrames.player.frame.enableFrameFlash
+            end,
+            order = 3,
+        },
+        frameTexture = {
+            type = "toggle",
+            name = ns.L["EnableFrameTexture"],
+            set = function(info, value)
+                ns.db.profile.unitFrames.player.frame.enableFrameTexture = value
+                ns.BUFPlayer:SetFrameTexture()
+            end,
+            get = function(info)
+                return ns.db.profile.unitFrames.player.frame.enableFrameTexture
+            end,
+            order = 4,
+        },
+        statusTexture = {
+            type = "toggle",
+            name = ns.L["EnableStatusTexture"],
+            set = function(info, value)
+                ns.db.profile.unitFrames.player.frame.enableStatusTexture = value
+                ns.BUFPlayer:SetStatusTexture()
+            end,
+            get = function(info)
+                return ns.db.profile.unitFrames.player.frame.enableStatusTexture
+            end,
+            order = 5,
+        },
     },
 }
 
@@ -70,4 +109,37 @@ function BUFPlayer:SetFrameSize()
     local height = ns.db.profile.unitFrames.player.frame.height
     PixelUtil.SetWidth(self.frame, width, 18)
     PixelUtil.SetHeight(self.frame, height, 18)
+end
+
+function BUFPlayer:SetFrameFlash()
+    local enable = ns.db.profile.unitFrames.player.frame.enableFrameFlash
+    if enable then
+        self:Unhook(self.container.FrameFlash, "Show")
+        self.container.FrameFlash:Show()
+    else
+        self.container.FrameFlash:Hide()
+        self:RawHook(self.container.FrameFlash, "Show", ns.noop, true)
+    end
+end
+
+function BUFPlayer:SetFrameTexture()
+    local enable = ns.db.profile.unitFrames.player.frame.enableFrameTexture
+    if enable then
+        self:Unhook(self.container.FrameTexture, "Show")
+        self.container.FrameTexture:Show()
+    else
+        self.container.FrameTexture:Hide()
+        self:RawHook(self.container.FrameTexture, "Show", ns.noop, true)
+    end
+end
+
+function BUFPlayer:SetStatusTexture()
+    local enable = ns.db.profile.unitFrames.player.frame.enableStatusTexture
+    if enable then
+        self:Unhook(self.contentMain.StatusTexture, "Show")
+        self.contentMain.StatusTexture:Show()
+    else
+        self.contentMain.StatusTexture:Hide()
+        self:RawHook(self.contentMain.StatusTexture, "Show", ns.noop, true)
+    end
 end
