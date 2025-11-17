@@ -14,7 +14,7 @@ ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.playe
 ns.dbDefaults.profile.unitFrames.player.portrait = {
     enabled = true,
     enableCornerIndicator = true,
-    mask = true,
+    mask = "interface/hud/uiunitframeplayerportraitmask.blp",
     xOffset = 24,
     yOffset = -19,
     width = 60,
@@ -54,39 +54,27 @@ ns.options.args.unitFrames.args.player.args.portrait = {
             end,
             order = 2,
         },
-        circularPortrait = {
-            type = "toggle",
-            name = ns.L["Circular Portrait"],
-            desc = ns.L["CircularPortraitDesc"],
-            set = function(info, value)
-                ns.db.profile.unitFrames.player.portrait.mask = value
-                ns.BUFPlayer:SetPortraitMask()
-            end,
-            get = function(info)
-                return ns.db.profile.unitFrames.player.portrait.mask
-            end,
-            order = 3,
-        },
     },
 }
 
 function BUFPlayer:RefreshPortraitConfig()
     self:ShowHidePortrait()
     self:SetCornerIndicator()
-    self:SetPortraitMask()
 end
 
 function BUFPlayer:ShowHidePortrait()
     local show = ns.db.profile.unitFrames.player.portrait.enabled
     if show then
         self:Unhook(self.container.PlayerPortrait, "Show")
+        self:Unhook(self.container.PlayerPortraitMask, "Show")
         self.container.PlayerPortrait:Show()
-        PlayerName:SetPoint("TOPLEFT", 88, -27)
+        self.container.PlayerPortraitMask:Show()
         self.restLoop:SetPoint("TOPLEFT", 64, -6)
     else
         self.container.PlayerPortrait:Hide()
+        self.container.PlayerPortraitMask:Hide()
         self:RawHook(self.container.PlayerPortrait, "Show", ns.noop, true)
-        PlayerName:SetPoint("TOPLEFT", 3, -27)
+        self:RawHook(self.container.PlayerPortraitMask, "Show", ns.noop, true)
         self.restLoop:SetPoint("TOPLEFT", -2, -6)
     end
 end
@@ -99,16 +87,5 @@ function BUFPlayer:SetCornerIndicator()
     else
         self.contentContextual.PlayerPortraitCornerIcon:Hide()
         self:RawHook(self.contentContextual.PlayerPortraitCornerIcon, "Show", ns.noop, true)
-    end
-end
-
-function BUFPlayer:SetPortraitMask()
-    local enable = ns.db.profile.unitFrames.player.portrait.mask
-    if enable then
-        self:Unhook(self.container.PlayerPortraitMask, "Show")
-        self.container.PlayerPortraitMask:Show()
-    else
-        self.container.PlayerPortraitMask:Hide()
-        self:RawHook(self.container.PlayerPortraitMask, "Show", ns.noop, true)
     end
 end

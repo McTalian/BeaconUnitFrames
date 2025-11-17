@@ -30,6 +30,7 @@
     "NONE",
     "SELF_HIGHLIGHT_OUTLINE",
     "BACKGROUND",
-    "CLOSE"
+    "CLOSE",
+    "USE"
   ]
 }
