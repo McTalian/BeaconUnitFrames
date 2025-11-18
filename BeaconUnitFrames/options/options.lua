@@ -23,7 +23,6 @@ local function startswith(str, start)
 end
 
 ns.FontFlags = {
-	NONE = "",
 	OUTLINE = "OUTLINE",
 	THICKOUTLINE = "THICKOUTLINE",
 	MONOCHROME = "MONOCHROME",
@@ -68,6 +67,7 @@ ns.OptionsManager = {}
 
 function ns.OptionsManager:Initialize()
     LibStub("AceConfig-3.0"):RegisterOptionsTable(addonName, ns.options)
+    ns.acd:SetDefaultSize(addonName, 650, 800)
 end
 
 ---@class BUFOptions: AceConfig.OptionsTable

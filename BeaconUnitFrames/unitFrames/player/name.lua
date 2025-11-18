@@ -7,8 +7,14 @@ ns = ns
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
 
----@class BUFPlayer.Name
-local BUFPlayerName = {}
+---@class BUFPlayer.Name: BUFConfigHandler, Positionable, Sizable, Fontable
+local BUFPlayerName = {
+    configPath = "unitFrames.player.name",
+}
+
+ns.ApplyMixin(ns.Positionable, BUFPlayerName)
+ns.ApplyMixin(ns.Sizable, BUFPlayerName)
+ns.ApplyMixin(ns.Fontable, BUFPlayerName)
 
 BUFPlayer.Name = BUFPlayerName
 
@@ -27,7 +33,6 @@ ns.dbDefaults.profile.unitFrames.player.name = {
     fontFace = "Friz Quadrata TT",
     fontSize = 12,
     fontFlags = {
-		[ns.FontFlags.NONE] = true,
 		[ns.FontFlags.OUTLINE] = false,
 		[ns.FontFlags.THICKOUTLINE] = false,
 		[ns.FontFlags.MONOCHROME] = false,
@@ -58,7 +63,6 @@ local playerName = {
     handler = BUFPlayerName,
     name = CALENDAR_PLAYER_NAME,
     order = BUFPlayer.optionsOrder.NAME,
-    inline = true,
     args = {}
 }
 
@@ -68,148 +72,24 @@ ns.AddFontOptions(playerName.args, nameOrder)
 
 ns.options.args.unitFrames.args.player.args.playerName = playerName
 
-function BUFPlayerName:SetWidth(info, value)
-    ns.db.profile.unitFrames.player.name.width = value
-    self:UpdatePositionAndSize()
-end
-
-function BUFPlayerName:GetWidth(info)
-    return ns.db.profile.unitFrames.player.name.width
-end
-
-function BUFPlayerName:SetHeight(info, value)
-    ns.db.profile.unitFrames.player.name.height = value
-    self:UpdatePositionAndSize()
-end
-
-function BUFPlayerName:GetHeight(info)
-    return ns.db.profile.unitFrames.player.name.height
-end
-
-function BUFPlayerName:SetXOffset(info, value)
-    ns.db.profile.unitFrames.player.name.xOffset = value
-    self:UpdatePositionAndSize()
-end
-
-function BUFPlayerName:GetXOffset(info)
-    return ns.db.profile.unitFrames.player.name.xOffset
-end
-
-function BUFPlayerName:SetYOffset(info, value)
-    ns.db.profile.unitFrames.player.name.yOffset = value
-    self:UpdatePositionAndSize()
-end
-
-function BUFPlayerName:GetYOffset(info)
-    return ns.db.profile.unitFrames.player.name.yOffset
-end
-
-function BUFPlayerName:SetUseFontObjects(info, value)
-    ns.db.profile.unitFrames.player.name.useFontObjects = value
-    self:SetFont()
-end
-
-function BUFPlayerName:GetUseFontObjects(info)
-    return ns.db.profile.unitFrames.player.name.useFontObjects
-end
-
-function BUFPlayerName:SetFontObject(info, value)
-    ns.db.profile.unitFrames.player.name.fontObject = value
-    self:SetFont()
-end
-
-function BUFPlayerName:GetFontObject(info)
-    return ns.db.profile.unitFrames.player.name.fontObject
-end
-
-function BUFPlayerName:SetFontColor(info, r, g, b, a)
-    ns.db.profile.unitFrames.player.name.fontColor = { r, g, b, a }
-    self:UpdateFontColor()
-end
-
-function BUFPlayerName:GetFontColor(info)
-    local r, g, b, a = unpack(ns.db.profile.unitFrames.player.name.fontColor)
-    return r, g, b, a
-end
-
-function BUFPlayerName:SetFontFace(info, value)
-    ns.db.profile.unitFrames.player.name.fontFace = value
-    self:SetFont()
-end
-
-function BUFPlayerName:GetFontFace(info)
-    return ns.db.profile.unitFrames.player.name.fontFace
-end
-
-function BUFPlayerName:SetFontSize(info, value)
-    ns.db.profile.unitFrames.player.name.fontSize = value
-    self:SetFont()
-end
-
-function BUFPlayerName:GetFontSize(info)
-    return ns.db.profile.unitFrames.player.name.fontSize
-end
-
-function BUFPlayerName:SetFontFlag(info, key, value)
-    ns.db.profile.unitFrames.player.name.fontFlags[key] = value
-    self:SetFont()
-end
-
-function BUFPlayerName:GetFontFlag(info, key)
-    return ns.db.profile.unitFrames.player.name.fontFlags[key]
-end
-
-function BUFPlayerName:SetShadowColor(info, r, g, b, a)
-    ns.db.profile.unitFrames.player.name.fontShadowColor = { r, g, b, a }
-    self:SetFontShadow()
-end
-
-function BUFPlayerName:GetShadowColor(info)
-    local r, g, b, a = unpack(ns.db.profile.unitFrames.player.name.fontShadowColor)
-    return r, g, b, a
-end
-
-function BUFPlayerName:SetShadowOffsetX(info, value)
-    ns.db.profile.unitFrames.player.name.fontShadowOffsetX = value
-    self:SetFontShadow()
-end
-
-function BUFPlayerName:GetShadowOffsetX(info)
-    return ns.db.profile.unitFrames.player.name.fontShadowOffsetX
-end
-
-function BUFPlayerName:SetShadowOffsetY(info, value)
-    ns.db.profile.unitFrames.player.name.fontShadowOffsetY = value
-    self:SetFontShadow()
-end
-
-function BUFPlayerName:GetShadowOffsetY(info)
-    return ns.db.profile.unitFrames.player.name.fontShadowOffsetY
-end
-
--- Disabled functions
-function BUFPlayerName:IsCustomFontDisabled(info)
-    return ns.db.profile.unitFrames.player.name.useFontObjects == false
-end
-
-function BUFPlayerName:IsFontObjectEnabled(info)
-    return ns.db.profile.unitFrames.player.name.useFontObjects == true
-end
-
 function BUFPlayerName:RefreshConfig()
-    self:UpdatePositionAndSize()
+    self:SetPosition()
+    self:SetSize()
     self:SetFont()
     self:SetFontShadow()
 end
 
-function BUFPlayerName:UpdatePositionAndSize()
+function BUFPlayerName:SetSize()
     local width = ns.db.profile.unitFrames.player.name.width
     local height = ns.db.profile.unitFrames.player.name.height
+    PlayerName:SetWidth(width)
+    PlayerName:SetHeight(height)
+end
+
+function BUFPlayerName:SetPosition()
     local xOffset = ns.db.profile.unitFrames.player.name.xOffset
     local yOffset = ns.db.profile.unitFrames.player.name.yOffset
     PlayerName:SetPoint("TOPLEFT", xOffset, yOffset)
-    PlayerName:SetWidth(width)
-    PlayerName:SetHeight(height)
 end
 
 function BUFPlayerName:SetFont()

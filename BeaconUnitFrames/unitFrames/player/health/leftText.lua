@@ -35,7 +35,6 @@ ns.dbDefaults.profile.unitFrames.player.healthBar.leftText = {
     fontFace = "Friz Quadrata TT",
     fontSize = 10,
     fontFlags = {
-        [ns.FontFlags.NONE] = true,
         [ns.FontFlags.OUTLINE] = false,
         [ns.FontFlags.THICKOUTLINE] = false,
         [ns.FontFlags.MONOCHROME] = false,

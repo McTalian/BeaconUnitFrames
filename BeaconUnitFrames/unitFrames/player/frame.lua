@@ -7,8 +7,12 @@ ns = ns
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
 
----@class BUFPlayer.Frame
-local BUFPlayerFrame = {}
+---@class BUFPlayer.Frame: BUFConfigHandler, Sizable
+local BUFPlayerFrame = {
+    configPath = "unitFrames.player.frame",
+}
+
+ns.ApplyMixin(ns.Sizable, BUFPlayerFrame)
 
 BUFPlayer.Frame = BUFPlayerFrame
 
@@ -82,32 +86,14 @@ ns.AddSizingOptions(frame.args, frameOrder)
 
 ns.options.args.unitFrames.args.player.args.frame = frame
 
-function BUFPlayerFrame:SetWidth(info, value)
-    ns.db.profile.unitFrames.player.frame.width = value
-    self:SetFrameSize()
-end
-
-function BUFPlayerFrame:GetWidth(info)
-    return ns.db.profile.unitFrames.player.frame.width
-end
-
-function BUFPlayerFrame:SetHeight(info, value)
-    ns.db.profile.unitFrames.player.frame.height = value
-    self:SetFrameSize()
-end
-
-function BUFPlayerFrame:GetHeight(info)
-    return ns.db.profile.unitFrames.player.frame.height
-end
-
 function BUFPlayerFrame:RefreshConfig()
-    self:SetFrameSize()
+    self:SetSize()
     self:SetFrameFlash()
     self:SetFrameTexture()
     self:SetStatusTexture()
 end
 
-function BUFPlayerFrame:SetFrameSize()
+function BUFPlayerFrame:SetSize()
     local player = BUFPlayer
     local width = ns.db.profile.unitFrames.player.frame.width
     local height = ns.db.profile.unitFrames.player.frame.height

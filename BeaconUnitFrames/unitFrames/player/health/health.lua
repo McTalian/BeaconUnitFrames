@@ -12,7 +12,6 @@ local BUFPlayerHealth = {
     configPath = "unitFrames.player.healthBar",
 }
 
-
 ns.ApplyMixin(ns.Positionable, BUFPlayerHealth)
 ns.ApplyMixin(ns.Sizable, BUFPlayerHealth)
 ns.ApplyMixin(ns.Levelable, BUFPlayerHealth)

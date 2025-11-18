@@ -7,8 +7,13 @@ ns = ns
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
 
----@class BUFPlayer.Level
-local BUFPlayerLevel = {}
+---@class BUFPlayer.Level: BUFConfigHandler, Positionable, Fontable
+local BUFPlayerLevel = {
+    configPath = "unitFrames.player.level",
+}
+
+ns.ApplyMixin(ns.Positionable, BUFPlayerLevel)
+ns.ApplyMixin(ns.Fontable, BUFPlayerLevel)
 
 BUFPlayer.Level = BUFPlayerLevel
 
@@ -25,7 +30,6 @@ ns.dbDefaults.profile.unitFrames.player.level = {
     fontFace = "Friz Quadrata TT",
     fontSize = 12,
     fontFlags = {
-		[ns.FontFlags.NONE] = true,
 		[ns.FontFlags.OUTLINE] = false,
 		[ns.FontFlags.THICKOUTLINE] = false,
 		[ns.FontFlags.MONOCHROME] = false,
@@ -54,7 +58,6 @@ local level = {
     handler = BUFPlayerLevel,
     name = LEVEL,
     order = BUFPlayer.optionsOrder.LEVEL,
-    inline = true,
     args = {}
 }
 
@@ -63,130 +66,16 @@ ns.AddFontOptions(level.args, levelOrder)
 
 ns.options.args.unitFrames.args.player.args.level = level
 
-function BUFPlayerLevel:SetXOffset(_, xOffset)
-    ns.db.profile.unitFrames.player.level.xOffset = xOffset
-    self:UpdatePositionAndSize()
-end
-
-function BUFPlayerLevel:GetXOffset()
-    return ns.db.profile.unitFrames.player.level.xOffset
-end
-
-function BUFPlayerLevel:SetYOffset(_, yOffset)
-    ns.db.profile.unitFrames.player.level.yOffset = yOffset
-    self:UpdatePositionAndSize()
-end
-
-function BUFPlayerLevel:GetYOffset()
-    return ns.db.profile.unitFrames.player.level.yOffset
-end
-
-function BUFPlayerLevel:SetUseFontObjects(_, useFontObjects)
-    ns.db.profile.unitFrames.player.level.useFontObjects = useFontObjects
-    self:SetFont()
-    self:SetFontShadow()
-end
-
-function BUFPlayerLevel:GetUseFontObjects()
-    return ns.db.profile.unitFrames.player.level.useFontObjects
-end
-
-function BUFPlayerLevel:SetFontObject(_, fontObject)
-    ns.db.profile.unitFrames.player.level.fontObject = fontObject
-    self:SetFont()
-end
-
-function BUFPlayerLevel:GetFontObject()
-    return ns.db.profile.unitFrames.player.level.fontObject
-end
-
-function BUFPlayerLevel:SetFontColor(_, r, g, b, a)
-    ns.db.profile.unitFrames.player.level.fontColor = { r, g, b, a }
-    self:UpdateFontColor()
-end
-
-function BUFPlayerLevel:GetFontColor()
-    local r, g, b, a = unpack(ns.db.profile.unitFrames.player.level.fontColor)
-    return r, g, b, a
-end
-
-function BUFPlayerLevel:SetFontFace(_, fontFace)
-    ns.db.profile.unitFrames.player.level.fontFace = fontFace
-    self:SetFont()
-end
-
-function BUFPlayerLevel:GetFontFace()
-    return ns.db.profile.unitFrames.player.level.fontFace
-end
-
-function BUFPlayerLevel:SetFontSize(_, fontSize)
-    ns.db.profile.unitFrames.player.level.fontSize = fontSize
-    self:SetFont()
-end
-
-function BUFPlayerLevel:GetFontSize()
-    return ns.db.profile.unitFrames.player.level.fontSize
-end
-
-function BUFPlayerLevel:SetFontFlag(info, key, value)
-    ns.db.profile.unitFrames.player.level.fontFlags[key] = value
-    self:SetFont()
-end
-
-function BUFPlayerLevel:GetFontFlag(info, key)
-    return ns.db.profile.unitFrames.player.level.fontFlags[key]
-end
-
-
-function BUFPlayerLevel:SetShadowColor(_, r, g, b, a)
-    ns.db.profile.unitFrames.player.level.fontShadowColor = { r, g, b, a }
-    self:SetFontShadow()
-end
-
-function BUFPlayerLevel:GetShadowColor()
-    local r, g, b, a = unpack(ns.db.profile.unitFrames.player.level.fontShadowColor)
-    return r, g, b, a
-end
-
-function BUFPlayerLevel:SetShadowOffsetX(_, offsetX)
-    ns.db.profile.unitFrames.player.level.fontShadowOffsetX = offsetX
-    self:SetFontShadow()
-end
-
-function BUFPlayerLevel:GetShadowOffsetX()
-    return ns.db.profile.unitFrames.player.level.fontShadowOffsetX
-end
-
-function BUFPlayerLevel:SetShadowOffsetY(_, offsetY)
-    ns.db.profile.unitFrames.player.level.fontShadowOffsetY = offsetY
-    self:SetFontShadow()
-end
-
-function BUFPlayerLevel:GetShadowOffsetY()
-    return ns.db.profile.unitFrames.player.level.fontShadowOffsetY
-end
-
--- Disabled functions
-function BUFPlayerLevel:IsCustomFontDisabled(info)
-    return ns.db.profile.unitFrames.player.level.useFontObjects == false
-end
-
-function BUFPlayerLevel:IsFontObjectEnabled(info)
-    return ns.db.profile.unitFrames.player.level.useFontObjects == true
-end
-
 function BUFPlayerLevel:RefreshConfig()
-    self:UpdatePositionAndSize()
+    self:SetPosition()
     self:SetFont()
     self:SetFontShadow()
 end
 
-function BUFPlayerLevel:UpdatePositionAndSize()
+function BUFPlayerLevel:SetPosition()
     local xOffset = ns.db.profile.unitFrames.player.level.xOffset
     local yOffset = ns.db.profile.unitFrames.player.level.yOffset
     PlayerLevelText:SetPoint("TOPRIGHT", xOffset, yOffset)
-    -- PlayerLevelText:SetWidth(width)
-    -- PlayerLevelText:SetHeight(height)
 end
 
 function BUFPlayerLevel:SetFont()
