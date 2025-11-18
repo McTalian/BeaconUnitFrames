@@ -4,6 +4,6 @@
     <Script file="name.lua"/>
     <Script file="level.lua"/>
     <Script file="portrait.lua"/>
-    <Script file="health.lua"/>
+    <Include file="health/index.xml"/>
     <Script file="mana.lua"/>
 </Ui>

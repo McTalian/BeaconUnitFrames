@@ -21,6 +21,7 @@ ns.options.args.unitFrames.args.player = {
     type = "group",
     name = HUD_EDIT_MODE_PLAYER_FRAME_LABEL,
     order = 1,
+    childGroups = "tree",
     args = {}
 }
 

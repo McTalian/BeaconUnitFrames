@@ -30,7 +30,7 @@ core.lua
 
 locale/locales.xml
 db.lua
-options.lua
+options/index.xml
 
 contextMenu.lua
 

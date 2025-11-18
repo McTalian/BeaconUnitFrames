@@ -227,7 +227,6 @@ function BUFPlayerName:SetFont()
         local fontSize = ns.db.profile.unitFrames.player.name.fontSize
         local fontFlagsTable = ns.db.profile.unitFrames.player.name.fontFlags
         local fontFlags = ns.FontFlagsToString(fontFlagsTable)
-        print("Setting name font to:", fontPath, fontSize, fontFlags)
         PlayerName:SetFont(fontPath, fontSize, fontFlags)
     end
     self:UpdateFontColor()
@@ -244,13 +243,13 @@ function BUFPlayerName:SetFontShadow()
         -- Font objects handle shadow internally
         return
     end
-    local shadowColor = ns.db.profile.unitFrames.player.name.fontShadowColor
+    local r, g, b, a = unpack(ns.db.profile.unitFrames.player.name.fontShadowColor)
     local offsetX = ns.db.profile.unitFrames.player.name.fontShadowOffsetX
     local offsetY = ns.db.profile.unitFrames.player.name.fontShadowOffsetY
-    if shadowColor[4] == 0 then
+    if a == 0 then
         PlayerName:SetShadowOffset(0, 0)
     else
-        PlayerName:SetShadowColor(unpack(shadowColor))
+        PlayerName:SetShadowColor(r, g, b, a)
         PlayerName:SetShadowOffset(offsetX, offsetY)
     end
 end

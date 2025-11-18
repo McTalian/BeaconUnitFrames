@@ -63,6 +63,118 @@ ns.AddFontOptions(level.args, levelOrder)
 
 ns.options.args.unitFrames.args.player.args.level = level
 
+function BUFPlayerLevel:SetXOffset(_, xOffset)
+    ns.db.profile.unitFrames.player.level.xOffset = xOffset
+    self:UpdatePositionAndSize()
+end
+
+function BUFPlayerLevel:GetXOffset()
+    return ns.db.profile.unitFrames.player.level.xOffset
+end
+
+function BUFPlayerLevel:SetYOffset(_, yOffset)
+    ns.db.profile.unitFrames.player.level.yOffset = yOffset
+    self:UpdatePositionAndSize()
+end
+
+function BUFPlayerLevel:GetYOffset()
+    return ns.db.profile.unitFrames.player.level.yOffset
+end
+
+function BUFPlayerLevel:SetUseFontObjects(_, useFontObjects)
+    ns.db.profile.unitFrames.player.level.useFontObjects = useFontObjects
+    self:SetFont()
+    self:SetFontShadow()
+end
+
+function BUFPlayerLevel:GetUseFontObjects()
+    return ns.db.profile.unitFrames.player.level.useFontObjects
+end
+
+function BUFPlayerLevel:SetFontObject(_, fontObject)
+    ns.db.profile.unitFrames.player.level.fontObject = fontObject
+    self:SetFont()
+end
+
+function BUFPlayerLevel:GetFontObject()
+    return ns.db.profile.unitFrames.player.level.fontObject
+end
+
+function BUFPlayerLevel:SetFontColor(_, r, g, b, a)
+    ns.db.profile.unitFrames.player.level.fontColor = { r, g, b, a }
+    self:UpdateFontColor()
+end
+
+function BUFPlayerLevel:GetFontColor()
+    local r, g, b, a = unpack(ns.db.profile.unitFrames.player.level.fontColor)
+    return r, g, b, a
+end
+
+function BUFPlayerLevel:SetFontFace(_, fontFace)
+    ns.db.profile.unitFrames.player.level.fontFace = fontFace
+    self:SetFont()
+end
+
+function BUFPlayerLevel:GetFontFace()
+    return ns.db.profile.unitFrames.player.level.fontFace
+end
+
+function BUFPlayerLevel:SetFontSize(_, fontSize)
+    ns.db.profile.unitFrames.player.level.fontSize = fontSize
+    self:SetFont()
+end
+
+function BUFPlayerLevel:GetFontSize()
+    return ns.db.profile.unitFrames.player.level.fontSize
+end
+
+function BUFPlayerLevel:SetFontFlag(info, key, value)
+    ns.db.profile.unitFrames.player.level.fontFlags[key] = value
+    self:SetFont()
+end
+
+function BUFPlayerLevel:GetFontFlag(info, key)
+    return ns.db.profile.unitFrames.player.level.fontFlags[key]
+end
+
+
+function BUFPlayerLevel:SetShadowColor(_, r, g, b, a)
+    ns.db.profile.unitFrames.player.level.fontShadowColor = { r, g, b, a }
+    self:SetFontShadow()
+end
+
+function BUFPlayerLevel:GetShadowColor()
+    local r, g, b, a = unpack(ns.db.profile.unitFrames.player.level.fontShadowColor)
+    return r, g, b, a
+end
+
+function BUFPlayerLevel:SetShadowOffsetX(_, offsetX)
+    ns.db.profile.unitFrames.player.level.fontShadowOffsetX = offsetX
+    self:SetFontShadow()
+end
+
+function BUFPlayerLevel:GetShadowOffsetX()
+    return ns.db.profile.unitFrames.player.level.fontShadowOffsetX
+end
+
+function BUFPlayerLevel:SetShadowOffsetY(_, offsetY)
+    ns.db.profile.unitFrames.player.level.fontShadowOffsetY = offsetY
+    self:SetFontShadow()
+end
+
+function BUFPlayerLevel:GetShadowOffsetY()
+    return ns.db.profile.unitFrames.player.level.fontShadowOffsetY
+end
+
+-- Disabled functions
+function BUFPlayerLevel:IsCustomFontDisabled(info)
+    return ns.db.profile.unitFrames.player.level.useFontObjects == false
+end
+
+function BUFPlayerLevel:IsFontObjectEnabled(info)
+    return ns.db.profile.unitFrames.player.level.useFontObjects == true
+end
+
 function BUFPlayerLevel:RefreshConfig()
     self:UpdatePositionAndSize()
     self:SetFont()
@@ -70,28 +182,26 @@ function BUFPlayerLevel:RefreshConfig()
 end
 
 function BUFPlayerLevel:UpdatePositionAndSize()
-    local width = ns.db.profile.unitFrames.player.name.width
-    local height = ns.db.profile.unitFrames.player.name.height
-    local xOffset = ns.db.profile.unitFrames.player.name.xOffset
-    local yOffset = ns.db.profile.unitFrames.player.name.yOffset
-    PlayerLevelText:SetPoint("TOPLEFT", xOffset, yOffset)
-    PlayerLevelText:SetWidth(width)
-    PlayerLevelText:SetHeight(height)
+    local xOffset = ns.db.profile.unitFrames.player.level.xOffset
+    local yOffset = ns.db.profile.unitFrames.player.level.yOffset
+    PlayerLevelText:SetPoint("TOPRIGHT", xOffset, yOffset)
+    -- PlayerLevelText:SetWidth(width)
+    -- PlayerLevelText:SetHeight(height)
 end
 
 function BUFPlayerLevel:SetFont()
-    local useFontObjects = ns.db.profile.unitFrames.player.name.useFontObjects
+    local useFontObjects = ns.db.profile.unitFrames.player.level.useFontObjects
     if useFontObjects then
-        local fontObject = ns.db.profile.unitFrames.player.name.fontObject
+        local fontObject = ns.db.profile.unitFrames.player.level.fontObject
         PlayerLevelText:SetFontObject(_G[fontObject])
     else
-        local fontFace = ns.db.profile.unitFrames.player.name.fontFace
+        local fontFace = ns.db.profile.unitFrames.player.level.fontFace
         local fontPath = ns.lsm:Fetch(ns.lsm.MediaType.FONT, fontFace)
         if not fontPath then
             fontPath = STANDARD_TEXT_FONT
         end
-        local fontSize = ns.db.profile.unitFrames.player.name.fontSize
-        local fontFlagsTable = ns.db.profile.unitFrames.player.name.fontFlags
+        local fontSize = ns.db.profile.unitFrames.player.level.fontSize
+        local fontFlagsTable = ns.db.profile.unitFrames.player.level.fontFlags
         local fontFlags = ns.FontFlagsToString(fontFlagsTable)
         PlayerLevelText:SetFont(fontPath, fontSize, fontFlags)
     end
@@ -99,23 +209,23 @@ function BUFPlayerLevel:SetFont()
 end
 
 function BUFPlayerLevel:UpdateFontColor()
-    local r, g, b, a = unpack(ns.db.profile.unitFrames.player.name.fontColor)
+    local r, g, b, a = unpack(ns.db.profile.unitFrames.player.level.fontColor)
     PlayerLevelText:SetTextColor(r, g, b, a)
 end
 
 function BUFPlayerLevel:SetFontShadow()
-    local useFontObjects = ns.db.profile.unitFrames.player.name.useFontObjects
+    local useFontObjects = ns.db.profile.unitFrames.player.level.useFontObjects
     if useFontObjects then
         -- Font objects handle shadow internally
         return
     end
-    local shadowColor = ns.db.profile.unitFrames.player.name.fontShadowColor
-    local offsetX = ns.db.profile.unitFrames.player.name.fontShadowOffsetX
-    local offsetY = ns.db.profile.unitFrames.player.name.fontShadowOffsetY
-    if shadowColor[4] == 0 then
+    local r, g, b, a = unpack(ns.db.profile.unitFrames.player.level.fontShadowColor)
+    local offsetX = ns.db.profile.unitFrames.player.level.fontShadowOffsetX
+    local offsetY = ns.db.profile.unitFrames.player.level.fontShadowOffsetY
+    if a == 0 then
         PlayerLevelText:SetShadowOffset(0, 0)
     else
-        PlayerLevelText:SetShadowColor(unpack(shadowColor))
+        PlayerLevelText:SetShadowColor(r, g, b, a)
         PlayerLevelText:SetShadowOffset(offsetX, offsetY)
     end
 end

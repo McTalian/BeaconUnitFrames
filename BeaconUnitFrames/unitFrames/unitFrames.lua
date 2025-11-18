@@ -13,6 +13,7 @@ ns.dbDefaults.profile.unitFrames = {}
 ns.options.args.unitFrames = {
     type = "group",
     name = UNITFRAME_LABEL,
+    childGroups = "tree",
     order = 1,
     args = {},
 }

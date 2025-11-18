@@ -85,6 +85,16 @@ function BUFPlayerMana:GetYOffset(info)
     return ns.db.profile.unitFrames.player.manaBar.yOffset
 end
 
+function BUFPlayerMana:SetFrameLevel(info, value)
+    ns.db.profile.unitFrames.player.manaBar.frameLevel = value
+    BUFPlayer.manaBarArea:SetFrameLevel(value)
+    BUFPlayer.manaBar:SetFrameLevel(value)
+end
+
+function BUFPlayerMana:GetFrameLevel(info)
+    return ns.db.profile.unitFrames.player.manaBar.frameLevel
+end
+
 BUFPlayerMana.coeffs = {
     maskWidth = 1.05,
     maskHeight = 1.0,
