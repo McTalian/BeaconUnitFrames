@@ -7,23 +7,24 @@ ns = ns
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
 
----@class BUFPlayer.Mana
-local BUFPlayerMana = BUFPlayer.Mana
+---@class BUFPlayer.Power
+local BUFPlayerPower = BUFPlayer.Power
 
----@class BUFPlayer.Mana.Background: BUFConfigHandler, BackgroundTexturable, Colorable
+---@class BUFPlayer.Power.Background: BUFConfigHandler, BackgroundTexturable, Colorable, ClassColorable
 local backgroundHandler = {
-    configPath = "unitFrames.player.manaBar.background",
+    configPath = "unitFrames.player.powerBar.background",
 }
 
-BUFPlayerMana.backgroundHandler = backgroundHandler
+BUFPlayerPower.backgroundHandler = backgroundHandler
 
 ns.ApplyMixin(ns.BackgroundTexturable, backgroundHandler)
 ns.ApplyMixin(ns.Colorable, backgroundHandler)
+ns.ApplyMixin(ns.ClassColorable, backgroundHandler)
 
----@class BUFDbSchema.UF.Player.Mana
-ns.dbDefaults.profile.unitFrames.player.manaBar = ns.dbDefaults.profile.unitFrames.player.manaBar
+---@class BUFDbSchema.UF.Player.Power
+ns.dbDefaults.profile.unitFrames.player.powerBar = ns.dbDefaults.profile.unitFrames.player.powerBar
 
-ns.dbDefaults.profile.unitFrames.player.manaBar.background = {
+ns.dbDefaults.profile.unitFrames.player.powerBar.background = {
     useBackgroundTexture = false,
     backgroundTexture = "None",
     useCustomColor = false,
@@ -43,26 +44,38 @@ local background = {
     type = "group",
     handler = backgroundHandler,
     name = BACKGROUND,
-    order = BUFPlayerMana.topGroupOrder.BACKGROUND,
+    order = BUFPlayerPower.topGroupOrder.BACKGROUND,
     args = {}
 }
 
 ns.AddBackgroundTextureOptions(background.args, backgroundOrder)
 ns.AddColorOptions(background.args, backgroundOrder)
+ns.AddClassColorOptions(background.args, backgroundOrder)
 
-ns.options.args.unitFrames.args.player.args.manaBar.args.background = background
+ns.options.args.unitFrames.args.player.args.powerBar.args.background = background
 
 function backgroundHandler:RefreshConfig()
     self:RefreshBackgroundTexture()
     self:RefreshColor()
 end
 
+function backgroundHandler:CreateBackgroundTexture()
+    if not ns.BUFPlayer.manaBar.Background then
+---@diagnostic disable-next-line: inject-field
+        ns.BUFPlayer.manaBar.Background = ns.BUFPlayer.manaBar:CreateTexture(nil, "BACKGROUND")
+        ns.BUFPlayer.manaBar.Background:SetAllPoints(ns.BUFPlayer.manaBar)
+        ns.BUFPlayer.manaBar.Background:SetDrawLayer("BACKGROUND", 2)
+        ns.BUFPlayer.manaBar.Background:SetVertexColor(0, 0, 0, 1)
+    end
+end
+
 function backgroundHandler:RefreshBackgroundTexture()
     local parent = ns.BUFPlayer
-    local useBackgroundTexture = ns.db.profile.unitFrames.player.manaBar.background.useBackgroundTexture
+    local useBackgroundTexture = ns.db.profile.unitFrames.player.powerBar.background.useBackgroundTexture
     if useBackgroundTexture then
+        self:CreateBackgroundTexture()
         local texturePath = ns.lsm:Fetch(ns.lsm.MediaType.BACKGROUND,
-            ns.db.profile.unitFrames.player.manaBar.background.backgroundTexture)
+            ns.db.profile.unitFrames.player.powerBar.background.backgroundTexture)
         if not texturePath then
             texturePath = ns.lsm:Fetch(ns.lsm.MediaType.BACKGROUND, "Solid") or "Interface\\Buttons\\WHITE8x8"
         end
@@ -73,14 +86,14 @@ end
 
 function backgroundHandler:RefreshColor()
     local parent = ns.BUFPlayer
-    local useCustomColor = ns.db.profile.unitFrames.player.manaBar.background.useCustomColor
-    local useClassColor = ns.db.profile.unitFrames.player.manaBar.background.useClassColor
+    local useCustomColor = ns.db.profile.unitFrames.player.powerBar.background.useCustomColor
+    local useClassColor = ns.db.profile.unitFrames.player.powerBar.background.useClassColor
     if useClassColor then
         local _, class = UnitClass("player")
         local r, g, b = GetClassColor(class)
         parent.manaBar.Background:SetVertexColor(r, g, b, 1.0)
     elseif useCustomColor then
-        local r, g, b, a = unpack(ns.db.profile.unitFrames.player.manaBar.background.customColor)
+        local r, g, b, a = unpack(ns.db.profile.unitFrames.player.powerBar.background.customColor)
         parent.manaBar.Background:SetVertexColor(r, g, b, a)
     end
 end

@@ -26,6 +26,7 @@ ns.dbDefaults.profile.unitFrames.player.frame = {
     enableFrameFlash = true,
     enableFrameTexture = true,
     enableStatusTexture = true,
+    enableHitIndicator = true,
 }
 
 local frameOrder = {
@@ -34,6 +35,7 @@ local frameOrder = {
     FRAME_FLASH = 3,
     FRAME_TEXTURE = 4,
     STATUS_TEXTURE = 5,
+    HIT_INDICATOR = 6,
 }
 
 local frame = {
@@ -53,7 +55,7 @@ local frame = {
             get = function(info)
                 return ns.db.profile.unitFrames.player.frame.enableFrameFlash
             end,
-            order = 3,
+            order = frameOrder.FRAME_FLASH,
         },
         frameTexture = {
             type = "toggle",
@@ -65,7 +67,7 @@ local frame = {
             get = function(info)
                 return ns.db.profile.unitFrames.player.frame.enableFrameTexture
             end,
-            order = 4,
+            order = frameOrder.FRAME_TEXTURE,
         },
         statusTexture = {
             type = "toggle",
@@ -77,7 +79,19 @@ local frame = {
             get = function(info)
                 return ns.db.profile.unitFrames.player.frame.enableStatusTexture
             end,
-            order = 5,
+            order = frameOrder.STATUS_TEXTURE,
+        },
+        hitIndicator = {
+            type = "toggle",
+            name = ns.L["EnableHitIndicator"],
+            set = function(info, value)
+                ns.db.profile.unitFrames.player.frame.enableHitIndicator = value
+                BUFPlayerFrame:SetHitIndicator()
+            end,
+            get = function(info)
+                return ns.db.profile.unitFrames.player.frame.enableHitIndicator
+            end,
+            order = frameOrder.HIT_INDICATOR,
         },
     },
 }
@@ -134,5 +148,17 @@ function BUFPlayerFrame:SetStatusTexture()
     else
         player.contentMain.StatusTexture:Hide()
         player:RawHook(player.contentMain.StatusTexture, "Show", ns.noop, true)
+    end
+end
+
+function BUFPlayerFrame:SetHitIndicator()
+    local player = BUFPlayer
+    local enable = ns.db.profile.unitFrames.player.frame.enableHitIndicator
+    if enable then
+        player:Unhook(player.contentMain.HitIndicator, "Show")
+        player.contentMain.HitIndicator:Show()
+    else
+        player.contentMain.HitIndicator:Hide()
+        player:RawHook(player.contentMain.HitIndicator, "Show", ns.noop, true)
     end
 end

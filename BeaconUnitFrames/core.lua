@@ -53,15 +53,14 @@ function BUF:SlashCommand(msg, editBox)
     ns.acd:Open(addonName)
 end
 
-local currentVersion = "@project-version@"
 function BUF:PLAYER_ENTERING_WORLD(_, isLogin, isReload)
     if self.optionsFrame == nil then
         self.optionsFrame = ns.acd:AddToBlizOptions(addonName, addonName)
     end
 
-    local isNewVersion = currentVersion ~= ns.db.global.lastVersionLoaded
+    local isNewVersion = ns.addonVersion ~= ns.db.global.lastVersionLoaded
     if isLogin and isReload == false and isNewVersion then
-        ns.db.global.lastVersionLoaded = currentVersion
+        ns.db.global.lastVersionLoaded = ns.addonVersion
     end
 
     self:RefreshConfig()

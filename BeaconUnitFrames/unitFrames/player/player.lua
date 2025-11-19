@@ -31,7 +31,7 @@ BUFPlayer.optionsOrder = {
     NAME = 3,
     LEVEL = 4,
     HEALTH = 5,
-    MANA = 6,
+    POWER = 6,
 }
 
 function BUFPlayer:OnEnable()
@@ -54,5 +54,5 @@ function BUFPlayer:RefreshConfig()
     self.Name:RefreshConfig()
     self.Level:RefreshConfig()
     self.Health:RefreshConfig()
-    self.Mana:RefreshConfig()
+    self.Power:RefreshConfig()
 end

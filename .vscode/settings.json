@@ -31,6 +31,7 @@
     "SELF_HIGHLIGHT_OUTLINE",
     "BACKGROUND",
     "CLOSE",
-    "USE"
+    "USE",
+    "POWER_TYPE_POWER"
   ]
 }

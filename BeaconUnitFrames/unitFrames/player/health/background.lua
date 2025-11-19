@@ -10,7 +10,7 @@ local BUFPlayer = ns.BUFPlayer
 ---@class BUFPlayer.Health
 local BUFPlayerHealth = BUFPlayer.Health
 
----@class BUFPlayer.Health.Background: BUFConfigHandler, BackgroundTexturable, Colorable
+---@class BUFPlayer.Health.Background: BUFConfigHandler, BackgroundTexturable, Colorable, ClassColorable
 local backgroundHandler = {
     configPath = "unitFrames.player.healthBar.background",
 }
@@ -19,6 +19,7 @@ BUFPlayerHealth.backgroundHandler = backgroundHandler
 
 ns.ApplyMixin(ns.BackgroundTexturable, backgroundHandler)
 ns.ApplyMixin(ns.Colorable, backgroundHandler)
+ns.ApplyMixin(ns.ClassColorable, backgroundHandler)
 
 ---@class BUFDbSchema.UF.Player.Health
 ns.dbDefaults.profile.unitFrames.player.healthBar = ns.dbDefaults.profile.unitFrames.player.healthBar
@@ -49,6 +50,7 @@ local background = {
 
 ns.AddBackgroundTextureOptions(background.args, backgroundOrder)
 ns.AddColorOptions(background.args, backgroundOrder)
+ns.AddClassColorOptions(background.args, backgroundOrder)
 
 ns.options.args.unitFrames.args.player.args.healthBar.args.background = background
 

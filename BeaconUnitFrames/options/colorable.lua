@@ -23,15 +23,6 @@ function ns.AddColorOptions(optionsTable, orderMap)
         get = "GetCustomColor",
         order = orderMap.CUSTOM_COLOR or 11,
     }
-    
-    optionsTable.useClassColor = {
-        type = "toggle",
-        name = ns.L["Use Class Color"],
-        desc = ns.L["UseClassColorDesc"],
-        set = "SetUseClassColor",
-        get = "GetUseClassColor",
-        order = orderMap.CLASS_COLOR or 12,
-    }
 end
 
 ---@class ColorableHandler: BUFConfigHandler
@@ -78,21 +69,6 @@ function Colorable:GetCustomColor(info)
         return unpack(color)
     end
     return 1, 1, 1, 1 -- default white
-end
-
----Set whether to use class color
----@param info table AceConfig info table
----@param value boolean Whether to use class color
-function Colorable:SetUseClassColor(info, value)
-    ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".useClassColor", value)
-    self:RefreshColor()
-end
-
----Get whether to use class color
----@param info table AceConfig info table
----@return boolean|nil Whether to use class color
-function Colorable:GetUseClassColor(info)
-    return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".useClassColor")
 end
 
 ---Check if custom color selection is disabled

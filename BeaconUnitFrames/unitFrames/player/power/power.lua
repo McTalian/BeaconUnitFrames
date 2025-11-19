@@ -7,22 +7,22 @@ ns = ns
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
 
----@class BUFPlayer.Mana: BUFConfigHandler, Positionable, Sizable, Levelable
-local BUFPlayerMana = {
-    configPath = "unitFrames.player.manaBar",
+---@class BUFPlayer.Power: BUFConfigHandler, Positionable, Sizable, Levelable
+local BUFPlayerPower = {
+    configPath = "unitFrames.player.powerBar",
 }
 
-ns.ApplyMixin(ns.Positionable, BUFPlayerMana)
-ns.ApplyMixin(ns.Sizable, BUFPlayerMana)
-ns.ApplyMixin(ns.Levelable, BUFPlayerMana)
+ns.ApplyMixin(ns.Positionable, BUFPlayerPower)
+ns.ApplyMixin(ns.Sizable, BUFPlayerPower)
+ns.ApplyMixin(ns.Levelable, BUFPlayerPower)
 
-BUFPlayer.Mana = BUFPlayerMana
+BUFPlayer.Power = BUFPlayerPower
 
 ---@class BUFDbSchema.UF.Player
 ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
 
----@class BUFDbSchema.UF.Player.Mana
-ns.dbDefaults.profile.unitFrames.player.manaBar = {
+---@class BUFDbSchema.UF.Player.Power
+ns.dbDefaults.profile.unitFrames.player.powerBar = {
     width = 124,
     height = 10,
     xOffset = 85,
@@ -30,7 +30,7 @@ ns.dbDefaults.profile.unitFrames.player.manaBar = {
     frameLevel = 3,
 }
 
-local manaBarOrder = {
+local powerBarOrder = {
     WIDTH = 1,
     HEIGHT = 2,
     X_OFFSET = 3,
@@ -43,7 +43,7 @@ local manaBarOrder = {
     BACKGROUND = 10,
 }
 
-BUFPlayerMana.topGroupOrder = manaBarOrder
+BUFPlayerPower.topGroupOrder = powerBarOrder
 
 local textOrder = {
     ANCHOR_POINT = 1,
@@ -60,31 +60,31 @@ local textOrder = {
     FONT_SHADOW_OFFSET_Y = 12,
 }
 
-BUFPlayerMana.textOrder = textOrder
+BUFPlayerPower.textOrder = textOrder
 
-local manaBar = {
+local powerBar = {
     type = "group",
-    handler = BUFPlayerMana,
-    name = MANA,
-    order = BUFPlayer.optionsOrder.MANA,
+    handler = BUFPlayerPower,
+    name = POWER_TYPE_POWER,
+    order = BUFPlayer.optionsOrder.POWER,
     childGroups = "tab",
     args = {},
 }
 
-ns.AddSizingOptions(manaBar.args, manaBarOrder)
-ns.AddPositioningOptions(manaBar.args, manaBarOrder)
-ns.AddFrameLevelOption(manaBar.args, manaBarOrder)
+ns.AddSizingOptions(powerBar.args, powerBarOrder)
+ns.AddPositioningOptions(powerBar.args, powerBarOrder)
+ns.AddFrameLevelOption(powerBar.args, powerBarOrder)
 
-ns.options.args.unitFrames.args.player.args.manaBar = manaBar
+ns.options.args.unitFrames.args.player.args.powerBar = powerBar
 
-BUFPlayerMana.coeffs = {
+BUFPlayerPower.coeffs = {
     maskWidth = 1.05,
     maskHeight = 1.0,
-    maskXOffset = (-2 / ns.dbDefaults.profile.unitFrames.player.manaBar.width),
-    maskYOffset = 2 / ns.dbDefaults.profile.unitFrames.player.manaBar.height,
+    maskXOffset = (-2 / ns.dbDefaults.profile.unitFrames.player.powerBar.width),
+    maskYOffset = 2 / ns.dbDefaults.profile.unitFrames.player.powerBar.height,
 }
 
-function BUFPlayerMana:RefreshConfig()
+function BUFPlayerPower:RefreshConfig()
     self:SetPosition()
     self:SetSize()
     self:SetLevel()
@@ -92,13 +92,13 @@ function BUFPlayerMana:RefreshConfig()
     self.rightTextHandler:RefreshConfig()
     self.centerTextHandler:RefreshConfig()
     self.foregroundHandler:RefreshConfig()
-    self.backgroundHandler:RefreshConfig()
+    -- self.backgroundHandler:RefreshConfig()
 end
 
-function BUFPlayerMana:SetSize()
+function BUFPlayerPower:SetSize()
     local parent = BUFPlayer
-    local width = ns.db.profile.unitFrames.player.manaBar.width
-    local height = ns.db.profile.unitFrames.player.manaBar.height
+    local width = ns.db.profile.unitFrames.player.powerBar.width
+    local height = ns.db.profile.unitFrames.player.powerBar.height
     PixelUtil.SetWidth(parent.manaBar, width, 18)
     PixelUtil.SetHeight(parent.manaBar, height, 18)
     PixelUtil.SetWidth(parent.manaBar.ManaBarMask, width * self.coeffs.maskWidth, 18)
@@ -106,16 +106,16 @@ function BUFPlayerMana:SetSize()
     parent.manaBar.ManaBarMask:SetPoint("TOPLEFT", width * self.coeffs.maskXOffset, height * self.coeffs.maskYOffset)
 end
 
-function BUFPlayerMana:SetPosition()
+function BUFPlayerPower:SetPosition()
     local parent = BUFPlayer
-    local xOffset = ns.db.profile.unitFrames.player.manaBar.xOffset
-    local yOffset = ns.db.profile.unitFrames.player.manaBar.yOffset
+    local xOffset = ns.db.profile.unitFrames.player.powerBar.xOffset
+    local yOffset = ns.db.profile.unitFrames.player.powerBar.yOffset
     parent.manaBar:SetPoint("TOPLEFT", xOffset, yOffset)
 end
 
-function BUFPlayerMana:SetLevel()
+function BUFPlayerPower:SetLevel()
     local parent = BUFPlayer
-    local frameLevel = ns.db.profile.unitFrames.player.manaBar.frameLevel
+    local frameLevel = ns.db.profile.unitFrames.player.powerBar.frameLevel
     parent.manaBar:SetUsingParentLevel(false)
     parent.manaBar:SetFrameLevel(frameLevel)
 end

@@ -10,15 +10,14 @@ local BUFPlayer = ns.BUFPlayer
 ---@class BUFPlayer.Health
 local BUFPlayerHealth = BUFPlayer.Health
 
----@class BUFPlayer.Health.Foreground: BUFConfigHandler, StatusBarTexturable, Colorable
+---@class BUFPlayer.Health.Foreground: BUFConfigHandler, StatusBarTexturable, Colorable, ClassColorable
 local foregroundHandler = {
     configPath = "unitFrames.player.healthBar.foreground",
 }
 
-BUFPlayerHealth.foregroundHandler = foregroundHandler
-
 ns.ApplyMixin(ns.StatusBarTexturable, foregroundHandler)
 ns.ApplyMixin(ns.Colorable, foregroundHandler)
+ns.ApplyMixin(ns.ClassColorable, foregroundHandler)
 
 ---@class BUFDbSchema.UF.Player.Health
 ns.dbDefaults.profile.unitFrames.player.healthBar = ns.dbDefaults.profile.unitFrames.player.healthBar
@@ -49,6 +48,7 @@ local foreground = {
 
 ns.AddStatusBarTextureOptions(foreground.args, foregroundOrder)
 ns.AddColorOptions(foreground.args, foregroundOrder)
+ns.AddClassColorOptions(foreground.args, foregroundOrder)
 
 ns.options.args.unitFrames.args.player.args.healthBar.args.foreground = foreground
 
@@ -86,3 +86,5 @@ function foregroundHandler:RefreshColor()
         parent.healthBar:SetStatusBarColor(r, g, b, a)
     end
 end
+
+BUFPlayerHealth.foregroundHandler = foregroundHandler

@@ -1,6 +1,6 @@
 <Ui xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
-    <Script file="mana.lua"/>
-    <Script file="background.lua"/>
+    <Script file="power.lua"/>
+    <!-- <Script file="background.lua"/> -->
     <Script file="foreground.lua"/>
     <Script file="leftText.lua"/>
     <Script file="rightText.lua"/>

@@ -5,5 +5,5 @@
     <Script file="level.lua"/>
     <Script file="portrait.lua"/>
     <Include file="health/index.xml"/>
-    <Include file="mana/index.xml"/>
+    <Include file="power/index.xml"/>
 </Ui>
