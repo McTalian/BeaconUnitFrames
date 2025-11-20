@@ -10,4 +10,5 @@
     <Script file="powerColorable.lua"/>
     <Script file="backgroundTexturable.lua"/>
     <Script file="anchorable.lua"/>
+    <Script file="demoable.lua"/>
 </Ui>

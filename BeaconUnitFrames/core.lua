@@ -47,6 +47,8 @@ end
 
 function BUF:RefreshConfig()
     ns.BUFPlayer:RefreshConfig()
+    ns.BlizzHack.Initialize()
+    ns.BUFTarget:RefreshConfig()
 end
 
 function BUF:SlashCommand(msg, editBox)

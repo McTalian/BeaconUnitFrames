@@ -14,7 +14,8 @@ ns.dbDefaults = {
         lastVersionLoaded = "",
         minimap = {
             hide = true,
-        }
+        },
+		restoreCvars = {}
     },
     profile = {},
 }

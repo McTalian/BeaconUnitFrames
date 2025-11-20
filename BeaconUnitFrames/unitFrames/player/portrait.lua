@@ -118,8 +118,12 @@ function BUFPlayerPortrait:ShowHidePortrait()
     else
         parent.container.PlayerPortrait:Hide()
         parent.container.PlayerPortraitMask:Hide()
-        parent:RawHook(parent.container.PlayerPortrait, "Show", ns.noop, true)
-        parent:RawHook(parent.container.PlayerPortraitMask, "Show", ns.noop, true)
+        if not parent:IsHooked(parent.container.PlayerPortrait, "Show") then
+            parent:RawHook(parent.container.PlayerPortrait, "Show", ns.noop, true)
+        end
+        if not parent:IsHooked(parent.container.PlayerPortraitMask, "Show") then
+            parent:RawHook(parent.container.PlayerPortraitMask, "Show", ns.noop, true)
+        end
         parent.restLoop:SetPoint("TOPLEFT", -2, -6)
     end
 end
@@ -132,6 +136,8 @@ function BUFPlayerPortrait:SetCornerIndicator()
         parent.contentContextual.PlayerPortraitCornerIcon:Show()
     else
         parent.contentContextual.PlayerPortraitCornerIcon:Hide()
-        parent:RawHook(parent.contentContextual.PlayerPortraitCornerIcon, "Show", ns.noop, true)
+        if not ns.BUFPlayer:IsHooked(parent.contentContextual.PlayerPortraitCornerIcon, "Show") then
+            parent:RawHook(parent.contentContextual.PlayerPortraitCornerIcon, "Show", ns.noop, true)
+        end
     end
 end

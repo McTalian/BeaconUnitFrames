@@ -1,4 +1,5 @@
 <Ui xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
     <Script file="unitFrames.lua"/>
     <Include file="player/index.xml"/>
+    <Include file="target/index.xml"/>
 </Ui>

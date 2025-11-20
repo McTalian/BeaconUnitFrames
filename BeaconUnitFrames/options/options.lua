@@ -63,6 +63,12 @@ function ns.FontObjectOptions()
     return allFonts
 end
 
+ns.AnchorRelativeToOptions = {
+    [UIParent] = "UIParent",
+    [TargetFrame] = "TargetFrame",
+    [PlayerFrame] = "PlayerFrame",
+}
+
 ns.OptionsManager = {}
 
 function ns.OptionsManager:Initialize()

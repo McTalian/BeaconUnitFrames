@@ -13,6 +13,7 @@ local BUFPlayerFrame = {
 }
 
 ns.ApplyMixin(ns.Sizable, BUFPlayerFrame)
+ns.ApplyMixin(ns.BackgroundTexturable, BUFPlayerFrame)
 
 BUFPlayer.Frame = BUFPlayerFrame
 
@@ -27,6 +28,8 @@ ns.dbDefaults.profile.unitFrames.player.frame = {
     enableFrameTexture = true,
     enableStatusTexture = true,
     enableHitIndicator = true,
+    useBackgroundTexture = false,
+    backgroundTexture = "None",
 }
 
 local frameOrder = {
@@ -36,6 +39,12 @@ local frameOrder = {
     FRAME_TEXTURE = 4,
     STATUS_TEXTURE = 5,
     HIT_INDICATOR = 6,
+    BACKDROP_AND_BORDER = 7,
+}
+
+local backdropAndBorderOrder = {
+    USE_BACKGROUND_TEXTURE = 1,
+    BACKGROUND_TEXTURE = 2,
 }
 
 local frame = {
@@ -93,8 +102,16 @@ local frame = {
             end,
             order = frameOrder.HIT_INDICATOR,
         },
+        backdropAndBorder = {
+            type = "group",
+            name = ns.L["BackdropAndBorder"],
+            order = frameOrder.BACKDROP_AND_BORDER,
+            args = {}
+        }
     },
 }
+
+ns.AddBackgroundTextureOptions(frame.args.backdropAndBorder.args, backdropAndBorderOrder)
 
 ns.AddSizingOptions(frame.args, frameOrder)
 
@@ -105,6 +122,8 @@ function BUFPlayerFrame:RefreshConfig()
     self:SetFrameFlash()
     self:SetFrameTexture()
     self:SetStatusTexture()
+    self:SetHitIndicator()
+    self:RefreshBackgroundTexture()
 end
 
 function BUFPlayerFrame:SetSize()
@@ -123,7 +142,9 @@ function BUFPlayerFrame:SetFrameFlash()
         player.container.FrameFlash:Show()
     else
         player.container.FrameFlash:Hide()
-        player:RawHook(player.container.FrameFlash, "Show", ns.noop, true)
+        if not ns.BUFPlayer:IsHooked(player.container.FrameFlash, "Show") then
+            player:RawHook(player.container.FrameFlash, "Show", ns.noop, true)
+        end
     end
 end
 
@@ -135,7 +156,9 @@ function BUFPlayerFrame:SetFrameTexture()
         player.container.FrameTexture:Show()
     else
         player.container.FrameTexture:Hide()
-        player:RawHook(player.container.FrameTexture, "Show", ns.noop, true)
+        if not ns.BUFPlayer:IsHooked(player.container.FrameTexture, "Show") then
+            player:RawHook(player.container.FrameTexture, "Show", ns.noop, true)
+        end
     end
 end
 
@@ -147,7 +170,9 @@ function BUFPlayerFrame:SetStatusTexture()
         player.contentMain.StatusTexture:Show()
     else
         player.contentMain.StatusTexture:Hide()
-        player:RawHook(player.contentMain.StatusTexture, "Show", ns.noop, true)
+        if not ns.BUFPlayer:IsHooked(player.contentMain.StatusTexture, "Show") then
+            player:RawHook(player.contentMain.StatusTexture, "Show", ns.noop, true)
+        end
     end
 end
 
@@ -159,6 +184,43 @@ function BUFPlayerFrame:SetHitIndicator()
         player.contentMain.HitIndicator:Show()
     else
         player.contentMain.HitIndicator:Hide()
-        player:RawHook(player.contentMain.HitIndicator, "Show", ns.noop, true)
+        if not ns.BUFPlayer:IsHooked(player.contentMain.HitIndicator, "Show") then
+            player:RawHook(player.contentMain.HitIndicator, "Show", ns.noop, true)
+        end
     end
+end
+
+function BUFPlayerFrame:RefreshBackgroundTexture()
+    local useBackgroundTexture = ns.db.profile.unitFrames.player.frame.useBackgroundTexture
+    if not useBackgroundTexture then
+        if self.backdropFrame then
+            self.backdropFrame:Hide()
+        end
+        return
+    end
+
+    if self.backdropFrame == nil then
+        self.backdropFrame = CreateFrame("Frame", nil, ns.BUFPlayer.frame, "BackdropTemplate")
+    end
+
+    local backgroundTexture = ns.db.profile.unitFrames.player.frame.backgroundTexture
+    local bgTexturePath = ns.lsm:Fetch(ns.lsm.MediaType.BACKGROUND, backgroundTexture)
+    if not bgTexturePath then
+        print("Background texture not found, using default:", "None")
+        bgTexturePath = "Interface/None"
+    end
+
+    self.backdropFrame:ClearAllPoints()
+    self.backdropFrame:SetAllPoints(ns.BUFPlayer.frame)
+
+    self.backdropFrame:SetBackdrop({
+        bgFile = bgTexturePath,
+        edgeFile = nil,
+        tile = true,
+        tileSize = 16,
+        edgeSize = 0,
+        insets = { left = 0, right = 0, top = 0, bottom = 0 },
+    })
+    self.backdropFrame:Show()
+
 end

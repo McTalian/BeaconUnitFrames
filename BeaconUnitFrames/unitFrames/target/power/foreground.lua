@@ -4,27 +4,27 @@ local addonName, ns = ...
 ---@class BUFNamespace
 ns = ns
 
----@class BUFPlayer
-local BUFPlayer = ns.BUFPlayer
+---@class BUFTarget
+local BUFTarget = ns.BUFTarget
 
----@class BUFPlayer.Power
-local BUFPlayerPower = BUFPlayer.Power
+---@class BUFTarget.Power
+local BUFTargetPower = BUFTarget.Power
 
----@class BUFPlayer.Power.Foreground: BUFConfigHandler, StatusBarTexturable, Colorable, PowerColorable
+---@class BUFTarget.Power.Foreground: BUFConfigHandler, StatusBarTexturable, Colorable, PowerColorable
 local foregroundHandler = {
-    configPath = "unitFrames.player.powerBar.foreground",
+    configPath = "unitFrames.target.powerBar.foreground",
 }
 
-BUFPlayerPower.foregroundHandler = foregroundHandler
+BUFTargetPower.foregroundHandler = foregroundHandler
 
 ns.ApplyMixin(ns.StatusBarTexturable, foregroundHandler)
 ns.ApplyMixin(ns.Colorable, foregroundHandler)
 ns.ApplyMixin(ns.PowerColorable, foregroundHandler)
 
----@class BUFDbSchema.UF.Player.Power
-ns.dbDefaults.profile.unitFrames.player.powerBar = ns.dbDefaults.profile.unitFrames.player.powerBar
+---@class BUFDbSchema.UF.Target.Power
+ns.dbDefaults.profile.unitFrames.target.powerBar = ns.dbDefaults.profile.unitFrames.target.powerBar
 
-ns.dbDefaults.profile.unitFrames.player.powerBar.foreground = {
+ns.dbDefaults.profile.unitFrames.target.powerBar.foreground = {
     useStatusBarTexture = false,
     statusBarTexture = "Blizzard",
     useCustomColor = false,
@@ -44,7 +44,7 @@ local foreground = {
     type = "group",
     handler = foregroundHandler,
     name = ns.L["Foreground"],
-    order = BUFPlayerPower.topGroupOrder.FOREGROUND,
+    order = BUFTargetPower.topGroupOrder.FOREGROUND,
     args = {}
 }
 
@@ -52,7 +52,7 @@ ns.AddStatusBarTextureOptions(foreground.args, foregroundOrder)
 ns.AddColorOptions(foreground.args, foregroundOrder)
 ns.AddPowerColorOptions(foreground.args, foregroundOrder)
 
-ns.options.args.unitFrames.args.player.args.powerBar.args.foreground = foreground
+ns.options.args.unitFrames.args.target.args.powerBar.args.foreground = foreground
 
 function foregroundHandler:RefreshConfig()
     self:RefreshStatusBarTexture()
@@ -60,31 +60,25 @@ function foregroundHandler:RefreshConfig()
 end
 
 function foregroundHandler:RefreshStatusBarTexture()
-    local parent = ns.BUFPlayer
-    local useCustomTexture = ns.db.profile.unitFrames.player.powerBar.foreground.useStatusBarTexture
+    local parent = ns.BUFTarget
+    local useCustomTexture = ns.db.profile.unitFrames.target.powerBar.foreground.useStatusBarTexture
     if useCustomTexture then
         local texturePath = ns.lsm:Fetch(ns.lsm.MediaType.STATUSBAR,
-            ns.db.profile.unitFrames.player.powerBar.foreground.statusBarTexture)
+            ns.db.profile.unitFrames.target.powerBar.foreground.statusBarTexture)
         if not texturePath then
             texturePath = ns.lsm:Fetch(ns.lsm.MediaType.STATUSBAR, "Blizzard") or "Interface\\Buttons\\WHITE8x8"
         end
-        if BUFPlayer:IsHooked(parent.manaBar, "SetStatusBarTexture") then
-            BUFPlayer:Unhook(parent.manaBar, "SetStatusBarTexture")
-        end
         parent.manaBar:SetStatusBarTexture(texturePath)
-        BUFPlayer:RawHook(parent.manaBar, "SetStatusBarTexture", function(_, texture)
-            print("Blocked SetStatusBarTexture call to:", texture)
-        end, true)
-        BUFPlayerPower:SetLevel()
+        BUFTargetPower:SetLevel()
     else
         parent.manaBar:SetStatusBarTexture("UI-HUD-UnitFrame-Player-PortraitOn-Bar-Mana")
     end
 end
 
 function foregroundHandler:RefreshColor()
-    local parent = ns.BUFPlayer
-    local useCustomColor = ns.db.profile.unitFrames.player.powerBar.foreground.useCustomColor
-    local usePowerColor = ns.db.profile.unitFrames.player.powerBar.foreground.usePowerColor
+    local parent = ns.BUFTarget
+    local useCustomColor = ns.db.profile.unitFrames.target.powerBar.foreground.useCustomColor
+    local usePowerColor = ns.db.profile.unitFrames.target.powerBar.foreground.usePowerColor
     if usePowerColor then
         local powerType, powerToken, rX, gY, bZ = UnitPowerType("player")
         local info = PowerBarColor[powerToken]
@@ -99,15 +93,9 @@ function foregroundHandler:RefreshColor()
         else
             r, g, b = rX, gY, bZ
         end
-        if BUFPlayer:IsHooked(parent.manaBar, "SetStatusBarColor") then
-            BUFPlayer:Unhook(parent.manaBar, "SetStatusBarColor")
-        end
         parent.manaBar:SetStatusBarColor(r, g, b, 1.0)
-        BUFPlayer:RawHook(parent.manaBar, "SetStatusBarColor", function(_, r, g, b, a)
-            print("Blocked SetStatusBarColor call to:", r, g, b, a)
-        end, true)
     elseif useCustomColor then
-        local r, g, b, a = unpack(ns.db.profile.unitFrames.player.powerBar.foreground.customColor)
+        local r, g, b, a = unpack(ns.db.profile.unitFrames.target.powerBar.foreground.customColor)
         parent.manaBar:SetStatusBarColor(r, g, b, a)
     end
 end
