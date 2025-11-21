@@ -11,4 +11,5 @@
     <Script file="backgroundTexturable.lua"/>
     <Script file="anchorable.lua"/>
     <Script file="demoable.lua"/>
+    <Script file="maskable.lua"/>
 </Ui>

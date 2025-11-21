@@ -66,11 +66,3 @@ function BUFPlayer:RefreshConfig()
     self.Power:RefreshConfig()
     self.ClassResources:RefreshConfig()
 end
-
--- Portrait Square Mask
--- local BUFPlayer = BeaconUnitFrames.BUFPlayer
-
--- BUFPlayer.container.PlayerPortraitMask:ClearAllPoints()
--- BUFPlayer.container.PlayerPortraitMask:SetPoint("CENTER", BUFPlayer.container.PlayerPortrait, "CENTER")
--- BUFPlayer.container.PlayerPortraitMask:SetSize(75, 75)
--- BUFPlayer.container.PlayerPortraitMask:SetAtlas("squaremask", false)

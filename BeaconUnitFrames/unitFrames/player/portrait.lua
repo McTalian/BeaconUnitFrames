@@ -7,13 +7,14 @@ ns = ns
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
 
----@class BUFPlayer.Portrait: BUFConfigHandler, Sizable, Positionable
+---@class BUFPlayer.Portrait: BUFConfigHandler, Sizable, Positionable, BoxMaskable
 local BUFPlayerPortrait = {
     configPath = "unitFrames.player.portrait",
 }
 
 ns.ApplyMixin(ns.Sizable, BUFPlayerPortrait)
 ns.ApplyMixin(ns.Positionable, BUFPlayerPortrait)
+ns.ApplyMixin(ns.BoxMaskable, BUFPlayerPortrait)
 
 BUFPlayer.Portrait = BUFPlayerPortrait
 
@@ -28,7 +29,9 @@ ns.dbDefaults.profile.unitFrames.player.portrait = {
     xOffset = 24,
     yOffset = -19,
     enableCornerIndicator = true,
-    mask = "interface/hud/uiunitframeplayerportraitmask.blp",
+    mask = "ui-hud-unitframe-player-portrait-mask",
+    maskWidthScale = 1,
+    maskHeightScale = 1,
     alpha = 1.0,
 }
 
@@ -78,6 +81,7 @@ local portrait = {
 
 ns.AddSizingOptions(portrait.args, portraitOrder)
 ns.AddPositioningOptions(portrait.args, portraitOrder)
+ns.AddBoxMaskOptions(portrait.args, portraitOrder)
 
 ns.options.args.unitFrames.args.player.args.portrait = portrait
 
@@ -96,6 +100,7 @@ function BUFPlayerPortrait:SetSize()
     parent.container.PlayerPortrait:SetHeight(height)
     parent.container.PlayerPortraitMask:SetWidth(width)
     parent.container.PlayerPortraitMask:SetHeight(height)
+    self:RefreshMask()
 end
 
 function BUFPlayerPortrait:SetPosition()
@@ -103,7 +108,8 @@ function BUFPlayerPortrait:SetPosition()
     local xOffset = ns.db.profile.unitFrames.player.portrait.xOffset
     local yOffset = ns.db.profile.unitFrames.player.portrait.yOffset
     parent.container.PlayerPortrait:SetPoint("TOPLEFT", xOffset, yOffset)
-    parent.container.PlayerPortraitMask:SetPoint("TOPLEFT", xOffset, yOffset)
+    parent.container.PlayerPortraitMask:ClearAllPoints()
+    parent.container.PlayerPortraitMask:SetPoint("CENTER", parent.container.PlayerPortrait, "CENTER")
 end
 
 function BUFPlayerPortrait:ShowHidePortrait()
@@ -114,7 +120,6 @@ function BUFPlayerPortrait:ShowHidePortrait()
         parent:Unhook(parent.container.PlayerPortraitMask, "Show")
         parent.container.PlayerPortrait:Show()
         parent.container.PlayerPortraitMask:Show()
-        parent.restLoop:SetPoint("TOPLEFT", 64, -6)
     else
         parent.container.PlayerPortrait:Hide()
         parent.container.PlayerPortraitMask:Hide()
@@ -124,7 +129,6 @@ function BUFPlayerPortrait:ShowHidePortrait()
         if not parent:IsHooked(parent.container.PlayerPortraitMask, "Show") then
             parent:RawHook(parent.container.PlayerPortraitMask, "Show", ns.noop, true)
         end
-        parent.restLoop:SetPoint("TOPLEFT", -2, -6)
     end
 end
 
@@ -140,4 +144,26 @@ function BUFPlayerPortrait:SetCornerIndicator()
             parent:RawHook(parent.contentContextual.PlayerPortraitCornerIcon, "Show", ns.noop, true)
         end
     end
+end
+
+function BUFPlayerPortrait:RefreshMask()
+    local parent = BUFPlayer
+    local maskPath = ns.db.profile.unitFrames.player.portrait.mask
+
+    local sPos, ePos = string.find(maskPath, ".blp")
+    local isTexture = sPos ~= nil
+    if isTexture then
+        print("Using texture mask")
+        -- File path
+        parent.container.PlayerPortraitMask:SetTexture(maskPath)
+    else
+        print("Using atlas mask")
+        -- Atlas
+        parent.container.PlayerPortraitMask:SetAtlas(maskPath, false)
+    end
+    local width = ns.db.profile.unitFrames.player.portrait.width
+    local height = ns.db.profile.unitFrames.player.portrait.height
+    local widthScale = ns.db.profile.unitFrames.player.portrait.maskWidthScale or 1
+    local heightScale = ns.db.profile.unitFrames.player.portrait.maskHeightScale or 1
+    parent.container.PlayerPortraitMask:SetSize(width * widthScale, height * heightScale)
 end

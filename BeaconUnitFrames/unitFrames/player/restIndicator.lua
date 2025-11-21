@@ -56,9 +56,11 @@ function BUFPlayerRestIndicator:ToggleDemoMode()
     if self.demoMode then
         self.demoMode = false
         restIndicatorFrame:Hide()
+        restIndicatorFrame.PlayerRestLoopAnim:Stop()
     else
         self.demoMode = true
         restIndicatorFrame:Show()
+        restIndicatorFrame.PlayerRestLoopAnim:Play()
     end
 end
 
