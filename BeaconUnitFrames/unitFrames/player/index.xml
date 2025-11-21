@@ -6,6 +6,7 @@
     <Script file="portrait.lua"/>
     <Script file="groupIndicator.lua"/>
     <Script file="restIndicator.lua"/>
+    <Script file="readyCheckIndicator.lua"/>
     <Script file="playTime.lua"/>
     <Include file="health/index.xml"/>
     <Include file="power/index.xml"/>

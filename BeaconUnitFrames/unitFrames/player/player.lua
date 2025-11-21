@@ -32,10 +32,11 @@ BUFPlayer.optionsOrder = {
     LEVEL = 4,
     GROUP_INDICATOR = 5,
     REST_INDICATOR = 6,
-    PLAY_TIME = 7,
-    HEALTH = 8,
-    POWER = 9,
-    CLASS_RESOURCES = 10,
+    READY_CHECK_INDICATOR = 7,
+    PLAY_TIME = 8,
+    HEALTH = 9,
+    POWER = 10,
+    CLASS_RESOURCES = 11,
 }
 
 function BUFPlayer:OnEnable()
@@ -53,15 +54,23 @@ function BUFPlayer:OnEnable()
 end
 
 function BUFPlayer:RefreshConfig()
-    print("Refreshing Player Frame Config")
     self.Frame:RefreshConfig()
     self.Portrait:RefreshConfig()
     self.Name:RefreshConfig()
     self.Level:RefreshConfig()
     self.GroupIndicator:RefreshConfig()
     self.RestIndicator:RefreshConfig()
+    self.ReadyCheckIndicator:RefreshConfig()
     self.PlayTime:RefreshConfig()
     self.Health:RefreshConfig()
     self.Power:RefreshConfig()
     self.ClassResources:RefreshConfig()
 end
+
+-- Portrait Square Mask
+-- local BUFPlayer = BeaconUnitFrames.BUFPlayer
+
+-- BUFPlayer.container.PlayerPortraitMask:ClearAllPoints()
+-- BUFPlayer.container.PlayerPortraitMask:SetPoint("CENTER", BUFPlayer.container.PlayerPortrait, "CENTER")
+-- BUFPlayer.container.PlayerPortraitMask:SetSize(75, 75)
+-- BUFPlayer.container.PlayerPortraitMask:SetAtlas("squaremask", false)

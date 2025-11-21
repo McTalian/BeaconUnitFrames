@@ -39,6 +39,11 @@
     "HUD_EDIT_MODE_BOSS_FRAMES_LABEL",
     "BACK",
     "ACCEPT",
-    "CANCEL"
+    "CANCEL",
+    "READY_CHECK_YOU_WERE_AFK",
+    "READY_CHECK_MESSAGE",
+    "RAID_DIFFICULTY",
+    "READY",
+    "READY_CHECK"
   ]
 }
