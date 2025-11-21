@@ -31,9 +31,11 @@ BUFPlayer.optionsOrder = {
     NAME = 3,
     LEVEL = 4,
     GROUP_INDICATOR = 5,
-    HEALTH = 6,
-    POWER = 7,
-    CLASS_RESOURCES = 8,
+    REST_INDICATOR = 6,
+    PLAY_TIME = 7,
+    HEALTH = 8,
+    POWER = 9,
+    CLASS_RESOURCES = 10,
 }
 
 function BUFPlayer:OnEnable()
@@ -56,8 +58,10 @@ function BUFPlayer:RefreshConfig()
     self.Portrait:RefreshConfig()
     self.Name:RefreshConfig()
     self.Level:RefreshConfig()
+    self.GroupIndicator:RefreshConfig()
+    self.RestIndicator:RefreshConfig()
+    self.PlayTime:RefreshConfig()
     self.Health:RefreshConfig()
     self.Power:RefreshConfig()
-    self.GroupIndicator:RefreshConfig()
     self.ClassResources:RefreshConfig()
 end
