@@ -44,6 +44,8 @@
     "READY_CHECK_MESSAGE",
     "RAID_DIFFICULTY",
     "READY",
-    "READY_CHECK"
+    "READY_CHECK",
+    "GUIDE",
+    "LEADER"
   ]
 }

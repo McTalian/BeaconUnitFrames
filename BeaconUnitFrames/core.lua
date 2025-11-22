@@ -26,7 +26,7 @@ function BUF:OnInitialize()
     self.broker = LibStub("LibDataBroker-1.1"):NewDataObject(addonName, {
         type = "launcher",
         text = addonName,
-        icon = "Interface/AddOns/BeaconUnitFrames/icons/logo",
+        icon = "Interface/AddOns/BeaconUnitFrames/icons/logo.png",
         OnClick = function(og_frame, button)
 			ns.menu:OpenOptions(button)
 		end,

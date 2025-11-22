@@ -25,8 +25,8 @@ ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.playe
 
 ---@class BUFDbSchema.UF.Player.GroupIndicator
 ns.dbDefaults.profile.unitFrames.player.groupIndicator = {
-    xOffset = 0,
-    yOffset = 0,
+    xOffset = 210,
+    yOffset = -29,
     useFontObjects = true,
     fontObject = "GameFontNormalSmall",
     fontColor = { 1, 1, 1, 1 },

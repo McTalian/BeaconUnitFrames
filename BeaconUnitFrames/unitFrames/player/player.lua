@@ -25,6 +25,8 @@ ns.options.args.unitFrames.args.player = {
     args = {}
 }
 
+local lastIndicator = 9
+
 BUFPlayer.optionsOrder = {
     FRAME = 1,
     PORTRAIT = 2,
@@ -33,10 +35,11 @@ BUFPlayer.optionsOrder = {
     GROUP_INDICATOR = 5,
     REST_INDICATOR = 6,
     READY_CHECK_INDICATOR = 7,
-    PLAY_TIME = 8,
-    HEALTH = 9,
-    POWER = 10,
-    CLASS_RESOURCES = 11,
+    LEADER_AND_GUIDE_ICON = 8,
+    PLAY_TIME = lastIndicator,
+    HEALTH = lastIndicator + 1,
+    POWER = lastIndicator + 2,
+    CLASS_RESOURCES = lastIndicator + 3,
 }
 
 function BUFPlayer:OnEnable()
@@ -61,6 +64,7 @@ function BUFPlayer:RefreshConfig()
     self.GroupIndicator:RefreshConfig()
     self.RestIndicator:RefreshConfig()
     self.ReadyCheckIndicator:RefreshConfig()
+    self.LeaderAndGuideIcon:RefreshConfig()
     self.PlayTime:RefreshConfig()
     self.Health:RefreshConfig()
     self.Power:RefreshConfig()

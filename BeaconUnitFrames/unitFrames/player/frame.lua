@@ -7,7 +7,7 @@ ns = ns
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
 
----@class BUFPlayer.Frame: BUFConfigHandler, Sizable
+---@class BUFPlayer.Frame: BUFConfigHandler, Sizable, BackgroundTexturable
 local BUFPlayerFrame = {
     configPath = "unitFrames.player.frame",
 }
