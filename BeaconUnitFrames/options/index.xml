@@ -12,4 +12,5 @@
     <Script file="anchorable.lua"/>
     <Script file="demoable.lua"/>
     <Script file="maskable.lua"/>
+    <Script file="textCustomizable.lua"/>
 </Ui>

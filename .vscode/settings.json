@@ -46,6 +46,7 @@
     "READY",
     "READY_CHECK",
     "GUIDE",
-    "LEADER"
+    "LEADER",
+    "ROLE"
   ]
 }

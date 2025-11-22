@@ -7,13 +7,14 @@ ns = ns
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
 
----@class BUFPlayer.Name: BUFConfigHandler, Positionable, Sizable, Fontable
+---@class BUFPlayer.Name: BUFConfigHandler, Positionable, Sizable, Fontable, TextCustomizable
 local BUFPlayerName = {
     configPath = "unitFrames.player.name",
 }
 
 ns.ApplyMixin(ns.Positionable, BUFPlayerName)
 ns.ApplyMixin(ns.Sizable, BUFPlayerName)
+ns.ApplyMixin(ns.TextCustomizable, BUFPlayerName)
 ns.ApplyMixin(ns.Fontable, BUFPlayerName)
 
 BUFPlayer.Name = BUFPlayerName
@@ -27,6 +28,7 @@ ns.dbDefaults.profile.unitFrames.player.name = {
     height = 12,
     xOffset = 88,
     yOffset = -27,
+    customText = nil,
     useFontObjects = true,
     fontObject = "GameFontNormalSmall",
     fontColor = { NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, NORMAL_FONT_COLOR.a },
@@ -47,15 +49,16 @@ local nameOrder = {
     HEIGHT = 2,
     X_OFFSET = 3,
     Y_OFFSET = 4,
-    USE_FONT_OBJECTS = 5,
-    FONT_OBJECT = 6,
-    FONT_COLOR = 7,
-    FONT_FACE = 8,
-    FONT_SIZE = 9,
-    FONT_FLAGS = 10,
-    FONT_SHADOW_COLOR = 11,
-    FONT_SHADOW_OFFSET_X = 12,
-    FONT_SHADOW_OFFSET_Y = 13,
+    CUSTOM_TEXT = 5,
+    USE_FONT_OBJECTS = 6,
+    FONT_OBJECT = 7,
+    FONT_COLOR = 8,
+    FONT_FACE = 9,
+    FONT_SIZE = 10,
+    FONT_FLAGS = 11,
+    FONT_SHADOW_COLOR = 12,
+    FONT_SHADOW_OFFSET_X = 13,
+    FONT_SHADOW_OFFSET_Y = 14,
 }
 
 local playerName = {
@@ -68,6 +71,7 @@ local playerName = {
 
 ns.AddSizingOptions(playerName.args, nameOrder)
 ns.AddPositioningOptions(playerName.args, nameOrder)
+ns.AddTextCustomizableOptions(playerName.args, nameOrder)
 ns.AddFontOptions(playerName.args, nameOrder)
 
 ns.options.args.unitFrames.args.player.args.playerName = playerName
@@ -75,6 +79,7 @@ ns.options.args.unitFrames.args.player.args.playerName = playerName
 function BUFPlayerName:RefreshConfig()
     self:SetPosition()
     self:SetSize()
+    self:RefreshText()
     self:SetFont()
     self:SetFontShadow()
 end
@@ -131,5 +136,14 @@ function BUFPlayerName:SetFontShadow()
     else
         PlayerName:SetShadowColor(r, g, b, a)
         PlayerName:SetShadowOffset(offsetX, offsetY)
+    end
+end
+
+function BUFPlayerName:RefreshText()
+    local customText = ns.db.profile.unitFrames.player.name.customText
+    if customText and customText ~= "" then
+        PlayerName:SetText(customText)
+    else
+        PlayerName:SetText(UnitName("player"))
     end
 end

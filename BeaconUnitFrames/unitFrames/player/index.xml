@@ -6,7 +6,9 @@
     <Script file="portrait.lua"/>
     <Script file="groupIndicator.lua"/>
     <Script file="restIndicator.lua"/>
+    <Script file="attackIcon.lua"/>
     <Script file="readyCheckIndicator.lua"/>
+    <Script file="roleIcon.lua"/>
     <Script file="leaderAndGuideIcon.lua"/>
     <Script file="playTime.lua"/>
     <Include file="health/index.xml"/>

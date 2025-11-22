@@ -153,11 +153,9 @@ function BUFPlayerPortrait:RefreshMask()
     local sPos, ePos = string.find(maskPath, ".blp")
     local isTexture = sPos ~= nil
     if isTexture then
-        print("Using texture mask")
         -- File path
         parent.container.PlayerPortraitMask:SetTexture(maskPath)
     else
-        print("Using atlas mask")
         -- Atlas
         parent.container.PlayerPortraitMask:SetAtlas(maskPath, false)
     end
