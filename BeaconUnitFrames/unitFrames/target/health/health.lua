@@ -133,8 +133,6 @@ function BUFTargetHealth:SetPosition()
     local parent = BUFTarget
     local xOffset = ns.db.profile.unitFrames.target.healthBar.xOffset
     local yOffset = ns.db.profile.unitFrames.target.healthBar.yOffset
-    print("Setting target health bar position relative to " .. ns.db.profile.unitFrames.target.healthBar.relativeTo)
-    print(_G[ns.db.profile.unitFrames.target.healthBar.relativeTo])
     parent.healthBar:ClearAllPoints()
     parent.healthBar:SetPoint(
         ns.db.profile.unitFrames.target.healthBar.anchorPoint,

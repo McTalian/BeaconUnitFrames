@@ -82,37 +82,41 @@ function BUFTargetFrame:RefreshConfig()
 end
 
 function BUFTargetFrame:SetSize()
-    local player = BUFTarget
+    local target = BUFTarget
     local width = ns.db.profile.unitFrames.target.frame.width
     local height = ns.db.profile.unitFrames.target.frame.height
-    PixelUtil.SetWidth(player.frame, width, 18)
-    PixelUtil.SetHeight(player.frame, height, 18)
+    PixelUtil.SetWidth(target.frame, width, 18)
+    PixelUtil.SetHeight(target.frame, height, 18)
 end
 
 function BUFTargetFrame:SetFrameFlash()
-    local player = BUFTarget
+    local target = BUFTarget
     local enable = ns.db.profile.unitFrames.target.frame.enableFrameFlash
     if enable then
-        player:Unhook(player.container.Flash, "Show")
-        player.container.Flash:Show()
+        target:Unhook(target.container.Flash, "Show")
+        target.container.Flash:Show()
     else
-        player.container.Flash:Hide()
-        if not ns.BUFTarget:IsHooked(player.container.Flash, "Show") then
-            player:RawHook(player.container.Flash, "Show", ns.noop, true)
+        target.container.Flash:Hide()
+        if not target:IsHooked(target.container.Flash, "Show") then
+            target:SecureHook(target.container.Flash, "Show", function(s)
+                s:Hide()
+            end)
         end
     end
 end
 
 function BUFTargetFrame:SetFrameTexture()
-    local player = BUFTarget
+    local target = BUFTarget
     local enable = ns.db.profile.unitFrames.target.frame.enableFrameTexture
     if enable then
-        player:Unhook(player.container.FrameTexture, "Show")
-        player.container.FrameTexture:Show()
+        target:Unhook(target.container.FrameTexture, "Show")
+        target.container.FrameTexture:Show()
     else
-        player.container.FrameTexture:Hide()
-        if not ns.BUFTarget:IsHooked(player.container.FrameTexture, "Show") then
-            player:RawHook(player.container.FrameTexture, "Show", ns.noop, true)
+        target.container.FrameTexture:Hide()
+        if not ns.BUFTarget:IsHooked(target.container.FrameTexture, "Show") then
+            target:SecureHook(target.container.FrameTexture, "Show", function(s)
+                s:Hide()
+            end)
         end
     end
 end

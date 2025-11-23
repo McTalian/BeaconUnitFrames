@@ -7,6 +7,7 @@
     <Script file="statusBarTexturable.lua"/>
     <Script file="colorable.lua"/>
     <Script file="classColorable.lua"/>
+    <Script file="reactionColorable.lua"/>
     <Script file="powerColorable.lua"/>
     <Script file="backgroundTexturable.lua"/>
     <Script file="anchorable.lua"/>

@@ -88,6 +88,8 @@ function BUFTargetPortrait:SetPosition()
     local parent = BUFTarget
     local xOffset = ns.db.profile.unitFrames.target.portrait.xOffset
     local yOffset = ns.db.profile.unitFrames.target.portrait.yOffset
+    parent.container.Portrait:ClearAllPoints()
+    parent.container.PortraitMask:ClearAllPoints()
     parent.container.Portrait:SetPoint("TOPLEFT", xOffset, yOffset)
     parent.container.PortraitMask:SetPoint("TOPLEFT", xOffset, yOffset)
 end

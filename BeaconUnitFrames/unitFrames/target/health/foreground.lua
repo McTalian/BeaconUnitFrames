@@ -10,7 +10,7 @@ local BUFTarget = ns.BUFTarget
 ---@class BUFTarget.Health
 local BUFTargetHealth = BUFTarget.Health
 
----@class BUFTarget.Health.Foreground: BUFConfigHandler, StatusBarTexturable, Colorable, ClassColorable
+---@class BUFTarget.Health.Foreground: BUFConfigHandler, StatusBarTexturable, Colorable, ClassColorable, ReactionColorable
 local foregroundHandler = {
     configPath = "unitFrames.target.healthBar.foreground",
 }
@@ -18,6 +18,7 @@ local foregroundHandler = {
 ns.ApplyMixin(ns.StatusBarTexturable, foregroundHandler)
 ns.ApplyMixin(ns.Colorable, foregroundHandler)
 ns.ApplyMixin(ns.ClassColorable, foregroundHandler)
+ns.ApplyMixin(ns.ReactionColorable, foregroundHandler)
 
 ---@class BUFDbSchema.UF.Target.Health
 ns.dbDefaults.profile.unitFrames.target.healthBar = ns.dbDefaults.profile.unitFrames.target.healthBar
@@ -36,6 +37,7 @@ local foregroundOrder = {
     USE_CUSTOM_COLOR = 3,
     CUSTOM_COLOR = 4,
     CLASS_COLOR = 5,
+    REACTION_COLOR = 6,
 }
 
 local foreground = {
@@ -49,37 +51,65 @@ local foreground = {
 ns.AddStatusBarTextureOptions(foreground.args, foregroundOrder)
 ns.AddColorOptions(foreground.args, foregroundOrder)
 ns.AddClassColorOptions(foreground.args, foregroundOrder)
+ns.AddReactionColorOptions(foreground.args, foregroundOrder)
 
 ns.options.args.unitFrames.args.target.args.healthBar.args.foreground = foreground
 
 function foregroundHandler:RefreshConfig()
     self:RefreshStatusBarTexture()
     self:RefreshColor()
+
+    if not self.initialized then
+        self.initialized = true
+
+---@diagnostic disable-next-line: undefined-field
+        BUFTarget:SecureHook(ns.BUFTarget.healthBar.HealthBarTexture, "SetAtlas", function(_, texture)
+            self:RefreshStatusBarTexture()
+            self:RefreshColor()
+        end)
+
+        BUFTarget:SecureHook(ns.BUFTarget.healthBarContainer.HealthBarMask, "SetAtlas", function(_, texture)
+            self:RefreshStatusBarTexture()
+            self:RefreshColor()
+        end)
+    end
+end
+
+local function SetStatusTextureWithoutHooks(healthBar, texturePath)
+    if BUFTarget:IsHooked(healthBar, "SetStatusBarTexture") then
+        BUFTarget:Unhook(healthBar, "SetStatusBarTexture")
+    end
+    healthBar:SetStatusBarTexture(texturePath)
+    BUFTarget:SecureHook(healthBar, "SetStatusBarTexture", function(_, texture)
+        foregroundHandler:RefreshStatusBarTexture()
+    end)
 end
 
 function foregroundHandler:RefreshStatusBarTexture()
     local parent = ns.BUFTarget
     local useCustomTexture = ns.db.profile.unitFrames.target.healthBar.foreground.useStatusBarTexture
+    local texturePath = "UI-HUD-UnitFrame-Player-PortraitOn-Bar-Health"
     if useCustomTexture then
-        local texturePath = ns.lsm:Fetch(ns.lsm.MediaType.STATUSBAR,
+        texturePath = ns.lsm:Fetch(ns.lsm.MediaType.STATUSBAR,
             ns.db.profile.unitFrames.target.healthBar.foreground.statusBarTexture)
         if not texturePath then
             texturePath = ns.lsm:Fetch(ns.lsm.MediaType.STATUSBAR, "Blizzard") or "Interface\\Buttons\\WHITE8x8"
         end
-        parent.healthBar:SetStatusBarTexture(texturePath)
-        BUFTargetHealth:SetLevel()
-    else
-        parent.healthBar:SetStatusBarTexture("UI-HUD-UnitFrame-Player-PortraitOn-Bar-Health")
     end
+    SetStatusTextureWithoutHooks(parent.healthBar, texturePath)
 end
 
 function foregroundHandler:RefreshColor()
     local parent = ns.BUFTarget
     local useCustomColor = ns.db.profile.unitFrames.target.healthBar.foreground.useCustomColor
     local useClassColor = ns.db.profile.unitFrames.target.healthBar.foreground.useClassColor
-    if useClassColor then
-        local _, class = UnitClass("player")
+    local useReactionColor = ns.db.profile.unitFrames.target.healthBar.foreground.useReactionColor
+    if useClassColor and (not useReactionColor or UnitPlayerControlled("target")) then
+        local _, class = UnitClass("target")
         local r, g, b = GetClassColor(class)
+        parent.healthBar:SetStatusBarColor(r, g, b, 1.0)
+    elseif useReactionColor then
+        local r, g, b = GameTooltip_UnitColor("target")
         parent.healthBar:SetStatusBarColor(r, g, b, 1.0)
     elseif useCustomColor then
         local r, g, b, a = unpack(ns.db.profile.unitFrames.target.healthBar.foreground.customColor)

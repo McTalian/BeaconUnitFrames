@@ -72,10 +72,10 @@ function foregroundHandler:RefreshStatusBarTexture()
             BUFPlayer:Unhook(parent.manaBar, "SetStatusBarTexture")
         end
         parent.manaBar:SetStatusBarTexture(texturePath)
-        BUFPlayer:RawHook(parent.manaBar, "SetStatusBarTexture", function(_, texture)
-            -- print("Blocked SetStatusBarTexture call to:", texture)
-        end, true)
-        BUFPlayerPower:SetLevel()
+        BUFPlayer:SecureHook(parent.manaBar, "SetStatusBarTexture", function(_, texture)
+            self:RefreshStatusBarTexture()
+        end)
+        -- BUFPlayerPower:SetLevel()
     else
         parent.manaBar:SetStatusBarTexture("UI-HUD-UnitFrame-Player-PortraitOn-Bar-Mana")
     end
@@ -103,9 +103,9 @@ function foregroundHandler:RefreshColor()
             BUFPlayer:Unhook(parent.manaBar, "SetStatusBarColor")
         end
         parent.manaBar:SetStatusBarColor(r, g, b, 1.0)
-        BUFPlayer:RawHook(parent.manaBar, "SetStatusBarColor", function(_, r, g, b, a)
-            -- print("Blocked SetStatusBarColor call to:", r, g, b, a)
-        end, true)
+        BUFPlayer:SecureHook(parent.manaBar, "SetStatusBarColor", function(_, r, g, b, a)
+            self:RefreshColor()
+        end)
     elseif useCustomColor then
         local r, g, b, a = unpack(ns.db.profile.unitFrames.player.powerBar.foreground.customColor)
         parent.manaBar:SetStatusBarColor(r, g, b, a)
