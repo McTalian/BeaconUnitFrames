@@ -116,7 +116,7 @@ ns.AddDemoOptions(guideGroup.args, guideOrder)
 
 leaderAndGuideIcon.args.guide = guideGroup
 
-ns.options.args.unitFrames.args.player.args.leaderAndGuideIcon = leaderAndGuideIcon
+ns.options.args.unitFrames.args.player.args.indicators.args.leaderAndGuideIcon = leaderAndGuideIcon
 
 local LEADER_ICON_ATLAS = "UI-HUD-UnitFrame-Player-Group-LeaderIcon"
 local GUIDE_ICON_ATLAS = "UI-HUD-UnitFrame-Player-Group-GuideIcon"

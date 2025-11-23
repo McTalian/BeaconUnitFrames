@@ -25,6 +25,8 @@ end
 ---@class AtlasSizable: AtlasSizableHandler
 local AtlasSizable = {}
 
+ns.ApplyMixin(ns.Sizable, AtlasSizable)
+
 function AtlasSizable:SetUseAtlasSize(info, value)
     ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".useAtlasSize", value)
     self:SetSize()

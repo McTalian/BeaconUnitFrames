@@ -24,6 +24,8 @@ end
 ---@class AtlasScalable: AtlasScalableHandler
 local AtlasScalable = {}
 
+ns.ApplyMixin(ns.Scalable, AtlasScalable)
+
 function AtlasScalable:SetUseAtlasScale(info, value)
     ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".useAtlasScale", value)
     self:SetScaleFactor()

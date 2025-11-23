@@ -52,7 +52,7 @@ ns.AddPositionableOptions(playTime.args, playTimeOrder)
 ns.AddSizableOptions(playTime.args, playTimeOrder)
 ns.AddDemoOptions(playTime.args, playTimeOrder)
 
-ns.options.args.unitFrames.args.player.args.playTime = playTime
+ns.options.args.unitFrames.args.player.args.indicators.args.playTime = playTime
 
 function BUFPlayerPlayTime:ToggleDemoMode()
     local playTimeFrame = BUFPlayer.contentContextual.PlayerPlayTime

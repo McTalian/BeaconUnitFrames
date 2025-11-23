@@ -19,8 +19,6 @@ ns.ApplyMixin(ns.Positionable, BUFPlayerAttackIcon)
 ns.ApplyMixin(ns.AtlasSizable, BUFPlayerAttackIcon)
 ns.ApplyMixin(ns.Demoable, BUFPlayerAttackIcon)
 
-BUFPlayerIndicators.AttackIcon = BUFPlayerAttackIcon
-
 ---@class BUFDbSchema.UF.Player
 ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
 
@@ -54,7 +52,7 @@ ns.AddPositionableOptions(attackIcon.args, attackIconOrder)
 ns.AddAtlasSizableOptions(attackIcon.args, attackIconOrder)
 ns.AddDemoOptions(attackIcon.args, attackIconOrder)
 
-ns.options.args.unitFrames.args.player.args.attackIcon = attackIcon
+ns.options.args.unitFrames.args.player.args.indicators.args.attackIcon = attackIcon
 
 local ATTACK_ICON_ATLAS = "UI-HUD-UnitFrame-Player-CombatIcon"
 
@@ -96,3 +94,4 @@ function BUFPlayerAttackIcon:SetSize()
     end
 end
 
+BUFPlayerIndicators.AttackIcon = BUFPlayerAttackIcon

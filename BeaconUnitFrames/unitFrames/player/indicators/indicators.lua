@@ -23,8 +23,6 @@ BUFPlayerIndicators.optionsOrder = {
   PLAY_TIME = 9,
 }
 
-BUFPlayer.Indicators = BUFPlayerIndicators
-
 local indicators = {
     type = "group",
     name = ns.L["Indicators and Icons"],
@@ -46,3 +44,5 @@ function BUFPlayerIndicators:RefreshConfig()
     self.RestIndicator:RefreshConfig()
     self.RoleIcon:RefreshConfig()
 end
+
+BUFPlayer.Indicators = BUFPlayerIndicators
