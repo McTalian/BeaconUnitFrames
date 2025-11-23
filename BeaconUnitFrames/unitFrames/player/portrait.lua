@@ -79,9 +79,9 @@ local portrait = {
     },
 }
 
-ns.AddSizingOptions(portrait.args, portraitOrder)
-ns.AddPositioningOptions(portrait.args, portraitOrder)
-ns.AddBoxMaskOptions(portrait.args, portraitOrder)
+ns.AddSizableOptions(portrait.args, portraitOrder)
+ns.AddPositionableOptions(portrait.args, portraitOrder)
+ns.AddBoxMaskableOptions(portrait.args, portraitOrder)
 
 ns.options.args.unitFrames.args.player.args.portrait = portrait
 

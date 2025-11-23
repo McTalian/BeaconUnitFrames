@@ -53,7 +53,7 @@ local rightText = {
 }
 
 ns.AddAnchorOptions(rightText.args, BUFPlayerHealth.textOrder)
-ns.AddPositioningOptions(rightText.args, BUFPlayerHealth.textOrder)
+ns.AddPositionableOptions(rightText.args, BUFPlayerHealth.textOrder)
 ns.AddFontOptions(rightText.args, BUFPlayerHealth.textOrder)
 
 ns.options.args.unitFrames.args.player.args.healthBar.args.rightText = rightText

@@ -7,7 +7,10 @@ ns = ns
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
 
----@class BUFPlayer.RoleIcon: BUFConfigHandler, Positionable, Sizable, Demoable
+---@class BUFPlayer.Indicators
+local BUFPlayerIndicators = ns.BUFPlayer.Indicators
+
+---@class BUFPlayer.Indicators.RoleIcon: BUFConfigHandler, Positionable, Sizable, Demoable
 local BUFPlayerRoleIcon = {
     configPath = "unitFrames.player.roleIcon",
 }
@@ -16,7 +19,7 @@ ns.ApplyMixin(ns.Positionable, BUFPlayerRoleIcon)
 ns.ApplyMixin(ns.Sizable, BUFPlayerRoleIcon)
 ns.ApplyMixin(ns.Demoable, BUFPlayerRoleIcon)
 
-BUFPlayer.RoleIcon = BUFPlayerRoleIcon
+BUFPlayerIndicators.RoleIcon = BUFPlayerRoleIcon
 
 ---@class BUFDbSchema.UF.Player
 ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
@@ -41,12 +44,12 @@ local roleIcon = {
     type = "group",
     handler = BUFPlayerRoleIcon,
     name = ns.L["Role Icon"],
-    order = BUFPlayer.optionsOrder.ROLE_ICON,
+    order = BUFPlayerIndicators.optionsOrder.ROLE_ICON,
     args = {},
 }
 
-ns.AddPositioningOptions(roleIcon.args, roleIconOrder)
-ns.AddSizingOptions(roleIcon.args, roleIconOrder)
+ns.AddPositionableOptions(roleIcon.args, roleIconOrder)
+ns.AddSizableOptions(roleIcon.args, roleIconOrder)
 ns.AddDemoOptions(roleIcon.args, roleIconOrder)
 
 ns.options.args.unitFrames.args.player.args.roleIcon = roleIcon

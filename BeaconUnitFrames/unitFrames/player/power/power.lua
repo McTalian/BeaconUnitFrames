@@ -71,8 +71,8 @@ local powerBar = {
     args = {},
 }
 
-ns.AddSizingOptions(powerBar.args, powerBarOrder)
-ns.AddPositioningOptions(powerBar.args, powerBarOrder)
+ns.AddSizableOptions(powerBar.args, powerBarOrder)
+ns.AddPositionableOptions(powerBar.args, powerBarOrder)
 ns.AddFrameLevelOption(powerBar.args, powerBarOrder)
 
 ns.options.args.unitFrames.args.player.args.powerBar = powerBar

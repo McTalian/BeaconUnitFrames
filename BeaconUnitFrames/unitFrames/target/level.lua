@@ -61,7 +61,7 @@ local level = {
     args = {}
 }
 
-ns.AddPositioningOptions(level.args, levelOrder)
+ns.AddPositionableOptions(level.args, levelOrder)
 ns.AddFontOptions(level.args, levelOrder)
 
 ns.options.args.unitFrames.args.target.args.level = level

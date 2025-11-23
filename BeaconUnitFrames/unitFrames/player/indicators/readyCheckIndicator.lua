@@ -7,7 +7,10 @@ ns = ns
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
 
----@class BUFPlayer.ReadyCheckIndicator: BUFConfigHandler, Positionable, Sizable, Demoable
+---@class BUFPlayer.Indicators
+local BUFPlayerIndicators = ns.BUFPlayer.Indicators
+
+---@class BUFPlayer.Indicators.ReadyCheckIndicator: BUFConfigHandler, Positionable, Sizable, Demoable
 local BUFPlayerReadyCheckIndicator = {
     configPath = "unitFrames.player.readyCheckIndicator",
 }
@@ -16,7 +19,7 @@ ns.ApplyMixin(ns.Positionable, BUFPlayerReadyCheckIndicator)
 ns.ApplyMixin(ns.Sizable, BUFPlayerReadyCheckIndicator)
 ns.ApplyMixin(ns.Demoable, BUFPlayerReadyCheckIndicator)
 
-BUFPlayer.ReadyCheckIndicator = BUFPlayerReadyCheckIndicator
+BUFPlayerIndicators.ReadyCheckIndicator = BUFPlayerReadyCheckIndicator
 
 ---@class BUFDbSchema.UF.Player
 ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
@@ -41,12 +44,12 @@ local readyCheckIndicator = {
     type = "group",
     handler = BUFPlayerReadyCheckIndicator,
     name = ns.L["Ready Check Indicator"],
-    order = BUFPlayer.optionsOrder.READY_CHECK_INDICATOR,
+    order = BUFPlayerIndicators.optionsOrder.READY_CHECK_INDICATOR,
     args = {}
 }
 
-ns.AddPositioningOptions(readyCheckIndicator.args, readyCheckIndicatorOrder)
-ns.AddSizingOptions(readyCheckIndicator.args, readyCheckIndicatorOrder)
+ns.AddPositionableOptions(readyCheckIndicator.args, readyCheckIndicatorOrder)
+ns.AddSizableOptions(readyCheckIndicator.args, readyCheckIndicatorOrder)
 ns.AddDemoOptions(readyCheckIndicator.args, readyCheckIndicatorOrder)
 
 ns.options.args.unitFrames.args.player.args.readyCheckIndicator = readyCheckIndicator

@@ -52,7 +52,7 @@ local centerText = {
 }
 
 ns.AddAnchorOptions(centerText.args, BUFTargetPower.textOrder)
-ns.AddPositioningOptions(centerText.args, BUFTargetPower.textOrder)
+ns.AddPositionableOptions(centerText.args, BUFTargetPower.textOrder)
 ns.AddFontOptions(centerText.args, BUFTargetPower.textOrder)
 
 ns.options.args.unitFrames.args.target.args.powerBar.args.centerText = centerText

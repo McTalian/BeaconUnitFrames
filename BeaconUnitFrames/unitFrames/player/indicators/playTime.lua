@@ -7,7 +7,10 @@ ns = ns
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
 
----@class BUFPlayer.PlayTime: BUFConfigHandler, Positionable, Sizable, Demoable
+---@class BUFPlayer.Indicators
+local BUFPlayerIndicators = ns.BUFPlayer.Indicators
+
+---@class BUFPlayer.Indicators.PlayTime: BUFConfigHandler, Positionable, Sizable, Demoable
 local BUFPlayerPlayTime = {
     configPath = "unitFrames.player.playTime",
 }
@@ -16,7 +19,7 @@ ns.ApplyMixin(ns.Positionable, BUFPlayerPlayTime)
 ns.ApplyMixin(ns.Sizable, BUFPlayerPlayTime)
 ns.ApplyMixin(ns.Demoable, BUFPlayerPlayTime)
 
-BUFPlayer.PlayTime = BUFPlayerPlayTime
+BUFPlayerIndicators.PlayTime = BUFPlayerPlayTime
 
 ---@class BUFDbSchema.UF.Player
 ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
@@ -41,12 +44,12 @@ local playTime = {
     type = "group",
     handler = BUFPlayerPlayTime,
     name = ns.L["Play Time"],
-    order = BUFPlayer.optionsOrder.PLAY_TIME,
+    order = BUFPlayerIndicators.optionsOrder.PLAY_TIME,
     args = {}
 }
 
-ns.AddPositioningOptions(playTime.args, playTimeOrder)
-ns.AddSizingOptions(playTime.args, playTimeOrder)
+ns.AddPositionableOptions(playTime.args, playTimeOrder)
+ns.AddSizableOptions(playTime.args, playTimeOrder)
 ns.AddDemoOptions(playTime.args, playTimeOrder)
 
 ns.options.args.unitFrames.args.player.args.playTime = playTime

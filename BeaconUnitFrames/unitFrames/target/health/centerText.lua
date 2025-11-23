@@ -53,7 +53,7 @@ local centerText = {
 }
 
 ns.AddAnchorOptions(centerText.args, BUFTargetHealth.textOrder)
-ns.AddPositioningOptions(centerText.args, BUFTargetHealth.textOrder)
+ns.AddPositionableOptions(centerText.args, BUFTargetHealth.textOrder)
 ns.AddFontOptions(centerText.args, BUFTargetHealth.textOrder)
 
 centerText.args.relativeTo = nil

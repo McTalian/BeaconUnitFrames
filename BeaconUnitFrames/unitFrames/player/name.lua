@@ -69,8 +69,8 @@ local playerName = {
     args = {}
 }
 
-ns.AddSizingOptions(playerName.args, nameOrder)
-ns.AddPositioningOptions(playerName.args, nameOrder)
+ns.AddSizableOptions(playerName.args, nameOrder)
+ns.AddPositionableOptions(playerName.args, nameOrder)
 ns.AddTextCustomizableOptions(playerName.args, nameOrder)
 ns.AddFontOptions(playerName.args, nameOrder)
 

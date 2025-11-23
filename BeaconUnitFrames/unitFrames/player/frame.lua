@@ -90,6 +90,7 @@ local frame = {
             end,
             order = frameOrder.STATUS_TEXTURE,
         },
+        -- TODO: Move this to indicators and add more options
         hitIndicator = {
             type = "toggle",
             name = ns.L["EnableHitIndicator"],
@@ -112,8 +113,7 @@ local frame = {
 }
 
 ns.AddBackgroundTextureOptions(frame.args.backdropAndBorder.args, backdropAndBorderOrder)
-
-ns.AddSizingOptions(frame.args, frameOrder)
+ns.AddSizableOptions(frame.args, frameOrder)
 
 ns.options.args.unitFrames.args.player.args.frame = frame
 
@@ -222,5 +222,4 @@ function BUFPlayerFrame:RefreshBackgroundTexture()
         insets = { left = 0, right = 0, top = 0, bottom = 0 },
     })
     self.backdropFrame:Show()
-
 end

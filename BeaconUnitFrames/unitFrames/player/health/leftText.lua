@@ -53,7 +53,7 @@ local leftText = {
 }
 
 ns.AddAnchorOptions(leftText.args, BUFPlayerHealth.textOrder)
-ns.AddPositioningOptions(leftText.args, BUFPlayerHealth.textOrder)
+ns.AddPositionableOptions(leftText.args, BUFPlayerHealth.textOrder)
 ns.AddFontOptions(leftText.args, BUFPlayerHealth.textOrder)
 
 ns.options.args.unitFrames.args.player.args.healthBar.args.leftText = leftText

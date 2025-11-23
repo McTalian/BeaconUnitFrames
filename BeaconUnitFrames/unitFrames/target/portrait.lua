@@ -63,8 +63,8 @@ local portrait = {
     },
 }
 
-ns.AddSizingOptions(portrait.args, portraitOrder)
-ns.AddPositioningOptions(portrait.args, portraitOrder)
+ns.AddSizableOptions(portrait.args, portraitOrder)
+ns.AddPositionableOptions(portrait.args, portraitOrder)
 
 ns.options.args.unitFrames.args.target.args.portrait = portrait
 

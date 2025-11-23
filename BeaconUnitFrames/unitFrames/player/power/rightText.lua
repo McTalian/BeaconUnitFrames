@@ -52,7 +52,7 @@ local rightText = {
 }
 
 ns.AddAnchorOptions(rightText.args, BUFPlayerPower.textOrder)
-ns.AddPositioningOptions(rightText.args, BUFPlayerPower.textOrder)
+ns.AddPositionableOptions(rightText.args, BUFPlayerPower.textOrder)
 ns.AddFontOptions(rightText.args, BUFPlayerPower.textOrder)
 
 ns.options.args.unitFrames.args.player.args.powerBar.args.rightText = rightText

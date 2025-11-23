@@ -71,7 +71,7 @@ local frame = {
     },
 }
 
-ns.AddSizingOptions(frame.args, frameOrder)
+ns.AddSizableOptions(frame.args, frameOrder)
 
 ns.options.args.unitFrames.args.target.args.frame = frame
 

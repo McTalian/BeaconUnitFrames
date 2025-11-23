@@ -7,27 +7,30 @@ ns = ns
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
 
----@class BUFPlayer.LeaderAndGuideIcon: BUFConfigHandler, Positionable, Sizable, Demoable
+---@class BUFPlayer.Indicators
+local BUFPlayerIndicators = ns.BUFPlayer.Indicators
+
+---@class BUFPlayer.Indicators.LeaderAndGuideIcon: BUFConfigHandler, Positionable, AtlasSizable, Demoable
 local BUFPlayerLeaderAndGuideIcon = {
     configPath = "unitFrames.player.leaderAndGuideIcon",
 }
 
 ns.ApplyMixin(ns.Positionable, BUFPlayerLeaderAndGuideIcon)
-ns.ApplyMixin(ns.Sizable, BUFPlayerLeaderAndGuideIcon)
+ns.ApplyMixin(ns.AtlasSizable, BUFPlayerLeaderAndGuideIcon)
 ns.ApplyMixin(ns.Demoable, BUFPlayerLeaderAndGuideIcon)
 
----@class BUFPlayer.LeaderAndGuideIcon.Guide: Positionable, Sizable, Demoable
+---@class BUFPlayer.LeaderAndGuideIcon.Guide: Positionable, AtlasSizable, Demoable
 local Guide = {
     configPath = "unitFrames.player.leaderAndGuideIcon.guide",
 }
 
 ns.ApplyMixin(ns.Positionable, Guide)
-ns.ApplyMixin(ns.Sizable, Guide)
+ns.ApplyMixin(ns.AtlasSizable, Guide)
 ns.ApplyMixin(ns.Demoable, Guide)
 
 BUFPlayerLeaderAndGuideIcon.Guide = Guide
 
-BUFPlayer.LeaderAndGuideIcon = BUFPlayerLeaderAndGuideIcon
+BUFPlayerIndicators.LeaderAndGuideIcon = BUFPlayerLeaderAndGuideIcon
 
 ---@class BUFDbSchema.UF.Player
 ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
@@ -73,21 +76,8 @@ local leaderAndGuideIcon = {
     type = "group",
     handler = BUFPlayerLeaderAndGuideIcon,
     name = ns.L["LeaderAndGuideIcon"],
-    order = BUFPlayer.optionsOrder.LEADER_AND_GUIDE_ICON,
+    order = BUFPlayerIndicators.optionsOrder.LEADER_AND_GUIDE_ICON,
     args = {
-        useAtlasSize = {
-            type = "toggle",
-            name = ns.L["UseAtlasSize"],
-            desc = ns.L["UseAtlasSizeDesc"],
-            set = function(info, value)
-                ns.db.profile.unitFrames.player.leaderAndGuideIcon.useAtlasSize = value
-                BUFPlayerLeaderAndGuideIcon:SetSize()
-            end,
-            get = function(info)
-                return ns.db.profile.unitFrames.player.leaderAndGuideIcon.useAtlasSize
-            end,
-            order = leaderAndGuideIconOrder.USE_ATLAS_SIZE,
-        },
         separateGuideStyle = {
             type = "toggle",
             name = ns.L["SeparateGuideStyle"],
@@ -104,8 +94,8 @@ local leaderAndGuideIcon = {
     },
 }
 
-ns.AddPositioningOptions(leaderAndGuideIcon.args, leaderAndGuideIconOrder)
-ns.AddSizingOptions(leaderAndGuideIcon.args, leaderAndGuideIconOrder)
+ns.AddPositionableOptions(leaderAndGuideIcon.args, leaderAndGuideIconOrder)
+ns.AddAtlasSizableOptions(leaderAndGuideIcon.args, leaderAndGuideIconOrder)
 ns.AddDemoOptions(leaderAndGuideIcon.args, leaderAndGuideIconOrder)
 
 local guideGroup = {
@@ -117,25 +107,11 @@ local guideGroup = {
     end,
     inline = true,
     order = leaderAndGuideIconOrder.GUIDE,
-    args = {
-        useAtlasSize = {
-            type = "toggle",
-            name = ns.L["UseAtlasSize"],
-            desc = ns.L["UseAtlasSizeDesc"],
-            set = function(info, value)
-                ns.db.profile.unitFrames.player.leaderAndGuideIcon.guide.useAtlasSize = value
-                BUFPlayerLeaderAndGuideIcon.Guide:SetSize()
-            end,
-            get = function(info)
-                return ns.db.profile.unitFrames.player.leaderAndGuideIcon.guide.useAtlasSize
-            end,
-            order = guideOrder.USE_ATLAS_SIZE,
-        },
-    }
+    args = {},
 }
 
-ns.AddPositioningOptions(guideGroup.args, guideOrder)
-ns.AddSizingOptions(guideGroup.args, guideOrder)
+ns.AddPositionableOptions(guideGroup.args, guideOrder)
+ns.AddAtlasSizableOptions(guideGroup.args, guideOrder)
 ns.AddDemoOptions(guideGroup.args, guideOrder)
 
 leaderAndGuideIcon.args.guide = guideGroup

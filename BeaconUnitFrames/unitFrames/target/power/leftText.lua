@@ -52,7 +52,7 @@ local leftText = {
 }
 
 ns.AddAnchorOptions(leftText.args, BUFTargetPower.textOrder)
-ns.AddPositioningOptions(leftText.args, BUFTargetPower.textOrder)
+ns.AddPositionableOptions(leftText.args, BUFTargetPower.textOrder)
 ns.AddFontOptions(leftText.args, BUFTargetPower.textOrder)
 
 ns.options.args.unitFrames.args.target.args.powerBar.args.leftText = leftText

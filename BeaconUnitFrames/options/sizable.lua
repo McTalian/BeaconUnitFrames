@@ -4,7 +4,7 @@ local addonName, ns = ...
 ---@class BUFNamespace
 ns = ns
 
-function ns.AddSizingOptions(optionsTable, orderMap)
+function ns.AddSizableOptions(optionsTable, orderMap)
     optionsTable.width = {
         type = "range",
         name = HUD_EDIT_MODE_SETTING_CHAT_FRAME_WIDTH,

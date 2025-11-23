@@ -53,7 +53,7 @@ local centerText = {
 }
 
 ns.AddAnchorOptions(centerText.args, BUFPlayerHealth.textOrder)
-ns.AddPositioningOptions(centerText.args, BUFPlayerHealth.textOrder)
+ns.AddPositionableOptions(centerText.args, BUFPlayerHealth.textOrder)
 ns.AddFontOptions(centerText.args, BUFPlayerHealth.textOrder)
 
 ns.options.args.unitFrames.args.player.args.healthBar.args.centerText = centerText

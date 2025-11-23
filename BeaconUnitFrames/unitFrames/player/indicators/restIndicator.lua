@@ -7,7 +7,10 @@ ns = ns
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
 
----@class BUFPlayer.RestIndicator: BUFConfigHandler, Positionable, Sizable, Demoable
+---@class BUFPlayer.Indicators
+local BUFPlayerIndicators = ns.BUFPlayer.Indicators
+
+---@class BUFPlayer.Indicators.RestIndicator: BUFConfigHandler, Positionable, Sizable, Demoable
 local BUFPlayerRestIndicator = {
     configPath = "unitFrames.player.restIndicator",
 }
@@ -16,7 +19,7 @@ ns.ApplyMixin(ns.Positionable, BUFPlayerRestIndicator)
 ns.ApplyMixin(ns.Sizable, BUFPlayerRestIndicator)
 ns.ApplyMixin(ns.Demoable, BUFPlayerRestIndicator)
 
-BUFPlayer.RestIndicator = BUFPlayerRestIndicator
+BUFPlayerIndicators.RestIndicator = BUFPlayerRestIndicator
 
 ---@class BUFDbSchema.UF.Player
 ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
@@ -41,12 +44,12 @@ local restIndicator = {
     type = "group",
     handler = BUFPlayerRestIndicator,
     name = ns.L["Rest Indicator"],
-    order = BUFPlayer.optionsOrder.REST_INDICATOR,
+    order = BUFPlayerIndicators.optionsOrder.REST_INDICATOR,
     args = {}
 }
 
-ns.AddPositioningOptions(restIndicator.args, restIndicatorOrder)
-ns.AddSizingOptions(restIndicator.args, restIndicatorOrder)
+ns.AddPositionableOptions(restIndicator.args, restIndicatorOrder)
+ns.AddSizableOptions(restIndicator.args, restIndicatorOrder)
 ns.AddDemoOptions(restIndicator.args, restIndicatorOrder)
 
 ns.options.args.unitFrames.args.player.args.restIndicator = restIndicator

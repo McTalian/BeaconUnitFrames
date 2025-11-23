@@ -52,7 +52,7 @@ local centerText = {
 }
 
 ns.AddAnchorOptions(centerText.args, BUFPlayerPower.textOrder)
-ns.AddPositioningOptions(centerText.args, BUFPlayerPower.textOrder)
+ns.AddPositionableOptions(centerText.args, BUFPlayerPower.textOrder)
 ns.AddFontOptions(centerText.args, BUFPlayerPower.textOrder)
 
 ns.options.args.unitFrames.args.player.args.powerBar.args.centerText = centerText

@@ -66,8 +66,8 @@ local targetName = {
     args = {}
 }
 
-ns.AddSizingOptions(targetName.args, nameOrder)
-ns.AddPositioningOptions(targetName.args, nameOrder)
+ns.AddSizableOptions(targetName.args, nameOrder)
+ns.AddPositionableOptions(targetName.args, nameOrder)
 ns.AddFontOptions(targetName.args, nameOrder)
 
 ns.options.args.unitFrames.args.target.args.targetName = targetName

@@ -7,16 +7,19 @@ ns = ns
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
 
----@class BUFPlayer.AttackIcon: BUFConfigHandler, Positionable, Sizable, Demoable
+---@class BUFPlayer.Indicators
+local BUFPlayerIndicators = ns.BUFPlayer.Indicators
+
+---@class BUFPlayer.Indicators.AttackIcon: BUFConfigHandler, Positionable, AtlasSizable, Demoable
 local BUFPlayerAttackIcon = {
     configPath = "unitFrames.player.attackIcon",
 }
 
 ns.ApplyMixin(ns.Positionable, BUFPlayerAttackIcon)
-ns.ApplyMixin(ns.Sizable, BUFPlayerAttackIcon)
+ns.ApplyMixin(ns.AtlasSizable, BUFPlayerAttackIcon)
 ns.ApplyMixin(ns.Demoable, BUFPlayerAttackIcon)
 
-BUFPlayer.AttackIcon = BUFPlayerAttackIcon
+BUFPlayerIndicators.AttackIcon = BUFPlayerAttackIcon
 
 ---@class BUFDbSchema.UF.Player
 ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
@@ -43,26 +46,12 @@ local attackIcon = {
     type = "group",
     handler = BUFPlayerAttackIcon,
     name = ns.L["Attack Icon"],
-    order = BUFPlayer.optionsOrder.ATTACK_ICON,
-    args = {
-        useAtlasSize = {
-            type = "toggle",
-            name = ns.L["UseAtlasSize"],
-            desc = ns.L["UseAtlasSizeDesc"],
-            set = function(info, value)
-                ns.db.profile.unitFrames.player.attackIcon.useAtlasSize = value
-                BUFPlayerAttackIcon:SetSize()
-            end,
-            get = function(info)
-                return ns.db.profile.unitFrames.player.attackIcon.useAtlasSize
-            end,
-            order = attackIconOrder.USE_ATLAS_SIZE,
-        },
-    },
+    order = BUFPlayerIndicators.optionsOrder.ATTACK_ICON,
+    args = {},
 }
 
-ns.AddPositioningOptions(attackIcon.args, attackIconOrder)
-ns.AddSizingOptions(attackIcon.args, attackIconOrder)
+ns.AddPositionableOptions(attackIcon.args, attackIconOrder)
+ns.AddAtlasSizableOptions(attackIcon.args, attackIconOrder)
 ns.AddDemoOptions(attackIcon.args, attackIconOrder)
 
 ns.options.args.unitFrames.args.player.args.attackIcon = attackIcon

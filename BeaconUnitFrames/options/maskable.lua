@@ -43,7 +43,7 @@ local function BoxMaskOptionValues()
     }
 end
 
-function ns.AddBoxMaskOptions(optionsTable, orderMap)
+function ns.AddBoxMaskableOptions(optionsTable, orderMap)
     optionsTable.mask = {
         type = "select",
         name = ns.L["Mask"],

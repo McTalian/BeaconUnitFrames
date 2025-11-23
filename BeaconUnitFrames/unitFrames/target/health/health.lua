@@ -78,9 +78,9 @@ local healthBar = {
     args = {},
 }
 
-ns.AddSizingOptions(healthBar.args, healthBarOrder)
+ns.AddSizableOptions(healthBar.args, healthBarOrder)
 ns.AddAnchorOptions(healthBar.args, healthBarOrder)
-ns.AddPositioningOptions(healthBar.args, healthBarOrder)
+ns.AddPositionableOptions(healthBar.args, healthBarOrder)
 ns.AddFrameLevelOption(healthBar.args, healthBarOrder)
 
 ns.options.args.unitFrames.args.target.args.healthBar = healthBar

@@ -38,7 +38,7 @@ local classResources = {
     args = {}
 }
 
-ns.AddPositioningOptions(classResources.args, classResourcesOrder)
+ns.AddPositionableOptions(classResources.args, classResourcesOrder)
 
 ns.options.args.unitFrames.args.player.args.classResources = classResources
 

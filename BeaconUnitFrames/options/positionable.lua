@@ -4,7 +4,7 @@ local addonName, ns = ...
 ---@class BUFNamespace
 ns = ns
 
-function ns.AddPositioningOptions(optionsTable, orderMap)
+function ns.AddPositionableOptions(optionsTable, orderMap)
     optionsTable.xOffset = {
         type = "range",
         name = ns.L["X Offset"],

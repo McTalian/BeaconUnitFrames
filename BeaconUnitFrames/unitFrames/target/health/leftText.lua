@@ -53,7 +53,7 @@ local leftText = {
 }
 
 ns.AddAnchorOptions(leftText.args, BUFTargetHealth.textOrder)
-ns.AddPositioningOptions(leftText.args, BUFTargetHealth.textOrder)
+ns.AddPositionableOptions(leftText.args, BUFTargetHealth.textOrder)
 ns.AddFontOptions(leftText.args, BUFTargetHealth.textOrder)
 
 leftText.args.relativeTo = nil

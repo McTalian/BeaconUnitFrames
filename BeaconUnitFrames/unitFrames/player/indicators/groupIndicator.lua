@@ -7,7 +7,10 @@ ns = ns
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
 
----@class BUFPlayer.GroupIndicator: BUFConfigHandler, Positionable, Fontable, BackgroundTexturable, Colorable, Demoable
+---@class BUFPlayer.Indicators
+local BUFPlayerIndicators = ns.BUFPlayer.Indicators
+
+---@class BUFPlayer.Indicators.GroupIndicator: BUFConfigHandler, Positionable, Fontable, BackgroundTexturable, Colorable, Demoable
 local BUFPlayerGroupIndicator = {
     configPath = "unitFrames.player.groupIndicator",
 }
@@ -18,7 +21,7 @@ ns.ApplyMixin(ns.BackgroundTexturable, BUFPlayerGroupIndicator)
 ns.ApplyMixin(ns.Colorable, BUFPlayerGroupIndicator)
 ns.ApplyMixin(ns.Demoable, BUFPlayerGroupIndicator)
 
-BUFPlayer.GroupIndicator = BUFPlayerGroupIndicator
+BUFPlayerIndicators.GroupIndicator = BUFPlayerGroupIndicator
 
 ---@class BUFDbSchema.UF.Player
 ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
@@ -69,11 +72,11 @@ local groupIndicator = {
     type = "group",
     handler = BUFPlayerGroupIndicator,
     name = ns.L["GroupIndicator"],
-    order = BUFPlayer.optionsOrder.GROUP_INDICATOR,
+    order = BUFPlayerIndicators.optionsOrder.GROUP_INDICATOR,
     args = {}
 }
 
-ns.AddPositioningOptions(groupIndicator.args, groupIndicatorOrder)
+ns.AddPositionableOptions(groupIndicator.args, groupIndicatorOrder)
 ns.AddFontOptions(groupIndicator.args, groupIndicatorOrder)
 ns.AddBackgroundTextureOptions(groupIndicator.args, groupIndicatorOrder)
 ns.AddColorOptions(groupIndicator.args, groupIndicatorOrder)
