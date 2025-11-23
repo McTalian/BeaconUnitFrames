@@ -10,7 +10,6 @@ local BUFPlayer = ns.BUFPlayer
 ---@class BUFPlayer.Indicators: BUFConfigHandler
 local BUFPlayerIndicators = {}
 
-BUFPlayer.Indicators = BUFPlayerIndicators
 
 BUFPlayerIndicators.optionsOrder = {
   GROUP_INDICATOR = 1,
@@ -20,8 +19,11 @@ BUFPlayerIndicators.optionsOrder = {
   ROLE_ICON = 5,
   LEADER_AND_GUIDE_ICON = 6,
   PVP_ICON = 7,
-  PVP_TIMER_TEXT = 8,
+  PRESTIGE = 8,
+  PLAY_TIME = 9,
 }
+
+BUFPlayer.Indicators = BUFPlayerIndicators
 
 local indicators = {
     type = "group",
@@ -38,6 +40,7 @@ function BUFPlayerIndicators:RefreshConfig()
     self.GroupIndicator:RefreshConfig()
     self.LeaderAndGuideIcon:RefreshConfig()
     self.PlayTime:RefreshConfig()
+    self.PrestigePortrait:RefreshConfig()
     self.PvPIcon:RefreshConfig()
     self.ReadyCheckIndicator:RefreshConfig()
     self.RestIndicator:RefreshConfig()

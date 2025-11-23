@@ -108,7 +108,6 @@ local pvpTimerText = {
 
 pvpIcon.args.pvpTimerText = pvpTimerText
 
-ns.AddPositionableOptions(pvpTimerText.args, pvpTimerTextOrder)
 ns.AddFontOptions(pvpTimerText.args, pvpTimerTextOrder)
 ns.AddDemoOptions(pvpTimerText.args, pvpTimerTextOrder)
 

@@ -7,5 +7,6 @@
     <Script file="roleIcon.lua"/>
     <Script file="leaderAndGuideIcon.lua"/>
     <Script file="pvpIcon.lua"/>
+    <Script file="prestigePortrait.lua"/>
     <Script file="playTime.lua"/>
 </Ui>
