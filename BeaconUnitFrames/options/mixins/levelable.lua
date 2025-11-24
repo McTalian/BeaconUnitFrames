@@ -4,7 +4,18 @@ local addonName, ns = ...
 ---@class BUFNamespace
 ns = ns
 
-function ns.AddFrameLevelOption(optionsTable, orderMap)
+--- Add frame level option to the given options table
+--- @param optionsTable table
+--- @param _orderMap BUFOptionsOrder?
+function ns.AddFrameLevelOption(optionsTable, _orderMap)
+    local orderMap = _orderMap or ns.defaultOrderMap
+
+    optionsTable.positioning = optionsTable.positioning or {
+        type = "header",
+        name = ns.L["Positioning"],
+        order = orderMap.POSITIONING_HEADER,
+    }
+
     optionsTable.frameLevel = {
         type = "range",
         name = ns.L["Frame Level"],
@@ -14,7 +25,7 @@ function ns.AddFrameLevelOption(optionsTable, orderMap)
         bigStep = 10,
         set = "SetFrameLevel",
         get = "GetFrameLevel",
-        order = orderMap.FRAME_LEVEL or 5,
+        order = orderMap.FRAME_LEVEL,
     }
 end
 

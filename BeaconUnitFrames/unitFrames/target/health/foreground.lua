@@ -31,15 +31,6 @@ ns.dbDefaults.profile.unitFrames.target.healthBar.foreground = {
     useClassColor = false,
 }
 
-local foregroundOrder = {
-    USE_STATUS_BAR_TEXTURE = 1,
-    STATUS_BAR_TEXTURE = 2,
-    USE_CUSTOM_COLOR = 3,
-    CUSTOM_COLOR = 4,
-    CLASS_COLOR = 5,
-    REACTION_COLOR = 6,
-}
-
 local foreground = {
     type = "group",
     handler = foregroundHandler,
@@ -48,10 +39,10 @@ local foreground = {
     args = {}
 }
 
-ns.AddStatusBarTextureOptions(foreground.args, foregroundOrder)
-ns.AddColorOptions(foreground.args, foregroundOrder)
-ns.AddClassColorOptions(foreground.args, foregroundOrder)
-ns.AddReactionColorOptions(foreground.args, foregroundOrder)
+ns.AddStatusBarTextureOptions(foreground.args)
+ns.AddColorOptions(foreground.args)
+ns.AddClassColorOptions(foreground.args)
+ns.AddReactionColorOptions(foreground.args)
 
 ns.options.args.unitFrames.args.target.args.healthBar.args.foreground = foreground
 

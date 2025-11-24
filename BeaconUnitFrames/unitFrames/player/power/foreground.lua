@@ -32,14 +32,6 @@ ns.dbDefaults.profile.unitFrames.player.powerBar.foreground = {
     usePowerColor = false,
 }
 
-local foregroundOrder = {
-    USE_STATUS_BAR_TEXTURE = 1,
-    STATUS_BAR_TEXTURE = 2,
-    USE_CUSTOM_COLOR = 3,
-    CUSTOM_COLOR = 4,
-    CLASS_COLOR = 5,
-}
-
 local foreground = {
     type = "group",
     handler = foregroundHandler,
@@ -48,9 +40,9 @@ local foreground = {
     args = {}
 }
 
-ns.AddStatusBarTextureOptions(foreground.args, foregroundOrder)
-ns.AddColorOptions(foreground.args, foregroundOrder)
-ns.AddPowerColorOptions(foreground.args, foregroundOrder)
+ns.AddStatusBarTextureOptions(foreground.args)
+ns.AddColorOptions(foreground.args)
+ns.AddPowerColorOptions(foreground.args)
 
 ns.options.args.unitFrames.args.player.args.powerBar.args.foreground = foreground
 

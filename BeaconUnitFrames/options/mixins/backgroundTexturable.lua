@@ -4,14 +4,25 @@ local addonName, ns = ...
 ---@class BUFNamespace
 ns = ns
 
-function ns.AddBackgroundTextureOptions(optionsTable, orderMap)
+--- Add background texture options to the given options table
+--- @param optionsTable table
+--- @param _orderMap BUFOptionsOrder?
+function ns.AddBackgroundTextureOptions(optionsTable, _orderMap)
+    local orderMap = _orderMap or ns.defaultOrderMap
+
+    optionsTable.backgroundHeader = optionsTable.backgroundHeader or {
+        type = "header",
+        name = ns.L["Background Options"],
+        order = orderMap.BACKGROUND_HEADER,
+    }
+
     optionsTable.useBackgroundTexture = {
         type = "toggle",
         name = ns.L["Use Background Texture"],
         desc = ns.L["UseBackgroundTextureDesc"],
         set = "SetUseBackgroundTexture",
         get = "GetUseBackgroundTexture",
-        order = orderMap.USE_BACKGROUND_TEXTURE or 10,
+        order = orderMap.USE_BACKGROUND_TEXTURE,
     }
     
     optionsTable.backgroundTexture = {
@@ -24,7 +35,7 @@ function ns.AddBackgroundTextureOptions(optionsTable, orderMap)
         disabled = "IsBackgroundTextureDisabled",
         set = "SetBackgroundTexture",
         get = "GetBackgroundTexture",
-        order = orderMap.BACKGROUND_TEXTURE or 11,
+        order = orderMap.BACKGROUND_TEXTURE,
     }
 end
 

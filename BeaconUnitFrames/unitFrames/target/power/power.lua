@@ -7,11 +7,12 @@ ns = ns
 ---@class BUFTarget
 local BUFTarget = ns.BUFTarget
 
----@class BUFTarget.Power: BUFConfigHandler, Positionable, Sizable, Levelable
+---@class BUFTarget.Power: BUFConfigHandler, Anchorable, Positionable, Sizable, Levelable
 local BUFTargetPower = {
     configPath = "unitFrames.target.powerBar",
 }
 
+ns.ApplyMixin(ns.Anchorable, BUFTargetPower)
 ns.ApplyMixin(ns.Positionable, BUFTargetPower)
 ns.ApplyMixin(ns.Sizable, BUFTargetPower)
 ns.ApplyMixin(ns.Levelable, BUFTargetPower)
@@ -25,42 +26,24 @@ ns.dbDefaults.profile.unitFrames.target = ns.dbDefaults.profile.unitFrames.targe
 ns.dbDefaults.profile.unitFrames.target.powerBar = {
     width = 134,
     height = 10,
+    anchorPoint = "TOPRIGHT",
+    relativeTo = "TargetFrame",
+    relativePoint = "BOTTOMRIGHT",
     xOffset = 8,
     yOffset = -1,
     frameLevel = 3,
 }
 
-local powerBarOrder = {
-    WIDTH = 1,
-    HEIGHT = 2,
-    X_OFFSET = 3,
-    Y_OFFSET = 4,
-    FRAME_LEVEL = 5,
-    LEFT_TEXT = 6,
-    RIGHT_TEXT = 7,
-    CENTER_TEXT = 8,
-    FOREGROUND = 9,
-    BACKGROUND = 10,
-}
+local powerBarOrder = {}
+
+ns.ApplyMixin(ns.defaultOrderMap, powerBarOrder)
+powerBarOrder.LEFT_TEXT = powerBarOrder.FRAME_LEVEL + .1
+powerBarOrder.RIGHT_TEXT = powerBarOrder.LEFT_TEXT + .1
+powerBarOrder.CENTER_TEXT = powerBarOrder.RIGHT_TEXT + .1
+powerBarOrder.FOREGROUND = powerBarOrder.CENTER_TEXT + .1
+powerBarOrder.BACKGROUND = powerBarOrder.FOREGROUND + .1
 
 BUFTargetPower.topGroupOrder = powerBarOrder
-
-local textOrder = {
-    ANCHOR_POINT = 1,
-    X_OFFSET = 2,
-    Y_OFFSET = 3,
-    USE_FONT_OBJECTS = 4,
-    FONT_OBJECT = 5,
-    FONT_COLOR = 6,
-    FONT_FACE = 7,
-    FONT_SIZE = 8,
-    FONT_FLAGS = 9,
-    FONT_SHADOW_COLOR = 10,
-    FONT_SHADOW_OFFSET_X = 11,
-    FONT_SHADOW_OFFSET_Y = 12,
-}
-
-BUFTargetPower.textOrder = textOrder
 
 local powerBar = {
     type = "group",
@@ -72,6 +55,7 @@ local powerBar = {
 }
 
 ns.AddSizableOptions(powerBar.args, powerBarOrder)
+ns.AddAnchorOptions(powerBar.args, powerBarOrder)
 ns.AddPositionableOptions(powerBar.args, powerBarOrder)
 ns.AddFrameLevelOption(powerBar.args, powerBarOrder)
 
@@ -85,6 +69,7 @@ BUFTargetPower.coeffs = {
 }
 
 function BUFTargetPower:RefreshConfig()
+    self:InitializeTargetPower()
     self:SetPosition()
     self:SetSize()
     self:SetLevel()
@@ -93,6 +78,22 @@ function BUFTargetPower:RefreshConfig()
     self.centerTextHandler:RefreshConfig()
     self.foregroundHandler:RefreshConfig()
     -- self.backgroundHandler:RefreshConfig()
+end
+
+function BUFTargetPower:InitializeTargetPower()
+    if self.isInitialized then
+        return
+    end
+
+    self.isInitialized = true
+
+    local parent = BUFTarget
+    parent.manaBar.ManaBarMask:Hide()
+    if not ns.BUFTarget:IsHooked(parent.manaBar.ManaBarMask, "SetAtlas") then
+        ns.BUFTarget:SecureHook(parent.manaBar.ManaBarMask, "SetAtlas", function(s)
+            print("SetAtlas called on Target Power Bar ManaBarMask.")
+        end)
+    end
 end
 
 function BUFTargetPower:SetSize()
@@ -110,7 +111,14 @@ function BUFTargetPower:SetPosition()
     local parent = BUFTarget
     local xOffset = ns.db.profile.unitFrames.target.powerBar.xOffset
     local yOffset = ns.db.profile.unitFrames.target.powerBar.yOffset
-    parent.manaBar:SetPoint("TOPRIGHT", ns.BUFTarget.healthBarContainer, "BOTTOMRIGHT", xOffset, yOffset)
+    parent.manaBar:ClearAllPoints()
+    parent.manaBar:SetPoint(
+        ns.db.profile.unitFrames.target.powerBar.anchorPoint,
+        _G[ns.db.profile.unitFrames.target.powerBar.relativeTo],
+        ns.db.profile.unitFrames.target.powerBar.relativePoint,
+        xOffset,
+        yOffset
+    )
 end
 
 function BUFTargetPower:SetLevel()

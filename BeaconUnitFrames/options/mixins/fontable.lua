@@ -4,14 +4,64 @@ local addonName, ns = ...
 ---@class BUFNamespace
 ns = ns
 
-function ns.AddFontOptions(optionsTable, orderMap)
+---Check if a string starts with another string
+---@param str string
+---@param start string
+---@return boolean
+local function startswith(str, start)
+	return string.sub(str, 1, #start) == start
+end
+
+ns.FontFlags = {
+	OUTLINE = "OUTLINE",
+	THICKOUTLINE = "THICKOUTLINE",
+	MONOCHROME = "MONOCHROME",
+}
+
+ns.FontFlagsOptions = {
+    [ns.FontFlags.OUTLINE] = SELF_HIGHLIGHT_OUTLINE,
+    [ns.FontFlags.THICKOUTLINE] = ns.L["Thick Outline"],
+    [ns.FontFlags.MONOCHROME] = ns.L["Monochrome"],
+}
+
+function ns.FontFlagsToString(fontFlagsTable)
+    return ns:TableToCommaSeparatedString(fontFlagsTable)
+end
+
+function ns.FontObjectOptions()
+    local fonts = _G.GetFonts()
+    local allFonts = {}
+    for k, v in pairs(fonts) do
+        if type(v) == "string" then
+            if startswith(v, "table") then
+            -- Skip
+            else
+                allFonts[v] = v
+            end
+        end
+    end
+    return allFonts
+end
+
+--- Add font options to the given options table
+--- @param optionsTable table
+--- @param _orderMap BUFOptionsOrder?
+function ns.AddFontOptions(optionsTable, _orderMap)
+    local orderMap = _orderMap or ns.defaultOrderMap
+
+    optionsTable.fontSettings = optionsTable.fontSettings or {
+        type = "header",
+        name = ns.L["Font Settings"],
+        order = orderMap.FONT_SETTINGS_HEADER,
+    }
+
     optionsTable.useFontObjects = {
         type = "toggle",
         name = ns.L["Use Font Objects"],
         desc = ns.L["UseFontObjectsDesc"],
         set = "SetUseFontObjects",
         get = "GetUseFontObjects",
-        order = orderMap.USE_FONT_OBJECTS or 10,
+        order = orderMap.USE_FONT_OBJECTS,
     }
     
     optionsTable.fontObject = {
@@ -22,7 +72,7 @@ function ns.AddFontOptions(optionsTable, orderMap)
         disabled = "IsCustomFontDisabled",
         set = "SetFontObject",
         get = "GetFontObject",
-        order = orderMap.FONT_OBJECT or 11,
+        order = orderMap.FONT_OBJECT,
     }
     
     optionsTable.fontColor = {
@@ -31,7 +81,7 @@ function ns.AddFontOptions(optionsTable, orderMap)
         hasAlpha = true,
         set = "SetFontColor",
         get = "GetFontColor",
-        order = orderMap.FONT_COLOR or 12,
+        order = orderMap.FONT_COLOR,
     }
     
     optionsTable.fontFace = {
@@ -44,7 +94,7 @@ function ns.AddFontOptions(optionsTable, orderMap)
         disabled = "IsFontObjectEnabled",
         set = "SetFontFace",
         get = "GetFontFace",
-        order = orderMap.FONT_FACE or 13,
+        order = orderMap.FONT_FACE,
     }
     
     optionsTable.fontSize = {
@@ -59,7 +109,7 @@ function ns.AddFontOptions(optionsTable, orderMap)
         disabled = "IsFontObjectEnabled",
         set = "SetFontSize",
         get = "GetFontSize",
-        order = orderMap.FONT_SIZE or 14,
+        order = orderMap.FONT_SIZE,
     }
     
     optionsTable.fontFlags = {
@@ -69,7 +119,7 @@ function ns.AddFontOptions(optionsTable, orderMap)
         disabled = "IsFontObjectEnabled",
         set = "SetFontFlag",
         get = "GetFontFlag",
-        order = orderMap.FONT_FLAGS or 15,
+        order = orderMap.FONT_FLAGS,
     }
     
     optionsTable.shadowColor = {
@@ -79,7 +129,7 @@ function ns.AddFontOptions(optionsTable, orderMap)
         disabled = "IsFontObjectEnabled",
         set = "SetShadowColor",
         get = "GetShadowColor",
-        order = orderMap.FONT_SHADOW_COLOR or 16,
+        order = orderMap.FONT_SHADOW_COLOR,
     }
     
     optionsTable.shadowOffsetX = {
@@ -92,7 +142,7 @@ function ns.AddFontOptions(optionsTable, orderMap)
         disabled = "IsFontObjectEnabled",
         set = "SetShadowOffsetX",
         get = "GetShadowOffsetX",
-        order = orderMap.FONT_SHADOW_OFFSET_X or 17,
+        order = orderMap.FONT_SHADOW_OFFSET_X,
     }
     
     optionsTable.shadowOffsetY = {
@@ -105,7 +155,7 @@ function ns.AddFontOptions(optionsTable, orderMap)
         disabled = "IsFontObjectEnabled",
         set = "SetShadowOffsetY",
         get = "GetShadowOffsetY",
-        order = orderMap.FONT_SHADOW_OFFSET_Y or 18,
+        order = orderMap.FONT_SHADOW_OFFSET_Y,
     }
 end
 

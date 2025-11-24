@@ -43,7 +43,18 @@ local function BoxMaskOptionValues()
     }
 end
 
-function ns.AddBoxMaskableOptions(optionsTable, orderMap)
+--- Add box maskable options to the given options table
+--- @param optionsTable table
+--- @param _orderMap BUFOptionsOrder?
+function ns.AddBoxMaskableOptions(optionsTable, _orderMap)
+    local orderMap = _orderMap or ns.defaultOrderMap
+
+    optionsTable.texturing = optionsTable.texturing or {
+        type = "header",
+        name = ns.L["Texturing"],
+        order = orderMap.TEXTURING_HEADER,
+    }
+
     optionsTable.mask = {
         type = "select",
         name = ns.L["Mask"],
@@ -51,7 +62,7 @@ function ns.AddBoxMaskableOptions(optionsTable, orderMap)
         values = BoxMaskOptionValues,
         set = "SetMask",
         get = "GetMask",
-        order = orderMap.MASK or 20,
+        order = orderMap.MASK,
     }
 
     optionsTable.maskWidthScale = {
@@ -65,7 +76,7 @@ function ns.AddBoxMaskableOptions(optionsTable, orderMap)
         bigStep = 0.05,
         set = "SetMaskWidthScale",
         get = "GetMaskWidthScale",
-        order = orderMap.MASK_WIDTH_SCALE or 21,
+        order = orderMap.MASK_WIDTH_SCALE,
     }
 
     optionsTable.maskHeightScale = {
@@ -79,7 +90,7 @@ function ns.AddBoxMaskableOptions(optionsTable, orderMap)
         bigStep = 0.05,
         set = "SetMaskHeightScale",
         get = "GetMaskHeightScale",
-        order = orderMap.MASK_HEIGHT_SCALE or 22,
+        order = orderMap.MASK_HEIGHT_SCALE,
     }
 end
 

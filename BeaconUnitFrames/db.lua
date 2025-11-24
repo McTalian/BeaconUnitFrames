@@ -35,11 +35,14 @@ local function interpretKey(key)
 end
 
 -- Helper function to get or set a nested table value by path
-function DbUtils.getPath(db, path)
+function DbUtils.getPath(db, path, errorIfMissing)
 	local current = db
 	for part in path:gmatch("[^.]+") do
 		current = current[interpretKey(part)]
 		if current == nil then
+			if errorIfMissing then
+				error("Path '" .. path .. "' does not exist in the database.")
+			end
 			return nil
 		end
 	end

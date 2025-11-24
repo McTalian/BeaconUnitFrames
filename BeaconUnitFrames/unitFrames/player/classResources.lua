@@ -25,11 +25,6 @@ ns.dbDefaults.profile.unitFrames.player.classResources = {
     yOffset = 25,
 }
 
-local classResourcesOrder = {
-    X_OFFSET = 1,
-    Y_OFFSET = 2,
-}
-
 local classResources = {
     type = "group",
     handler = BUFPlayerClassResources,
@@ -38,7 +33,7 @@ local classResources = {
     args = {}
 }
 
-ns.AddPositionableOptions(classResources.args, classResourcesOrder)
+ns.AddPositionableOptions(classResources.args)
 
 ns.options.args.unitFrames.args.player.args.classResources = classResources
 

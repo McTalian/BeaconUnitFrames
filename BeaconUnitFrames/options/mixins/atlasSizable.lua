@@ -4,20 +4,21 @@ local addonName, ns = ...
 ---@class BUFNamespace
 ns = ns
 
-function ns.AddAtlasSizableOptions(optionsTable, orderMap)
+--- Add atlas sizable options to the given options table
+--- @param optionsTable table
+--- @param _orderMap BUFOptionsOrder?
+function ns.AddAtlasSizableOptions(optionsTable, _orderMap)
+    local orderMap = _orderMap or ns.defaultOrderMap
     optionsTable.useAtlasSize = {
         type = "toggle",
         name = ns.L["UseAtlasSize"],
         desc = ns.L["UseAtlasSizeDesc"],
         set = "SetUseAtlasSize",
         get = "GetUseAtlasSize",
-        order = orderMap.USE_ATLAS_SIZE or 6,
+        order = orderMap.USE_ATLAS_SIZE,
     }
 
-    ns.AddSizableOptions(optionsTable, {
-        WIDTH = orderMap.WIDTH or 2,
-        HEIGHT = orderMap.HEIGHT or 3,
-    })
+    ns.AddSizableOptions(optionsTable, orderMap)
 end
 
 ---@class AtlasSizableHandler: SizableHandler

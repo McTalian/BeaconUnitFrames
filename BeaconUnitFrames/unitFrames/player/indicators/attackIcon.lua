@@ -31,15 +31,6 @@ ns.dbDefaults.profile.unitFrames.player.attackIcon = {
     height = 16,
 }
 
-local attackIconOrder = {
-    DEMO_MODE = 0.5,
-    X_OFFSET = 1,
-    Y_OFFSET = 2,
-    USE_ATLAS_SIZE = 3,
-    WIDTH = 4,
-    HEIGHT = 5,
-}
-
 local attackIcon = {
     type = "group",
     handler = BUFPlayerAttackIcon,
@@ -48,9 +39,9 @@ local attackIcon = {
     args = {},
 }
 
-ns.AddPositionableOptions(attackIcon.args, attackIconOrder)
-ns.AddAtlasSizableOptions(attackIcon.args, attackIconOrder)
-ns.AddDemoOptions(attackIcon.args, attackIconOrder)
+ns.AddPositionableOptions(attackIcon.args)
+ns.AddAtlasSizableOptions(attackIcon.args)
+ns.AddDemoOptions(attackIcon.args)
 
 ns.options.args.unitFrames.args.player.args.indicators.args.attackIcon = attackIcon
 

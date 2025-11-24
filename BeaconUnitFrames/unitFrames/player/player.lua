@@ -51,6 +51,42 @@ function BUFPlayer:OnEnable()
 end
 
 function BUFPlayer:RefreshConfig()
+    if not self.initialized then
+        self.initialized = true
+        
+        self.ArtUpdateListener = CreateFrame("Frame", nil, nil, "SecureHandlerBaseTemplate")
+
+        self.ArtUpdateListener:SetFrameRef("PlayerHealthContainer", self.healthBarContainer)
+        self.ArtUpdateListener:SetFrameRef("PlayerHealthBar", self.healthBar)
+        self.ArtUpdateListener:SetFrameRef("PlayerManaBar", self.manaBar)
+
+        function self.ArtUpdateListener:RunSecure()
+            local playerDb = ns.db.profile.unitFrames.player
+            self:Execute(format([[
+                local healthContainer = self:GetFrameRef("PlayerHealthContainer")
+                local healthBar = self:GetFrameRef("PlayerHealthBar")
+                local manaBar = self:GetFrameRef("PlayerManaBar")
+
+                healthContainer:SetWidth(%d)
+                healthContainer:SetHeight(%d)
+                healthBar:SetWidth(%d)
+                healthBar:SetHeight(%d)
+                manaBar:SetWidth(%d)
+                manaBar:SetHeight(%d)
+            ]]),
+                playerDb.healthBar.width,
+                playerDb.healthBar.height,
+                playerDb.healthBar.width,
+                playerDb.healthBar.height,
+                playerDb.powerBar.width,
+                playerDb.powerBar.height
+            )
+        end
+
+        self:SecureHook("PlayerFrame_UpdateArt", function()
+            BUFPlayer.ArtUpdateListener:RunSecure()
+        end)
+    end
     self.Frame:RefreshConfig()
     self.Portrait:RefreshConfig()
     self.Name:RefreshConfig()

@@ -4,14 +4,25 @@ local addonName, ns = ...
 ---@class BUFNamespace
 ns = ns
 
-function ns.AddClassColorOptions(optionsTable, orderMap)
+--- Add class color options to the given options table
+--- @param optionsTable table
+--- @param _orderMap BUFOptionsOrder?
+function ns.AddClassColorOptions(optionsTable, _orderMap)
+    local orderMap = _orderMap or ns.defaultOrderMap
+
+    optionsTable.coloring = optionsTable.coloring or {
+        type = "header",
+        name = ns.L["Coloring"],
+        order = orderMap.COLORING_HEADER,
+    }
+
     optionsTable.useClassColor = {
         type = "toggle",
         name = ns.L["Use Class Color"],
         desc = ns.L["UseClassColorDesc"],
         set = "SetUseClassColor",
         get = "GetUseClassColor",
-        order = orderMap.CLASS_COLOR or 12,
+        order = orderMap.CLASS_COLOR,
     }
 end
 

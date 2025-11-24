@@ -32,14 +32,6 @@ ns.dbDefaults.profile.unitFrames.player.restIndicator = {
     height = 30,
 }
 
-local restIndicatorOrder = {
-    DEMO_MODE = 0.5,
-    X_OFFSET = 1,
-    Y_OFFSET = 2,
-    WIDTH = 3,
-    HEIGHT = 4,
-}
-
 local restIndicator = {
     type = "group",
     handler = BUFPlayerRestIndicator,
@@ -48,9 +40,9 @@ local restIndicator = {
     args = {}
 }
 
-ns.AddPositionableOptions(restIndicator.args, restIndicatorOrder)
-ns.AddSizableOptions(restIndicator.args, restIndicatorOrder)
-ns.AddDemoOptions(restIndicator.args, restIndicatorOrder)
+ns.AddPositionableOptions(restIndicator.args)
+ns.AddSizableOptions(restIndicator.args)
+ns.AddDemoOptions(restIndicator.args)
 
 ns.options.args.unitFrames.args.player.args.indicators.args.restIndicator = restIndicator
 

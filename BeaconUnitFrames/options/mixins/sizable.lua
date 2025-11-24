@@ -4,7 +4,18 @@ local addonName, ns = ...
 ---@class BUFNamespace
 ns = ns
 
-function ns.AddSizableOptions(optionsTable, orderMap)
+--- Add sizable options to the given options table
+--- @param optionsTable table
+--- @param _orderMap BUFOptionsOrder?
+function ns.AddSizableOptions(optionsTable, _orderMap)
+    local orderMap = _orderMap or ns.defaultOrderMap
+
+    optionsTable.sizing = optionsTable.sizing or {
+        type = "header",
+        name = ns.L["Sizing"],
+        order = orderMap.SIZING_HEADER,
+    }
+
     optionsTable.width = {
         type = "range",
         name = HUD_EDIT_MODE_SETTING_CHAT_FRAME_WIDTH,
@@ -16,7 +27,7 @@ function ns.AddSizableOptions(optionsTable, orderMap)
         bigStep = 10,
         set = "SetWidth",
         get = "GetWidth",
-        order = orderMap.WIDTH or 1,
+        order = orderMap.WIDTH,
     }
     
     optionsTable.height = {
@@ -30,7 +41,7 @@ function ns.AddSizableOptions(optionsTable, orderMap)
         bigStep = 5,
         set = "SetHeight",
         get = "GetHeight",
-        order = orderMap.HEIGHT or 2,
+        order = orderMap.HEIGHT,
     }
 end
 

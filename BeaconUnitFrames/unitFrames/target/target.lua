@@ -32,7 +32,7 @@ StaticPopupDialogs["BUF_RELOAD_UI"] = {
 
 ns.options.args.unitFrames.args.target = {
     type = "group",
-    name = TARGET,
+    name = ns.L["TargetFrame"],
     order = 1,
     childGroups = "tree",
     args = {
@@ -58,10 +58,11 @@ ns.options.args.unitFrames.args.target = {
 BUFTarget.optionsOrder = {
     FRAME = 1,
     PORTRAIT = 2,
-    NAME = 3,
-    LEVEL = 4,
-    HEALTH = 5,
-    POWER = 6,
+    REPUTATION_BAR = 3,
+    NAME = 4,
+    LEVEL = 5,
+    HEALTH = 6,
+    POWER = 7,
 }
 
 function BUFTarget:OnEnable()
@@ -98,4 +99,5 @@ function BUFTarget:RefreshConfig()
     self.Level:RefreshConfig()
     self.Health:RefreshConfig()
     self.Power:RefreshConfig()
+    self.ReputationBar:RefreshConfig()
 end

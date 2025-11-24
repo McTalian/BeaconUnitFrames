@@ -4,14 +4,25 @@ local addonName, ns = ...
 ---@class BUFNamespace
 ns = ns
 
-ns.AddTextCustomizableOptions = function(optionsTable, orderMap)
+--- Add text customizable options to the given options table
+--- @param optionsTable table
+--- @param _orderMap BUFOptionsOrder?
+ns.AddTextCustomizableOptions = function(optionsTable, _orderMap)
+    local orderMap = _orderMap or ns.defaultOrderMap
+
+    optionsTable.customization = optionsTable.customization or {
+        type = "header",
+        name = ns.L["Text Customization"],
+        order = orderMap.CUSTOMIZATION_HEADER,
+    }
+
     optionsTable.customText = {
         type = "input",
         name = ns.L["Custom Text"],
         desc = ns.L["CustomTextDesc"],
         set = "SetCustomText",
         get = "GetCustomText",
-        order = orderMap.CUSTOM_TEXT or 1,
+        order = orderMap.CUSTOM_TEXT,
     }
 end
 

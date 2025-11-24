@@ -4,14 +4,25 @@ local addonName, ns = ...
 ---@class BUFNamespace
 ns = ns
 
-function ns.AddReactionColorOptions(optionsTable, orderMap)
+--- Add reaction color options to the given options table
+--- @param optionsTable table
+--- @param _orderMap BUFOptionsOrder?
+function ns.AddReactionColorOptions(optionsTable, _orderMap)
+    local orderMap = _orderMap or ns.defaultOrderMap
+
+    optionsTable.coloring = optionsTable.coloring or {
+        type = "header",
+        name = ns.L["Coloring"],
+        order = orderMap.COLORING_HEADER,
+    }
+
     optionsTable.useReactionColor = {
         type = "toggle",
         name = ns.L["Use Reaction Color"],
         desc = ns.L["UseReactionColorDesc"],
         set = "SetUseReactionColor",
         get = "GetUseReactionColor",
-        order = orderMap.REACTION_COLOR or 13,
+        order = orderMap.REACTION_COLOR,
     }
 end
 

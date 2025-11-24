@@ -4,7 +4,18 @@ local addonName, ns = ...
 ---@class BUFNamespace
 ns = ns
 
-function ns.AddScalableOptions(optionsTable, orderMap)
+--- Add scalable options to the given options table
+--- @param optionsTable table
+--- @param _orderMap BUFOptionsOrder?
+function ns.AddScalableOptions(optionsTable, _orderMap)
+  local orderMap = _orderMap or ns.defaultOrderMap
+
+  optionsTable.sizing = optionsTable.sizing or {
+    type = "header",
+    name = ns.L["Sizing"],
+    order = orderMap.SIZING_HEADER,
+  }
+
   optionsTable.scale = {
       type = "range",
       name = ns.L["Scale"],
@@ -17,7 +28,7 @@ function ns.AddScalableOptions(optionsTable, orderMap)
       bigStep = 0.05,
       set = "SetScale",
       get = "GetScale",
-      order = orderMap.SCALE or 5,
+      order = orderMap.SCALE,
   }
 end
 

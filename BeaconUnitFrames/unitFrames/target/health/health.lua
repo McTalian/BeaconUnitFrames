@@ -34,40 +34,17 @@ ns.dbDefaults.profile.unitFrames.target.healthBar = {
     frameLevel = 3,
 }
 
-local healthBarOrder = {
-    WIDTH = 1,
-    HEIGHT = 2,
-    ANCHOR_POINT = 3,
-    RELATIVE_TO = 4,
-    RELATIVE_POINT = 5,
-    X_OFFSET = 6,
-    Y_OFFSET = 7,
-    FRAME_LEVEL = 8,
-    LEFT_TEXT = 9,
-    RIGHT_TEXT = 10,
-    CENTER_TEXT = 11,
-    FOREGROUND = 12,
-    BACKGROUND = 13,
-}
+local healthBarOrder = {}
+ns.ApplyMixin(ns.defaultOrderMap, healthBarOrder)
+healthBarOrder.LEFT_TEXT = healthBarOrder.FRAME_LEVEL + .1
+healthBarOrder.RIGHT_TEXT = healthBarOrder.LEFT_TEXT + .1
+healthBarOrder.CENTER_TEXT = healthBarOrder.RIGHT_TEXT + .1
+healthBarOrder.DEAD_TEXT = healthBarOrder.CENTER_TEXT + .1
+healthBarOrder.UNCONSCIOUS_TEXT = healthBarOrder.DEAD_TEXT + .1
+healthBarOrder.FOREGROUND = healthBarOrder.UNCONSCIOUS_TEXT + .1
+healthBarOrder.BACKGROUND = healthBarOrder.FOREGROUND + .1
 
 BUFTargetHealth.topGroupOrder = healthBarOrder
-
-local textOrder = {
-    ANCHOR_POINT = 1,
-    X_OFFSET = 2,
-    Y_OFFSET = 3,
-    USE_FONT_OBJECTS = 4,
-    FONT_OBJECT = 5,
-    FONT_COLOR = 6,
-    FONT_FACE = 7,
-    FONT_SIZE = 8,
-    FONT_FLAGS = 9,
-    FONT_SHADOW_COLOR = 10,
-    FONT_SHADOW_OFFSET_X = 11,
-    FONT_SHADOW_OFFSET_Y = 12,
-}
-
-BUFTargetHealth.textOrder = textOrder
 
 local healthBar = {
     type = "group",
@@ -100,6 +77,8 @@ function BUFTargetHealth:RefreshConfig()
     self.leftTextHandler:RefreshConfig()
     self.rightTextHandler:RefreshConfig()
     self.centerTextHandler:RefreshConfig()
+    self.deadTextHandler:RefreshConfig()
+    self.unconsciousTextHandler:RefreshConfig()
     self.foregroundHandler:RefreshConfig()
 end
 
@@ -113,7 +92,9 @@ function BUFTargetHealth:InitializeTargetHealth()
     local parent = BUFTarget
     parent.healthBarContainer.HealthBarMask:Hide()
     if not ns.BUFTarget:IsHooked(parent.healthBarContainer.HealthBarMask, "Show") then
-        ns.BUFTarget:RawHook(parent.healthBarContainer.HealthBarMask, "Show", ns.noop, true)
+        ns.BUFTarget:SecureHook(parent.healthBarContainer.HealthBarMask, "Show", function(s)
+            s:Hide()
+        end)
     end
 end
 

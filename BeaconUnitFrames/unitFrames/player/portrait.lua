@@ -35,14 +35,9 @@ ns.dbDefaults.profile.unitFrames.player.portrait = {
     alpha = 1.0,
 }
 
-local portraitOrder = {
-    ENABLED = 1,
-    WIDTH = 2,
-    HEIGHT = 3,
-    X_OFFSET = 4,
-    Y_OFFSET = 5,
-    CORNER_INDICATOR = 6,
-}
+local portraitOrder = {}
+ns.ApplyMixin(ns.defaultOrderMap, portraitOrder)
+portraitOrder.CORNER_INDICATOR = portraitOrder.ENABLE + .1
 
 local portrait = {
     type = "group",
@@ -61,8 +56,9 @@ local portrait = {
             get = function(info)
                 return ns.db.profile.unitFrames.player.portrait.enabled
             end,
-            order = 1,
+            order = portraitOrder.ENABLE,
         },
+        -- TODO: Move this to indicators file with more options
         cornerIndicator = {
             type = "toggle",
             name = ns.L["EnableCornerIndicator"],
@@ -74,7 +70,7 @@ local portrait = {
             get = function(info)
                 return ns.db.profile.unitFrames.player.portrait.enableCornerIndicator
             end,
-            order = 2,
+            order = portraitOrder.CORNER_INDICATOR,
         },
     },
 }
@@ -124,10 +120,14 @@ function BUFPlayerPortrait:ShowHidePortrait()
         parent.container.PlayerPortrait:Hide()
         parent.container.PlayerPortraitMask:Hide()
         if not parent:IsHooked(parent.container.PlayerPortrait, "Show") then
-            parent:RawHook(parent.container.PlayerPortrait, "Show", ns.noop, true)
+            parent:SecureHook(parent.container.PlayerPortrait, "Show", function(s)
+                s:Hide()
+            end)
         end
         if not parent:IsHooked(parent.container.PlayerPortraitMask, "Show") then
-            parent:RawHook(parent.container.PlayerPortraitMask, "Show", ns.noop, true)
+            parent:SecureHook(parent.container.PlayerPortraitMask, "Show", function(s)
+                s:Hide()
+            end)
         end
     end
 end
@@ -141,7 +141,9 @@ function BUFPlayerPortrait:SetCornerIndicator()
     else
         parent.contentContextual.PlayerPortraitCornerIcon:Hide()
         if not ns.BUFPlayer:IsHooked(parent.contentContextual.PlayerPortraitCornerIcon, "Show") then
-            parent:RawHook(parent.contentContextual.PlayerPortraitCornerIcon, "Show", ns.noop, true)
+            parent:SecureHook(parent.contentContextual.PlayerPortraitCornerIcon, "Show", function(s)
+                s:Hide()
+            end)
         end
     end
 end

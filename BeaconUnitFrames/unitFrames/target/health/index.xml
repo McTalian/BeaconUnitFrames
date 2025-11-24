@@ -5,4 +5,6 @@
     <Script file="leftText.lua"/>
     <Script file="rightText.lua"/>
     <Script file="centerText.lua"/>
+    <Script file="deadText.lua"/>
+    <Script file="unconsciousText.lua"/>
 </Ui>

@@ -10,15 +10,12 @@ local BUFPlayer = ns.BUFPlayer
 ---@class BUFPlayer.Health
 local BUFPlayerHealth = BUFPlayer.Health
 
----@class BUFPlayer.Health.CenterText: BUFConfigHandler, Positionable, Fontable, Anchorable
+---@class BUFPlayer.Health.CenterText: BUFConfigHandler, BUFFontString
 local centerTextHandler = {
     configPath = "unitFrames.player.healthBar.centerText",
 }
 
-
-ns.ApplyMixin(ns.Positionable, centerTextHandler)
-ns.ApplyMixin(ns.Fontable, centerTextHandler)
-ns.ApplyMixin(ns.Anchorable, centerTextHandler)
+ns.BUFFontString:ApplyMixin(centerTextHandler)
 
 BUFPlayerHealth.centerTextHandler = centerTextHandler
 
@@ -27,6 +24,8 @@ ns.dbDefaults.profile.unitFrames.player.healthBar = ns.dbDefaults.profile.unitFr
 
 ns.dbDefaults.profile.unitFrames.player.healthBar.centerText = {
     anchorPoint = "CENTER",
+    relativeTo = ns.DEFAULT,
+    relativePoint = ns.DEFAULT,
     xOffset = 0,
     yOffset = 0,
     useFontObjects = true,
@@ -52,64 +51,13 @@ local centerText = {
     args = {}
 }
 
-ns.AddAnchorOptions(centerText.args, BUFPlayerHealth.textOrder)
-ns.AddPositionableOptions(centerText.args, BUFPlayerHealth.textOrder)
-ns.AddFontOptions(centerText.args, BUFPlayerHealth.textOrder)
+ns.AddFontStringOptions(centerText.args)
 
 ns.options.args.unitFrames.args.player.args.healthBar.args.centerText = centerText
 
 function centerTextHandler:RefreshConfig()
-    self:SetFont()
-    self:SetFontShadow()
-    self:SetPosition()
-end
-
-function centerTextHandler:SetFont()
-    local useFontObjects = ns.db.profile.unitFrames.player.healthBar.centerText.useFontObjects
-    if useFontObjects then
-        local fontObject = ns.db.profile.unitFrames.player.healthBar.centerText.fontObject
-        BUFPlayer.healthBarContainer.HealthBarText:SetFontObject(_G[fontObject])
-    else
-        local fontFace = ns.db.profile.unitFrames.player.healthBar.centerText.fontFace
-        local fontPath = ns.lsm:Fetch(ns.lsm.MediaType.FONT, fontFace)
-        if not fontPath then
-            print("Font face not found, using default:", STANDARD_TEXT_FONT)
-            fontPath = STANDARD_TEXT_FONT
-        end
-        local fontSize = ns.db.profile.unitFrames.player.healthBar.centerText.fontSize
-        local fontFlagsTable = ns.db.profile.unitFrames.player.healthBar.centerText.fontFlags
-        local fontFlags = ns.FontFlagsToString(fontFlagsTable)
-        BUFPlayer.healthBarContainer.HealthBarText:SetFont(fontPath, fontSize, fontFlags)
+    if not self.fontString then
+        self.fontString = BUFPlayer.healthBarContainer.HealthBarText
     end
-    self:UpdateFontColor()
-end
-
-function centerTextHandler:UpdateFontColor()
-    local r, g, b, a = unpack(ns.db.profile.unitFrames.player.healthBar.centerText.fontColor)
-    BUFPlayer.healthBarContainer.HealthBarText:SetTextColor(r, g, b, a)
-end
-
-function centerTextHandler:SetFontShadow()
-    local useFontObjects = ns.db.profile.unitFrames.player.healthBar.centerText.useFontObjects
-    if useFontObjects then
-        -- Font objects handle shadow internally
-        return
-    end
-    local r, g, b, a = unpack(ns.db.profile.unitFrames.player.healthBar.centerText.fontShadowColor)
-    local offsetX = ns.db.profile.unitFrames.player.healthBar.centerText.fontShadowOffsetX
-    local offsetY = ns.db.profile.unitFrames.player.healthBar.centerText.fontShadowOffsetY
-    if a == 0 then
-        BUFPlayer.healthBarContainer.HealthBarText:SetShadowOffset(0, 0)
-    else
-        BUFPlayer.healthBarContainer.HealthBarText:SetShadowColor(r, g, b, a)
-        BUFPlayer.healthBarContainer.HealthBarText:SetShadowOffset(offsetX, offsetY)
-    end
-end
-
-function centerTextHandler:SetPosition()
-    local anchorPoint = ns.db.profile.unitFrames.player.healthBar.centerText.anchorPoint
-    local xOffset = ns.db.profile.unitFrames.player.healthBar.centerText.xOffset
-    local yOffset = ns.db.profile.unitFrames.player.healthBar.centerText.yOffset
-    BUFPlayer.healthBarContainer.HealthBarText:ClearAllPoints()
-    BUFPlayer.healthBarContainer.HealthBarText:SetPoint(anchorPoint, xOffset, yOffset)
+    self:RefreshFontStringConfig()
 end

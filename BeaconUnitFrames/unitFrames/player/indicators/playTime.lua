@@ -32,14 +32,6 @@ ns.dbDefaults.profile.unitFrames.player.playTime = {
     height = 29,
 }
 
-local playTimeOrder = {
-    DEMO_MODE = 0.5,
-    X_OFFSET = 1,
-    Y_OFFSET = 2,
-    WIDTH = 3,
-    HEIGHT = 4,
-}
-
 local playTime = {
     type = "group",
     handler = BUFPlayerPlayTime,
@@ -48,9 +40,9 @@ local playTime = {
     args = {}
 }
 
-ns.AddPositionableOptions(playTime.args, playTimeOrder)
-ns.AddSizableOptions(playTime.args, playTimeOrder)
-ns.AddDemoOptions(playTime.args, playTimeOrder)
+ns.AddPositionableOptions(playTime.args)
+ns.AddSizableOptions(playTime.args)
+ns.AddDemoOptions(playTime.args)
 
 ns.options.args.unitFrames.args.player.args.indicators.args.playTime = playTime
 

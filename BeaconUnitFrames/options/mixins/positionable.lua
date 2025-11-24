@@ -4,7 +4,18 @@ local addonName, ns = ...
 ---@class BUFNamespace
 ns = ns
 
-function ns.AddPositionableOptions(optionsTable, orderMap)
+--- Add positionable options to the given options table
+--- @param optionsTable table
+--- @param _orderMap BUFOptionsOrder?
+function ns.AddPositionableOptions(optionsTable, _orderMap)
+    local orderMap = _orderMap or ns.defaultOrderMap
+
+    optionsTable.positioning = optionsTable.positioning or {
+        type = "header",
+        name = ns.L["Positioning"],
+        order = orderMap.POSITIONING_HEADER,
+    }
+
     optionsTable.xOffset = {
         type = "range",
         name = ns.L["X Offset"],
@@ -16,7 +27,7 @@ function ns.AddPositionableOptions(optionsTable, orderMap)
         bigStep = 5,
         set = "SetXOffset",
         get = "GetXOffset",
-        order = orderMap.X_OFFSET or 100,
+        order = orderMap.X_OFFSET,
     }
     
     optionsTable.yOffset = {
@@ -30,7 +41,7 @@ function ns.AddPositionableOptions(optionsTable, orderMap)
         bigStep = 5,
         set = "SetYOffset",
         get = "GetYOffset",
-        order = orderMap.Y_OFFSET or 101,
+        order = orderMap.Y_OFFSET,
     }
 end
 

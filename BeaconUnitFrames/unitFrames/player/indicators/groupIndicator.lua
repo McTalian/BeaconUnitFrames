@@ -49,25 +49,6 @@ ns.dbDefaults.profile.unitFrames.player.groupIndicator = {
     customColor = { 0, 0, 0, 0.5 },
 }
 
-local groupIndicatorOrder = {
-    DEMO_MODE = 0.5,
-    X_OFFSET = 1,
-    Y_OFFSET = 2,
-    USE_FONT_OBJECTS = 3,
-    FONT_OBJECT = 4,
-    FONT_COLOR = 5,
-    FONT_FACE = 6,
-    FONT_SIZE = 7,
-    FONT_FLAGS = 8,
-    FONT_SHADOW_COLOR = 9,
-    FONT_SHADOW_OFFSET_X = 10,
-    FONT_SHADOW_OFFSET_Y = 11,
-    USE_BACKGROUND_TEXTURE = 12,
-    BACKGROUND_TEXTURE = 13,
-    USE_CUSTOM_COLOR = 14,
-    CUSTOM_COLOR = 15,
-}
-
 local groupIndicator = {
     type = "group",
     handler = BUFPlayerGroupIndicator,
@@ -76,11 +57,11 @@ local groupIndicator = {
     args = {}
 }
 
-ns.AddPositionableOptions(groupIndicator.args, groupIndicatorOrder)
-ns.AddFontOptions(groupIndicator.args, groupIndicatorOrder)
-ns.AddBackgroundTextureOptions(groupIndicator.args, groupIndicatorOrder)
-ns.AddColorOptions(groupIndicator.args, groupIndicatorOrder)
-ns.AddDemoOptions(groupIndicator.args, groupIndicatorOrder)
+ns.AddPositionableOptions(groupIndicator.args)
+ns.AddFontOptions(groupIndicator.args)
+ns.AddBackgroundTextureOptions(groupIndicator.args)
+ns.AddColorOptions(groupIndicator.args)
+ns.AddDemoOptions(groupIndicator.args)
 
 ns.options.args.unitFrames.args.player.args.indicators.args.groupIndicator = groupIndicator
 

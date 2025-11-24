@@ -10,14 +10,12 @@ local BUFPlayer = ns.BUFPlayer
 ---@class BUFPlayer.Power
 local BUFPlayerPower = BUFPlayer.Power
 
----@class BUFPlayer.Power.RightText: BUFConfigHandler, Positionable, Fontable, Anchorable
+---@class BUFPlayer.Power.RightText: BUFConfigHandler, BUFFontString
 local rightTextHandler = {
     configPath = "unitFrames.player.powerBar.rightText",
 }
 
-ns.ApplyMixin(ns.Positionable, rightTextHandler)
-ns.ApplyMixin(ns.Fontable, rightTextHandler)
-ns.ApplyMixin(ns.Anchorable, rightTextHandler)
+ns.BUFFontString:ApplyMixin(rightTextHandler)
 
 BUFPlayerPower.rightTextHandler = rightTextHandler
 
@@ -26,6 +24,8 @@ ns.dbDefaults.profile.unitFrames.player.powerBar = ns.dbDefaults.profile.unitFra
 
 ns.dbDefaults.profile.unitFrames.player.powerBar.rightText = {
     anchorPoint = "RIGHT",
+    relativeTo = ns.DEFAULT,
+    relativePoint = ns.DEFAULT,
     xOffset = -2,
     yOffset = 0,
     useFontObjects = true,
@@ -51,64 +51,13 @@ local rightText = {
     args = {}
 }
 
-ns.AddAnchorOptions(rightText.args, BUFPlayerPower.textOrder)
-ns.AddPositionableOptions(rightText.args, BUFPlayerPower.textOrder)
-ns.AddFontOptions(rightText.args, BUFPlayerPower.textOrder)
+ns.AddFontStringOptions(rightText.args)
 
 ns.options.args.unitFrames.args.player.args.powerBar.args.rightText = rightText
 
 function rightTextHandler:RefreshConfig()
-    self:SetFont()
-    self:SetFontShadow()
-    self:SetPosition()
-end
-
-function rightTextHandler:SetFont()
-    local useFontObjects = ns.db.profile.unitFrames.player.powerBar.rightText.useFontObjects
-    if useFontObjects then
-        local fontObject = ns.db.profile.unitFrames.player.powerBar.rightText.fontObject
-        BUFPlayer.manaBar.RightText:SetFontObject(_G[fontObject])
-    else
-        local fontFace = ns.db.profile.unitFrames.player.powerBar.rightText.fontFace
-        local fontPath = ns.lsm:Fetch(ns.lsm.MediaType.FONT, fontFace)
-        if not fontPath then
-            print("Font face not found, using default:", STANDARD_TEXT_FONT)
-            fontPath = STANDARD_TEXT_FONT
-        end
-        local fontSize = ns.db.profile.unitFrames.player.powerBar.rightText.fontSize
-        local fontFlagsTable = ns.db.profile.unitFrames.player.powerBar.rightText.fontFlags
-        local fontFlags = ns.FontFlagsToString(fontFlagsTable)
-        BUFPlayer.manaBar.RightText:SetFont(fontPath, fontSize, fontFlags)
+    if not self.fontString then
+        self.fontString = BUFPlayer.manaBar.RightText
     end
-    self:UpdateFontColor()
-end
-
-function rightTextHandler:UpdateFontColor()
-    local r, g, b, a = unpack(ns.db.profile.unitFrames.player.powerBar.rightText.fontColor)
-    BUFPlayer.manaBar.RightText:SetTextColor(r, g, b, a)
-end
-
-function rightTextHandler:SetFontShadow()
-    local useFontObjects = ns.db.profile.unitFrames.player.powerBar.rightText.useFontObjects
-    if useFontObjects then
-        -- Font objects handle shadow internally
-        return
-    end
-    local r, g, b, a = unpack(ns.db.profile.unitFrames.player.powerBar.rightText.fontShadowColor)
-    local offsetX = ns.db.profile.unitFrames.player.powerBar.rightText.fontShadowOffsetX
-    local offsetY = ns.db.profile.unitFrames.player.powerBar.rightText.fontShadowOffsetY
-    if a == 0 then
-        BUFPlayer.manaBar.RightText:SetShadowOffset(0, 0)
-    else
-        BUFPlayer.manaBar.RightText:SetShadowColor(r, g, b, a)
-        BUFPlayer.manaBar.RightText:SetShadowOffset(offsetX, offsetY)
-    end
-end
-
-function rightTextHandler:SetPosition()
-    local anchorPoint = ns.db.profile.unitFrames.player.powerBar.rightText.anchorPoint
-    local xOffset = ns.db.profile.unitFrames.player.powerBar.rightText.xOffset
-    local yOffset = ns.db.profile.unitFrames.player.powerBar.rightText.yOffset
-    BUFPlayer.manaBar.RightText:ClearAllPoints()
-    BUFPlayer.manaBar.RightText:SetPoint(anchorPoint, xOffset, yOffset)
+    self:RefreshFontStringConfig()
 end

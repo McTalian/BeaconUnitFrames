@@ -30,37 +30,16 @@ ns.dbDefaults.profile.unitFrames.player.powerBar = {
     frameLevel = 3,
 }
 
-local powerBarOrder = {
-    WIDTH = 1,
-    HEIGHT = 2,
-    X_OFFSET = 3,
-    Y_OFFSET = 4,
-    FRAME_LEVEL = 5,
-    LEFT_TEXT = 6,
-    RIGHT_TEXT = 7,
-    CENTER_TEXT = 8,
-    FOREGROUND = 9,
-    BACKGROUND = 10,
-}
+local powerBarOrder = {}
+
+ns.ApplyMixin(ns.defaultOrderMap, powerBarOrder)
+powerBarOrder.LEFT_TEXT = powerBarOrder.FRAME_LEVEL + .1
+powerBarOrder.RIGHT_TEXT = powerBarOrder.LEFT_TEXT + .1
+powerBarOrder.CENTER_TEXT = powerBarOrder.RIGHT_TEXT + .1
+powerBarOrder.FOREGROUND = powerBarOrder.CENTER_TEXT + .1
+powerBarOrder.BACKGROUND = powerBarOrder.FOREGROUND + .1
 
 BUFPlayerPower.topGroupOrder = powerBarOrder
-
-local textOrder = {
-    ANCHOR_POINT = 1,
-    X_OFFSET = 2,
-    Y_OFFSET = 3,
-    USE_FONT_OBJECTS = 4,
-    FONT_OBJECT = 5,
-    FONT_COLOR = 6,
-    FONT_FACE = 7,
-    FONT_SIZE = 8,
-    FONT_FLAGS = 9,
-    FONT_SHADOW_COLOR = 10,
-    FONT_SHADOW_OFFSET_X = 11,
-    FONT_SHADOW_OFFSET_Y = 12,
-}
-
-BUFPlayerPower.textOrder = textOrder
 
 local powerBar = {
     type = "group",

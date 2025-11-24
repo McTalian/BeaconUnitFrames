@@ -1,0 +1,20 @@
+<Ui xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+    <Script file="positionable.lua"/>
+    <Script file="sizable.lua"/>
+    <Script file="scalable.lua"/>
+    <Script file="levelable.lua"/>
+    <Script file="fontable.lua"/>
+    <Script file="statusBarTexturable.lua"/>
+    <Script file="colorable.lua"/>
+    <Script file="classColorable.lua"/>
+    <Script file="reactionColorable.lua"/>
+    <Script file="powerColorable.lua"/>
+    <Script file="backgroundTexturable.lua"/>
+    <Script file="anchorable.lua"/>
+    <Script file="demoable.lua"/>
+    <Script file="maskable.lua"/>
+    <Script file="textCustomizable.lua"/>
+    <Script file="atlasSizable.lua"/>
+    <Script file="atlasScalable.lua"/>
+    <Script file="justifiable.lua"/>
+</Ui>

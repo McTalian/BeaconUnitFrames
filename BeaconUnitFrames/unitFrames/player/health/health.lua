@@ -30,37 +30,16 @@ ns.dbDefaults.profile.unitFrames.player.healthBar = {
     frameLevel = 3,
 }
 
-local healthBarOrder = {
-    WIDTH = 1,
-    HEIGHT = 2,
-    X_OFFSET = 3,
-    Y_OFFSET = 4,
-    FRAME_LEVEL = 5,
-    LEFT_TEXT = 6,
-    RIGHT_TEXT = 7,
-    CENTER_TEXT = 8,
-    FOREGROUND = 9,
-    BACKGROUND = 10,
-}
+local healthBarOrder = {}
+
+ns.ApplyMixin(ns.defaultOrderMap, healthBarOrder)
+healthBarOrder.LEFT_TEXT = healthBarOrder.FRAME_LEVEL + .1
+healthBarOrder.RIGHT_TEXT = healthBarOrder.LEFT_TEXT + .1
+healthBarOrder.CENTER_TEXT = healthBarOrder.RIGHT_TEXT + .1
+healthBarOrder.FOREGROUND = healthBarOrder.CENTER_TEXT + .1
+healthBarOrder.BACKGROUND = healthBarOrder.FOREGROUND + .1
 
 BUFPlayerHealth.topGroupOrder = healthBarOrder
-
-local textOrder = {
-    ANCHOR_POINT = 1,
-    X_OFFSET = 2,
-    Y_OFFSET = 3,
-    USE_FONT_OBJECTS = 4,
-    FONT_OBJECT = 5,
-    FONT_COLOR = 6,
-    FONT_FACE = 7,
-    FONT_SIZE = 8,
-    FONT_FLAGS = 9,
-    FONT_SHADOW_COLOR = 10,
-    FONT_SHADOW_OFFSET_X = 11,
-    FONT_SHADOW_OFFSET_Y = 12,
-}
-
-BUFPlayerHealth.textOrder = textOrder
 
 local healthBar = {
     type = "group",
@@ -99,12 +78,13 @@ function BUFPlayerHealth:SetSize()
     local parent = BUFPlayer
     local width = ns.db.profile.unitFrames.player.healthBar.width
     local height = ns.db.profile.unitFrames.player.healthBar.height
-    PixelUtil.SetWidth(parent.healthBarContainer, width, 18)
-    PixelUtil.SetHeight(parent.healthBarContainer, height, 18)
-    PixelUtil.SetWidth(parent.healthBar, width, 18)
-    PixelUtil.SetHeight(parent.healthBar, height, 18)
-    PixelUtil.SetWidth(parent.healthBarContainer.HealthBarMask, width * self.coeffs.maskWidth, 18)
-    PixelUtil.SetHeight(parent.healthBarContainer.HealthBarMask, height * self.coeffs.maskHeight, 18)
+
+    parent.healthBarContainer:SetWidth(width)
+    parent.healthBarContainer:SetHeight(height)
+    parent.healthBar:SetWidth(width)
+    parent.healthBar:SetHeight(height)
+    parent.healthBarContainer.HealthBarMask:SetWidth(width * self.coeffs.maskWidth)
+    parent.healthBarContainer.HealthBarMask:SetHeight(height * self.coeffs.maskHeight)
     parent.healthBarContainer.HealthBarMask:SetPoint("TOPLEFT", width * self.coeffs.maskXOffset,
         height * self.coeffs.maskYOffset)
 end
@@ -113,6 +93,10 @@ function BUFPlayerHealth:SetPosition()
     local parent = BUFPlayer
     local xOffset = ns.db.profile.unitFrames.player.healthBar.xOffset
     local yOffset = ns.db.profile.unitFrames.player.healthBar.yOffset
+    if BUFPlayer:IsHooked(parent.healthBarContainer, "SetPoint") then
+        BUFPlayer:Unhook(parent.healthBarContainer, "SetPoint")
+    end
+    parent.healthBarContainer:ClearAllPoints()
     parent.healthBarContainer:SetPoint("TOPLEFT", xOffset, yOffset)
 end
 

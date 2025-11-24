@@ -4,14 +4,25 @@ local addonName, ns = ...
 ---@class BUFNamespace
 ns = ns
 
-function ns.AddColorOptions(optionsTable, orderMap)
+--- Add color options to the given options table
+--- @param optionsTable table
+--- @param _orderMap BUFOptionsOrder?
+function ns.AddColorOptions(optionsTable, _orderMap)
+    local orderMap = _orderMap or ns.defaultOrderMap
+
+    optionsTable.coloring = optionsTable.coloring or {
+        type = "header",
+        name = ns.L["Coloring"],
+        order = orderMap.COLORING_HEADER,
+    }
+
     optionsTable.useCustomColor = {
         type = "toggle",
         name = ns.L["Use Custom Color"],
         desc = ns.L["UseCustomColorDesc"],
         set = "SetUseCustomColor",
         get = "GetUseCustomColor",
-        order = orderMap.USE_CUSTOM_COLOR or 10,
+        order = orderMap.USE_CUSTOM_COLOR,
     }
     
     optionsTable.customColor = {
@@ -21,7 +32,7 @@ function ns.AddColorOptions(optionsTable, orderMap)
         disabled = "IsCustomColorDisabled",
         set = "SetCustomColor",
         get = "GetCustomColor",
-        order = orderMap.CUSTOM_COLOR or 11,
+        order = orderMap.CUSTOM_COLOR,
     }
 end
 

@@ -32,14 +32,6 @@ ns.dbDefaults.profile.unitFrames.player.readyCheckIndicator = {
     height = 40,
 }
 
-local readyCheckIndicatorOrder = {
-    DEMO_MODE = 0.5,
-    X_OFFSET = 1,
-    Y_OFFSET = 2,
-    WIDTH = 3,
-    HEIGHT = 4,
-}
-
 local readyCheckIndicator = {
     type = "group",
     handler = BUFPlayerReadyCheckIndicator,
@@ -48,9 +40,9 @@ local readyCheckIndicator = {
     args = {}
 }
 
-ns.AddPositionableOptions(readyCheckIndicator.args, readyCheckIndicatorOrder)
-ns.AddSizableOptions(readyCheckIndicator.args, readyCheckIndicatorOrder)
-ns.AddDemoOptions(readyCheckIndicator.args, readyCheckIndicatorOrder)
+ns.AddPositionableOptions(readyCheckIndicator.args)
+ns.AddSizableOptions(readyCheckIndicator.args)
+ns.AddDemoOptions(readyCheckIndicator.args)
 
 ns.options.args.unitFrames.args.player.args.indicators.args.readyCheckIndicator = readyCheckIndicator
 

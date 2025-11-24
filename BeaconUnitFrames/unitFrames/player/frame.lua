@@ -32,20 +32,13 @@ ns.dbDefaults.profile.unitFrames.player.frame = {
     backgroundTexture = "None",
 }
 
-local frameOrder = {
-    WIDTH = 1,
-    HEIGHT = 2,
-    FRAME_FLASH = 3,
-    FRAME_TEXTURE = 4,
-    STATUS_TEXTURE = 5,
-    HIT_INDICATOR = 6,
-    BACKDROP_AND_BORDER = 7,
-}
+local frameOrder = {}
+ns.ApplyMixin(ns.defaultOrderMap, frameOrder)
 
-local backdropAndBorderOrder = {
-    USE_BACKGROUND_TEXTURE = 1,
-    BACKGROUND_TEXTURE = 2,
-}
+frameOrder.FRAME_FLASH = frameOrder.ENABLE + .1
+frameOrder.FRAME_TEXTURE = frameOrder.FRAME_FLASH + .1
+frameOrder.STATUS_TEXTURE = frameOrder.FRAME_TEXTURE + .1
+frameOrder.HIT_INDICATOR = frameOrder.STATUS_TEXTURE + .1
 
 local frame = {
     type = "group",
@@ -103,16 +96,10 @@ local frame = {
             end,
             order = frameOrder.HIT_INDICATOR,
         },
-        backdropAndBorder = {
-            type = "group",
-            name = ns.L["BackdropAndBorder"],
-            order = frameOrder.BACKDROP_AND_BORDER,
-            args = {}
-        }
     },
 }
 
-ns.AddBackgroundTextureOptions(frame.args.backdropAndBorder.args, backdropAndBorderOrder)
+ns.AddBackgroundTextureOptions(frame.args, frameOrder)
 ns.AddSizableOptions(frame.args, frameOrder)
 
 ns.options.args.unitFrames.args.player.args.frame = frame
@@ -143,7 +130,9 @@ function BUFPlayerFrame:SetFrameFlash()
     else
         player.container.FrameFlash:Hide()
         if not ns.BUFPlayer:IsHooked(player.container.FrameFlash, "Show") then
-            player:RawHook(player.container.FrameFlash, "Show", ns.noop, true)
+            player:SecureHook(player.container.FrameFlash, "Show", function(s)
+                s:Hide()
+            end)
         end
     end
 end
@@ -157,7 +146,9 @@ function BUFPlayerFrame:SetFrameTexture()
     else
         player.container.FrameTexture:Hide()
         if not ns.BUFPlayer:IsHooked(player.container.FrameTexture, "Show") then
-            player:RawHook(player.container.FrameTexture, "Show", ns.noop, true)
+            player:SecureHook(player.container.FrameTexture, "Show", function(s)
+                s:Hide()
+            end)
         end
     end
 end
@@ -171,7 +162,9 @@ function BUFPlayerFrame:SetStatusTexture()
     else
         player.contentMain.StatusTexture:Hide()
         if not ns.BUFPlayer:IsHooked(player.contentMain.StatusTexture, "Show") then
-            player:RawHook(player.contentMain.StatusTexture, "Show", ns.noop, true)
+            player:SecureHook(player.contentMain.StatusTexture, "Show", function(s)
+                s:Hide()
+            end)
         end
     end
 end
@@ -185,7 +178,9 @@ function BUFPlayerFrame:SetHitIndicator()
     else
         player.contentMain.HitIndicator:Hide()
         if not ns.BUFPlayer:IsHooked(player.contentMain.HitIndicator, "Show") then
-            player:RawHook(player.contentMain.HitIndicator, "Show", ns.noop, true)
+            player:SecureHook(player.contentMain.HitIndicator, "Show", function(s)
+                s:Hide()
+            end)
         end
     end
 end

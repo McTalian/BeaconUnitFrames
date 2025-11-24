@@ -4,14 +4,18 @@ local addonName, ns = ...
 ---@class BUFNamespace
 ns = ns
 
-function ns.AddDemoOptions(optionsTable, orderMap)
+--- Add demo options to the given options table
+--- @param optionsTable table
+--- @param _orderMap BUFOptionsOrder?
+function ns.AddDemoOptions(optionsTable, _orderMap)
+    local orderMap = _orderMap or ns.defaultOrderMap
     optionsTable.enable = {
         type = "execute",
         name = ns.L["Demo"],
         desc = ns.L["DemoDesc"],
         width = "full",
         func = "ToggleDemoMode",
-        order = orderMap.DEMO_MODE or 9999,
+        order = orderMap.DEMO_MODE,
     }
 end
 

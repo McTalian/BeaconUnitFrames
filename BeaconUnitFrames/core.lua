@@ -14,6 +14,16 @@ ns.localeName = addonName .. "Locale"
 
 function ns.noop() end
 
+function ns:TableToCommaSeparatedString(tbl)
+	local result = {}
+	for key, value in pairs(tbl) do
+		if value then
+			table.insert(result, key)
+		end
+	end
+	return table.concat(result, ", ")
+end
+
 ns.lsm = LibStub("LibSharedMedia-3.0")
 ns.acd = LibStub("AceConfigDialog-3.0") --[[@as AceConfigDialog-3.0]]
 ns.brokerIcon = LibStub("LibDBIcon-1.0")

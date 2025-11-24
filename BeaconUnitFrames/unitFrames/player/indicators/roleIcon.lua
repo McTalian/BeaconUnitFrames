@@ -32,14 +32,6 @@ ns.dbDefaults.profile.unitFrames.player.roleIcon = {
     height = 12,
 }
 
-local roleIconOrder = {
-    DEMO_MODE = 0.5,
-    X_OFFSET = 1,
-    Y_OFFSET = 2,
-    WIDTH = 3,
-    HEIGHT = 4,
-}
-
 local roleIcon = {
     type = "group",
     handler = BUFPlayerRoleIcon,
@@ -48,9 +40,9 @@ local roleIcon = {
     args = {},
 }
 
-ns.AddPositionableOptions(roleIcon.args, roleIconOrder)
-ns.AddSizableOptions(roleIcon.args, roleIconOrder)
-ns.AddDemoOptions(roleIcon.args, roleIconOrder)
+ns.AddPositionableOptions(roleIcon.args)
+ns.AddSizableOptions(roleIcon.args)
+ns.AddDemoOptions(roleIcon.args)
 
 ns.options.args.unitFrames.args.player.args.indicators.args.roleIcon = roleIcon
 

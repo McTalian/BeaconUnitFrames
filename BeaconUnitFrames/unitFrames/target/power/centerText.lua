@@ -10,14 +10,12 @@ local BUFTarget = ns.BUFTarget
 ---@class BUFTarget.Power
 local BUFTargetPower = BUFTarget.Power
 
----@class BUFTarget.Power.CenterText: BUFConfigHandler, Positionable, Fontable, Anchorable
+---@class BUFTarget.Power.CenterText: BUFConfigHandler, BUFFontString
 local centerTextHandler = {
     configPath = "unitFrames.target.powerBar.centerText",
 }
 
-ns.ApplyMixin(ns.Positionable, centerTextHandler)
-ns.ApplyMixin(ns.Fontable, centerTextHandler)
-ns.ApplyMixin(ns.Anchorable, centerTextHandler)
+ns.BUFFontString:ApplyMixin(centerTextHandler)
 
 BUFTargetPower.centerTextHandler = centerTextHandler
 
@@ -26,6 +24,8 @@ ns.dbDefaults.profile.unitFrames.target.powerBar = ns.dbDefaults.profile.unitFra
 
 ns.dbDefaults.profile.unitFrames.target.powerBar.centerText = {
     anchorPoint = "CENTER",
+    relativeTo = ns.DEFAULT,
+    relativePoint = ns.DEFAULT,
     xOffset = -4,
     yOffset = 0,
     useFontObjects = true,
@@ -51,64 +51,13 @@ local centerText = {
     args = {}
 }
 
-ns.AddAnchorOptions(centerText.args, BUFTargetPower.textOrder)
-ns.AddPositionableOptions(centerText.args, BUFTargetPower.textOrder)
-ns.AddFontOptions(centerText.args, BUFTargetPower.textOrder)
+ns.AddFontStringOptions(centerText.args)
 
 ns.options.args.unitFrames.args.target.args.powerBar.args.centerText = centerText
 
 function centerTextHandler:RefreshConfig()
-    self:SetFont()
-    self:SetFontShadow()
-    self:SetPosition()
-end
-
-function centerTextHandler:SetFont()
-    local useFontObjects = ns.db.profile.unitFrames.target.powerBar.centerText.useFontObjects
-    if useFontObjects then
-        local fontObject = ns.db.profile.unitFrames.target.powerBar.centerText.fontObject
-        BUFTarget.manaBar.ManaBarText:SetFontObject(_G[fontObject])
-    else
-        local fontFace = ns.db.profile.unitFrames.target.powerBar.centerText.fontFace
-        local fontPath = ns.lsm:Fetch(ns.lsm.MediaType.FONT, fontFace)
-        if not fontPath then
-            print("Font face not found, using default:", STANDARD_TEXT_FONT)
-            fontPath = STANDARD_TEXT_FONT
-        end
-        local fontSize = ns.db.profile.unitFrames.target.powerBar.centerText.fontSize
-        local fontFlagsTable = ns.db.profile.unitFrames.target.powerBar.centerText.fontFlags
-        local fontFlags = ns.FontFlagsToString(fontFlagsTable)
-        BUFTarget.manaBar.ManaBarText:SetFont(fontPath, fontSize, fontFlags)
+    if not self.fontString then
+        self.fontString = BUFTarget.manaBar.ManaBarText
     end
-    self:UpdateFontColor()
-end
-
-function centerTextHandler:UpdateFontColor()
-    local r, g, b, a = unpack(ns.db.profile.unitFrames.target.powerBar.centerText.fontColor)
-    BUFTarget.manaBar.ManaBarText:SetTextColor(r, g, b, a)
-end
-
-function centerTextHandler:SetFontShadow()
-    local useFontObjects = ns.db.profile.unitFrames.target.powerBar.centerText.useFontObjects
-    if useFontObjects then
-        -- Font objects handle shadow internally
-        return
-    end
-    local r, g, b, a = unpack(ns.db.profile.unitFrames.target.powerBar.centerText.fontShadowColor)
-    local offsetX = ns.db.profile.unitFrames.target.powerBar.centerText.fontShadowOffsetX
-    local offsetY = ns.db.profile.unitFrames.target.powerBar.centerText.fontShadowOffsetY
-    if a == 0 then
-        BUFTarget.manaBar.ManaBarText:SetShadowOffset(0, 0)
-    else
-        BUFTarget.manaBar.ManaBarText:SetShadowColor(r, g, b, a)
-        BUFTarget.manaBar.ManaBarText:SetShadowOffset(offsetX, offsetY)
-    end
-end
-
-function centerTextHandler:SetPosition()
-    local anchorPoint = ns.db.profile.unitFrames.target.powerBar.centerText.anchorPoint
-    local xOffset = ns.db.profile.unitFrames.target.powerBar.centerText.xOffset
-    local yOffset = ns.db.profile.unitFrames.target.powerBar.centerText.yOffset
-    BUFTarget.manaBar.ManaBarText:ClearAllPoints()
-    BUFTarget.manaBar.ManaBarText:SetPoint(anchorPoint, xOffset, yOffset)
+    self:RefreshFontStringConfig()
 end

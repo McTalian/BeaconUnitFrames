@@ -10,29 +10,29 @@ local BUFTarget = ns.BUFTarget
 ---@class BUFTarget.Health
 local BUFTargetHealth = BUFTarget.Health
 
----@class BUFTarget.Health.CenterText: BUFConfigHandler, BUFFontString
-local centerTextHandler = {
-    configPath = "unitFrames.target.healthBar.centerText",
+---@class BUFTarget.Health.UnconsciousText: BUFConfigHandler, BUFFontString
+local unconsciousTextHandler = {
+    configPath = "unitFrames.target.healthBar.unconsciousText",
 }
 
-ns.BUFFontString:ApplyMixin(centerTextHandler)
+ns.BUFFontString:ApplyMixin(unconsciousTextHandler)
 
-BUFTargetHealth.centerTextHandler = centerTextHandler
+BUFTargetHealth.unconsciousTextHandler = unconsciousTextHandler
 
 ---@class BUFDbSchema.UF.Target.Health
 ns.dbDefaults.profile.unitFrames.target.healthBar = ns.dbDefaults.profile.unitFrames.target.healthBar
 
-ns.dbDefaults.profile.unitFrames.target.healthBar.centerText = {
+ns.dbDefaults.profile.unitFrames.target.healthBar.unconsciousText = {
     anchorPoint = "CENTER",
     relativeTo = ns.DEFAULT,
     relativePoint = ns.DEFAULT,
     xOffset = 0,
     yOffset = 0,
     useFontObjects = true,
-    fontObject = "TextStatusBarText",
-    fontColor = { 1, 1, 1, 1 },
+    fontObject = "GameFontNormalSmall",
+    fontColor = { 1, 0, 0, 1 },
     fontFace = "Friz Quadrata TT",
-    fontSize = 10,
+    fontSize = 12,
     fontFlags = {
         [ns.FontFlags.OUTLINE] = false,
         [ns.FontFlags.THICKOUTLINE] = false,
@@ -43,21 +43,21 @@ ns.dbDefaults.profile.unitFrames.target.healthBar.centerText = {
     fontShadowOffsetY = -1,
 }
 
-local centerText = {
+local unconsciousText = {
     type = "group",
-    handler = centerTextHandler,
-    name = ns.L["Center Text"],
-    order = BUFTargetHealth.topGroupOrder.CENTER_TEXT,
+    handler = unconsciousTextHandler,
+    name = ns.L["Unconscious Text"],
+    order = BUFTargetHealth.topGroupOrder.DEAD_TEXT,
     args = {}
 }
 
-ns.AddFontStringOptions(centerText.args)
+ns.AddFontStringOptions(unconsciousText.args)
 
-ns.options.args.unitFrames.args.target.args.healthBar.args.centerText = centerText
+ns.options.args.unitFrames.args.target.args.healthBar.args.unconsciousText = unconsciousText
 
-function centerTextHandler:RefreshConfig()
+function unconsciousTextHandler:RefreshConfig()
     if not self.fontString then
-        self.fontString = BUFTarget.healthBarContainer.HealthBarText
+        self.fontString = BUFTarget.healthBarContainer.UnconsciousText
     end
     self:RefreshFontStringConfig()
 end

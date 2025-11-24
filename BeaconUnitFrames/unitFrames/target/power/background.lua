@@ -32,14 +32,6 @@ ns.dbDefaults.profile.unitFrames.target.powerBar.background = {
     useClassColor = false,
 }
 
-local backgroundOrder = {
-    USE_BACKGROUND_TEXTURE = 1,
-    BACKGROUND_TEXTURE = 2,
-    USE_CUSTOM_COLOR = 3,
-    CUSTOM_COLOR = 4,
-    CLASS_COLOR = 5,
-}
-
 local background = {
     type = "group",
     handler = backgroundHandler,
@@ -48,9 +40,9 @@ local background = {
     args = {}
 }
 
-ns.AddBackgroundTextureOptions(background.args, backgroundOrder)
-ns.AddColorOptions(background.args, backgroundOrder)
-ns.AddClassColorOptions(background.args, backgroundOrder)
+ns.AddBackgroundTextureOptions(background.args)
+ns.AddColorOptions(background.args)
+ns.AddClassColorOptions(background.args)
 
 ns.options.args.unitFrames.args.target.args.powerBar.args.background = background
 

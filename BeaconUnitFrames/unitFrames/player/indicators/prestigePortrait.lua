@@ -32,15 +32,6 @@ ns.dbDefaults.profile.unitFrames.player.prestigePortrait = {
   height = 52,
 }
 
-local prestigePortraitOrder = {
-    DEMO_MODE = 0.5,
-    X_OFFSET = 1,
-    Y_OFFSET = 2,
-    WIDTH = 3,
-    HEIGHT = 4,
-    PRESTIGE_BADGE = 5,
-}
-
 local prestigePortrait = {
     type = "group",
     handler = BUFPlayerPrestigePortrait,
@@ -49,9 +40,9 @@ local prestigePortrait = {
     args = {}
 }
 
-ns.AddPositionableOptions(prestigePortrait.args, prestigePortraitOrder)
-ns.AddSizableOptions(prestigePortrait.args, prestigePortraitOrder)
-ns.AddDemoOptions(prestigePortrait.args, prestigePortraitOrder)
+ns.AddPositionableOptions(prestigePortrait.args)
+ns.AddSizableOptions(prestigePortrait.args)
+ns.AddDemoOptions(prestigePortrait.args)
 
 ns.options.args.unitFrames.args.player.args.indicators.args.prestigePortrait = prestigePortrait
 

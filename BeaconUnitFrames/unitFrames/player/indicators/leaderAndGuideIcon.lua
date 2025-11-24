@@ -52,25 +52,11 @@ ns.dbDefaults.profile.unitFrames.player.leaderAndGuideIcon = {
     }
 }
 
-local leaderAndGuideIconOrder = {
-    DEMO_MODE = 0.5,
-    X_OFFSET = 1,
-    Y_OFFSET = 2,
-    USE_ATLAS_SIZE = 3,
-    WIDTH = 4,
-    HEIGHT = 5,
-    SEPARATE_GUIDE_STYLE = 6,
-    GUIDE = 7,
-}
+local leaderAndGuideIconOrder = {}
 
-local guideOrder = {
-    DEMO_MODE = 0.5,
-    X_OFFSET = 1,
-    Y_OFFSET = 2,
-    USE_ATLAS_SIZE = 3,
-    WIDTH = 4,
-    HEIGHT = 5,
-}
+ns.ApplyMixin(ns.defaultOrderMap, leaderAndGuideIconOrder)
+leaderAndGuideIconOrder.SEPARATE_GUIDE_STYLE = leaderAndGuideIconOrder.Y_OFFSET + .1
+leaderAndGuideIconOrder.GUIDE = leaderAndGuideIconOrder.SEPARATE_GUIDE_STYLE + .1
 
 local leaderAndGuideIcon = {
     type = "group",
@@ -110,9 +96,9 @@ local guideGroup = {
     args = {},
 }
 
-ns.AddPositionableOptions(guideGroup.args, guideOrder)
-ns.AddAtlasSizableOptions(guideGroup.args, guideOrder)
-ns.AddDemoOptions(guideGroup.args, guideOrder)
+ns.AddPositionableOptions(guideGroup.args)
+ns.AddAtlasSizableOptions(guideGroup.args)
+ns.AddDemoOptions(guideGroup.args)
 
 leaderAndGuideIcon.args.guide = guideGroup
 

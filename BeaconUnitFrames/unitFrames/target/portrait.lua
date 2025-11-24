@@ -32,15 +32,6 @@ ns.dbDefaults.profile.unitFrames.target.portrait = {
     alpha = 1.0,
 }
 
-local portraitOrder = {
-    ENABLED = 1,
-    WIDTH = 2,
-    HEIGHT = 3,
-    X_OFFSET = 4,
-    Y_OFFSET = 5,
-    CORNER_INDICATOR = 6,
-}
-
 local portrait = {
     type = "group",
     handler = BUFTargetPortrait,
@@ -58,13 +49,13 @@ local portrait = {
             get = function(info)
                 return ns.db.profile.unitFrames.target.portrait.enabled
             end,
-            order = 1,
+            order = ns.defaultOrderMap.ENABLE,
         },
     },
 }
 
-ns.AddSizableOptions(portrait.args, portraitOrder)
-ns.AddPositionableOptions(portrait.args, portraitOrder)
+ns.AddSizableOptions(portrait.args)
+ns.AddPositionableOptions(portrait.args)
 
 ns.options.args.unitFrames.args.target.args.portrait = portrait
 
@@ -98,14 +89,26 @@ function BUFTargetPortrait:ShowHidePortrait()
     local parent = BUFTarget
     local show = ns.db.profile.unitFrames.target.portrait.enabled
     if show then
-        parent:Unhook(parent.container.Portrait, "Show")
-        parent:Unhook(parent.container.PortraitMask, "Show")
+        if parent:IsHooked(parent.container.Portrait, "Show") then
+            parent:Unhook(parent.container.Portrait, "Show")
+        end
+        if parent:IsHooked(parent.container.PortraitMask, "Show") then
+            parent:Unhook(parent.container.PortraitMask, "Show")
+        end
         parent.container.Portrait:Show()
         parent.container.PortraitMask:Show()
     else
         parent.container.Portrait:Hide()
         parent.container.PortraitMask:Hide()
-        parent:RawHook(parent.container.Portrait, "Show", ns.noop, true)
-        parent:RawHook(parent.container.PortraitMask, "Show", ns.noop, true)
+        if not ns.BUFTarget:IsHooked(parent.container.Portrait, "Show") then
+            parent:SecureHook(parent.container.Portrait, "Show", function(s)
+                s:Hide()
+            end)
+        end
+        if not ns.BUFTarget:IsHooked(parent.container.PortraitMask, "Show") then
+            parent:SecureHook(parent.container.PortraitMask, "Show", function(s)
+                s:Hide()
+            end)
+        end
     end
 end

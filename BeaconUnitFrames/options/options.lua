@@ -4,69 +4,55 @@ local addonName, ns = ...
 ---@class BUFNamespace
 ns = ns
 
----@class BUFConfigHandler
----@field configPath string
----@field RefreshConfig fun(self: BUFConfigHandler)
+ns.DEFAULT = "BUF_IGNORE_DEFAULT"
 
-function ns.ApplyMixin(source, target)
-    for k, v in pairs(source) do
-        target[k] = v
-    end
-end
-
----Check if a string starts with another string
----@param str string
----@param start string
----@return boolean
-local function startswith(str, start)
-	return string.sub(str, 1, #start) == start
-end
-
-ns.FontFlags = {
-	OUTLINE = "OUTLINE",
-	THICKOUTLINE = "THICKOUTLINE",
-	MONOCHROME = "MONOCHROME",
-}
-
-ns.FontFlagsOptions = {
-    [ns.FontFlags.OUTLINE] = SELF_HIGHLIGHT_OUTLINE,
-    [ns.FontFlags.THICKOUTLINE] = ns.L["Thick Outline"],
-    [ns.FontFlags.MONOCHROME] = ns.L["Monochrome"],
-}
-
-function ns:TableToCommaSeparatedString(tbl)
-	local result = {}
-	for key, value in pairs(tbl) do
-		if value then
-			table.insert(result, key)
-		end
-	end
-	return table.concat(result, ", ")
-end
-
-function ns.FontFlagsToString(fontFlagsTable)
-    return ns:TableToCommaSeparatedString(fontFlagsTable)
-end
-
-function ns.FontObjectOptions()
-    local fonts = _G.GetFonts()
-    local allFonts = {}
-    for k, v in pairs(fonts) do
-        if type(v) == "string" then
-            if startswith(v, "table") then
-            -- Skip
-            else
-                allFonts[v] = v
-            end
-        end
-    end
-    return allFonts
-end
-
-ns.AnchorRelativeToOptions = {
-    [UIParent] = "UIParent",
-    [TargetFrame] = "TargetFrame",
-    [PlayerFrame] = "PlayerFrame",
+---@class BUFOptionsOrder
+ns.defaultOrderMap = {
+    DEMO_MODE = 1,
+    ENABLE = 2,
+    SIZING_HEADER = 2.5,
+    USE_ATLAS_SIZE = 3,
+    WIDTH = 4,
+    HEIGHT = 5,
+    SCALE = 5.5,
+    POSITIONING_HEADER = 5.9,
+    ANCHOR_POINT = 6,
+    RELATIVE_TO = 7,
+    RELATIVE_POINT = 8,
+    X_OFFSET = 9,
+    Y_OFFSET = 10,
+    FRAME_LEVEL = 11,
+    CUSTOMIZATION_HEADER = 11.9,
+    CUSTOM_TEXT = 12,
+    JUSTIFY_H = 12.2,
+    JUSTIFY_V = 12.4,
+    FONT_SETTINGS_HEADER = 12.9,
+    USE_FONT_OBJECTS = 13,
+    FONT_OBJECT = 14,
+    FONT_COLOR = 15,
+    FONT_FACE = 16,
+    FONT_SIZE = 17,
+    FONT_FLAGS = 18,
+    FONT_SHADOW_COLOR = 19,
+    FONT_SHADOW_OFFSET_X = 20,
+    FONT_SHADOW_OFFSET_Y = 21,
+    TEXTURING_HEADER = 21.9,
+    ATLAS_TEXTURE = 24,
+    MASK = 24.1,
+    MASK_WIDTH_SCALE = 24.2,
+    MASK_HEIGHT_SCALE = 24.3,
+    STATUS_BAR_HEADER = 24.9,
+    USE_STATUS_BAR_TEXTURE = 25,
+    STATUS_BAR_TEXTURE = 26,
+    BACKGROUND_HEADER = 26.9,
+    USE_BACKGROUND_TEXTURE = 27,
+    BACKGROUND_TEXTURE = 28,
+    COLORING_HEADER = 28.9,
+    USE_CUSTOM_COLOR = 29,
+    CUSTOM_COLOR = 30,
+    CLASS_COLOR = 31,
+    POWER_COLOR = 32,
+    REACTION_COLOR = 33,
 }
 
 ns.OptionsManager = {}

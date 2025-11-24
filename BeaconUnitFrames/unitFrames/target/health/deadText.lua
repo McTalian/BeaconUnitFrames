@@ -10,29 +10,29 @@ local BUFTarget = ns.BUFTarget
 ---@class BUFTarget.Health
 local BUFTargetHealth = BUFTarget.Health
 
----@class BUFTarget.Health.CenterText: BUFConfigHandler, BUFFontString
-local centerTextHandler = {
-    configPath = "unitFrames.target.healthBar.centerText",
+---@class BUFTarget.Health.DeadText: BUFConfigHandler, BUFFontString
+local deadTextHandler = {
+    configPath = "unitFrames.target.healthBar.deadText",
 }
 
-ns.BUFFontString:ApplyMixin(centerTextHandler)
+ns.BUFFontString:ApplyMixin(deadTextHandler)
 
-BUFTargetHealth.centerTextHandler = centerTextHandler
+BUFTargetHealth.deadTextHandler = deadTextHandler
 
 ---@class BUFDbSchema.UF.Target.Health
 ns.dbDefaults.profile.unitFrames.target.healthBar = ns.dbDefaults.profile.unitFrames.target.healthBar
 
-ns.dbDefaults.profile.unitFrames.target.healthBar.centerText = {
+ns.dbDefaults.profile.unitFrames.target.healthBar.deadText = {
     anchorPoint = "CENTER",
     relativeTo = ns.DEFAULT,
     relativePoint = ns.DEFAULT,
     xOffset = 0,
     yOffset = 0,
     useFontObjects = true,
-    fontObject = "TextStatusBarText",
-    fontColor = { 1, 1, 1, 1 },
+    fontObject = "GameFontNormalSmall",
+    fontColor = { 1, 0, 0, 1 },
     fontFace = "Friz Quadrata TT",
-    fontSize = 10,
+    fontSize = 12,
     fontFlags = {
         [ns.FontFlags.OUTLINE] = false,
         [ns.FontFlags.THICKOUTLINE] = false,
@@ -43,21 +43,21 @@ ns.dbDefaults.profile.unitFrames.target.healthBar.centerText = {
     fontShadowOffsetY = -1,
 }
 
-local centerText = {
+local deadText = {
     type = "group",
-    handler = centerTextHandler,
-    name = ns.L["Center Text"],
-    order = BUFTargetHealth.topGroupOrder.CENTER_TEXT,
+    handler = deadTextHandler,
+    name = ns.L["Dead Text"],
+    order = BUFTargetHealth.topGroupOrder.DEAD_TEXT,
     args = {}
 }
 
-ns.AddFontStringOptions(centerText.args)
+ns.AddFontStringOptions(deadText.args)
 
-ns.options.args.unitFrames.args.target.args.healthBar.args.centerText = centerText
+ns.options.args.unitFrames.args.target.args.healthBar.args.deadText = deadText
 
-function centerTextHandler:RefreshConfig()
+function deadTextHandler:RefreshConfig()
     if not self.fontString then
-        self.fontString = BUFTarget.healthBarContainer.HealthBarText
+        self.fontString = BUFTarget.healthBarContainer.DeadText
     end
     self:RefreshFontStringConfig()
 end

@@ -4,14 +4,25 @@ local addonName, ns = ...
 ---@class BUFNamespace
 ns = ns
 
-function ns.AddStatusBarTextureOptions(optionsTable, orderMap)
+--- Add status bar texture options to the given options table
+--- @param optionsTable table
+--- @param _orderMap BUFOptionsOrder?
+function ns.AddStatusBarTextureOptions(optionsTable, _orderMap)
+    local orderMap = _orderMap or ns.defaultOrderMap
+
+    optionsTable.statusBarHeader = optionsTable.statusBarHeader or {
+        type = "header",
+        name = ns.L["Status Bar Options"],
+        order = orderMap.STATUS_BAR_HEADER,
+    }
+
     optionsTable.useStatusBarTexture = {
         type = "toggle",
         name = ns.L["Use Status Bar Texture"],
         desc = ns.L["UseStatusBarTextureDesc"],
         set = "SetUseStatusBarTexture",
         get = "GetUseStatusBarTexture",
-        order = orderMap.USE_STATUS_BAR_TEXTURE or 10,
+        order = orderMap.USE_STATUS_BAR_TEXTURE,
     }
     
     optionsTable.statusBarTexture = {
@@ -24,7 +35,7 @@ function ns.AddStatusBarTextureOptions(optionsTable, orderMap)
         disabled = "IsStatusBarTextureDisabled",
         set = "SetStatusBarTexture",
         get = "GetStatusBarTexture",
-        order = orderMap.STATUS_BAR_TEXTURE or 11,
+        order = orderMap.STATUS_BAR_TEXTURE,
     }
 end
 

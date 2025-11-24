@@ -32,14 +32,6 @@ ns.dbDefaults.profile.unitFrames.player.pvpIcon = {
     scale = 1.0,
 }
 
-local pvpIconOrder = {
-    DEMO_MODE = 0.5,
-    X_OFFSET = 1,
-    Y_OFFSET = 2,
-    USE_ATLAS_SIZE = 3,
-    SCALE = 4
-}
-
 local pvpIcon = {
     type = "group",
     handler = BUFPlayerPvPIcon,
@@ -48,9 +40,9 @@ local pvpIcon = {
     args = {},
 }
 
-ns.AddPositionableOptions(pvpIcon.args, pvpIconOrder)
-ns.AddAtlasScalableOptions(pvpIcon.args, pvpIconOrder)
-ns.AddDemoOptions(pvpIcon.args, pvpIconOrder)
+ns.AddPositionableOptions(pvpIcon.args)
+ns.AddAtlasScalableOptions(pvpIcon.args)
+ns.AddDemoOptions(pvpIcon.args)
 
 ns.options.args.unitFrames.args.player.args.indicators.args.pvpIcon = pvpIcon
 
