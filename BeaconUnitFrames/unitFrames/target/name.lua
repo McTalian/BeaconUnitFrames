@@ -12,6 +12,14 @@ local BUFTargetName = {
     configPath = "unitFrames.target.name",
 }
 
+BUFTargetName.optionsTable = {
+    type = "group",
+    handler = BUFTargetName,
+    name = ns.L["Target Name"],
+    order = BUFTarget.optionsOrder.NAME,
+    args = {}
+}
+
 ns.BUFFontString:ApplyMixin(BUFTargetName)
 
 BUFTarget.Name = BUFTargetName
@@ -45,17 +53,7 @@ ns.dbDefaults.profile.unitFrames.target.name = {
     justifyV = "MIDDLE",
 }
 
-local targetName = {
-    type = "group",
-    handler = BUFTargetName,
-    name = ns.L["Target Name"],
-    order = BUFTarget.optionsOrder.NAME,
-    args = {}
-}
-
-ns.AddFontStringOptions(targetName.args)
-
-ns.options.args.unitFrames.args.target.args.targetName = targetName
+ns.options.args.unitFrames.args.target.args.targetName = BUFTargetName.optionsTable
 
 function BUFTargetName:RefreshConfig()
     if not self.fontString then

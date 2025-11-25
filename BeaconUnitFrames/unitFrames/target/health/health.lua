@@ -7,14 +7,13 @@ ns = ns
 ---@class BUFTarget
 local BUFTarget = ns.BUFTarget
 
----@class BUFTarget.Health: BUFConfigHandler, Anchorable, Positionable, Sizable, Levelable
+---@class BUFTarget.Health: BUFConfigHandler, Positionable, Sizable, Levelable
 local BUFTargetHealth = {
     configPath = "unitFrames.target.healthBar",
 }
 
-ns.ApplyMixin(ns.Anchorable, BUFTargetHealth)
-ns.ApplyMixin(ns.Positionable, BUFTargetHealth)
 ns.ApplyMixin(ns.Sizable, BUFTargetHealth)
+ns.ApplyMixin(ns.Positionable, BUFTargetHealth)
 ns.ApplyMixin(ns.Levelable, BUFTargetHealth)
 
 BUFTarget.Health = BUFTargetHealth
@@ -56,7 +55,6 @@ local healthBar = {
 }
 
 ns.AddSizableOptions(healthBar.args, healthBarOrder)
-ns.AddAnchorOptions(healthBar.args, healthBarOrder)
 ns.AddPositionableOptions(healthBar.args, healthBarOrder)
 ns.AddFrameLevelOption(healthBar.args, healthBarOrder)
 

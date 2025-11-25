@@ -12,6 +12,14 @@ local BUFPlayerLevel = {
     configPath = "unitFrames.player.level",
 }
 
+BUFPlayerLevel.optionsTable = {
+    type = "group",
+    handler = BUFPlayerLevel,
+    name = LEVEL,
+    order = BUFPlayer.optionsOrder.LEVEL,
+    args = {}
+}
+
 ns.BUFFontString:ApplyMixin(BUFPlayerLevel)
 
 BUFPlayer.Level = BUFPlayerLevel
@@ -41,17 +49,7 @@ ns.dbDefaults.profile.unitFrames.player.level = {
 	fontShadowOffsetY = -1,
 }
 
-local level = {
-    type = "group",
-    handler = BUFPlayerLevel,
-    name = LEVEL,
-    order = BUFPlayer.optionsOrder.LEVEL,
-    args = {}
-}
-
-ns.AddFontStringOptions(level.args)
-
-ns.options.args.unitFrames.args.player.args.level = level
+ns.options.args.unitFrames.args.player.args.level = BUFPlayerLevel.optionsTable
 
 function BUFPlayerLevel:RefreshConfig()
     if not self.fontString then

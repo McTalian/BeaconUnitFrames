@@ -20,9 +20,21 @@ function ns.AddDemoOptions(optionsTable, _orderMap)
 end
 
 ---@class DemoableHandler: BUFConfigHandler
+---@field demoMode boolean
 ---@field ToggleDemoMode fun(self: DemoableHandler)
+---@field _ToggleDemoMode fun(self: DemoableHandler, showable: ScriptRegion)
 
 ---@class Demoable: DemoableHandler
 local Demoable = {}
+
+function Demoable:_ToggleDemoMode(showable)
+    if self.demoMode then
+        self.demoMode = false
+        showable:Hide()
+    else
+        self.demoMode = true
+        showable:Show()
+    end
+end
 
 ns.Demoable = Demoable

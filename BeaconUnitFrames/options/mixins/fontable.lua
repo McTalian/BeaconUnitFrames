@@ -163,6 +163,9 @@ end
 ---@field SetFont fun(self: FontableHandler)
 ---@field UpdateFontColor fun(self: FontableHandler)
 ---@field SetFontShadow fun(self: FontableHandler)
+---@field _SetFont fun(self: FontableHandler, fontable: FontString) -- Should be FontInstance
+---@field _UpdateFontColor fun(self: FontableHandler, fontable: FontString)
+---@field _SetFontShadow fun(self: FontableHandler, fontable: FontString)
 
 ---@class Fontable: FontableHandler
 local Fontable = {}
@@ -225,6 +228,10 @@ function Fontable:GetFontFlag(info, key)
     return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".fontFlags." .. key)
 end
 
+function Fontable:GetFontFlags(info)
+    return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".fontFlags")
+end
+
 function Fontable:SetShadowColor(info, r, g, b, a)
     ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".fontShadowColor", { r, g, b, a })
     self:SetFontShadow()
@@ -263,6 +270,54 @@ end
 
 function Fontable:IsFontObjectEnabled(info)
     return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".useFontObjects") == true
+end
+
+function Fontable:_SetFont(fontable)
+    local useFontObjects = self:GetUseFontObjects()
+    if useFontObjects then
+        local fontObjectName = self:GetFontObject()
+        if not fontObjectName or fontObjectName == "" or _G[fontObjectName] == nil then
+            error("Font object '" .. fontObjectName .. "' does not exist.")
+        end
+        fontable:SetFontObject(_G[fontObjectName])
+    else
+        local fontFace = self:GetFontFace() or "NONE"
+        local fontPath = ns.lsm:Fetch(ns.lsm.MediaType.FONT, fontFace)
+        if not fontPath then
+            print("Font face '" .. fontFace .. "' not found. Using: ", STANDARD_TEXT_FONT)
+            fontPath = STANDARD_TEXT_FONT
+        end
+        local fontSize = self:GetFontSize() or 10
+        local fontFlagsTable = self:GetFontFlags() or {}
+        local fontFlags = ns.FontFlagsToString(fontFlagsTable)
+        fontable:SetFont(fontPath, fontSize, fontFlags)
+    end
+
+    self:UpdateFontColor()
+end
+
+function Fontable:_UpdateFontColor(fontable)
+    local fontColor = { self:GetFontColor() } or { 1, 1, 1, 1 }
+    local r, g, b, a = unpack(fontColor)
+    fontable:SetTextColor(r, g, b, a)
+end
+
+function Fontable:_SetFontShadow(fontable)
+    local useFontObjects = self:GetUseFontObjects()
+    if useFontObjects then
+        -- Font objects handle shadow internally
+        return
+    end
+    local fontShadowColor = { self:GetShadowColor() } or { 0, 0, 0, 1 }
+    local r, g, b, a = unpack(fontShadowColor)
+    local offsetX = self:GetShadowOffsetX() or 0
+    local offsetY = self:GetShadowOffsetY() or 0
+    if a == 0 then
+        fontable:SetShadowOffset(0, 0)
+    else
+        fontable:SetShadowColor(r, g, b, a)
+        fontable:SetShadowOffset(offsetX, offsetY)
+    end
 end
 
 ns.Fontable = Fontable

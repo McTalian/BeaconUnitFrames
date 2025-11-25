@@ -15,6 +15,14 @@ local leftTextHandler = {
     configPath = "unitFrames.player.powerBar.leftText",
 }
 
+leftTextHandler.optionsTable = {
+    type = "group",
+    handler = leftTextHandler,
+    name = ns.L["Left Text"],
+    order = BUFPlayerPower.topGroupOrder.LEFT_TEXT,
+    args = {}
+}
+
 ns.BUFFontString:ApplyMixin(leftTextHandler)
 
 BUFPlayerPower.leftTextHandler = leftTextHandler
@@ -43,17 +51,7 @@ ns.dbDefaults.profile.unitFrames.player.powerBar.leftText = {
     fontShadowOffsetY = -1,
 }
 
-local leftText = {
-    type = "group",
-    handler = leftTextHandler,
-    name = ns.L["Left Text"],
-    order = BUFPlayerPower.topGroupOrder.LEFT_TEXT,
-    args = {}
-}
-
-ns.AddFontStringOptions(leftText.args)
-
-ns.options.args.unitFrames.args.player.args.powerBar.args.leftText = leftText
+ns.options.args.unitFrames.args.player.args.powerBar.args.leftText = leftTextHandler.optionsTable
 
 function leftTextHandler:RefreshConfig()
     if not self.fontString then

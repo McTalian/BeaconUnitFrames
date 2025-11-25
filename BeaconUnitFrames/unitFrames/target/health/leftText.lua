@@ -15,6 +15,14 @@ local leftTextHandler = {
     configPath = "unitFrames.target.healthBar.leftText",
 }
 
+leftTextHandler.optionsTable = {
+    type = "group",
+    handler = leftTextHandler,
+    name = ns.L["Left Text"],
+    order = BUFTargetHealth.topGroupOrder.LEFT_TEXT,
+    args = {}
+}
+
 ns.BUFFontString:ApplyMixin(leftTextHandler)
 
 BUFTargetHealth.leftTextHandler = leftTextHandler
@@ -43,17 +51,7 @@ ns.dbDefaults.profile.unitFrames.target.healthBar.leftText = {
     fontShadowOffsetY = -1,
 }
 
-local leftText = {
-    type = "group",
-    handler = leftTextHandler,
-    name = ns.L["Left Text"],
-    order = BUFTargetHealth.topGroupOrder.LEFT_TEXT,
-    args = {}
-}
-
-ns.AddFontStringOptions(leftText.args)
-
-ns.options.args.unitFrames.args.target.args.healthBar.args.leftText = leftText
+ns.options.args.unitFrames.args.target.args.healthBar.args.leftText = leftTextHandler.optionsTable
 
 function leftTextHandler:RefreshConfig()
     if not self.fontString then

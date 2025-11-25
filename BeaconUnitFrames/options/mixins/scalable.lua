@@ -34,6 +34,7 @@ end
 
 ---@class ScalableHandler: BUFConfigHandler
 ---@field SetScaleFactor fun(self: ScalableHandler)
+---@field _SetScaleFactor fun(self: ScalableHandler, scalable: Region)
 
 ---@class Scalable: ScalableHandler
 local Scalable = {}
@@ -45,6 +46,11 @@ end
 
 function Scalable:GetScale(info)
     return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".scale")
+end
+
+function Scalable:_SetScaleFactor(scalable)
+    local scale = self:GetScale() or 1.0
+    scalable:SetScale(scale)
 end
 
 ns.Scalable = Scalable

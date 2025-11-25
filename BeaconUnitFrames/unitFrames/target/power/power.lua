@@ -7,14 +7,13 @@ ns = ns
 ---@class BUFTarget
 local BUFTarget = ns.BUFTarget
 
----@class BUFTarget.Power: BUFConfigHandler, Anchorable, Positionable, Sizable, Levelable
+---@class BUFTarget.Power: BUFConfigHandler, Positionable, Sizable, Levelable
 local BUFTargetPower = {
     configPath = "unitFrames.target.powerBar",
 }
 
-ns.ApplyMixin(ns.Anchorable, BUFTargetPower)
-ns.ApplyMixin(ns.Positionable, BUFTargetPower)
 ns.ApplyMixin(ns.Sizable, BUFTargetPower)
+ns.ApplyMixin(ns.Positionable, BUFTargetPower)
 ns.ApplyMixin(ns.Levelable, BUFTargetPower)
 
 BUFTarget.Power = BUFTargetPower
@@ -55,7 +54,6 @@ local powerBar = {
 }
 
 ns.AddSizableOptions(powerBar.args, powerBarOrder)
-ns.AddAnchorOptions(powerBar.args, powerBarOrder)
 ns.AddPositionableOptions(powerBar.args, powerBarOrder)
 ns.AddFrameLevelOption(powerBar.args, powerBarOrder)
 

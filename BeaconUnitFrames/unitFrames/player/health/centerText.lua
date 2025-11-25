@@ -15,6 +15,14 @@ local centerTextHandler = {
     configPath = "unitFrames.player.healthBar.centerText",
 }
 
+centerTextHandler.optionsTable = {
+    type = "group",
+    handler = centerTextHandler,
+    name = ns.L["Center Text"],
+    order = BUFPlayerHealth.topGroupOrder.CENTER_TEXT,
+    args = {}
+}
+
 ns.BUFFontString:ApplyMixin(centerTextHandler)
 
 BUFPlayerHealth.centerTextHandler = centerTextHandler
@@ -43,17 +51,7 @@ ns.dbDefaults.profile.unitFrames.player.healthBar.centerText = {
     fontShadowOffsetY = -1,
 }
 
-local centerText = {
-    type = "group",
-    handler = centerTextHandler,
-    name = ns.L["Center Text"],
-    order = BUFPlayerHealth.topGroupOrder.CENTER_TEXT,
-    args = {}
-}
-
-ns.AddFontStringOptions(centerText.args)
-
-ns.options.args.unitFrames.args.player.args.healthBar.args.centerText = centerText
+ns.options.args.unitFrames.args.player.args.healthBar.args.centerText = centerTextHandler.optionsTable
 
 function centerTextHandler:RefreshConfig()
     if not self.fontString then

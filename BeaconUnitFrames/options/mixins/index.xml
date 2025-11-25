@@ -10,11 +10,9 @@
     <Script file="reactionColorable.lua"/>
     <Script file="powerColorable.lua"/>
     <Script file="backgroundTexturable.lua"/>
-    <Script file="anchorable.lua"/>
     <Script file="demoable.lua"/>
     <Script file="maskable.lua"/>
     <Script file="textCustomizable.lua"/>
     <Script file="atlasSizable.lua"/>
-    <Script file="atlasScalable.lua"/>
     <Script file="justifiable.lua"/>
 </Ui>

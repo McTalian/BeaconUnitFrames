@@ -7,14 +7,13 @@ ns = ns
 ---@class BUFTarget
 local BUFTarget = ns.BUFTarget
 
----@class BUFTarget.ReputationBar: BUFConfigHandler, Anchorable, Positionable, Sizable, Colorable, ReactionColorable, ClassColorable
+---@class BUFTarget.ReputationBar: BUFConfigHandler, Positionable, Sizable, Colorable, ReactionColorable, ClassColorable
 local BUFTargetReputationBar = {
     configPath = "unitFrames.target.reputationBar",
 }
 
-ns.ApplyMixin(ns.Anchorable, BUFTargetReputationBar)
-ns.ApplyMixin(ns.Positionable, BUFTargetReputationBar)
 ns.ApplyMixin(ns.Sizable, BUFTargetReputationBar)
+ns.ApplyMixin(ns.Positionable, BUFTargetReputationBar)
 ns.ApplyMixin(ns.Colorable, BUFTargetReputationBar)
 ns.ApplyMixin(ns.ClassColorable, BUFTargetReputationBar)
 ns.ApplyMixin(ns.ReactionColorable, BUFTargetReputationBar)
@@ -72,7 +71,6 @@ repBar.args.texturing = {
     order = ns.defaultOrderMap.TEXTURING_HEADER,
 }
 
-ns.AddAnchorOptions(repBar.args)
 ns.AddPositionableOptions(repBar.args)
 ns.AddSizableOptions(repBar.args)
 ns.AddColorOptions(repBar.args)

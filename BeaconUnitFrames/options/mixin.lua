@@ -6,6 +6,7 @@ ns = ns
 
 ---@class BUFConfigHandler
 ---@field configPath string
+---@field optionsTable table
 ---@field RefreshConfig fun(self: BUFConfigHandler)
 
 function ns.ApplyMixin(source, target)

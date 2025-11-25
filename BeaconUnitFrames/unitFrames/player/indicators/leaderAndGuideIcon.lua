@@ -81,7 +81,7 @@ local leaderAndGuideIcon = {
 }
 
 ns.AddPositionableOptions(leaderAndGuideIcon.args, leaderAndGuideIconOrder)
-ns.AddAtlasSizableOptions(leaderAndGuideIcon.args, leaderAndGuideIconOrder)
+ns.AddAtlasSizableOptions(leaderAndGuideIcon.args, ns.AtlasSizableFlags.SIZABLE, leaderAndGuideIconOrder)
 ns.AddDemoOptions(leaderAndGuideIcon.args, leaderAndGuideIconOrder)
 
 local guideGroup = {
@@ -97,7 +97,7 @@ local guideGroup = {
 }
 
 ns.AddPositionableOptions(guideGroup.args)
-ns.AddAtlasSizableOptions(guideGroup.args)
+ns.AddAtlasSizableOptions(guideGroup.args, ns.AtlasSizableFlags.SIZABLE)
 ns.AddDemoOptions(guideGroup.args)
 
 leaderAndGuideIcon.args.guide = guideGroup

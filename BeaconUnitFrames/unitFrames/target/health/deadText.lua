@@ -15,6 +15,14 @@ local deadTextHandler = {
     configPath = "unitFrames.target.healthBar.deadText",
 }
 
+deadTextHandler.optionsTable = {
+    type = "group",
+    handler = deadTextHandler,
+    name = ns.L["Dead Text"],
+    order = BUFTargetHealth.topGroupOrder.DEAD_TEXT,
+    args = {}
+}
+
 ns.BUFFontString:ApplyMixin(deadTextHandler)
 
 BUFTargetHealth.deadTextHandler = deadTextHandler
@@ -43,17 +51,7 @@ ns.dbDefaults.profile.unitFrames.target.healthBar.deadText = {
     fontShadowOffsetY = -1,
 }
 
-local deadText = {
-    type = "group",
-    handler = deadTextHandler,
-    name = ns.L["Dead Text"],
-    order = BUFTargetHealth.topGroupOrder.DEAD_TEXT,
-    args = {}
-}
-
-ns.AddFontStringOptions(deadText.args)
-
-ns.options.args.unitFrames.args.target.args.healthBar.args.deadText = deadText
+ns.options.args.unitFrames.args.target.args.healthBar.args.deadText = deadTextHandler.optionsTable
 
 function deadTextHandler:RefreshConfig()
     if not self.fontString then

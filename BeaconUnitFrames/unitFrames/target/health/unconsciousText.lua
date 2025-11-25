@@ -15,6 +15,14 @@ local unconsciousTextHandler = {
     configPath = "unitFrames.target.healthBar.unconsciousText",
 }
 
+unconsciousTextHandler.optionsTable = {
+    type = "group",
+    handler = unconsciousTextHandler,
+    name = ns.L["Unconscious Text"],
+    order = BUFTargetHealth.topGroupOrder.DEAD_TEXT,
+    args = {}
+}
+
 ns.BUFFontString:ApplyMixin(unconsciousTextHandler)
 
 BUFTargetHealth.unconsciousTextHandler = unconsciousTextHandler
@@ -43,17 +51,7 @@ ns.dbDefaults.profile.unitFrames.target.healthBar.unconsciousText = {
     fontShadowOffsetY = -1,
 }
 
-local unconsciousText = {
-    type = "group",
-    handler = unconsciousTextHandler,
-    name = ns.L["Unconscious Text"],
-    order = BUFTargetHealth.topGroupOrder.DEAD_TEXT,
-    args = {}
-}
-
-ns.AddFontStringOptions(unconsciousText.args)
-
-ns.options.args.unitFrames.args.target.args.healthBar.args.unconsciousText = unconsciousText
+ns.options.args.unitFrames.args.target.args.healthBar.args.unconsciousText = unconsciousTextHandler.optionsTable
 
 function unconsciousTextHandler:RefreshConfig()
     if not self.fontString then

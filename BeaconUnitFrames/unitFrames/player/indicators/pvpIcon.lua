@@ -10,14 +10,20 @@ local BUFPlayer = ns.BUFPlayer
 ---@class BUFPlayer.Indicators
 local BUFPlayerIndicators = ns.BUFPlayer.Indicators
 
----@class BUFPlayer.Indicators.PvPIcon: BUFConfigHandler, Positionable, AtlasScalable, Demoable
+---@class BUFPlayer.Indicators.PvPIcon: BUFScaleTexture
 local BUFPlayerPvPIcon = {
     configPath = "unitFrames.player.pvpIcon",
 }
 
-ns.ApplyMixin(ns.Positionable, BUFPlayerPvPIcon)
-ns.ApplyMixin(ns.AtlasScalable, BUFPlayerPvPIcon)
-ns.ApplyMixin(ns.Demoable, BUFPlayerPvPIcon)
+BUFPlayerPvPIcon.optionsTable = {
+    type = "group",
+    handler = BUFPlayerPvPIcon,
+    name = ns.L["PvP Icon"],
+    order = BUFPlayerIndicators.optionsOrder.PVP_ICON,
+    args = {},
+}
+
+ns.BUFScaleTexture:ApplyMixin(BUFPlayerPvPIcon)
 
 BUFPlayerIndicators.PvPIcon = BUFPlayerPvPIcon
 
@@ -26,57 +32,41 @@ ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.playe
 
 ---@class BUFDbSchema.UF.Player.PvPIcon
 ns.dbDefaults.profile.unitFrames.player.pvpIcon = {
+    anchorPoint = "TOPLEFT",
+    relativeTo = ns.DEFAULT,
+    relativePoint = ns.DEFAULT,
     xOffset = 25,
     yOffset = -50,
     useAtlasSize = true,
     scale = 1.0,
 }
 
-local pvpIcon = {
-    type = "group",
-    handler = BUFPlayerPvPIcon,
-    name = ns.L["PvP Icon"],
-    order = BUFPlayerIndicators.optionsOrder.PVP_ICON,
-    args = {},
-}
 
-ns.AddPositionableOptions(pvpIcon.args)
-ns.AddAtlasScalableOptions(pvpIcon.args)
-ns.AddDemoOptions(pvpIcon.args)
+-- We will always use the atlas size for the PvP icon
+-- since the icon is dynamic and they all have different sizes.
+-- We will rely on scaling to adjust size instead.
+BUFPlayerPvPIcon.optionsTable.args.useAtlasSize = nil
 
-ns.options.args.unitFrames.args.player.args.indicators.args.pvpIcon = pvpIcon
+ns.options.args.unitFrames.args.player.args.indicators.args.pvpIcon = BUFPlayerPvPIcon.optionsTable
 
 function BUFPlayerPvPIcon:ToggleDemoMode()
-    local pvpIcon = BUFPlayer.contentContextual.PVPIcon
-    local factionGroup, factionName = UnitFactionGroup("player");
-    if factionGroup ~= "Horde" and factionGroup ~= "Alliance" then
-        factionGroup = "FFA"
-    end
-    local iconSuffix = string.lower(factionGroup) .. "icon"
+    self:_ToggleDemoMode(self.texture)
     if self.demoMode then
-        self.demoMode = false
-        pvpIcon:Hide()
-    else
-        self.demoMode = true
-        pvpIcon:SetAtlas("ui-hud-unitframe-player-pvp-" .. iconSuffix, true)
-        pvpIcon:Show()
+        local factionGroup, _ = UnitFactionGroup("player");
+        if factionGroup ~= "Horde" and factionGroup ~= "Alliance" then
+            factionGroup = "FFA"
+        end
+        local iconSuffix = string.lower(factionGroup) .. "icon"
+        self.texture:SetAtlas("ui-hud-unitframe-player-pvp-" .. iconSuffix, true)
     end
 end
 
 function BUFPlayerPvPIcon:RefreshConfig()
-  self:SetPosition()
-  self:SetScaleFactor()
-end
-
-function BUFPlayerPvPIcon:SetPosition()
-    local pvpIcon = BUFPlayer.contentContextual.PVPIcon
-    local db = ns.db.profile.unitFrames.player.pvpIcon
-    pvpIcon:ClearAllPoints()
-    pvpIcon:SetPoint("TOP", BUFPlayer.contentContextual, "TOPLEFT", db.xOffset, db.yOffset)
-end
-
-function BUFPlayerPvPIcon:SetScaleFactor()
-    local pvpIcon = BUFPlayer.contentContextual.PVPIcon
-    local scale = ns.db.profile.unitFrames.player.pvpIcon.scale
-    pvpIcon:SetScale(scale)
+  if not self.texture then
+      self.texture = BUFPlayer.contentContextual.PVPIcon
+      self.atlasName = "UI-HUD-UnitFrame-Player-PvP-FFAIcon"
+      self.defaultRelativeTo = BUFPlayer.contentContextual
+      self.defaultRelativePoint = "TOPRIGHT"
+  end
+  self:RefreshScaleTextureConfig()
 end

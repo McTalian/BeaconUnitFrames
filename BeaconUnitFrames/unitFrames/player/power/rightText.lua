@@ -15,6 +15,14 @@ local rightTextHandler = {
     configPath = "unitFrames.player.powerBar.rightText",
 }
 
+rightTextHandler.optionsTable = {
+    type = "group",
+    handler = rightTextHandler,
+    name = ns.L["Right Text"],
+    order = BUFPlayerPower.topGroupOrder.RIGHT_TEXT,
+    args = {}
+}
+
 ns.BUFFontString:ApplyMixin(rightTextHandler)
 
 BUFPlayerPower.rightTextHandler = rightTextHandler
@@ -43,17 +51,7 @@ ns.dbDefaults.profile.unitFrames.player.powerBar.rightText = {
     fontShadowOffsetY = -1,
 }
 
-local rightText = {
-    type = "group",
-    handler = rightTextHandler,
-    name = ns.L["Right Text"],
-    order = BUFPlayerPower.topGroupOrder.RIGHT_TEXT,
-    args = {}
-}
-
-ns.AddFontStringOptions(rightText.args)
-
-ns.options.args.unitFrames.args.player.args.powerBar.args.rightText = rightText
+ns.options.args.unitFrames.args.player.args.powerBar.args.rightText = rightTextHandler.optionsTable
 
 function rightTextHandler:RefreshConfig()
     if not self.fontString then

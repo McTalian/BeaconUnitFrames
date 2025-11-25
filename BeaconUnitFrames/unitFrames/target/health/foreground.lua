@@ -79,6 +79,7 @@ end
 function foregroundHandler:RefreshStatusBarTexture()
     local parent = ns.BUFTarget
     local useCustomTexture = ns.db.profile.unitFrames.target.healthBar.foreground.useStatusBarTexture
+    ---@type string?
     local texturePath = "UI-HUD-UnitFrame-Player-PortraitOn-Bar-Health"
     if useCustomTexture then
         texturePath = ns.lsm:Fetch(ns.lsm.MediaType.STATUSBAR,

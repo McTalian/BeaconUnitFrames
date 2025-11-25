@@ -47,6 +47,7 @@ end
 
 ---@class SizableHandler: BUFConfigHandler
 ---@field SetSize fun(self: SizableHandler)
+---@field _SetSize fun(self: SizableHandler, sizable: ScriptRegionResizing)
 
 ---@class Sizable: SizableHandler
 local Sizable = {}
@@ -67,6 +68,16 @@ end
 
 function Sizable:GetHeight(info)
     return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".height")
+end
+function Sizable:_SetSize(sizable)
+    local width = self:GetWidth()
+    local height = self:GetHeight()
+    if width then
+        sizable:SetWidth(width)
+    end
+    if height then
+        sizable:SetHeight(height)
+    end
 end
 
 ns.Sizable = Sizable

@@ -12,6 +12,14 @@ local BUFTargetLevel = {
     configPath = "unitFrames.target.level",
 }
 
+BUFTargetLevel.optionsTable = {
+    type = "group",
+    handler = BUFTargetLevel,
+    name = LEVEL,
+    order = BUFTarget.optionsOrder.LEVEL,
+    args = {}
+}
+
 ns.BUFFontString:ApplyMixin(BUFTargetLevel)
 
 BUFTarget.Level = BUFTargetLevel
@@ -42,17 +50,7 @@ ns.dbDefaults.profile.unitFrames.target.level = {
     justifyH = "CENTER",
 }
 
-local level = {
-    type = "group",
-    handler = BUFTargetLevel,
-    name = LEVEL,
-    order = BUFTarget.optionsOrder.LEVEL,
-    args = {}
-}
-
-ns.AddFontStringOptions(level.args)
-
-ns.options.args.unitFrames.args.target.args.level = level
+ns.options.args.unitFrames.args.target.args.level = BUFTargetLevel.optionsTable
 
 function BUFTargetLevel:RefreshConfig()
     if not self.fontString then

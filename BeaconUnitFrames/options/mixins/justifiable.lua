@@ -77,6 +77,7 @@ end
 
 ---@class JustifiableHandler: BUFConfigHandler
 ---@field UpdateJustification fun(self: JustifiableHandler)
+---@field _UpdateJustification fun(self: JustifiableHandler, justifiable: FontString)
 
 ---@class HJustifiable: JustifiableHandler
 local HJustifiable = {}
@@ -88,6 +89,13 @@ end
 
 function HJustifiable:GetJustifyH(info)
     return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".justifyH")
+end
+
+function HJustifiable:_UpdateJustification(justifiable)
+    local justifyH = self:GetJustifyH()
+    if justifyH then
+        justifiable:SetJustifyH(justifyH)
+    end
 end
 
 ---@class VJustifiable: JustifiableHandler
@@ -102,11 +110,29 @@ function VJustifiable:GetJustifyV(info)
     return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".justifyV")
 end
 
----@class Justifiable: JustifiableHandler
+function VJustifiable:_UpdateJustification(justifiable)
+    local justifyV = self:GetJustifyV()
+    if justifyV then
+        justifiable:SetJustifyV(justifyV)
+    end
+end
+
+---@class Justifiable: JustifiableHandler, HJustifiable, VJustifiable
 local Justifiable = {}
 
 ns.ApplyMixin(HJustifiable, Justifiable)
 ns.ApplyMixin(VJustifiable, Justifiable)
+
+function Justifiable:_UpdateJustification(justifiable)
+    local justifyH = self:GetJustifyH()
+    local justifyV = self:GetJustifyV()
+    if justifyH then
+        justifiable:SetJustifyH(justifyH)
+    end
+    if justifyV then
+        justifiable:SetJustifyV(justifyV)
+    end
+end
 
 ns.HJustifiable = HJustifiable
 ns.VJustifiable = VJustifiable

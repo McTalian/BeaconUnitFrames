@@ -12,6 +12,14 @@ local BUFPlayerName = {
     configPath = "unitFrames.player.name",
 }
 
+BUFPlayerName.optionsTable = {
+    type = "group",
+    handler = BUFPlayerName,
+    name = CALENDAR_PLAYER_NAME,
+    order = BUFPlayer.optionsOrder.NAME,
+    args = {}
+}
+
 ns.BUFFontString:ApplyMixin(BUFPlayerName)
 ns.ApplyMixin(ns.TextCustomizable, BUFPlayerName)
 
@@ -47,18 +55,9 @@ ns.dbDefaults.profile.unitFrames.player.name = {
     justifyV = "MIDDLE",
 }
 
-local playerName = {
-    type = "group",
-    handler = BUFPlayerName,
-    name = CALENDAR_PLAYER_NAME,
-    order = BUFPlayer.optionsOrder.NAME,
-    args = {}
-}
+ns.AddTextCustomizableOptions(BUFPlayerName.optionsTable.args)
 
-ns.AddFontStringOptions(playerName.args)
-ns.AddTextCustomizableOptions(playerName.args)
-
-ns.options.args.unitFrames.args.player.args.playerName = playerName
+ns.options.args.unitFrames.args.player.args.playerName = BUFPlayerName.optionsTable
 
 function BUFPlayerName:RefreshConfig()
     if not self.fontString then
