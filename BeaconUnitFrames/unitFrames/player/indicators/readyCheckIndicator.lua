@@ -15,9 +15,7 @@ local BUFPlayerReadyCheckIndicator = {
     configPath = "unitFrames.player.readyCheckIndicator",
 }
 
-ns.ApplyMixin(ns.Positionable, BUFPlayerReadyCheckIndicator)
-ns.ApplyMixin(ns.Sizable, BUFPlayerReadyCheckIndicator)
-ns.ApplyMixin(ns.Demoable, BUFPlayerReadyCheckIndicator)
+ns.Mixin(BUFPlayerReadyCheckIndicator, ns.Positionable, ns.Sizable, ns.Demoable)
 
 BUFPlayerIndicators.ReadyCheckIndicator = BUFPlayerReadyCheckIndicator
 

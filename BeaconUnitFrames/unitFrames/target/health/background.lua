@@ -17,9 +17,7 @@
 
 -- BUFTargetHealth.backgroundHandler = backgroundHandler
 
--- ns.ApplyMixin(ns.BackgroundTexturable, backgroundHandler)
--- ns.ApplyMixin(ns.Colorable, backgroundHandler)
--- ns.ApplyMixin(ns.ClassColorable, backgroundHandler)
+-- ns.Mixin(backgroundHandler, ns.BackgroundTexturable, ns.Colorable, ns.ClassColorable)
 
 -- ---@class BUFDbSchema.UF.Target.Health
 -- ns.dbDefaults.profile.unitFrames.target.healthBar = ns.dbDefaults.profile.unitFrames.target.healthBar

@@ -30,15 +30,10 @@ local BUFFontString = {}
 ---@param self BUFFontString
 ---@param handler BUFConfigHandler
 function BUFFontString:ApplyMixin(handler)
-    ns.ApplyMixin(ns.Demoable, handler)
-    ns.ApplyMixin(ns.Sizable, handler)
-    ns.ApplyMixin(ns.Positionable, handler)
-    ns.ApplyMixin(ns.Justifiable, handler)
-    ns.ApplyMixin(ns.Fontable, handler)
-    ns.ApplyMixin(self, handler)
+    ns.Mixin(handler, ns.Demoable, ns.Sizable, ns.Positionable, ns.Justifiable, ns.Fontable, self)
 
     if self.optionsTable then
-        ns.AddFontStringOptions(self.optionsTable)
+        ns.AddFontStringOptions(self.optionsTable, self.orderMap)
     end
 end
 

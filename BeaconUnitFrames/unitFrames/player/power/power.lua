@@ -12,9 +12,7 @@ local BUFPlayerPower = {
     configPath = "unitFrames.player.powerBar",
 }
 
-ns.ApplyMixin(ns.Positionable, BUFPlayerPower)
-ns.ApplyMixin(ns.Sizable, BUFPlayerPower)
-ns.ApplyMixin(ns.Levelable, BUFPlayerPower)
+ns.Mixin(BUFPlayerPower, ns.Positionable, ns.Sizable, ns.Levelable)
 
 BUFPlayer.Power = BUFPlayerPower
 
@@ -32,7 +30,7 @@ ns.dbDefaults.profile.unitFrames.player.powerBar = {
 
 local powerBarOrder = {}
 
-ns.ApplyMixin(ns.defaultOrderMap, powerBarOrder)
+ns.Mixin(powerBarOrder, ns.defaultOrderMap)
 powerBarOrder.LEFT_TEXT = powerBarOrder.FRAME_LEVEL + .1
 powerBarOrder.RIGHT_TEXT = powerBarOrder.LEFT_TEXT + .1
 powerBarOrder.CENTER_TEXT = powerBarOrder.RIGHT_TEXT + .1

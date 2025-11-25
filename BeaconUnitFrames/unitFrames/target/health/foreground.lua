@@ -15,10 +15,7 @@ local foregroundHandler = {
     configPath = "unitFrames.target.healthBar.foreground",
 }
 
-ns.ApplyMixin(ns.StatusBarTexturable, foregroundHandler)
-ns.ApplyMixin(ns.Colorable, foregroundHandler)
-ns.ApplyMixin(ns.ClassColorable, foregroundHandler)
-ns.ApplyMixin(ns.ReactionColorable, foregroundHandler)
+ns.Mixin(foregroundHandler, ns.StatusBarTexturable, ns.Colorable, ns.ClassColorable, ns.ReactionColorable)
 
 ---@class BUFDbSchema.UF.Target.Health
 ns.dbDefaults.profile.unitFrames.target.healthBar = ns.dbDefaults.profile.unitFrames.target.healthBar

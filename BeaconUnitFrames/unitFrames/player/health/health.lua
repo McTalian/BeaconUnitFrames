@@ -12,9 +12,7 @@ local BUFPlayerHealth = {
     configPath = "unitFrames.player.healthBar",
 }
 
-ns.ApplyMixin(ns.Positionable, BUFPlayerHealth)
-ns.ApplyMixin(ns.Sizable, BUFPlayerHealth)
-ns.ApplyMixin(ns.Levelable, BUFPlayerHealth)
+ns.Mixin(BUFPlayerHealth, ns.Positionable, ns.Sizable, ns.Levelable)
 
 BUFPlayer.Health = BUFPlayerHealth
 
@@ -32,7 +30,7 @@ ns.dbDefaults.profile.unitFrames.player.healthBar = {
 
 local healthBarOrder = {}
 
-ns.ApplyMixin(ns.defaultOrderMap, healthBarOrder)
+ns.Mixin(healthBarOrder, ns.defaultOrderMap)
 healthBarOrder.LEFT_TEXT = healthBarOrder.FRAME_LEVEL + .1
 healthBarOrder.RIGHT_TEXT = healthBarOrder.LEFT_TEXT + .1
 healthBarOrder.CENTER_TEXT = healthBarOrder.RIGHT_TEXT + .1

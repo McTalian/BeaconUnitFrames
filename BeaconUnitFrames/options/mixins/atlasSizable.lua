@@ -44,13 +44,13 @@ local AtlasSizable = {}
 function AtlasSizable:ApplyMixin(handler, flags)
     if bit.band(flags, ns.AtlasSizableFlags.SIZABLE) == ns.AtlasSizableFlags.SIZABLE then
         self.sizable = true
-        ns.ApplyMixin(ns.Sizable, handler)
+        ns.Mixin(handler, ns.Sizable)
     end
     if bit.band(flags, ns.AtlasSizableFlags.SCALABLE) == ns.AtlasSizableFlags.SCALABLE then
         self.scalable = true
-        ns.ApplyMixin(ns.Scalable, handler)
+        ns.Mixin(handler, ns.Scalable)
     end
-    ns.ApplyMixin(self, handler)
+    ns.Mixin(handler, self)
 end
 
 function AtlasSizable:SetUseAtlasSize(info, value)
@@ -67,8 +67,9 @@ function AtlasSizable:GetUseAtlasSize(info)
     return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".useAtlasSize")
 end
 
-function AtlasSizable:_SetSize(atlasSizable)
+function AtlasSizable:_SetSize(atlasSizable, overrideAtlasTexture)
     local useAtlasSize = self:GetUseAtlasSize()
+    local atlasTexture = overrideAtlasTexture or self.atlasName
     local width, height = self:GetWidth(), self:GetHeight()
 
     if useAtlasSize and self.atlasName then

@@ -15,9 +15,7 @@ local BUFPlayerPrestigePortrait = {
     configPath = "unitFrames.player.prestigePortrait",
 }
 
-ns.ApplyMixin(ns.Positionable, BUFPlayerPrestigePortrait)
-ns.ApplyMixin(ns.Sizable, BUFPlayerPrestigePortrait)
-ns.ApplyMixin(ns.Demoable, BUFPlayerPrestigePortrait)
+ns.Mixin(BUFPlayerPrestigePortrait, ns.Positionable, ns.Sizable, ns.Demoable)
 
 BUFPlayerIndicators.PrestigePortrait = BUFPlayerPrestigePortrait
 

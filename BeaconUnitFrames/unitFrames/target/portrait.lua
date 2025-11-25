@@ -12,8 +12,7 @@ local BUFTargetPortrait = {
     configPath = "unitFrames.target.portrait",
 }
 
-ns.ApplyMixin(ns.Sizable, BUFTargetPortrait)
-ns.ApplyMixin(ns.Positionable, BUFTargetPortrait)
+ns.Mixin(BUFTargetPortrait, ns.Sizable, ns.Positionable)
 
 BUFTarget.Portrait = BUFTargetPortrait
 

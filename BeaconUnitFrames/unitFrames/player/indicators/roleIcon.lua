@@ -15,9 +15,7 @@ local BUFPlayerRoleIcon = {
     configPath = "unitFrames.player.roleIcon",
 }
 
-ns.ApplyMixin(ns.Positionable, BUFPlayerRoleIcon)
-ns.ApplyMixin(ns.Sizable, BUFPlayerRoleIcon)
-ns.ApplyMixin(ns.Demoable, BUFPlayerRoleIcon)
+ns.Mixin(BUFPlayerRoleIcon, ns.Positionable, ns.Sizable, ns.Demoable)
 
 BUFPlayerIndicators.RoleIcon = BUFPlayerRoleIcon
 

@@ -15,9 +15,7 @@ local BUFPlayerPlayTime = {
     configPath = "unitFrames.player.playTime",
 }
 
-ns.ApplyMixin(ns.Positionable, BUFPlayerPlayTime)
-ns.ApplyMixin(ns.Sizable, BUFPlayerPlayTime)
-ns.ApplyMixin(ns.Demoable, BUFPlayerPlayTime)
+ns.Mixin(BUFPlayerPlayTime, ns.Positionable, ns.Sizable, ns.Demoable)
 
 BUFPlayerIndicators.PlayTime = BUFPlayerPlayTime
 

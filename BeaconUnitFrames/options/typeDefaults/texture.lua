@@ -27,13 +27,11 @@ local BUFTexture = {}
 --- @param self BUFTexture
 --- @param handler BUFConfigHandler
 function BUFTexture:ApplyMixin(handler)
-    ns.ApplyMixin(ns.Demoable, handler)
-    ns.ApplyMixin(ns.AtlasSizable, handler)
-    ns.ApplyMixin(ns.Positionable, handler)
-    ns.ApplyMixin(self, handler)
+    ns.AtlasSizable:ApplyMixin(handler, ns.AtlasSizableFlags.SIZABLE | ns.AtlasSizableFlags.SCALABLE)
+    ns.Mixin(handler, ns.Demoable, ns.Positionable, self)
 
     if self.optionsTable then
-        ns.AddTextureOptions(self.optionsTable)
+        ns.AddTextureOptions(self.optionsTable, self.orderMap)
     end
 end
 

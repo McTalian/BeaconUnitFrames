@@ -120,8 +120,7 @@ end
 ---@class Justifiable: JustifiableHandler, HJustifiable, VJustifiable
 local Justifiable = {}
 
-ns.ApplyMixin(HJustifiable, Justifiable)
-ns.ApplyMixin(VJustifiable, Justifiable)
+ns.Mixin(Justifiable, HJustifiable, VJustifiable)
 
 function Justifiable:_UpdateJustification(justifiable)
     local justifyH = self:GetJustifyH()

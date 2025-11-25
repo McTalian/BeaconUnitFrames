@@ -12,9 +12,7 @@ local BUFPlayerPortrait = {
     configPath = "unitFrames.player.portrait",
 }
 
-ns.ApplyMixin(ns.Sizable, BUFPlayerPortrait)
-ns.ApplyMixin(ns.Positionable, BUFPlayerPortrait)
-ns.ApplyMixin(ns.BoxMaskable, BUFPlayerPortrait)
+ns.Mixin(BUFPlayerPortrait, ns.Sizable, ns.Positionable, ns.BoxMaskable)
 
 BUFPlayer.Portrait = BUFPlayerPortrait
 
@@ -36,7 +34,7 @@ ns.dbDefaults.profile.unitFrames.player.portrait = {
 }
 
 local portraitOrder = {}
-ns.ApplyMixin(ns.defaultOrderMap, portraitOrder)
+ns.Mixin(portraitOrder, ns.defaultOrderMap)
 portraitOrder.CORNER_INDICATOR = portraitOrder.ENABLE + .1
 
 local portrait = {

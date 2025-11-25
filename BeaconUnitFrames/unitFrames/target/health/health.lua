@@ -12,9 +12,7 @@ local BUFTargetHealth = {
     configPath = "unitFrames.target.healthBar",
 }
 
-ns.ApplyMixin(ns.Sizable, BUFTargetHealth)
-ns.ApplyMixin(ns.Positionable, BUFTargetHealth)
-ns.ApplyMixin(ns.Levelable, BUFTargetHealth)
+ns.Mixin(BUFTargetHealth, ns.Sizable, ns.Positionable, ns.Levelable)
 
 BUFTarget.Health = BUFTargetHealth
 
@@ -34,7 +32,7 @@ ns.dbDefaults.profile.unitFrames.target.healthBar = {
 }
 
 local healthBarOrder = {}
-ns.ApplyMixin(ns.defaultOrderMap, healthBarOrder)
+ns.Mixin(healthBarOrder, ns.defaultOrderMap)
 healthBarOrder.LEFT_TEXT = healthBarOrder.FRAME_LEVEL + .1
 healthBarOrder.RIGHT_TEXT = healthBarOrder.LEFT_TEXT + .1
 healthBarOrder.CENTER_TEXT = healthBarOrder.RIGHT_TEXT + .1

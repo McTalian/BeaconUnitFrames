@@ -17,9 +17,7 @@ local foregroundHandler = {
 
 BUFTargetPower.foregroundHandler = foregroundHandler
 
-ns.ApplyMixin(ns.StatusBarTexturable, foregroundHandler)
-ns.ApplyMixin(ns.Colorable, foregroundHandler)
-ns.ApplyMixin(ns.PowerColorable, foregroundHandler)
+ns.Mixin(foregroundHandler, ns.StatusBarTexturable, ns.Colorable, ns.PowerColorable)
 
 ---@class BUFDbSchema.UF.Target.Power
 ns.dbDefaults.profile.unitFrames.target.powerBar = ns.dbDefaults.profile.unitFrames.target.powerBar

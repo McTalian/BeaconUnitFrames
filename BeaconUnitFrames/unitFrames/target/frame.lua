@@ -12,8 +12,7 @@ local BUFTargetFrame = {
     configPath = "unitFrames.target.frame",
 }
 
-ns.ApplyMixin(ns.Sizable, BUFTargetFrame)
-ns.ApplyMixin(ns.BackgroundTexturable, BUFTargetFrame)
+ns.Mixin(BUFTargetFrame, ns.Sizable, ns.BackgroundTexturable)
 
 BUFTarget.Frame = BUFTargetFrame
 
@@ -32,7 +31,7 @@ ns.dbDefaults.profile.unitFrames.target.frame = {
 
 local frameOrder = {}
 
-ns.ApplyMixin(ns.defaultOrderMap, frameOrder)
+ns.Mixin(frameOrder, ns.defaultOrderMap)
 frameOrder.FRAME_FLASH = frameOrder.HEIGHT + .1
 frameOrder.FRAME_TEXTURE = frameOrder.FRAME_FLASH + .1
 frameOrder.BACKDROP_AND_BORDER = frameOrder.FRAME_TEXTURE + .1

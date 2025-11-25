@@ -12,9 +12,7 @@ local BUFTargetPower = {
     configPath = "unitFrames.target.powerBar",
 }
 
-ns.ApplyMixin(ns.Sizable, BUFTargetPower)
-ns.ApplyMixin(ns.Positionable, BUFTargetPower)
-ns.ApplyMixin(ns.Levelable, BUFTargetPower)
+ns.Mixin(BUFTargetPower, ns.Sizable, ns.Positionable, ns.Levelable)
 
 BUFTarget.Power = BUFTargetPower
 
@@ -35,7 +33,7 @@ ns.dbDefaults.profile.unitFrames.target.powerBar = {
 
 local powerBarOrder = {}
 
-ns.ApplyMixin(ns.defaultOrderMap, powerBarOrder)
+ns.Mixin(powerBarOrder, ns.defaultOrderMap)
 powerBarOrder.LEFT_TEXT = powerBarOrder.FRAME_LEVEL + .1
 powerBarOrder.RIGHT_TEXT = powerBarOrder.LEFT_TEXT + .1
 powerBarOrder.CENTER_TEXT = powerBarOrder.RIGHT_TEXT + .1

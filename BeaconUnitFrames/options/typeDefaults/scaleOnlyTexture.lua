@@ -27,13 +27,11 @@ local BUFScaleTexture = {}
 --- @param self BUFScaleTexture
 --- @param handler BUFConfigHandler
 function BUFScaleTexture:ApplyMixin(handler)
-    ns.ApplyMixin(ns.Demoable, handler)
-    ns.ApplyMixin(ns.AtlasSizable, handler)
-    ns.ApplyMixin(ns.Positionable, handler)
-    ns.ApplyMixin(self, handler)
+    ns.AtlasSizable:ApplyMixin(handler, ns.AtlasSizableFlags.SCALABLE)
+    ns.Mixin(handler, ns.Demoable, ns.Positionable, self)
 
     if self.optionsTable then
-        ns.AddScaleTextureOptions(self.optionsTable)
+        ns.AddScaleTextureOptions(self.optionsTable, self.orderMap)
     end
 end
 

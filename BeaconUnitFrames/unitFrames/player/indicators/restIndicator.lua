@@ -15,9 +15,7 @@ local BUFPlayerRestIndicator = {
     configPath = "unitFrames.player.restIndicator",
 }
 
-ns.ApplyMixin(ns.Positionable, BUFPlayerRestIndicator)
-ns.ApplyMixin(ns.Sizable, BUFPlayerRestIndicator)
-ns.ApplyMixin(ns.Demoable, BUFPlayerRestIndicator)
+ns.Mixin(BUFPlayerRestIndicator, ns.Positionable, ns.Sizable, ns.Demoable)
 
 BUFPlayerIndicators.RestIndicator = BUFPlayerRestIndicator
 

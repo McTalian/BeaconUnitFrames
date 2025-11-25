@@ -17,9 +17,7 @@ local foregroundHandler = {
 
 BUFPlayerPower.foregroundHandler = foregroundHandler
 
-ns.ApplyMixin(ns.StatusBarTexturable, foregroundHandler)
-ns.ApplyMixin(ns.Colorable, foregroundHandler)
-ns.ApplyMixin(ns.PowerColorable, foregroundHandler)
+ns.Mixin(foregroundHandler, ns.StatusBarTexturable, ns.Colorable, ns.PowerColorable)
 
 ---@class BUFDbSchema.UF.Player.Power
 ns.dbDefaults.profile.unitFrames.player.powerBar = ns.dbDefaults.profile.unitFrames.player.powerBar

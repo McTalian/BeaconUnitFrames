@@ -15,11 +15,7 @@ local BUFPlayerGroupIndicator = {
     configPath = "unitFrames.player.groupIndicator",
 }
 
-ns.ApplyMixin(ns.Positionable, BUFPlayerGroupIndicator)
-ns.ApplyMixin(ns.Fontable, BUFPlayerGroupIndicator)
-ns.ApplyMixin(ns.BackgroundTexturable, BUFPlayerGroupIndicator)
-ns.ApplyMixin(ns.Colorable, BUFPlayerGroupIndicator)
-ns.ApplyMixin(ns.Demoable, BUFPlayerGroupIndicator)
+ns.Mixin(BUFPlayerGroupIndicator, ns.Positionable, ns.Fontable, ns.BackgroundTexturable, ns.Colorable, ns.Demoable)
 
 BUFPlayerIndicators.GroupIndicator = BUFPlayerGroupIndicator
 

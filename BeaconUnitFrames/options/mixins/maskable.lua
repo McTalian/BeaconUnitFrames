@@ -100,6 +100,6 @@ end
 ---@class BoxMaskable: BoxMaskableHandler
 local BoxMaskable = {}
 
-ns.ApplyMixin(MaskableBase, BoxMaskable)
+ns.Mixin(BoxMaskable, MaskableBase)
 
 ns.BoxMaskable = BoxMaskable

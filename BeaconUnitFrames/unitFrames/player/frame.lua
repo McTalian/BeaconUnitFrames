@@ -12,8 +12,7 @@ local BUFPlayerFrame = {
     configPath = "unitFrames.player.frame",
 }
 
-ns.ApplyMixin(ns.Sizable, BUFPlayerFrame)
-ns.ApplyMixin(ns.BackgroundTexturable, BUFPlayerFrame)
+ns.Mixin(BUFPlayerFrame, ns.Sizable, ns.BackgroundTexturable)
 
 BUFPlayer.Frame = BUFPlayerFrame
 
@@ -33,8 +32,7 @@ ns.dbDefaults.profile.unitFrames.player.frame = {
 }
 
 local frameOrder = {}
-ns.ApplyMixin(ns.defaultOrderMap, frameOrder)
-
+ns.Mixin(frameOrder, ns.defaultOrderMap)
 frameOrder.FRAME_FLASH = frameOrder.ENABLE + .1
 frameOrder.FRAME_TEXTURE = frameOrder.FRAME_FLASH + .1
 frameOrder.STATUS_TEXTURE = frameOrder.FRAME_TEXTURE + .1

@@ -21,7 +21,7 @@ BUFPlayerName.optionsTable = {
 }
 
 ns.BUFFontString:ApplyMixin(BUFPlayerName)
-ns.ApplyMixin(ns.TextCustomizable, BUFPlayerName)
+ns.Mixin(BUFPlayerName, ns.TextCustomizable)
 
 BUFPlayer.Name = BUFPlayerName
 

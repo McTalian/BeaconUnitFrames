@@ -12,7 +12,7 @@ local BUFPlayerClassResources = {
     configPath = "unitFrames.player.classResources",
 }
 
-ns.ApplyMixin(ns.Positionable, BUFPlayerClassResources)
+ns.Mixin(BUFPlayerClassResources, ns.Positionable)
 
 BUFPlayer.ClassResources = BUFPlayerClassResources
 

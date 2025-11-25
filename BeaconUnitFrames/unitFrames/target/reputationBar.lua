@@ -12,11 +12,7 @@ local BUFTargetReputationBar = {
     configPath = "unitFrames.target.reputationBar",
 }
 
-ns.ApplyMixin(ns.Sizable, BUFTargetReputationBar)
-ns.ApplyMixin(ns.Positionable, BUFTargetReputationBar)
-ns.ApplyMixin(ns.Colorable, BUFTargetReputationBar)
-ns.ApplyMixin(ns.ClassColorable, BUFTargetReputationBar)
-ns.ApplyMixin(ns.ReactionColorable, BUFTargetReputationBar)
+ns.Mixin(BUFTargetReputationBar, ns.Sizable, ns.Positionable, ns.Colorable, ns.ClassColorable, ns.ReactionColorable)
 
 BUFTarget.ReputationBar = BUFTargetReputationBar
 
