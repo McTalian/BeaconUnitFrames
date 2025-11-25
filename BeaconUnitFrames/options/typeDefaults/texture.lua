@@ -10,7 +10,7 @@ ns = ns
 function ns.AddTextureOptions(optionsTable, _orderMap)
     local orderMap = _orderMap or ns.defaultOrderMap
     ns.AddPositionableOptions(optionsTable, orderMap)
-    ns.AddAtlasSizableOptions(optionsTable, ns.AtlasSizableFlags.SIZABLE | ns.AtlasSizableFlags.SCALABLE, orderMap)
+    ns.AddAtlasSizableOptions(optionsTable, ns.AtlasSizableFlags.SIZABLE + ns.AtlasSizableFlags.SCALABLE, orderMap)
     ns.AddDemoOptions(optionsTable, orderMap)
 end
 
@@ -27,7 +27,7 @@ local BUFTexture = {}
 --- @param self BUFTexture
 --- @param handler BUFConfigHandler
 function BUFTexture:ApplyMixin(handler)
-    ns.AtlasSizable:ApplyMixin(handler, ns.AtlasSizableFlags.SIZABLE | ns.AtlasSizableFlags.SCALABLE)
+    ns.AtlasSizable:ApplyMixin(handler, ns.AtlasSizableFlags.SIZABLE + ns.AtlasSizableFlags.SCALABLE)
     ns.Mixin(handler, ns.Demoable, ns.Positionable, self)
 
     if self.optionsTable then
