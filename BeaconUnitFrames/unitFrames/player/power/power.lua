@@ -62,6 +62,21 @@ BUFPlayerPower.coeffs = {
 }
 
 function BUFPlayerPower:RefreshConfig()
+    if not self.initialized then
+        self.initialized = true
+
+        if not BUFPlayer:IsHooked(BUFPlayer.manaBar.ManaBarMask, "SetWidth") then
+            BUFPlayer:SecureHook(BUFPlayer.manaBar.ManaBarMask, "SetWidth", function()
+                BUFPlayerPower:SetUnprotectedSize()
+            end)
+        end
+
+        if not BUFPlayer:IsHooked(BUFPlayer.manaBar.ManaBarMask, "SetAtlas") then
+            BUFPlayer:SecureHook(BUFPlayer.manaBar.ManaBarMask, "SetAtlas", function()
+                BUFPlayerPower:SetUnprotectedSize()
+            end)
+        end
+    end
     self:SetPosition()
     self:SetSize()
     self:SetLevel()
@@ -72,21 +87,43 @@ function BUFPlayerPower:RefreshConfig()
     -- self.backgroundHandler:RefreshConfig()
 end
 
+function BUFPlayerPower:SetUnprotectedSize()
+    local parent = BUFPlayer
+    local width = ns.db.profile.unitFrames.player.powerBar.width
+    local height = ns.db.profile.unitFrames.player.powerBar.height
+    parent.manaBar.FullPowerFrame:SetWidth(width)
+    parent.manaBar.FullPowerFrame:SetHeight(height)
+    parent.manaBar.FullPowerFrame.SpikeFrame:SetWidth(width)
+    parent.manaBar.FullPowerFrame.SpikeFrame:SetHeight(height)
+    parent.manaBar.FullPowerFrame.PulseFrame:SetWidth(width)
+    parent.manaBar.FullPowerFrame.PulseFrame:SetHeight(height)
+    if BUFPlayer:IsHooked(parent.manaBar.ManaBarMask, "SetWidth") then
+        BUFPlayer:Unhook(parent.manaBar.ManaBarMask, "SetWidth")
+    end
+    parent.manaBar.ManaBarMask:SetWidth(width * self.coeffs.maskWidth)
+    if not BUFPlayer:IsHooked(parent.manaBar.ManaBarMask, "SetWidth") then
+        BUFPlayer:SecureHook(parent.manaBar.ManaBarMask, "SetWidth", function()
+            BUFPlayerPower:SetUnprotectedSize()
+        end)
+    end
+    parent.manaBar.ManaBarMask:SetHeight(height * self.coeffs.maskHeight)
+    parent.manaBar.ManaBarMask:SetPoint("TOPLEFT", width * self.coeffs.maskXOffset, height * self.coeffs.maskYOffset)
+end
+
 function BUFPlayerPower:SetSize()
     local parent = BUFPlayer
     local width = ns.db.profile.unitFrames.player.powerBar.width
     local height = ns.db.profile.unitFrames.player.powerBar.height
-    PixelUtil.SetWidth(parent.manaBar, width, 18)
-    PixelUtil.SetHeight(parent.manaBar, height, 18)
-    PixelUtil.SetWidth(parent.manaBar.FullPowerFrame, width, 18)
-    PixelUtil.SetHeight(parent.manaBar.FullPowerFrame, height, 18)
-    PixelUtil.SetWidth(parent.manaBar.FullPowerFrame.SpikeFrame, width, 18)
-    PixelUtil.SetHeight(parent.manaBar.FullPowerFrame.SpikeFrame, height, 18)
-    PixelUtil.SetWidth(parent.manaBar.FullPowerFrame.PulseFrame, width, 18)
-    PixelUtil.SetHeight(parent.manaBar.FullPowerFrame.PulseFrame, height, 18)
-    PixelUtil.SetWidth(parent.manaBar.ManaBarMask, width * self.coeffs.maskWidth, 18)
-    PixelUtil.SetHeight(parent.manaBar.ManaBarMask, height * self.coeffs.maskHeight, 18)
-    parent.manaBar.ManaBarMask:SetPoint("TOPLEFT", width * self.coeffs.maskXOffset, height * self.coeffs.maskYOffset)
+    parent.manaBar:SetWidth(width)
+    parent.manaBar:SetHeight(height)
+    self:SetUnprotectedSize()
+
+    parent.manaBar:SetAttribute("_childupdate-size", format([[
+        local width, height = %d, %d;
+        print("Setting power bar size to", width, height);
+        self:SetWidth(width);
+        self:SetHeight(height);
+    ]], width, height))
 end
 
 function BUFPlayerPower:SetPosition()
@@ -94,6 +131,13 @@ function BUFPlayerPower:SetPosition()
     local xOffset = ns.db.profile.unitFrames.player.powerBar.xOffset
     local yOffset = ns.db.profile.unitFrames.player.powerBar.yOffset
     parent.manaBar:SetPoint("TOPLEFT", xOffset, yOffset)
+
+    parent.manaBar:SetAttribute("_childupdate-position", format([[
+        local xOffset, yOffset = %d, %d;
+        print("Setting power bar position", "TOPLEFT", self:GetParent(), "TOPLEFT", xOffset, yOffset);
+        self:ClearAllPoints();
+        self:SetPoint("TOPLEFT", self:GetParent(), "TOPLEFT", xOffset, yOffset);
+    ]], xOffset, yOffset))
 end
 
 function BUFPlayerPower:SetLevel()

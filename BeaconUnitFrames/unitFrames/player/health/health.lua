@@ -69,14 +69,57 @@ function BUFPlayerHealth:RefreshConfig()
         self.initialized = true
         self.defaultRelativeTo = "PlayerFrame"
         self.defaultRelativePoint = "TOPLEFT"
-    self:SetPosition()
-    self:SetSize()
-    self:SetLevel()
+        if not BUFPlayer:IsHooked(BUFPlayer.healthBarContainer.HealthBarMask, "SetPoint") then
+            BUFPlayer:SecureHook(BUFPlayer.healthBarContainer.HealthBarMask, "SetPoint", function()
+                BUFPlayerHealth:SetUnprotectedSize()
+            end)
+        end
+
+        if not BUFPlayer:IsHooked(BUFPlayer.healthBarContainer.HealthBarMask, "SetHeight") then
+            BUFPlayer:SecureHook(BUFPlayer.healthBarContainer.HealthBarMask, "SetHeight", function()
+                BUFPlayerHealth:SetUnprotectedSize()
+            end)
+        end
+    end
+    if not InCombatLockdown() then
+        self:SetPosition()
+        self:SetSize()
+        self:SetLevel()
+    else
+        self:SetUnprotectedSize()
+    end
     self.leftTextHandler:RefreshConfig()
     self.rightTextHandler:RefreshConfig()
     self.centerTextHandler:RefreshConfig()
     self.foregroundHandler:RefreshConfig()
     self.backgroundHandler:RefreshConfig()
+end
+
+function BUFPlayerHealth:SetUnprotectedSize()
+    local parent = BUFPlayer
+    local width = ns.db.profile.unitFrames.player.healthBar.width
+    local height = ns.db.profile.unitFrames.player.healthBar.height
+
+    parent.healthBarContainer.HealthBarMask:SetWidth(width * self.coeffs.maskWidth)
+    if BUFPlayer:IsHooked(parent.healthBarContainer.HealthBarMask, "SetHeight") then
+        BUFPlayer:Unhook(parent.healthBarContainer.HealthBarMask, "SetHeight")
+    end
+    parent.healthBarContainer.HealthBarMask:SetHeight(height * self.coeffs.maskHeight)
+    if not BUFPlayer:IsHooked(parent.healthBarContainer.HealthBarMask, "SetHeight") then
+        BUFPlayer:SecureHook(parent.healthBarContainer.HealthBarMask, "SetHeight", function()
+            BUFPlayerHealth:SetUnprotectedSize()
+        end)
+    end
+    if BUFPlayer:IsHooked(parent.healthBarContainer.HealthBarMask, "SetPoint") then
+        BUFPlayer:Unhook(parent.healthBarContainer.HealthBarMask, "SetPoint")
+    end
+    parent.healthBarContainer.HealthBarMask:SetPoint("TOPLEFT", width * self.coeffs.maskXOffset,
+        height * self.coeffs.maskYOffset)
+    if not BUFPlayer:IsHooked(parent.healthBarContainer.HealthBarMask, "SetPoint") then
+        BUFPlayer:SecureHook(parent.healthBarContainer.HealthBarMask, "SetPoint", function()
+            BUFPlayerHealth:SetUnprotectedSize()
+        end)
+    end
 end
 
 function BUFPlayerHealth:SetSize()
@@ -88,10 +131,17 @@ function BUFPlayerHealth:SetSize()
     parent.healthBarContainer:SetHeight(height)
     parent.healthBar:SetWidth(width)
     parent.healthBar:SetHeight(height)
-    parent.healthBarContainer.HealthBarMask:SetWidth(width * self.coeffs.maskWidth)
-    parent.healthBarContainer.HealthBarMask:SetHeight(height * self.coeffs.maskHeight)
-    parent.healthBarContainer.HealthBarMask:SetPoint("TOPLEFT", width * self.coeffs.maskXOffset,
-        height * self.coeffs.maskYOffset)
+    self:SetUnprotectedSize()
+
+    parent.healthBarContainer:SetAttribute("_childupdate-size", format([[
+        self:SetWidth(%d);
+        self:SetHeight(%d);
+    ]], width, height))
+    parent.healthBar:SetAttribute("_childupdate-size", format([[
+        print("Setting health bar size")
+        self:SetWidth(%d);
+        self:SetHeight(%d);
+    ]], width, height))
 end
 
 function BUFPlayerHealth:SetPosition()
@@ -112,6 +162,17 @@ function BUFPlayerHealth:SetPosition()
     local yOffset = ns.db.profile.unitFrames.player.healthBar.yOffset
 
     self:_SetPosition(parent.healthBarContainer)
+
+    parent.healthBarContainer:SetAttribute("_childupdate-position", format([[
+        local anchorPoint = "%s"
+        local relativeTo = self:GetParent()
+        local relativePoint = "%s"
+        local xOffset = %d
+        local yOffset = %d
+        print("Setting health bar position")
+        self:ClearAllPoints();
+        self:SetPoint(anchorPoint, relativeTo, relativePoint, xOffset, yOffset);
+    ]], anchorPoint, relativePoint, xOffset, yOffset))
 end
 
 function BUFPlayerHealth:SetLevel()
