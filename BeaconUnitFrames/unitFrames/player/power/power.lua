@@ -44,7 +44,7 @@ local powerBar = {
     handler = BUFPlayerPower,
     name = POWER_TYPE_POWER,
     order = BUFPlayer.optionsOrder.POWER,
-    childGroups = "tab",
+    childGroups = "tree",
     args = {},
 }
 

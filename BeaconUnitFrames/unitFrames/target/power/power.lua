@@ -47,7 +47,7 @@ local powerBar = {
     handler = BUFTargetPower,
     name = POWER_TYPE_POWER,
     order = BUFTarget.optionsOrder.POWER,
-    childGroups = "tab",
+    childGroups = "tree",
     args = {},
 }
 

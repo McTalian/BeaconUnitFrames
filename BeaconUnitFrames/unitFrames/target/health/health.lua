@@ -48,7 +48,7 @@ local healthBar = {
     handler = BUFTargetHealth,
     name = HEALTH,
     order = BUFTarget.optionsOrder.HEALTH,
-    childGroups = "tab",
+    childGroups = "tree",
     args = {},
 }
 

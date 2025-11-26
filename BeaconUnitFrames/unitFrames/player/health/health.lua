@@ -21,6 +21,9 @@ ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.playe
 
 ---@class BUFDbSchema.UF.Player.Health
 ns.dbDefaults.profile.unitFrames.player.healthBar = {
+    anchorPoint = "TOPLEFT",
+    relativeTo = ns.DEFAULT,
+    relativePoint = ns.DEFAULT,
     width = 124,
     height = 20,
     xOffset = 85,
@@ -44,7 +47,7 @@ local healthBar = {
     handler = BUFPlayerHealth,
     name = HEALTH,
     order = BUFPlayer.optionsOrder.HEALTH,
-    childGroups = "tab",
+    childGroups = "tree",
     args = {},
 }
 
@@ -62,6 +65,10 @@ BUFPlayerHealth.coeffs = {
 }
 
 function BUFPlayerHealth:RefreshConfig()
+    if not self.initialized then
+        self.initialized = true
+        self.defaultRelativeTo = "PlayerFrame"
+        self.defaultRelativePoint = "TOPLEFT"
     self:SetPosition()
     self:SetSize()
     self:SetLevel()
@@ -89,13 +96,22 @@ end
 
 function BUFPlayerHealth:SetPosition()
     local parent = BUFPlayer
+    local anchorPoint = self:GetAnchorPoint() or "TOPLEFT"
+    ---@type string
+    local relativeTo = self:GetRelativeTo() or ns.DEFAULT
+    if relativeTo == ns.DEFAULT then
+        relativeTo = self.defaultRelativeTo or "UIParent"
+    end
+
+    ---@type string
+    local relativePoint = self:GetRelativePoint() or ns.DEFAULT
+    if relativePoint == ns.DEFAULT then
+        relativePoint = self.defaultRelativePoint or "TOPLEFT"
+    end
     local xOffset = ns.db.profile.unitFrames.player.healthBar.xOffset
     local yOffset = ns.db.profile.unitFrames.player.healthBar.yOffset
-    if BUFPlayer:IsHooked(parent.healthBarContainer, "SetPoint") then
-        BUFPlayer:Unhook(parent.healthBarContainer, "SetPoint")
-    end
-    parent.healthBarContainer:ClearAllPoints()
-    parent.healthBarContainer:SetPoint("TOPLEFT", xOffset, yOffset)
+
+    self:_SetPosition(parent.healthBarContainer)
 end
 
 function BUFPlayerHealth:SetLevel()
