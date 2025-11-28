@@ -133,12 +133,11 @@ function BUFPlayerHealth:SetSize()
     parent.healthBar:SetHeight(height)
     self:SetUnprotectedSize()
 
-    parent.healthBarContainer:SetAttribute("_childupdate-size", format([[
+    parent.healthBarContainer:SetAttribute("buf_restore_size", format([[
         self:SetWidth(%d);
         self:SetHeight(%d);
     ]], width, height))
-    parent.healthBar:SetAttribute("_childupdate-size", format([[
-        print("Setting health bar size")
+    parent.healthBar:SetAttribute("buf_restore_size", format([[
         self:SetWidth(%d);
         self:SetHeight(%d);
     ]], width, height))
@@ -163,13 +162,12 @@ function BUFPlayerHealth:SetPosition()
 
     self:_SetPosition(parent.healthBarContainer)
 
-    parent.healthBarContainer:SetAttribute("_childupdate-position", format([[
+    parent.healthBarContainer:SetAttribute("buf_restore_position", format([[
         local anchorPoint = "%s"
         local relativeTo = self:GetParent()
         local relativePoint = "%s"
         local xOffset = %d
         local yOffset = %d
-        print("Setting health bar position")
         self:ClearAllPoints();
         self:SetPoint(anchorPoint, relativeTo, relativePoint, xOffset, yOffset);
     ]], anchorPoint, relativePoint, xOffset, yOffset))

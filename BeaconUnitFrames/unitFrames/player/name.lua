@@ -60,8 +60,18 @@ ns.AddTextCustomizableOptions(BUFPlayerName.optionsTable.args)
 ns.options.args.unitFrames.args.player.args.playerName = BUFPlayerName.optionsTable
 
 function BUFPlayerName:RefreshConfig()
-    if not self.fontString then
+    if not self.initialized then
+        self.initialized = true
+
         self.fontString = PlayerName
+
+        local player = BUFPlayer
+
+        if not player:IsHooked("PlayerFrame_UpdatePlayerNameTextAnchor") then
+            player:SecureHook("PlayerFrame_UpdatePlayerNameTextAnchor", function()
+                self:SetPosition()
+            end)
+        end
     end
     self:RefreshFontStringConfig()
     self:RefreshText()

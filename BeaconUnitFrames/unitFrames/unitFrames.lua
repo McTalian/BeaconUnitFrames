@@ -17,3 +17,14 @@ ns.options.args.unitFrames = {
     order = 1,
     args = {},
 }
+
+---@class BUFUnitFrames
+local UnitFrames = {}
+
+function UnitFrames:RefreshConfig()
+    ns.BUFPlayer:RefreshConfig()
+    ns.BUFTarget:RefreshConfig()
+end
+
+ns.BUFUnitFrames = UnitFrames
+

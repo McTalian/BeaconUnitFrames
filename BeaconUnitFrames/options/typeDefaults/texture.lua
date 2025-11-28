@@ -30,8 +30,8 @@ function BUFTexture:ApplyMixin(handler)
     ns.AtlasSizable:ApplyMixin(handler, ns.AtlasSizableFlags.SIZABLE + ns.AtlasSizableFlags.SCALABLE)
     ns.Mixin(handler, ns.Demoable, ns.Positionable, self)
 
-    if self.optionsTable then
-        ns.AddTextureOptions(self.optionsTable, self.orderMap)
+    if handler.optionsTable then
+        ns.AddTextureOptions(handler.optionsTable.args, handler.orderMap)
     end
 end
 

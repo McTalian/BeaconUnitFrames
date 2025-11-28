@@ -51,83 +51,6 @@ function BUFPlayer:OnEnable()
 end
 
 function BUFPlayer:RefreshConfig()
-    if not self.initialized then
-        self.initialized = true
-        
-        local ArtUpdateListener = CreateFrame("Frame", nil, nil, "SecureHandlerAttributeTemplate")
-        ArtUpdateListener:SetAttribute("unit", "vehicle")
-        RegisterUnitWatch(ArtUpdateListener, true)
-        ArtUpdateListener:SetFrameRef("PlayerFrame", self.frame)
-        ArtUpdateListener:SetFrameRef("HealthBarContainer", self.healthBarContainer)
-        ArtUpdateListener:SetFrameRef("HealthBar", self.healthBar)
-        ArtUpdateListener:SetFrameRef("ManaBar", self.manaBar)
-        ArtUpdateListener:SetFrameRef("EmergencyFix", ns.emergencyFixButton)
-
-        self:SecureHook("SecureButton_GetModifiedAttribute", function(s, n, b)
-            if n == "attribute-frame" or n == "attribute-name" or n == "attribute-value" then
-                print("SecureButton_GetModifiedAttribute", n, b)
-                
-                return
-            end
-        end)
-
-        ns.emergencyFixButtonWrapper:Inject("PlayerVehicleListener", ArtUpdateListener)
-
-        -- TODO: Need to figure out player name, level, and frame texture for player art
-        -- Need to figure out vehicle frame for vehicle art
-
-        ArtUpdateListener:SetAttribute("_onattributechanged", [[
-            print(name, value)
-            if name == "state-unitexists" then
-                if value == true then
-                    print("We finished entering a vehicle")
-                else
-                    print("We starting exiting a vehicle")
-                    print("HasVehicleActionBar()", HasVehicleActionBar())
-                    print("CanExitVehicle()", CanExitVehicle())
-                    print("UnitHasVehicleUI()", UnitHasVehicleUI("player"))
-                    print("IsMounted()", IsMounted())
-                    print("IsFlying()", IsFlying())
-                    local emergencyFix = self:GetFrameRef("EmergencyFix")
-                    if PlayerInCombat() then
-                        emergencyFix:Show()
-                    end
-                    return
-                end
-            end
-
-            if name == "force-refresh" then
-                print("Forcing a refresh:", value)
-            end
-
-            local healthBarContainer = self:GetFrameRef("HealthBarContainer")
-            local healthBar = self:GetFrameRef("HealthBar")
-            local manaBar = self:GetFrameRef("ManaBar")
-            local playerFrame = self:GetFrameRef("PlayerFrame")
-            
-            healthBarContainer:RunAttribute("_childupdate-size", "test")
-            healthBar:RunAttribute("_childupdate-size", "test")
-            manaBar:RunAttribute("_childupdate-size", "test")
-
-            healthBarContainer:RunAttribute("_childupdate-position", playerFrame)
-            manaBar:RunAttribute("_childupdate-position", "test")
-        ]])
-
-        self:SecureHook("PlayerFrame_UpdateArt", function()
-            if not InCombatLockdown() then
-                self:RefreshConfig()
-            else
-                local frame = CreateFrame("Frame")
-                frame:RegisterEvent("PLAYER_REGEN_ENABLED")
-                frame:SetScript("OnEvent", function(self)
-                    BUFPlayer:RefreshConfig()
-                    self:UnregisterEvent("PLAYER_REGEN_ENABLED")
-                end)
-            end
-        end)
-
-        ns.PlayerVehicleListener = ArtUpdateListener
-    end
     self.Frame:RefreshConfig()
     self.Portrait:RefreshConfig()
     self.Name:RefreshConfig()
@@ -136,6 +59,86 @@ function BUFPlayer:RefreshConfig()
     self.Health:RefreshConfig()
     self.Power:RefreshConfig()
     self.ClassResources:RefreshConfig()
+
+    if not self.initialized then
+        self.initialized = true
+        
+        local ArtUpdater = CreateFrame("Frame", nil, nil, "SecureHandlerAttributeTemplate")
+        Mixin(ArtUpdater, ns.BUFSecureHandler)
+
+        -- Kudos to Spyro from the WoWUIDev Discord for figuring out repositioning/resizing
+        -- on entering/exiting vehicles
+        ArtUpdater:SecureSetFrameRef("AlternatePowerBarArea", PlayerFrameAlternatePowerBarArea)
+        ArtUpdater:SecureSetFrameRef("PlayerHealthBarContainer", PlayerFrame_GetHealthBarContainer())
+        ArtUpdater:SecureSetFrameRef("PlayerHealthBar", PlayerFrame_GetHealthBar())
+        ArtUpdater:SecureSetFrameRef("PlayerManaBar", PlayerFrame_GetManaBar())
+
+        ArtUpdater:SetAttribute("buf_restore_size_position",[[
+            PlayerHealthBarContainer:RunAttribute("buf_restore_size")
+            PlayerHealthBar:RunAttribute("buf_restore_size")
+            PlayerManaBar:RunAttribute("buf_restore_size")
+
+            PlayerHealthBarContainer:RunAttribute("buf_restore_position")
+            PlayerManaBar:RunAttribute("buf_restore_position")
+        ]])
+
+        -- ns.emergencyFixButtonWrapper:Inject("PlayerVehicleListener", ArtUpdateListener)
+
+        -- TODO: Need to figure out player name, level, and frame texture for player art
+        -- Need to figure out vehicle frame for vehicle art
+
+        ArtUpdater:SetAttribute("_onattributechanged", [[
+            self:RunAttribute("buf_restore_size_position")
+            if name == "manual" then
+                return
+            end
+
+            -- Preparing the AlternatePowerBarArea to make it trigger OnShow/OnHide
+            if UsingAltPowerBar then
+                AlternatePowerBarArea:Hide()
+            else
+                AlternatePowerBarArea:Show()
+            end
+        ]])
+
+        -- Manual trigger by pressing SHIFT+ALT in case the other triggers fail
+        RegisterAttributeDriver(ArtUpdater, "manual", "[mod:shift,mod:alt] 1; 0")
+
+        -- Triggers that check for the vehicle existence
+        -- This works to restore the PlayerFrame's components when entering a vehicle
+        RegisterAttributeDriver(ArtUpdater, "vehicleunit", "[@vehicle,exists] 1; 0")
+        RegisterAttributeDriver(ArtUpdater, "vehiclestate", "[vehicleui][overridebar][possessbar] 1; 0")
+
+        -- Triggers by hooking the PlayerFrameAlternatePowerBarArea which is hidden by the base UI when mounting
+        -- a vehicle. This works to securely restore the PlayerFrame's components when leaving a vehicle
+        SecureHandlerWrapScript(PlayerFrameAlternatePowerBarArea, "OnHide", ArtUpdater, [[
+            control:RunAttribute("buf_restore_size_position")
+        ]])
+        SecureHandlerWrapScript(PlayerFrameAlternatePowerBarArea, "OnShow", ArtUpdater, [[
+            control:RunAttribute("buf_restore_size_position")
+        ]])
+
+        ArtUpdater:SecureExecute([[ UsingAltPowerBar = %s ]], tostring(PlayerFrame.activeAlternatePowerBar ~= nil))
+        self:SecureHook("PlayerFrame_UpdateArt", function()
+            if not InCombatLockdown() then
+                ArtUpdater:SecureExecute([[
+                    UsingAltPowerBar = %s
+                    self:RunAttribute("buf_restore_size_position")
+                ]], tostring(PlayerFrame.activeAlternatePowerBar ~= nil))
+            else
+                local frame = CreateFrame("Frame")
+                frame:RegisterEvent("PLAYER_REGEN_ENABLED")
+                frame:SetScript("OnEvent", function(self)
+                    BUFPlayer:RefreshConfig()
+                    self:UnregisterEvent("PLAYER_REGEN_ENABLED")
+                end)
+            end
+            self.Indicators:RefreshConfig()
+            self.ClassResources:RefreshConfig()
+        end)
+
+        ns.PlayerArtUpdater = ArtUpdater
+    end
 end
 
 -- Hack to get around the art update issues when entering/exiting vehicles

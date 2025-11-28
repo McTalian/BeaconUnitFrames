@@ -52,8 +52,18 @@ ns.dbDefaults.profile.unitFrames.player.level = {
 ns.options.args.unitFrames.args.player.args.level = BUFPlayerLevel.optionsTable
 
 function BUFPlayerLevel:RefreshConfig()
-    if not self.fontString then
+    if not self.initialized then
+        self.initialized = true
+
         self.fontString = PlayerLevelText
+
+        local player = BUFPlayer
+
+        if not player:IsHooked("PlayerFrame_UpdateLevel") then
+            player:SecureHook("PlayerFrame_UpdateLevel", function(f)
+                self:UpdateFontColor()
+            end)
+        end
     end
     self:RefreshFontStringConfig()
 end

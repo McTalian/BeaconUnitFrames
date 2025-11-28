@@ -15,4 +15,5 @@
     <Script file="textCustomizable.lua"/>
     <Script file="atlasSizable.lua"/>
     <Script file="justifiable.lua"/>
+    <Script file="secureHandler.lua"/>
 </Ui>

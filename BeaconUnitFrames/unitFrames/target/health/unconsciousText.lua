@@ -19,7 +19,7 @@ unconsciousTextHandler.optionsTable = {
     type = "group",
     handler = unconsciousTextHandler,
     name = ns.L["Unconscious Text"],
-    order = BUFTargetHealth.topGroupOrder.DEAD_TEXT,
+    order = BUFTargetHealth.topGroupOrder.UNCONSCIOUS_TEXT,
     args = {}
 }
 

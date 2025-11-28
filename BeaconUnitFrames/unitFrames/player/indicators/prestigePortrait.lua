@@ -65,6 +65,11 @@ function BUFPlayerPrestigePortrait:RefreshConfig()
     self:SetSize()
 end
 
+BUFPlayerPrestigePortrait.coeffs = {
+    badgeWidth = (30 / ns.dbDefaults.profile.unitFrames.player.prestigePortrait.width),
+    badgeHeight = (30 / ns.dbDefaults.profile.unitFrames.player.prestigePortrait.height),
+}
+
 function BUFPlayerPrestigePortrait:SetPosition()
     local prestigePortraitFrame = BUFPlayer.contentContextual.PrestigePortrait
     local xOffset = ns.db.profile.unitFrames.player.prestigePortrait.xOffset
@@ -75,8 +80,12 @@ end
 
 function BUFPlayerPrestigePortrait:SetSize()
     local prestigePortraitFrame = BUFPlayer.contentContextual.PrestigePortrait
+    local prestigeBadgeFrame = BUFPlayer.contentContextual.PrestigeBadge
     local width = ns.db.profile.unitFrames.player.prestigePortrait.width
     local height = ns.db.profile.unitFrames.player.prestigePortrait.height
+    local badgeWidth = width * self.coeffs.badgeWidth
+    local badgeHeight = height * self.coeffs.badgeHeight
 
     prestigePortraitFrame:SetSize(width, height)
+    prestigeBadgeFrame:SetSize(badgeWidth, badgeHeight)
 end

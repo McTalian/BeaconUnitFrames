@@ -52,7 +52,7 @@ local Guide = {
 
 Guide.optionsTable = {
     type = "group",
-    handler = BUFPlayerLeaderAndGuideIcon.Guide,
+    handler = Guide,
     name = ns.L["GuideIcon"],
     hidden = function()
         return not ns.db.profile.unitFrames.player.leaderAndGuideIcon.separateGuideStyle

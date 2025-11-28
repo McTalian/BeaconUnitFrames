@@ -118,9 +118,8 @@ function BUFPlayerPower:SetSize()
     parent.manaBar:SetHeight(height)
     self:SetUnprotectedSize()
 
-    parent.manaBar:SetAttribute("_childupdate-size", format([[
+    parent.manaBar:SetAttribute("buf_restore_size", format([[
         local width, height = %d, %d;
-        print("Setting power bar size to", width, height);
         self:SetWidth(width);
         self:SetHeight(height);
     ]], width, height))
@@ -132,9 +131,8 @@ function BUFPlayerPower:SetPosition()
     local yOffset = ns.db.profile.unitFrames.player.powerBar.yOffset
     parent.manaBar:SetPoint("TOPLEFT", xOffset, yOffset)
 
-    parent.manaBar:SetAttribute("_childupdate-position", format([[
+    parent.manaBar:SetAttribute("buf_restore_position", format([[
         local xOffset, yOffset = %d, %d;
-        print("Setting power bar position", "TOPLEFT", self:GetParent(), "TOPLEFT", xOffset, yOffset);
         self:ClearAllPoints();
         self:SetPoint("TOPLEFT", self:GetParent(), "TOPLEFT", xOffset, yOffset);
     ]], xOffset, yOffset))

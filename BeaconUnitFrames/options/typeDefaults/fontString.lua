@@ -23,7 +23,7 @@ end
 ---@field defaultRelativePoint string?
 ---@field demoText string?
 
----@class BUFFontString: FontStringHandler, JustifiableHandler, FontableHandler, SizableHandler, PositionableHandler, SizableHandler, DemoableHandler
+---@class BUFFontString: FontStringHandler, Justifiable, Fontable, Sizable, Positionable, Sizable, Demoable
 local BUFFontString = {}
 
 --- Apply mixins to a BUFFontString
@@ -32,8 +32,8 @@ local BUFFontString = {}
 function BUFFontString:ApplyMixin(handler)
     ns.Mixin(handler, ns.Demoable, ns.Sizable, ns.Positionable, ns.Justifiable, ns.Fontable, self)
 
-    if self.optionsTable then
-        ns.AddFontStringOptions(self.optionsTable, self.orderMap)
+    if handler.optionsTable then
+        ns.AddFontStringOptions(handler.optionsTable.args, handler.orderMap)
     end
 end
 

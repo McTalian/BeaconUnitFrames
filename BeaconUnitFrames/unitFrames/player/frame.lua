@@ -109,6 +109,20 @@ function BUFPlayerFrame:RefreshConfig()
     self:SetStatusTexture()
     self:SetHitIndicator()
     self:RefreshBackgroundTexture()
+
+    if not self.initialized then
+        self.initialized = true
+
+        local player = BUFPlayer
+
+        if not player:IsHooked(player.container.FrameTexture, "SetShown") then
+            player:SecureHook(player.container.FrameTexture, "SetShown", function(s, shown)
+                if not ns.db.profile.unitFrames.player.frame.enableFrameTexture then
+                    s:Hide()
+                end
+            end)
+        end
+    end
 end
 
 function BUFPlayerFrame:SetSize()
@@ -140,11 +154,22 @@ function BUFPlayerFrame:SetFrameTexture()
     local enable = ns.db.profile.unitFrames.player.frame.enableFrameTexture
     if enable then
         player:Unhook(player.container.FrameTexture, "Show")
-        player.container.FrameTexture:Show()
+        player:Unhook(player.container.VehicleFrameTexture, "Show")
+        if UnitInVehicle("player") then
+            player.container.VehicleFrameTexture:Show()
+        else
+            player.container.FrameTexture:Show()
+        end
     else
         player.container.FrameTexture:Hide()
+        player.container.VehicleFrameTexture:Hide()
         if not ns.BUFPlayer:IsHooked(player.container.FrameTexture, "Show") then
             player:SecureHook(player.container.FrameTexture, "Show", function(s)
+                s:Hide()
+            end)
+        end
+        if not ns.BUFPlayer:IsHooked(player.container.VehicleFrameTexture, "Show") then
+            player:SecureHook(player.container.VehicleFrameTexture, "Show", function(s)
                 s:Hide()
             end)
         end
