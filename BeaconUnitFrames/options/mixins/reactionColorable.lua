@@ -38,7 +38,7 @@ function ReactionColorable:SetUseReactionColor(info, value)
 end
 
 ---Get whether to use class color
----@param info table AceConfig info table
+---@param info? table AceConfig info table
 ---@return boolean|nil Whether to use class color
 function ReactionColorable:GetUseReactionColor(info)
     return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".useReactionColor")

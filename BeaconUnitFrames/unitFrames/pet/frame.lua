@@ -1,0 +1,224 @@
+---@type string, table
+local addonName, ns = ...
+
+---@class BUFNamespace
+ns = ns
+
+---@class BUFPet
+local BUFPet = ns.BUFPet
+
+---@class BUFPet.Frame: BUFConfigHandler, Sizable, BackgroundTexturable
+local BUFPetFrame = {
+    configPath = "unitFrames.pet.frame",
+}
+
+ns.Mixin(BUFPetFrame, ns.Sizable, ns.BackgroundTexturable)
+
+BUFPet.Frame = BUFPetFrame
+
+---@class BUFDbSchema.UF.Pet
+ns.dbDefaults.profile.unitFrames.pet = ns.dbDefaults.profile.unitFrames.pet
+
+---@class BUFDbSchema.UF.Pet.Frame
+ns.dbDefaults.profile.unitFrames.pet.frame = {
+    width = 120,
+    height = 49,
+    enableFrameFlash = true,
+    enableFrameTexture = true,
+    enableStatusTexture = true,
+    enableHitIndicator = true,
+    useBackgroundTexture = false,
+    backgroundTexture = "None",
+}
+
+local frameOrder = {}
+ns.Mixin(frameOrder, ns.defaultOrderMap)
+frameOrder.FRAME_FLASH = frameOrder.ENABLE + .1
+frameOrder.FRAME_TEXTURE = frameOrder.FRAME_FLASH + .1
+frameOrder.STATUS_TEXTURE = frameOrder.FRAME_TEXTURE + .1
+frameOrder.HIT_INDICATOR = frameOrder.STATUS_TEXTURE + .1
+
+local frame = {
+    type = "group",
+    handler = BUFPetFrame,
+    name = ns.L["Frame"],
+    order = BUFPet.optionsOrder.FRAME,
+    inline = true,
+    args = {
+        frameFlash = {
+            type = "toggle",
+            name = ns.L["EnableFrameFlash"],
+            set = function(info, value)
+                ns.db.profile.unitFrames.pet.frame.enableFrameFlash = value
+                BUFPetFrame:SetFrameFlash()
+            end,
+            get = function(info)
+                return ns.db.profile.unitFrames.pet.frame.enableFrameFlash
+            end,
+            order = frameOrder.FRAME_FLASH,
+        },
+        frameTexture = {
+            type = "toggle",
+            name = ns.L["EnableFrameTexture"],
+            set = function(info, value)
+                ns.db.profile.unitFrames.pet.frame.enableFrameTexture = value
+                BUFPetFrame:SetFrameTexture()
+            end,
+            get = function(info)
+                return ns.db.profile.unitFrames.pet.frame.enableFrameTexture
+            end,
+            order = frameOrder.FRAME_TEXTURE,
+        },
+        statusTexture = {
+            type = "toggle",
+            name = ns.L["EnableStatusTexture"],
+            set = function(info, value)
+                ns.db.profile.unitFrames.pet.frame.enableStatusTexture = value
+                BUFPetFrame:SetStatusTexture()
+            end,
+            get = function(info)
+                return ns.db.profile.unitFrames.pet.frame.enableStatusTexture
+            end,
+            order = frameOrder.STATUS_TEXTURE,
+        },
+        -- TODO: Move this to indicators and add more options
+        hitIndicator = {
+            type = "toggle",
+            name = ns.L["EnableHitIndicator"],
+            set = function(info, value)
+                ns.db.profile.unitFrames.pet.frame.enableHitIndicator = value
+                BUFPetFrame:SetHitIndicator()
+            end,
+            get = function(info)
+                return ns.db.profile.unitFrames.pet.frame.enableHitIndicator
+            end,
+            order = frameOrder.HIT_INDICATOR,
+        },
+    },
+}
+
+ns.AddBackgroundTextureOptions(frame.args, frameOrder)
+ns.AddSizableOptions(frame.args, frameOrder)
+
+ns.options.args.unitFrames.args.pet.args.frame = frame
+
+function BUFPetFrame:RefreshConfig()
+    self:SetSize()
+    self:SetFrameFlash()
+    self:SetFrameTexture()
+    self:SetStatusTexture()
+    self:SetHitIndicator()
+    self:RefreshBackgroundTexture()
+
+    if not self.initialized then
+        self.initialized = true
+    end
+end
+
+function BUFPetFrame:SetSize()
+    local pet = BUFPet
+    local width = ns.db.profile.unitFrames.pet.frame.width
+    local height = ns.db.profile.unitFrames.pet.frame.height
+    pet.frame:SetWidth(width)
+    pet.frame:SetHeight(height)
+    pet.frame:SetHitRectInsets(0, 0, 0, 0)
+end
+
+function BUFPetFrame:SetFrameFlash()
+    local pet = BUFPet
+    local enable = ns.db.profile.unitFrames.pet.frame.enableFrameFlash
+    if enable then
+        pet:Unhook(PetFrameFlash, "Show")
+        PetFrameFlash:Show()
+    else
+        PetFrameFlash:Hide()
+        if not ns.BUFPet:IsHooked(PetFrameFlash, "Show") then
+            pet:SecureHook(PetFrameFlash, "Show", function(s)
+                s:Hide()
+            end)
+        end
+    end
+end
+
+function BUFPetFrame:SetFrameTexture()
+    local pet = BUFPet
+    local enable = ns.db.profile.unitFrames.pet.frame.enableFrameTexture
+    if enable then
+        pet:Unhook(PetFrameTexture, "Show")
+        PetFrameTexture:Show()
+    else
+        PetFrameTexture:Hide()
+        if not ns.BUFPet:IsHooked(PetFrameTexture, "Show") then
+            pet:SecureHook(PetFrameTexture, "Show", function(s)
+                s:Hide()
+            end)
+        end
+    end
+end
+
+function BUFPetFrame:SetStatusTexture()
+    local pet = BUFPet
+    local enable = ns.db.profile.unitFrames.pet.frame.enableStatusTexture
+    if enable then
+        pet:Unhook(PetAttackModeTexture, "Show")
+        PetAttackModeTexture:Show()
+    else
+        PetAttackModeTexture:Hide()
+        if not ns.BUFPet:IsHooked(PetAttackModeTexture, "Show") then
+            pet:SecureHook(PetAttackModeTexture, "Show", function(s)
+                s:Hide()
+            end)
+        end
+    end
+end
+
+function BUFPetFrame:SetHitIndicator()
+    local pet = BUFPet
+    local enable = ns.db.profile.unitFrames.pet.frame.enableHitIndicator
+    if enable then
+        pet:Unhook(PetHitIndicator, "Show")
+        PetHitIndicator:Show()
+    else
+        PetHitIndicator:Hide()
+        if not ns.BUFPet:IsHooked(PetHitIndicator, "Show") then
+            pet:SecureHook(PetHitIndicator, "Show", function(s)
+                s:Hide()
+            end)
+        end
+    end
+end
+
+function BUFPetFrame:RefreshBackgroundTexture()
+    local useBackgroundTexture = ns.db.profile.unitFrames.pet.frame.useBackgroundTexture
+    if not useBackgroundTexture then
+        if self.backdropFrame then
+            self.backdropFrame:Hide()
+        end
+        return
+    end
+
+    if self.backdropFrame == nil then
+        self.backdropFrame = CreateFrame("Frame", nil, ns.BUFPet.frame, "BackdropTemplate")
+        self.backdropFrame:SetFrameStrata("BACKGROUND")
+    end
+
+    local backgroundTexture = ns.db.profile.unitFrames.pet.frame.backgroundTexture
+    local bgTexturePath = ns.lsm:Fetch(ns.lsm.MediaType.BACKGROUND, backgroundTexture)
+    if not bgTexturePath then
+        print("Background texture not found, using default:", "None")
+        bgTexturePath = "Interface/None"
+    end
+
+    self.backdropFrame:ClearAllPoints()
+    self.backdropFrame:SetAllPoints(ns.BUFPet.frame)
+
+    self.backdropFrame:SetBackdrop({
+        bgFile = bgTexturePath,
+        edgeFile = nil,
+        tile = true,
+        tileSize = 16,
+        edgeSize = 0,
+        insets = { left = 0, right = 0, top = 0, bottom = 0 },
+    })
+    self.backdropFrame:Show()
+end

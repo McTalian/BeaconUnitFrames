@@ -54,7 +54,7 @@ function StatusBarTexturable:SetUseStatusBarTexture(info, value)
 end
 
 ---Get whether to use a custom status bar texture
----@param info table AceConfig info table
+---@param info? table AceConfig info table
 ---@return boolean|nil Whether to use custom texture
 function StatusBarTexturable:GetUseStatusBarTexture(info)
     return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".useStatusBarTexture")
@@ -69,7 +69,7 @@ function StatusBarTexturable:SetStatusBarTexture(info, value)
 end
 
 ---Get the status bar texture
----@param info table AceConfig info table
+---@param info? table AceConfig info table
 ---@return string|nil The texture name
 function StatusBarTexturable:GetStatusBarTexture(info)
     return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".statusBarTexture")

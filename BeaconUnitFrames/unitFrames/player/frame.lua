@@ -129,8 +129,9 @@ function BUFPlayerFrame:SetSize()
     local player = BUFPlayer
     local width = ns.db.profile.unitFrames.player.frame.width
     local height = ns.db.profile.unitFrames.player.frame.height
-    PixelUtil.SetWidth(player.frame, width, 18)
-    PixelUtil.SetHeight(player.frame, height, 18)
+    player.frame:SetWidth(width)
+    player.frame:SetHeight(height)
+    player.frame:SetHitRectInsets(0, 0, 0, 0)
 end
 
 function BUFPlayerFrame:SetFrameFlash()

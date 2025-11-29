@@ -2,4 +2,5 @@
     <Script file="unitFrames.lua"/>
     <Include file="player/index.xml"/>
     <Include file="target/index.xml"/>
+    <Include file="pet/index.xml"/>
 </Ui>

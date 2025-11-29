@@ -39,7 +39,8 @@ local function BoxMaskOptionValues()
         ["CircleMaskScalable"] = ns.L["CircleShape"],
         ["squaremask"] = ns.L["SquareShape"],
         ["interface/widgets/dragonridingsgvigorwidgetmask.blp"] = ns.L["DiamondShape"],
-        ["interface/chatframe/ui-chaticon-hots.blp"] = ns.L["HexagonShape"],
+        ["Interface/AddOns/BeaconUnitFrames/icons/hexagon_mask_point.png"] = ns.L["HexagonShape"],
+        ["Interface/AddOns/BeaconUnitFrames/icons/hexagon_mask_flat.png"] = ns.L["FlatTopHexagonShape"],
     }
 end
 

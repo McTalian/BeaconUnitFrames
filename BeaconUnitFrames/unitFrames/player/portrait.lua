@@ -150,7 +150,7 @@ function BUFPlayerPortrait:RefreshMask()
     local parent = BUFPlayer
     local maskPath = ns.db.profile.unitFrames.player.portrait.mask
 
-    local sPos, ePos = string.find(maskPath, ".blp")
+    local sPos, ePos = string.find(maskPath, "%.")
     local isTexture = sPos ~= nil
     if isTexture then
         -- File path

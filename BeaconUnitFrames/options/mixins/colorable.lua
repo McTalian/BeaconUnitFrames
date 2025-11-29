@@ -51,7 +51,7 @@ function Colorable:SetUseCustomColor(info, value)
 end
 
 ---Get whether to use a custom color
----@param info table AceConfig info table
+---@param info? table AceConfig info table
 ---@return boolean|nil Whether to use custom color
 function Colorable:GetUseCustomColor(info)
     return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".useCustomColor")
@@ -69,7 +69,7 @@ function Colorable:SetCustomColor(info, r, g, b, a)
 end
 
 ---Get the custom color
----@param info table AceConfig info table
+---@param info? table AceConfig info table
 ---@return number r Red component
 ---@return number g Green component
 ---@return number b Blue component 

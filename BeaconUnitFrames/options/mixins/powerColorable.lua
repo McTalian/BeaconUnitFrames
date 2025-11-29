@@ -38,7 +38,7 @@ function PowerColorable:SetUsePowerColor(info, value)
 end
 
 ---Get whether to use power color
----@param info table AceConfig info table
+---@param info? table AceConfig info table
 ---@return boolean|nil Whether to use power color
 function PowerColorable:GetUsePowerColor(info)
     return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".usePowerColor")

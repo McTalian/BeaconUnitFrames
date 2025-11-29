@@ -20,7 +20,7 @@ ns.dbDefaults.profile.unitFrames.player = {
 ns.options.args.unitFrames.args.player = {
     type = "group",
     name = HUD_EDIT_MODE_PLAYER_FRAME_LABEL,
-    order = 1,
+    order = ns.BUFUnitFrames.optionsOrder.PLAYER,
     childGroups = "tree",
     args = {}
 }

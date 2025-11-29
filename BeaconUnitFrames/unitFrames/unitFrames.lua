@@ -21,9 +21,16 @@ ns.options.args.unitFrames = {
 ---@class BUFUnitFrames
 local UnitFrames = {}
 
+UnitFrames.optionsOrder = {
+    PLAYER = 1,
+    TARGET = 2,
+    PET = 3,
+}
+
 function UnitFrames:RefreshConfig()
     ns.BUFPlayer:RefreshConfig()
     ns.BUFTarget:RefreshConfig()
+    ns.BUFPet:RefreshConfig()
 end
 
 ns.BUFUnitFrames = UnitFrames

@@ -38,7 +38,7 @@ function ClassColorable:SetUseClassColor(info, value)
 end
 
 ---Get whether to use class color
----@param info table AceConfig info table
+---@param info? table AceConfig info table
 ---@return boolean|nil Whether to use class color
 function ClassColorable:GetUseClassColor(info)
     return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".useClassColor")

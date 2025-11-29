@@ -10,12 +10,20 @@ local BUFPlayer = ns.BUFPlayer
 ---@class BUFPlayer.Health
 local BUFPlayerHealth = BUFPlayer.Health
 
----@class BUFPlayer.Health.Foreground: BUFConfigHandler, StatusBarTexturable, Colorable, ClassColorable
+---@class BUFPlayer.Health.Foreground: BUFConfigHandler, StatusBarForeground
 local foregroundHandler = {
     configPath = "unitFrames.player.healthBar.foreground",
 }
 
-ns.Mixin(foregroundHandler, ns.StatusBarTexturable, ns.Colorable, ns.ClassColorable)
+foregroundHandler.optionsTable = {
+    type = "group",
+    handler = foregroundHandler,
+    name = ns.L["Foreground"],
+    order = BUFPlayerHealth.topGroupOrder.FOREGROUND,
+    args = {}
+}
+
+ns.StatusBarForeground:ApplyMixin(foregroundHandler, true, false, false)
 
 ---@class BUFDbSchema.UF.Player.Health
 ns.dbDefaults.profile.unitFrames.player.healthBar = ns.dbDefaults.profile.unitFrames.player.healthBar
@@ -28,53 +36,17 @@ ns.dbDefaults.profile.unitFrames.player.healthBar.foreground = {
     useClassColor = false,
 }
 
-local foreground = {
-    type = "group",
-    handler = foregroundHandler,
-    name = ns.L["Foreground"],
-    order = BUFPlayerHealth.topGroupOrder.FOREGROUND,
-    args = {}
-}
-
-ns.AddStatusBarTextureOptions(foreground.args)
-ns.AddColorOptions(foreground.args)
-ns.AddClassColorOptions(foreground.args)
-
-ns.options.args.unitFrames.args.player.args.healthBar.args.foreground = foreground
+ns.options.args.unitFrames.args.player.args.healthBar.args.foreground = foregroundHandler.optionsTable
 
 function foregroundHandler:RefreshConfig()
-    self:RefreshStatusBarTexture()
-    self:RefreshColor()
-end
+    if not self.initialized then
+        self.initialized = true
 
-function foregroundHandler:RefreshStatusBarTexture()
-    local parent = ns.BUFPlayer
-    local useCustomTexture = ns.db.profile.unitFrames.player.healthBar.foreground.useStatusBarTexture
-    if useCustomTexture then
-        local texturePath = ns.lsm:Fetch(ns.lsm.MediaType.STATUSBAR,
-            ns.db.profile.unitFrames.player.healthBar.foreground.statusBarTexture)
-        if not texturePath then
-            texturePath = ns.lsm:Fetch(ns.lsm.MediaType.STATUSBAR, "Blizzard") or "Interface\\Buttons\\WHITE8x8"
-        end
-        parent.healthBar:SetStatusBarTexture(texturePath)
-        BUFPlayerHealth:SetLevel()
-    else
-        parent.healthBar:SetStatusBarTexture("UI-HUD-UnitFrame-Player-PortraitOn-Bar-Health")
+        self.unit = "player"
+        self.statusBar = ns.BUFPlayer.healthBar
+        self.defaultStatusBarTexture = "UI-HUD-UnitFrame-Player-PortraitOn-Bar-Health"
     end
-end
-
-function foregroundHandler:RefreshColor()
-    local parent = ns.BUFPlayer
-    local useCustomColor = ns.db.profile.unitFrames.player.healthBar.foreground.useCustomColor
-    local useClassColor = ns.db.profile.unitFrames.player.healthBar.foreground.useClassColor
-    if useClassColor then
-        local _, class = UnitClass("player")
-        local r, g, b = GetClassColor(class)
-        parent.healthBar:SetStatusBarColor(r, g, b, 1.0)
-    elseif useCustomColor then
-        local r, g, b, a = unpack(ns.db.profile.unitFrames.player.healthBar.foreground.customColor)
-        parent.healthBar:SetStatusBarColor(r, g, b, a)
-    end
+    self:RefreshStatusBarConfig()
 end
 
 BUFPlayerHealth.foregroundHandler = foregroundHandler
