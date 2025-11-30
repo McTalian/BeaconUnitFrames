@@ -57,7 +57,7 @@ ns.dbDefaults.profile.unitFrames.player.name = {
 
 ns.AddTextCustomizableOptions(BUFPlayerName.optionsTable.args)
 
-ns.options.args.unitFrames.args.player.args.playerName = BUFPlayerName.optionsTable
+ns.options.args.player.args.playerName = BUFPlayerName.optionsTable
 
 function BUFPlayerName:RefreshConfig()
     if not self.initialized then

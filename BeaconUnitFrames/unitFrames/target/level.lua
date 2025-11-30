@@ -50,7 +50,7 @@ ns.dbDefaults.profile.unitFrames.target.level = {
     justifyH = "CENTER",
 }
 
-ns.options.args.unitFrames.args.target.args.level = BUFTargetLevel.optionsTable
+ns.options.args.target.args.level = BUFTargetLevel.optionsTable
 
 function BUFTargetLevel:RefreshConfig()
     if not self.fontString then

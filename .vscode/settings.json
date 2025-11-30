@@ -73,6 +73,7 @@
     "COLOR",
     "PET_TYPE_PET",
     "PET",
-    "HUD_EDIT_MODE_PET_FRAME_LABEL"
+    "HUD_EDIT_MODE_PET_FRAME_LABEL",
+    "OPTIONS_MENU"
   ]
 }

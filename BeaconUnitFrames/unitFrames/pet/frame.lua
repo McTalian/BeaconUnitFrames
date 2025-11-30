@@ -43,7 +43,6 @@ local frame = {
     handler = BUFPetFrame,
     name = ns.L["Frame"],
     order = BUFPet.optionsOrder.FRAME,
-    inline = true,
     args = {
         frameFlash = {
             type = "toggle",
@@ -87,7 +86,7 @@ local frame = {
 ns.AddBackgroundTextureOptions(frame.args, frameOrder)
 ns.AddSizableOptions(frame.args, frameOrder)
 
-ns.options.args.unitFrames.args.pet.args.frame = frame
+ns.options.args.pet.args.frame = frame
 
 function BUFPetFrame:RefreshConfig()
     self:SetSize()

@@ -42,7 +42,7 @@ ns.AddStatusBarTextureOptions(foreground.args)
 ns.AddColorOptions(foreground.args)
 ns.AddPowerColorOptions(foreground.args)
 
-ns.options.args.unitFrames.args.target.args.powerBar.args.foreground = foreground
+ns.options.args.target.args.powerBar.args.foreground = foreground
 
 function foregroundHandler:RefreshConfig()
     self:RefreshStatusBarTexture()

@@ -54,7 +54,7 @@ ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.playe
 ---@type BUFDbSchema.UF.Player.Health
 ns.dbDefaults.profile.unitFrames.player.healthBar = BUFPlayerHealth.dbDefaults
 
-ns.options.args.unitFrames.args.player.args.healthBar = BUFPlayerHealth.optionsTable
+ns.options.args.player.args.healthBar = BUFPlayerHealth.optionsTable
 
 BUFPlayerHealth.coeffs = {
     maskWidth = (128 / BUFPlayerHealth.dbDefaults.width),

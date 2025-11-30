@@ -96,7 +96,7 @@ ns.dbDefaults.profile.unitFrames.player.leaderAndGuideIcon = {
     }
 }
 
-ns.options.args.unitFrames.args.player.args.indicators.args.leaderAndGuideIcon = BUFPlayerLeaderAndGuideIcon.optionsTable
+ns.options.args.player.args.indicators.args.leaderAndGuideIcon = BUFPlayerLeaderAndGuideIcon.optionsTable
 
 local LEADER_ICON_ATLAS = "UI-HUD-UnitFrame-Player-Group-LeaderIcon"
 local GUIDE_ICON_ATLAS = "UI-HUD-UnitFrame-Player-Group-GuideIcon"

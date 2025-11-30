@@ -23,7 +23,7 @@ local indicators = {
     args = {},
 }
 
-ns.options.args.unitFrames.args.pet.args.indicators = indicators
+ns.options.args.pet.args.indicators = indicators
 
 function BUFPetIndicators:RefreshConfig()
   self.HitIndicator:RefreshConfig()

@@ -41,7 +41,6 @@ local frame = {
     handler = BUFPlayerFrame,
     name = ns.L["Frame"],
     order = BUFPlayer.optionsOrder.FRAME,
-    inline = true,
     args = {
         frameFlash = {
             type = "toggle",
@@ -85,7 +84,7 @@ local frame = {
 ns.AddBackgroundTextureOptions(frame.args, frameOrder)
 ns.AddSizableOptions(frame.args, frameOrder)
 
-ns.options.args.unitFrames.args.player.args.frame = frame
+ns.options.args.player.args.frame = frame
 
 function BUFPlayerFrame:RefreshConfig()
     self:SetSize()

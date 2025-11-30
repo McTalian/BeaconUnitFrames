@@ -32,7 +32,7 @@ ns.dbDefaults.profile.unitFrames.target.frame = {
 local frameOrder = {}
 
 ns.Mixin(frameOrder, ns.defaultOrderMap)
-frameOrder.FRAME_FLASH = frameOrder.HEIGHT + .1
+frameOrder.FRAME_FLASH = frameOrder.ENABLE + .1
 frameOrder.FRAME_TEXTURE = frameOrder.FRAME_FLASH + .1
 frameOrder.BACKDROP_AND_BORDER = frameOrder.FRAME_TEXTURE + .1
 
@@ -41,7 +41,6 @@ local frame = {
     handler = BUFTargetFrame,
     name = ns.L["Frame"],
     order = BUFTarget.optionsOrder.FRAME,
-    inline = true,
     args = {
         frameFlash = {
             type = "toggle",
@@ -73,7 +72,7 @@ local frame = {
 ns.AddSizableOptions(frame.args, frameOrder)
 ns.AddBackgroundTextureOptions(frame.args, frameOrder)
 
-ns.options.args.unitFrames.args.target.args.frame = frame
+ns.options.args.target.args.frame = frame
 
 function BUFTargetFrame:RefreshConfig()
     self:SetSize()

@@ -50,7 +50,7 @@
 -- ns.AddColorOptions(background.args, backgroundOrder)
 -- ns.AddClassColorOptions(background.args, backgroundOrder)
 
--- ns.options.args.unitFrames.args.target.args.healthBar.args.background = background
+-- ns.options.args.target.args.healthBar.args.background = background
 
 -- function backgroundHandler:RefreshConfig()
 --     self:RefreshBackgroundTexture()

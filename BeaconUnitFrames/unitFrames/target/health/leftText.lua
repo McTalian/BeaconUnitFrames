@@ -51,7 +51,7 @@ ns.dbDefaults.profile.unitFrames.target.healthBar.leftText = {
     fontShadowOffsetY = -1,
 }
 
-ns.options.args.unitFrames.args.target.args.healthBar.args.leftText = leftTextHandler.optionsTable
+ns.options.args.target.args.healthBar.args.leftText = leftTextHandler.optionsTable
 
 function leftTextHandler:RefreshConfig()
     if not self.fontString then

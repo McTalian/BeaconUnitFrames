@@ -41,7 +41,7 @@ ns.dbDefaults.profile.unitFrames.player.attackIcon = {
     scale = 1,
 }
 
-ns.options.args.unitFrames.args.player.args.indicators.args.attackIcon = BUFPlayerAttackIcon.optionsTable
+ns.options.args.player.args.indicators.args.attackIcon = BUFPlayerAttackIcon.optionsTable
 
 local ATTACK_ICON_ATLAS = "UI-HUD-UnitFrame-Player-CombatIcon"
 

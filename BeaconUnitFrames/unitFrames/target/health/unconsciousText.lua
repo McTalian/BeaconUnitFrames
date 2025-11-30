@@ -51,7 +51,7 @@ ns.dbDefaults.profile.unitFrames.target.healthBar.unconsciousText = {
     fontShadowOffsetY = -1,
 }
 
-ns.options.args.unitFrames.args.target.args.healthBar.args.unconsciousText = unconsciousTextHandler.optionsTable
+ns.options.args.target.args.healthBar.args.unconsciousText = unconsciousTextHandler.optionsTable
 
 function unconsciousTextHandler:RefreshConfig()
     if not self.fontString then

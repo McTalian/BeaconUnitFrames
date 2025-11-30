@@ -30,7 +30,7 @@ local indicators = {
     args = {},
 }
 
-ns.options.args.unitFrames.args.target.args.indicators = indicators
+ns.options.args.target.args.indicators = indicators
 
 function BUFTargetIndicators:RefreshConfig()
   self.HighLevelTexture:RefreshConfig()

@@ -77,7 +77,7 @@ ns.AddSizableOptions(portrait.args, portraitOrder)
 ns.AddPositionableOptions(portrait.args, portraitOrder)
 ns.AddBoxMaskableOptions(portrait.args, portraitOrder)
 
-ns.options.args.unitFrames.args.player.args.portrait = portrait
+ns.options.args.player.args.portrait = portrait
 
 function BUFPlayerPortrait:RefreshConfig()
     self:ShowHidePortrait()

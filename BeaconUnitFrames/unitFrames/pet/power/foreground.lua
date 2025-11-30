@@ -36,7 +36,7 @@ ns.dbDefaults.profile.unitFrames.pet.powerBar.foreground = {
     usePowerColor = false,
 }
 
-ns.options.args.unitFrames.args.pet.args.powerBar.args.foreground = foregroundHandler.optionsTable
+ns.options.args.pet.args.powerBar.args.foreground = foregroundHandler.optionsTable
 
 function foregroundHandler:RefreshConfig()
     if not self.initialized then

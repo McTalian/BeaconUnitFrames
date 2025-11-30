@@ -38,7 +38,7 @@ BUFTargetHighLevelTexture.dbDefaults = {
 
 ns.BUFScaleTexture:ApplyMixin(BUFTargetHighLevelTexture)
 
-ns.options.args.unitFrames.args.target.args.indicators.args.highLevelTexture = BUFTargetHighLevelTexture.optionsTable
+ns.options.args.target.args.indicators.args.highLevelTexture = BUFTargetHighLevelTexture.optionsTable
 
 ---@class BUFDbSchema.UF.Target
 ns.dbDefaults.profile.unitFrames.target = ns.dbDefaults.profile.unitFrames.target

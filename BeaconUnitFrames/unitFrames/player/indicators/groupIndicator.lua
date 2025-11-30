@@ -59,7 +59,7 @@ ns.AddBackgroundTextureOptions(groupIndicator.args)
 ns.AddColorOptions(groupIndicator.args)
 ns.AddDemoOptions(groupIndicator.args)
 
-ns.options.args.unitFrames.args.player.args.indicators.args.groupIndicator = groupIndicator
+ns.options.args.player.args.indicators.args.groupIndicator = groupIndicator
 
 function BUFPlayerGroupIndicator:ToggleDemoMode()
     local grpInd = BUFPlayer.contentContextual.GroupIndicator

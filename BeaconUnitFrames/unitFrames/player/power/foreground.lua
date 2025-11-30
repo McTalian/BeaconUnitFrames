@@ -42,9 +42,29 @@ ns.AddStatusBarTextureOptions(foreground.args)
 ns.AddColorOptions(foreground.args)
 ns.AddPowerColorOptions(foreground.args)
 
-ns.options.args.unitFrames.args.player.args.powerBar.args.foreground = foreground
+ns.options.args.player.args.powerBar.args.foreground = foreground
 
 function foregroundHandler:RefreshConfig()
+    if not self.initialized then
+        self.initialized = true
+
+        if not BUFPlayer:IsHooked(BUFPlayer.manaBar, "SetStatusBarTexture") then
+            BUFPlayer:SecureHook(BUFPlayer.manaBar, "SetStatusBarTexture", function(_, t)
+                if t == "UI-HUD-UnitFrame-Player-PortraitOn-Bar-Mana" and self:GetUseStatusBarTexture() then
+                    self:RefreshStatusBarTexture()
+                end
+            end)
+        end
+
+        if not BUFPlayer:IsHooked(BUFPlayer.manaBar, "SetStatusBarColor") then
+            BUFPlayer:SecureHook(BUFPlayer.manaBar, "SetStatusBarColor", function(_, r, g, b, a)
+                local cR, cG, cB, cA = self:_GetColor()
+                if cR and (r ~= cR or g ~= cG or b ~= cB or a ~= cA) then
+                    self:RefreshColor()
+                end
+            end)
+        end
+    end
     self:RefreshStatusBarTexture()
     self:RefreshColor()
 end
@@ -58,27 +78,19 @@ function foregroundHandler:RefreshStatusBarTexture()
         if not texturePath then
             texturePath = ns.lsm:Fetch(ns.lsm.MediaType.STATUSBAR, "Blizzard") or "Interface\\Buttons\\WHITE8x8"
         end
-        if BUFPlayer:IsHooked(parent.manaBar, "SetStatusBarTexture") then
-            BUFPlayer:Unhook(parent.manaBar, "SetStatusBarTexture")
-        end
         parent.manaBar:SetStatusBarTexture(texturePath)
-        BUFPlayer:SecureHook(parent.manaBar, "SetStatusBarTexture", function(_, texture)
-            self:RefreshStatusBarTexture()
-        end)
-        -- BUFPlayerPower:SetLevel()
     else
         parent.manaBar:SetStatusBarTexture("UI-HUD-UnitFrame-Player-PortraitOn-Bar-Mana")
     end
 end
 
-function foregroundHandler:RefreshColor()
-    local parent = ns.BUFPlayer
-    local useCustomColor = ns.db.profile.unitFrames.player.powerBar.foreground.useCustomColor
-    local usePowerColor = ns.db.profile.unitFrames.player.powerBar.foreground.usePowerColor
+function foregroundHandler:_GetColor()
+    local r, g, b, a = nil, nil, nil, 1
+    local useCustomColor = self:GetUseCustomColor()
+    local usePowerColor = self:GetUsePowerColor()
     if usePowerColor then
         local powerType, powerToken, rX, gY, bZ = UnitPowerType("player")
         local info = PowerBarColor[powerToken]
-        local r, g, b
         if info then
             r, g, b = info.r, info.g, info.b
         elseif not rX then
@@ -89,15 +101,14 @@ function foregroundHandler:RefreshColor()
         else
             r, g, b = rX, gY, bZ
         end
-        if BUFPlayer:IsHooked(parent.manaBar, "SetStatusBarColor") then
-            BUFPlayer:Unhook(parent.manaBar, "SetStatusBarColor")
-        end
-        parent.manaBar:SetStatusBarColor(r, g, b, 1.0)
-        BUFPlayer:SecureHook(parent.manaBar, "SetStatusBarColor", function(_, r, g, b, a)
-            self:RefreshColor()
-        end)
+        
     elseif useCustomColor then
-        local r, g, b, a = unpack(ns.db.profile.unitFrames.player.powerBar.foreground.customColor)
-        parent.manaBar:SetStatusBarColor(r, g, b, a)
+        r, g, b, a = unpack(ns.db.profile.unitFrames.player.powerBar.foreground.customColor)
     end
+
+    return r, g, b, a
+end
+
+function foregroundHandler:RefreshColor()
+    BUFPlayer.manaBar:SetStatusBarColor(self:_GetColor())
 end

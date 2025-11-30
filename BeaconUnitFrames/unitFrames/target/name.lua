@@ -53,7 +53,7 @@ ns.dbDefaults.profile.unitFrames.target.name = {
     justifyV = "MIDDLE",
 }
 
-ns.options.args.unitFrames.args.target.args.targetName = BUFTargetName.optionsTable
+ns.options.args.target.args.targetName = BUFTargetName.optionsTable
 
 function BUFTargetName:RefreshConfig()
     if not self.fontString then

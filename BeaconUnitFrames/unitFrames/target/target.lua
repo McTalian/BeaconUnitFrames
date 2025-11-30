@@ -30,12 +30,20 @@ StaticPopupDialogs["BUF_RELOAD_UI"] = {
     preferredIndex = 3,
 }
 
-ns.options.args.unitFrames.args.target = {
+ns.options.args.target = {
     type = "group",
     name = HUD_EDIT_MODE_TARGET_FRAME_LABEL,
     order = ns.BUFUnitFrames.optionsOrder.TARGET,
     childGroups = "tree",
+    disabled = function()
+        return not ns.db.profile.unitFrames.target.enabled
+    end,
     args = {
+        title = {
+            type = "header",
+            name = HUD_EDIT_MODE_TARGET_FRAME_LABEL,
+            order = 0.001,
+        },
         enable = {
             type = "toggle",
             name = ENABLE,
@@ -47,6 +55,7 @@ ns.options.args.unitFrames.args.target = {
                     StaticPopup_Show("BUF_RELOAD_UI")
                 end
             end,
+            disabled = false,
             get = function(info)
                 return ns.db.profile.unitFrames.target.enabled
             end,

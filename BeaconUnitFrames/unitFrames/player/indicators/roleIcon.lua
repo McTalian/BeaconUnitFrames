@@ -42,7 +42,7 @@ ns.AddPositionableOptions(roleIcon.args)
 ns.AddSizableOptions(roleIcon.args)
 ns.AddDemoOptions(roleIcon.args)
 
-ns.options.args.unitFrames.args.player.args.indicators.args.roleIcon = roleIcon
+ns.options.args.player.args.indicators.args.roleIcon = roleIcon
 
 function BUFPlayerRoleIcon:ToggleDemoMode()
     local roleIcon = BUFPlayer.contentContextual.RoleIcon

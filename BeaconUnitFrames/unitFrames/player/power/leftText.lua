@@ -51,7 +51,7 @@ ns.dbDefaults.profile.unitFrames.player.powerBar.leftText = {
     fontShadowOffsetY = -1,
 }
 
-ns.options.args.unitFrames.args.player.args.powerBar.args.leftText = leftTextHandler.optionsTable
+ns.options.args.player.args.powerBar.args.leftText = leftTextHandler.optionsTable
 
 function leftTextHandler:RefreshConfig()
     if not self.fontString then

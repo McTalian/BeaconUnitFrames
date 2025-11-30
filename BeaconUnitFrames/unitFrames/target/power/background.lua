@@ -42,7 +42,7 @@ ns.AddBackgroundTextureOptions(background.args)
 ns.AddColorOptions(background.args)
 ns.AddClassColorOptions(background.args)
 
-ns.options.args.unitFrames.args.target.args.powerBar.args.background = background
+ns.options.args.target.args.powerBar.args.background = background
 
 function backgroundHandler:RefreshConfig()
     self:RefreshBackgroundTexture()

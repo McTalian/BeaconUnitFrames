@@ -74,7 +74,7 @@ ns.AddColorOptions(repBar.args)
 ns.AddClassColorOptions(repBar.args)
 ns.AddReactionColorOptions(repBar.args)
 
-ns.options.args.unitFrames.args.target.args.reputationBar = repBar
+ns.options.args.target.args.reputationBar = repBar
 
 function BUFTargetReputationBar:RefreshConfig()
     self:SetSize()

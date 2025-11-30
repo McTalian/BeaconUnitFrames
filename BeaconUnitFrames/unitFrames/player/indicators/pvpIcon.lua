@@ -47,7 +47,7 @@ ns.dbDefaults.profile.unitFrames.player.pvpIcon = {
 -- We will rely on scaling to adjust size instead.
 BUFPlayerPvPIcon.optionsTable.args.useAtlasSize = nil
 
-ns.options.args.unitFrames.args.player.args.indicators.args.pvpIcon = BUFPlayerPvPIcon.optionsTable
+ns.options.args.player.args.indicators.args.pvpIcon = BUFPlayerPvPIcon.optionsTable
 
 function BUFPlayerPvPIcon:ToggleDemoMode()
     self:_ToggleDemoMode(self.texture)

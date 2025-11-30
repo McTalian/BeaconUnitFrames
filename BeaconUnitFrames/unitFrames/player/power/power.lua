@@ -52,7 +52,7 @@ ns.AddSizableOptions(powerBar.args, powerBarOrder)
 ns.AddPositionableOptions(powerBar.args, powerBarOrder)
 ns.AddFrameLevelOption(powerBar.args, powerBarOrder)
 
-ns.options.args.unitFrames.args.player.args.powerBar = powerBar
+ns.options.args.player.args.powerBar = powerBar
 
 BUFPlayerPower.coeffs = {
     maskWidth = 1.05,

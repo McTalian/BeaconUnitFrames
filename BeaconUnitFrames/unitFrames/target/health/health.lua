@@ -52,7 +52,7 @@ healthBarOrder.BACKGROUND = healthBarOrder.FOREGROUND + .1
 
 BUFTargetHealth.topGroupOrder = healthBarOrder
 
-ns.options.args.unitFrames.args.target.args.healthBar = BUFTargetHealth.optionsTable
+ns.options.args.target.args.healthBar = BUFTargetHealth.optionsTable
 
 BUFTargetHealth.coeffs = {
     maskWidth = (128 / ns.dbDefaults.profile.unitFrames.target.healthBar.width),

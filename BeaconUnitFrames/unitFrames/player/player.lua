@@ -17,12 +17,38 @@ ns.dbDefaults.profile.unitFrames.player = {
     enabled = true,
 }
 
-ns.options.args.unitFrames.args.player = {
+ns.options.args.player = {
     type = "group",
     name = HUD_EDIT_MODE_PLAYER_FRAME_LABEL,
     order = ns.BUFUnitFrames.optionsOrder.PLAYER,
     childGroups = "tree",
-    args = {}
+    disabled = function()
+        return not ns.db.profile.unitFrames.player.enabled
+    end,
+    args = {
+        title = {
+            type = "header",
+            name = HUD_EDIT_MODE_PLAYER_FRAME_LABEL,
+            order = 0.001,
+        },
+        enable = {
+            type = "toggle",
+            name = ENABLE,
+            set = function(info, value)
+                ns.db.profile.unitFrames.target.enabled = value
+                if value then
+                    BUFPlayer:RefreshConfig()
+                else
+                    StaticPopup_Show("BUF_RELOAD_UI")
+                end
+            end,
+            disabled = false,
+            get = function(info)
+                return ns.db.profile.unitFrames.target.enabled
+            end,
+            order = 0.01,
+        },
+    }
 }
 
 BUFPlayer.optionsOrder = {
@@ -51,6 +77,9 @@ function BUFPlayer:OnEnable()
 end
 
 function BUFPlayer:RefreshConfig()
+    if not ns.db.profile.unitFrames.player.enabled then
+        return
+    end
     if not self.initialized then
         -- self.initialized = true
         local ArtUpdater = CreateFrame("Frame", nil, nil, "SecureHandlerAttributeTemplate")

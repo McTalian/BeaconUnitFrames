@@ -51,7 +51,7 @@ ns.dbDefaults.profile.unitFrames.player.healthBar.rightText = {
     fontShadowOffsetY = -1,
 }
 
-ns.options.args.unitFrames.args.player.args.healthBar.args.rightText = rightTextHandler.optionsTable
+ns.options.args.player.args.healthBar.args.rightText = rightTextHandler.optionsTable
 
 function rightTextHandler:RefreshConfig()
     if not self.fontString then

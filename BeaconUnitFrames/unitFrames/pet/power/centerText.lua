@@ -50,7 +50,7 @@ ns.dbDefaults.profile.unitFrames.pet.powerBar.centerText = {
     fontShadowOffsetX = 1,
     fontShadowOffsetY = -1,
 }
-ns.options.args.unitFrames.args.pet.args.powerBar.args.centerText = centerTextHandler.optionsTable
+ns.options.args.pet.args.powerBar.args.centerText = centerTextHandler.optionsTable
 
 function centerTextHandler:RefreshConfig()
     if not self.fontString then

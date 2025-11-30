@@ -51,7 +51,7 @@ healthBarOrder.BACKGROUND = healthBarOrder.FOREGROUND + .1
 
 BUFPetHealth.topGroupOrder = healthBarOrder
 
-ns.options.args.unitFrames.args.pet.args.healthBar = BUFPetHealth.optionsTable
+ns.options.args.pet.args.healthBar = BUFPetHealth.optionsTable
 
 BUFPetHealth.coeffs = {
     maskWidth = (128 / ns.dbDefaults.profile.unitFrames.pet.healthBar.width),

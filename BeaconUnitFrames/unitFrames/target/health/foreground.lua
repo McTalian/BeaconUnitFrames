@@ -41,7 +41,7 @@ ns.AddColorOptions(foreground.args)
 ns.AddClassColorOptions(foreground.args)
 ns.AddReactionColorOptions(foreground.args)
 
-ns.options.args.unitFrames.args.target.args.healthBar.args.foreground = foreground
+ns.options.args.target.args.healthBar.args.foreground = foreground
 
 function foregroundHandler:RefreshConfig()
     self:RefreshStatusBarTexture()

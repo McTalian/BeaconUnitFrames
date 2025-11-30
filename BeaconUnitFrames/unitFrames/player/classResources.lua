@@ -35,7 +35,7 @@ local classResources = {
 
 ns.AddPositionableOptions(classResources.args)
 
-ns.options.args.unitFrames.args.player.args.classResources = classResources
+ns.options.args.player.args.classResources = classResources
 
 function BUFPlayerClassResources:RefreshConfig()
     self:SetPosition()

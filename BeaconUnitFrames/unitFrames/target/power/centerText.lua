@@ -51,7 +51,7 @@ ns.dbDefaults.profile.unitFrames.target.powerBar.centerText = {
     fontShadowOffsetY = -1,
 }
 
-ns.options.args.unitFrames.args.target.args.powerBar.args.centerText = centerTextHandler.optionsTable
+ns.options.args.target.args.powerBar.args.centerText = centerTextHandler.optionsTable
 
 function centerTextHandler:RefreshConfig()
     if not self.fontString then

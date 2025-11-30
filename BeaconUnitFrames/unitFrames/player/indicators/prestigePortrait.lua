@@ -42,7 +42,7 @@ ns.AddPositionableOptions(prestigePortrait.args)
 ns.AddSizableOptions(prestigePortrait.args)
 ns.AddDemoOptions(prestigePortrait.args)
 
-ns.options.args.unitFrames.args.player.args.indicators.args.prestigePortrait = prestigePortrait
+ns.options.args.player.args.indicators.args.prestigePortrait = prestigePortrait
 
 function BUFPlayerPrestigePortrait:ToggleDemoMode()
     local prestigePortraitFrame = BUFPlayer.contentContextual.PrestigePortrait

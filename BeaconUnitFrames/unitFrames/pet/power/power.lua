@@ -53,7 +53,7 @@ powerBarOrder.BACKGROUND = powerBarOrder.FOREGROUND + .1
 
 BUFPetPower.topGroupOrder = powerBarOrder
 
-ns.options.args.unitFrames.args.pet.args.powerBar = BUFPetPower.optionsTable
+ns.options.args.pet.args.powerBar = BUFPetPower.optionsTable
 
 BUFPetPower.coeffs = {
     maskWidth = (128 / ns.dbDefaults.profile.unitFrames.pet.powerBar.width),

@@ -54,7 +54,7 @@ powerBarOrder.BACKGROUND = powerBarOrder.FOREGROUND + .1
 
 BUFTargetPower.topGroupOrder = powerBarOrder
 
-ns.options.args.unitFrames.args.target.args.powerBar = BUFTargetPower.optionsTable
+ns.options.args.target.args.powerBar = BUFTargetPower.optionsTable
 
 BUFTargetPower.coeffs = {
     maskWidth = (256 / ns.dbDefaults.profile.unitFrames.target.powerBar.width),
@@ -91,9 +91,4 @@ function BUFTargetPower:InitializeTargetPower()
 
     local parent = BUFTarget
     parent.manaBar.ManaBarMask:Hide()
-    if not ns.BUFTarget:IsHooked(parent.manaBar.ManaBarMask, "SetAtlas") then
-        ns.BUFTarget:SecureHook(parent.manaBar.ManaBarMask, "SetAtlas", function(s)
-            print("SetAtlas called on Target Power Bar ManaBarMask.")
-        end)
-    end
 end

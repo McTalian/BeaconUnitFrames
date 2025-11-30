@@ -17,12 +17,20 @@ ns.dbDefaults.profile.unitFrames.pet = {
     enabled = true,
 }
 
-ns.options.args.unitFrames.args.pet = {
+ns.options.args.pet = {
     type = "group",
-    name = PET_TYPE_PET,
+    name = HUD_EDIT_MODE_PET_FRAME_LABEL,
     order = ns.BUFUnitFrames.optionsOrder.PET,
     childGroups = "tree",
+    disabled = function()
+        return not ns.db.profile.unitFrames.pet.enabled
+    end,
     args = {
+        title = {
+            type = "header",
+            name = HUD_EDIT_MODE_PET_FRAME_LABEL,
+            order = 0.001,
+        },
         enable = {
             type = "toggle",
             name = ENABLE,
@@ -34,6 +42,7 @@ ns.options.args.unitFrames.args.pet = {
                     StaticPopup_Show("BUF_RELOAD_UI")
                 end
             end,
+            disabled = false,
             get = function(info)
                 return ns.db.profile.unitFrames.pet.enabled
             end,

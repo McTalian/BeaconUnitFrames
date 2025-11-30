@@ -67,7 +67,7 @@ ns.dbDefaults.profile.unitFrames.pet = ns.dbDefaults.profile.unitFrames.pet
 
 ns.dbDefaults.profile.unitFrames.pet.hitIndicator = BUFPetHitIndicator.dbDefaults
 
-ns.options.args.unitFrames.args.pet.args.indicators.args.hitIndicator = BUFPetHitIndicator.optionsTable
+ns.options.args.pet.args.indicators.args.hitIndicator = BUFPetHitIndicator.optionsTable
 
 function BUFPetHitIndicator:ToggleDemoMode()
     if not self.demoMode then

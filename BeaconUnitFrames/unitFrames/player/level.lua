@@ -49,7 +49,7 @@ ns.dbDefaults.profile.unitFrames.player.level = {
 	fontShadowOffsetY = -1,
 }
 
-ns.options.args.unitFrames.args.player.args.level = BUFPlayerLevel.optionsTable
+ns.options.args.player.args.level = BUFPlayerLevel.optionsTable
 
 function BUFPlayerLevel:RefreshConfig()
     if not self.initialized then

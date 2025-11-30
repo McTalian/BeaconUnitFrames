@@ -36,7 +36,7 @@ ns.dbDefaults.profile.unitFrames.player.healthBar.foreground = {
     useClassColor = false,
 }
 
-ns.options.args.unitFrames.args.player.args.healthBar.args.foreground = foregroundHandler.optionsTable
+ns.options.args.player.args.healthBar.args.foreground = foregroundHandler.optionsTable
 
 function foregroundHandler:RefreshConfig()
     if not self.initialized then

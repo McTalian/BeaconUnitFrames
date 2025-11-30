@@ -51,7 +51,7 @@ ns.dbDefaults.profile.unitFrames.pet.powerBar.rightText = {
     fontShadowOffsetY = -1,
 }
 
-ns.options.args.unitFrames.args.pet.args.powerBar.args.rightText = rightTextHandler.optionsTable
+ns.options.args.pet.args.powerBar.args.rightText = rightTextHandler.optionsTable
 
 function rightTextHandler:RefreshConfig()
     if not self.fontString then

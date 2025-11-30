@@ -32,7 +32,7 @@ local indicators = {
     args = {},
 }
 
-ns.options.args.unitFrames.args.player.args.indicators = indicators
+ns.options.args.player.args.indicators = indicators
 
 function BUFPlayerIndicators:RefreshConfig()
     self.AttackIcon:RefreshConfig()

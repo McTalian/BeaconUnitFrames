@@ -61,7 +61,7 @@ ns.AddSizableOptions(portrait.args)
 ns.AddPositionableOptions(portrait.args)
 ns.AddBoxMaskableOptions(portrait.args)
 
-ns.options.args.unitFrames.args.target.args.portrait = portrait
+ns.options.args.target.args.portrait = portrait
 
 function BUFTargetPortrait:RefreshConfig()
     if not self.initialized then

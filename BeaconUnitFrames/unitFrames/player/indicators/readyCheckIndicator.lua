@@ -42,7 +42,7 @@ ns.AddPositionableOptions(readyCheckIndicator.args)
 ns.AddSizableOptions(readyCheckIndicator.args)
 ns.AddDemoOptions(readyCheckIndicator.args)
 
-ns.options.args.unitFrames.args.player.args.indicators.args.readyCheckIndicator = readyCheckIndicator
+ns.options.args.player.args.indicators.args.readyCheckIndicator = readyCheckIndicator
 
 function BUFPlayerReadyCheckIndicator:ToggleDemoMode()
     local readyCheckFrame = BUFPlayer.contentContextual.ReadyCheck

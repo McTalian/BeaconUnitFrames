@@ -53,7 +53,7 @@ ns.dbDefaults.profile.unitFrames.pet.name = {
     justifyV = "BOTTOM",
 }
 
-ns.options.args.unitFrames.args.pet.args.petName = BUFPetName.optionsTable
+ns.options.args.pet.args.petName = BUFPetName.optionsTable
 
 function BUFPetName:RefreshConfig()
     if not self.initialized then

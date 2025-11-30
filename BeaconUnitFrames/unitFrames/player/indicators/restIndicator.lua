@@ -42,7 +42,7 @@ ns.AddPositionableOptions(restIndicator.args)
 ns.AddSizableOptions(restIndicator.args)
 ns.AddDemoOptions(restIndicator.args)
 
-ns.options.args.unitFrames.args.player.args.indicators.args.restIndicator = restIndicator
+ns.options.args.player.args.indicators.args.restIndicator = restIndicator
 
 function BUFPlayerRestIndicator:ToggleDemoMode()
     local restIndicatorFrame = BUFPlayer.contentContextual.PlayerRestLoop

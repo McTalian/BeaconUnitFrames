@@ -67,7 +67,7 @@ ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.playe
 
 ns.dbDefaults.profile.unitFrames.player.hitIndicator = BUFPlayerHitIndicator.dbDefaults
 
-ns.options.args.unitFrames.args.player.args.indicators.args.hitIndicator = BUFPlayerHitIndicator.optionsTable
+ns.options.args.player.args.indicators.args.hitIndicator = BUFPlayerHitIndicator.optionsTable
 
 function BUFPlayerHitIndicator:ToggleDemoMode()
     if not self.demoMode then

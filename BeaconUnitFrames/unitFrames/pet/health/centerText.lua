@@ -51,7 +51,7 @@ ns.dbDefaults.profile.unitFrames.pet.healthBar.centerText = {
     fontShadowOffsetY = -1,
 }
 
-ns.options.args.unitFrames.args.pet.args.healthBar.args.centerText = centerTextHandler.optionsTable
+ns.options.args.pet.args.healthBar.args.centerText = centerTextHandler.optionsTable
 
 function centerTextHandler:RefreshConfig()
     if not self.fontString then
