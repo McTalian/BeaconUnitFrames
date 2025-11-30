@@ -81,7 +81,6 @@ function BUFPlayer:RefreshConfig()
         return
     end
     if not self.initialized then
-        -- self.initialized = true
         local ArtUpdater = CreateFrame("Frame", nil, nil, "SecureHandlerAttributeTemplate")
         Mixin(ArtUpdater, ns.BUFSecureHandler)
 
@@ -169,59 +168,3 @@ function BUFPlayer:RefreshConfig()
         end)
     end
 end
-
--- Hack to get around the art update issues when entering/exiting vehicles
--- The idea is to control sizing and positioning on a new frame that will be the parent
--- of the protected thing we want to control. (Assuming setting the parent doesn't cause taint issues)
--- Then creating N dummy frames that are slight offsets of our new frame so that right before things
--- get moved, we change the parent to the appropriate dummy frame that has the right offset.
--- This also relies on using SetAllPoints so that SetHeight/SetWidth calls are effectively ignored.
--- The snippet below is a test of that concept, but does not deal with the protected frames yet.
-
--- local testFrame = _G["McTestFrame"]
--- if not testFrame then
---    testFrame = CreateFrame("Frame", "McTestFrame", nil)
---    print("creating new")
--- end
-
--- if not testFrame.Background then
---    testFrame.Background = testFrame:CreateTexture()
--- end
-
--- local testSb = _G["McTestStatusBar"]
--- if not testSb then
---    testSb = CreateFrame("StatusBar", "McTestStatusBar", testFrame)
--- end
-
--- local testBgLayer = testFrame.Background
--- testBgLayer:SetAllPoints()
--- testBgLayer:SetColorTexture(1,1,1,1)
-
--- testFrame:SetPoint("CENTER")
-
--- testFrame:SetWidth(500)
--- testFrame:SetHeight(30)
-
--- testSb:SetAllPoints()
--- testSb:SetStatusBarTexture("Interface/TargetingFrame/UI-StatusBar")
--- testSb:SetStatusBarColor(0,1,0)
--- testSb:SetMinMaxValues(0,100)
--- testSb:SetValue(55)
-
--- testFrame:Show()
-
--- local dummyFrame = _G["McDummy"]
--- if not dummyFrame then
---    dummyFrame = CreateFrame("Frame", "McDummy", testFrame)
--- end
-
--- dummyFrame:SetPoint("TOPLEFT", 96, 10)
--- dummyFrame:SetPoint("BOTTOMRIGHT")
-
-
--- testSb:SetParent(dummyFrame)
--- testSb:SetAllPoints()
--- testSb:SetPoint("TOPLEFT", -96, -10)
--- testSb:SetWidth(20)
--- testSb:SetHeight(500)
-
