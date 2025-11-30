@@ -112,6 +112,15 @@ function BUFPetFrame:RefreshConfig()
 
     if not self.initialized then
         self.initialized = true
+
+        if not BUFPet:IsHooked(BUFPet.frame, "AnchorSelectionFrame") then
+            BUFPet:SecureHook(BUFPet.frame, "AnchorSelectionFrame", function()
+                if BUFPet.frame.Selection then
+                    BUFPet.frame.Selection:ClearAllPoints()
+                    BUFPet.frame.Selection:SetAllPoints(BUFPet.frame)
+                end
+            end)
+        end
     end
 end
 
@@ -205,7 +214,6 @@ function BUFPetFrame:RefreshBackgroundTexture()
     local backgroundTexture = ns.db.profile.unitFrames.pet.frame.backgroundTexture
     local bgTexturePath = ns.lsm:Fetch(ns.lsm.MediaType.BACKGROUND, backgroundTexture)
     if not bgTexturePath then
-        print("Background texture not found, using default:", "None")
         bgTexturePath = "Interface/None"
     end
 

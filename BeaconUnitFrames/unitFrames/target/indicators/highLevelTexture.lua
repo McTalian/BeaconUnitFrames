@@ -1,0 +1,60 @@
+---@type string, table
+local addonName, ns = ...
+
+---@class BUFNamespace
+ns = ns
+
+---@class BUFTarget
+local BUFTarget = ns.BUFTarget
+
+---@class BUFTarget.Indicators
+local BUFTargetIndicators = ns.BUFTarget.Indicators
+
+---@class BUFTarget.Indicators.HighLevelTexture: BUFConfigHandler, BUFScaleTexture
+local BUFTargetHighLevelTexture = {
+    configPath = "unitFrames.target.highLevelTexture",
+}
+
+BUFTargetHighLevelTexture.optionsTable = {
+    type = "group",
+    handler = BUFTargetHighLevelTexture,
+    name = ns.L["High Level Texture"],
+    order = BUFTargetIndicators.optionsOrder.HIGH_LEVEL_TEXTURE,
+    args = {},
+}
+
+---@class BUFDbSchema.UF.Target.HighLevelTexture
+BUFTargetHighLevelTexture.dbDefaults = {
+    anchorPoint = "TOPLEFT",
+    relativeTo = ns.DEFAULT,
+    relativePoint = ns.DEFAULT,
+    xOffset = 4,
+    yOffset = 2,
+    useAtlasSize = true,
+    width = 11,
+    height = 14,
+    scale = 1,
+}
+
+ns.BUFScaleTexture:ApplyMixin(BUFTargetHighLevelTexture)
+
+ns.options.args.unitFrames.args.target.args.indicators.args.highLevelTexture = BUFTargetHighLevelTexture.optionsTable
+
+---@class BUFDbSchema.UF.Target
+ns.dbDefaults.profile.unitFrames.target = ns.dbDefaults.profile.unitFrames.target
+
+ns.dbDefaults.profile.unitFrames.target.highLevelTexture = BUFTargetHighLevelTexture.dbDefaults
+
+local HIGH_LEVEL_TEXTURE_ATLAS = "UI-HUD-UnitFrame-Target-HighLevelTarget_Icon"
+
+function BUFTargetHighLevelTexture:RefreshConfig()
+    if not self.texture then
+        self.texture = BUFTarget.contentContextual.HighLevelTexture
+        self.atlasName = HIGH_LEVEL_TEXTURE_ATLAS
+
+        self.defaultRelativeTo = BUFTarget.contentMain.LevelText
+    end
+    self:RefreshScaleTextureConfig()
+end
+
+BUFTargetIndicators.HighLevelTexture = BUFTargetHighLevelTexture

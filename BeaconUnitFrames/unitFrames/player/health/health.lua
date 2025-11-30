@@ -7,20 +7,22 @@ ns = ns
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
 
----@class BUFPlayer.Health: BUFConfigHandler, Positionable, Sizable, Levelable
+---@class BUFPlayer.Health: BUFConfigHandler, BUFStatusBar
 local BUFPlayerHealth = {
     configPath = "unitFrames.player.healthBar",
 }
 
-ns.Mixin(BUFPlayerHealth, ns.Positionable, ns.Sizable, ns.Levelable)
-
-BUFPlayer.Health = BUFPlayerHealth
-
----@class BUFDbSchema.UF.Player
-ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
+BUFPlayerHealth.optionsTable = {
+    type = "group",
+    handler = BUFPlayerHealth,
+    name = HEALTH,
+    order = BUFPlayer.optionsOrder.HEALTH,
+    childGroups = "tree",
+    args = {},
+}
 
 ---@class BUFDbSchema.UF.Player.Health
-ns.dbDefaults.profile.unitFrames.player.healthBar = {
+BUFPlayerHealth.dbDefaults = {
     anchorPoint = "TOPLEFT",
     relativeTo = ns.DEFAULT,
     relativePoint = ns.DEFAULT,
@@ -30,6 +32,10 @@ ns.dbDefaults.profile.unitFrames.player.healthBar = {
     yOffset = -40,
     frameLevel = 3,
 }
+
+ns.BUFStatusBar:ApplyMixin(BUFPlayerHealth)
+
+BUFPlayer.Health = BUFPlayerHealth
 
 local healthBarOrder = {}
 
@@ -42,140 +48,102 @@ healthBarOrder.BACKGROUND = healthBarOrder.FOREGROUND + .1
 
 BUFPlayerHealth.topGroupOrder = healthBarOrder
 
-local healthBar = {
-    type = "group",
-    handler = BUFPlayerHealth,
-    name = HEALTH,
-    order = BUFPlayer.optionsOrder.HEALTH,
-    childGroups = "tree",
-    args = {},
-}
+---@class BUFDbSchema.UF.Player
+ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
 
-ns.AddSizableOptions(healthBar.args, healthBarOrder)
-ns.AddPositionableOptions(healthBar.args, healthBarOrder)
-ns.AddFrameLevelOption(healthBar.args, healthBarOrder)
+---@type BUFDbSchema.UF.Player.Health
+ns.dbDefaults.profile.unitFrames.player.healthBar = BUFPlayerHealth.dbDefaults
 
-ns.options.args.unitFrames.args.player.args.healthBar = healthBar
+ns.options.args.unitFrames.args.player.args.healthBar = BUFPlayerHealth.optionsTable
 
 BUFPlayerHealth.coeffs = {
-    maskWidth = 1.05,
-    maskHeight = 1.0,
-    maskXOffset = (-2 / ns.dbDefaults.profile.unitFrames.player.healthBar.width),
-    maskYOffset = 6 / ns.dbDefaults.profile.unitFrames.player.healthBar.height,
+    maskWidth = (128 / BUFPlayerHealth.dbDefaults.width),
+    maskHeight = (32 / BUFPlayerHealth.dbDefaults.height),
+    maskXOffset = (-1 / BUFPlayerHealth.dbDefaults.width),
+    maskYOffset = (6 / BUFPlayerHealth.dbDefaults.height),
 }
 
 function BUFPlayerHealth:RefreshConfig()
     if not self.initialized then
         self.initialized = true
+
         self.defaultRelativeTo = "PlayerFrame"
         self.defaultRelativePoint = "TOPLEFT"
-        if not BUFPlayer:IsHooked(BUFPlayer.healthBarContainer.HealthBarMask, "SetPoint") then
-            BUFPlayer:SecureHook(BUFPlayer.healthBarContainer.HealthBarMask, "SetPoint", function()
-                BUFPlayerHealth:SetUnprotectedSize()
-            end)
-        end
 
-        if not BUFPlayer:IsHooked(BUFPlayer.healthBarContainer.HealthBarMask, "SetHeight") then
-            BUFPlayer:SecureHook(BUFPlayer.healthBarContainer.HealthBarMask, "SetHeight", function()
-                BUFPlayerHealth:SetUnprotectedSize()
-            end)
-        end
+        self.barOrContainer = BUFPlayer.healthBarContainer
+        self.maskTexture = BUFPlayer.healthBarContainer.HealthBarMask
+        self.maskTextureAtlas = "UI-HUD-UnitFrame-Player-PortraitOn-Bar-Health-Mask"
+        self.positionMask = true
     end
     if not InCombatLockdown() then
-        self:SetPosition()
-        self:SetSize()
-        self:SetLevel()
+        self:RefreshStatusBarConfig()
     else
         self:SetUnprotectedSize()
+        self.leftTextHandler:RefreshConfig()
+        self.rightTextHandler:RefreshConfig()
+        self.centerTextHandler:RefreshConfig()
+        self.foregroundHandler:RefreshConfig()
+        self.backgroundHandler:RefreshConfig()
     end
-    self.leftTextHandler:RefreshConfig()
-    self.rightTextHandler:RefreshConfig()
-    self.centerTextHandler:RefreshConfig()
-    self.foregroundHandler:RefreshConfig()
-    self.backgroundHandler:RefreshConfig()
 end
 
 function BUFPlayerHealth:SetUnprotectedSize()
-    local parent = BUFPlayer
-    local width = ns.db.profile.unitFrames.player.healthBar.width
-    local height = ns.db.profile.unitFrames.player.healthBar.height
+    local width = self:GetWidth()
+    local height = self:GetHeight()
 
-    parent.healthBarContainer.HealthBarMask:SetWidth(width * self.coeffs.maskWidth)
-    if BUFPlayer:IsHooked(parent.healthBarContainer.HealthBarMask, "SetHeight") then
-        BUFPlayer:Unhook(parent.healthBarContainer.HealthBarMask, "SetHeight")
+    self.maskTexture:SetWidth(width * self.coeffs.maskWidth)
+
+    if BUFPlayer:IsHooked(self.maskTexture, "SetHeight") then
+        BUFPlayer:Unhook(self.maskTexture, "SetHeight")
     end
-    parent.healthBarContainer.HealthBarMask:SetHeight(height * self.coeffs.maskHeight)
-    if not BUFPlayer:IsHooked(parent.healthBarContainer.HealthBarMask, "SetHeight") then
-        BUFPlayer:SecureHook(parent.healthBarContainer.HealthBarMask, "SetHeight", function()
+    self.maskTexture:SetHeight(height * self.coeffs.maskHeight)
+    if not BUFPlayer:IsHooked(self.maskTexture, "SetHeight") then
+        BUFPlayer:SecureHook(self.maskTexture, "SetHeight", function()
             BUFPlayerHealth:SetUnprotectedSize()
         end)
     end
-    if BUFPlayer:IsHooked(parent.healthBarContainer.HealthBarMask, "SetPoint") then
-        BUFPlayer:Unhook(parent.healthBarContainer.HealthBarMask, "SetPoint")
+
+    if BUFPlayer:IsHooked(self.maskTexture, "SetPoint") then
+        BUFPlayer:Unhook(self.maskTexture, "SetPoint")
     end
-    parent.healthBarContainer.HealthBarMask:SetPoint("TOPLEFT", width * self.coeffs.maskXOffset,
+    self.maskTexture:SetPoint("TOPLEFT", width * self.coeffs.maskXOffset,
         height * self.coeffs.maskYOffset)
-    if not BUFPlayer:IsHooked(parent.healthBarContainer.HealthBarMask, "SetPoint") then
-        BUFPlayer:SecureHook(parent.healthBarContainer.HealthBarMask, "SetPoint", function()
+    if not BUFPlayer:IsHooked(self.maskTexture, "SetPoint") then
+        BUFPlayer:SecureHook(self.maskTexture, "SetPoint", function()
             BUFPlayerHealth:SetUnprotectedSize()
         end)
     end
 end
 
 function BUFPlayerHealth:SetSize()
-    local parent = BUFPlayer
-    local width = ns.db.profile.unitFrames.player.healthBar.width
-    local height = ns.db.profile.unitFrames.player.healthBar.height
+    self:_SetSize(self.barOrContainer)
+    self:_SetSize(BUFPlayer.healthBar)
 
-    parent.healthBarContainer:SetWidth(width)
-    parent.healthBarContainer:SetHeight(height)
-    parent.healthBar:SetWidth(width)
-    parent.healthBar:SetHeight(height)
     self:SetUnprotectedSize()
 
-    parent.healthBarContainer:SetAttribute("buf_restore_size", format([[
+    local width, height = self:GetWidth(), self:GetHeight()
+    local secureBody = format([[
         self:SetWidth(%d);
         self:SetHeight(%d);
-    ]], width, height))
-    parent.healthBar:SetAttribute("buf_restore_size", format([[
-        self:SetWidth(%d);
-        self:SetHeight(%d);
-    ]], width, height))
+    ]], width, height)
+
+    self.barOrContainer:SetAttribute("buf_restore_size", secureBody)
+    BUFPlayer.healthBar:SetAttribute("buf_restore_size", secureBody)
 end
 
-function BUFPlayerHealth:SetPosition()
-    local parent = BUFPlayer
-    local anchorPoint = self:GetAnchorPoint() or "TOPLEFT"
-    ---@type string
-    local relativeTo = self:GetRelativeTo() or ns.DEFAULT
-    if relativeTo == ns.DEFAULT then
-        relativeTo = self.defaultRelativeTo or "UIParent"
-    end
+function BUFPlayerHealth:SetPosition()    
+    self:_SetPosition(self.barOrContainer)
 
-    ---@type string
-    local relativePoint = self:GetRelativePoint() or ns.DEFAULT
-    if relativePoint == ns.DEFAULT then
-        relativePoint = self.defaultRelativePoint or "TOPLEFT"
-    end
-    local xOffset = ns.db.profile.unitFrames.player.healthBar.xOffset
-    local yOffset = ns.db.profile.unitFrames.player.healthBar.yOffset
+    ---@type AnchorInfo
+    local anchorInfo = self:GetPositionAnchorInfo()
 
-    self:_SetPosition(parent.healthBarContainer)
-
-    parent.healthBarContainer:SetAttribute("buf_restore_position", format([[
-        local anchorPoint = "%s"
-        local relativeTo = self:GetParent()
-        local relativePoint = "%s"
-        local xOffset = %d
-        local yOffset = %d
+    ns.BUFSecureHandler.SaveAnchor(
+        self.barOrContainer,
+        "PlayerHealthBarAnchor",
+        anchorInfo
+    )
+    self.barOrContainer:SetAttribute("buf_restore_position", [[
         self:ClearAllPoints();
-        self:SetPoint(anchorPoint, relativeTo, relativePoint, xOffset, yOffset);
-    ]], anchorPoint, relativePoint, xOffset, yOffset))
-end
-
-function BUFPlayerHealth:SetLevel()
-    local parent = BUFPlayer
-    local frameLevel = ns.db.profile.unitFrames.player.healthBar.frameLevel
-    parent.healthBarContainer:SetUsingParentLevel(false)
-    parent.healthBarContainer:SetFrameLevel(frameLevel)
+        self:SetPoint(unpack(PlayerHealthBarAnchor));
+    ]])
 end

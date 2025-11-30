@@ -47,7 +47,7 @@ function foregroundHandler:RefreshConfig()
         self.statusBarMask = PetFrameHealthBarMask
         self.defaultStatusBarMaskTexture = "UI-HUD-UnitFrame-Party-PortraitOn-Bar-Health-Mask"
     end
-    self:RefreshStatusBarConfig()
+    self:RefreshStatusBarForegroundConfig()
 end
 
 BUFPetHealth.foregroundHandler = foregroundHandler

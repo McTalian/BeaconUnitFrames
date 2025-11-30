@@ -20,7 +20,8 @@ BUFPlayerIndicators.optionsOrder = {
   LEADER_AND_GUIDE_ICON = 6,
   PVP_ICON = 7,
   PRESTIGE = 8,
-  PLAY_TIME = 9,
+  HIT_INDICATOR = 9,
+  PLAY_TIME = 10,
 }
 
 local indicators = {
@@ -43,6 +44,7 @@ function BUFPlayerIndicators:RefreshConfig()
     self.ReadyCheckIndicator:RefreshConfig()
     self.RestIndicator:RefreshConfig()
     self.RoleIcon:RefreshConfig()
+    self.HitIndicator:RefreshConfig()
 end
 
 BUFPlayer.Indicators = BUFPlayerIndicators

@@ -4,6 +4,10 @@ local addonName, ns = ...
 ---@class BUFNamespace
 ns = ns
 
+---@class MaskableBaseHandler: BUFConfigHandler
+---@field RefreshMask fun(self: MaskableBaseHandler)
+
+---@class MaskableBase: MaskableBaseHandler
 local MaskableBase = {}
 
 function MaskableBase:SetMask(info, value)
@@ -31,6 +35,20 @@ end
 
 function MaskableBase:GetMaskHeightScale(info)
     return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".maskHeightScale")
+end
+
+function MaskableBase:_RefreshMask(maskTexture)
+    local maskPath = self:GetMask()
+
+    local sPos, ePos = string.find(maskPath, "%.")
+    local isTexture = sPos ~= nil
+    if isTexture then
+        -- File path
+        maskTexture:SetTexture(maskPath)
+    else
+        -- Atlas
+        maskTexture:SetAtlas(maskPath, false)
+    end
 end
 
 local function BoxMaskOptionValues()
@@ -95,8 +113,7 @@ function ns.AddBoxMaskableOptions(optionsTable, _orderMap)
     }
 end
 
----@class BoxMaskableHandler: BUFConfigHandler
----@field RefreshMask fun(self: BoxMaskableHandler)
+---@class BoxMaskableHandler: BUFConfigHandler, MaskableBase
 
 ---@class BoxMaskable: BoxMaskableHandler
 local BoxMaskable = {}

@@ -26,7 +26,6 @@ ns.dbDefaults.profile.unitFrames.player.frame = {
     enableFrameFlash = true,
     enableFrameTexture = true,
     enableStatusTexture = true,
-    enableHitIndicator = true,
     useBackgroundTexture = false,
     backgroundTexture = "None",
 }
@@ -36,7 +35,6 @@ ns.Mixin(frameOrder, ns.defaultOrderMap)
 frameOrder.FRAME_FLASH = frameOrder.ENABLE + .1
 frameOrder.FRAME_TEXTURE = frameOrder.FRAME_FLASH + .1
 frameOrder.STATUS_TEXTURE = frameOrder.FRAME_TEXTURE + .1
-frameOrder.HIT_INDICATOR = frameOrder.STATUS_TEXTURE + .1
 
 local frame = {
     type = "group",
@@ -81,19 +79,6 @@ local frame = {
             end,
             order = frameOrder.STATUS_TEXTURE,
         },
-        -- TODO: Move this to indicators and add more options
-        hitIndicator = {
-            type = "toggle",
-            name = ns.L["EnableHitIndicator"],
-            set = function(info, value)
-                ns.db.profile.unitFrames.player.frame.enableHitIndicator = value
-                BUFPlayerFrame:SetHitIndicator()
-            end,
-            get = function(info)
-                return ns.db.profile.unitFrames.player.frame.enableHitIndicator
-            end,
-            order = frameOrder.HIT_INDICATOR,
-        },
     },
 }
 
@@ -107,7 +92,6 @@ function BUFPlayerFrame:RefreshConfig()
     self:SetFrameFlash()
     self:SetFrameTexture()
     self:SetStatusTexture()
-    self:SetHitIndicator()
     self:RefreshBackgroundTexture()
 
     if not self.initialized then
@@ -119,6 +103,15 @@ function BUFPlayerFrame:RefreshConfig()
             player:SecureHook(player.container.FrameTexture, "SetShown", function(s, shown)
                 if not ns.db.profile.unitFrames.player.frame.enableFrameTexture then
                     s:Hide()
+                end
+            end)
+        end
+
+        if not player:IsHooked(player.frame, "AnchorSelectionFrame") then
+            player:SecureHook(player.frame, "AnchorSelectionFrame", function()
+                if player.frame.Selection then
+                    player.frame.Selection:ClearAllPoints()
+                    player.frame.Selection:SetAllPoints(player.frame)
                 end
             end)
         end
@@ -193,21 +186,6 @@ function BUFPlayerFrame:SetStatusTexture()
     end
 end
 
-function BUFPlayerFrame:SetHitIndicator()
-    local player = BUFPlayer
-    local enable = ns.db.profile.unitFrames.player.frame.enableHitIndicator
-    if enable then
-        player:Unhook(player.contentMain.HitIndicator, "Show")
-        player.contentMain.HitIndicator:Show()
-    else
-        player.contentMain.HitIndicator:Hide()
-        if not ns.BUFPlayer:IsHooked(player.contentMain.HitIndicator, "Show") then
-            player:SecureHook(player.contentMain.HitIndicator, "Show", function(s)
-                s:Hide()
-            end)
-        end
-    end
-end
 
 function BUFPlayerFrame:RefreshBackgroundTexture()
     local useBackgroundTexture = ns.db.profile.unitFrames.player.frame.useBackgroundTexture
@@ -225,7 +203,6 @@ function BUFPlayerFrame:RefreshBackgroundTexture()
     local backgroundTexture = ns.db.profile.unitFrames.player.frame.backgroundTexture
     local bgTexturePath = ns.lsm:Fetch(ns.lsm.MediaType.BACKGROUND, backgroundTexture)
     if not bgTexturePath then
-        print("Background texture not found, using default:", "None")
         bgTexturePath = "Interface/None"
     end
 

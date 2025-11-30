@@ -4,8 +4,8 @@ local addonName, ns = ...
 ---@class BUFNamespace
 ns = ns
 
----@class BUFPet: AceModule, AceHook-3.0
-local BUFPet = ns.BUF:NewModule("BUFPet", "AceHook-3.0")
+---@class BUFPet: AceModule, AceHook-3.0, AceEvent-3.0
+local BUFPet = ns.BUF:NewModule("BUFPet", "AceHook-3.0", "AceEvent-3.0")
 
 ns.BUFPet = BUFPet
 
@@ -59,8 +59,19 @@ function BUFPet:OnEnable()
     self.manaBar = PetFrameManaBar
 end
 
-function BUFPet:RefreshConfig()
+function BUFPet:RefreshConfig(_eName)
+    if _eName then
+        print("BUFPet:RefreshConfig called due to event:", _eName)
+    end
     if not ns.db.profile.unitFrames.pet.enabled then
+        return
+    end
+
+    if not UnitExists("pet") then
+        if not self.registered then
+            self.registered = true
+            self:RegisterEvent("PET_UI_UPDATE", "RefreshConfig")
+        end
         return
     end
 
@@ -73,5 +84,11 @@ function BUFPet:RefreshConfig()
 
     if not self.initialized then
         self.initialized = true
+
+        if not self:IsHooked(PetFrame, "Update") then
+            self:SecureHook(PetFrame, "Update", function()
+                self:RefreshConfig()
+            end)
+        end
     end
 end

@@ -80,6 +80,19 @@ function BUFTargetFrame:RefreshConfig()
     self:SetFrameFlash()
     self:SetFrameTexture()
     self:RefreshBackgroundTexture()
+
+    if not self.initialized then
+        self.initialized = true
+
+        if not BUFTarget:IsHooked(BUFTarget.frame, "AnchorSelectionFrame") then
+            BUFTarget:SecureHook(BUFTarget.frame, "AnchorSelectionFrame", function()
+                if BUFTarget.frame.Selection then
+                    BUFTarget.frame.Selection:ClearAllPoints()
+                    BUFTarget.frame.Selection:SetAllPoints(BUFTarget.frame)
+                end
+            end)
+        end
+    end
 end
 
 function BUFTargetFrame:SetSize()
@@ -139,7 +152,6 @@ function BUFTargetFrame:RefreshBackgroundTexture()
     local backgroundTexture = ns.db.profile.unitFrames.target.frame.backgroundTexture
     local bgTexturePath = ns.lsm:Fetch(ns.lsm.MediaType.BACKGROUND, backgroundTexture)
     if not bgTexturePath then
-        print("Background texture not found, using default:", "None")
         bgTexturePath = "Interface/None"
     end
 

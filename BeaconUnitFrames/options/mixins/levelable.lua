@@ -44,4 +44,15 @@ function Levelable:GetFrameLevel(info)
     return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".frameLevel")
 end
 
+--- Set the frame level of the given frame
+--- @param self Levelable
+--- @param frame Frame
+function Levelable:_SetLevel(frame)
+    local frameLevel = self:GetFrameLevel()
+    if frame and frame.IsUsingParentLevel and frame:IsUsingParentLevel() then
+        frame:SetUsingParentLevel(false)
+    end
+    frame:SetFrameLevel(frameLevel)
+end
+
 ns.Levelable = Levelable

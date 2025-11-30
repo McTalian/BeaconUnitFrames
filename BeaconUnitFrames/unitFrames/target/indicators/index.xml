@@ -1,13 +1,14 @@
 <Ui xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
     <Script file="indicators.lua"/>
-    <Script file="groupIndicator.lua"/>
+    <Script file="highLevelTexture.lua"/>
+    <Script file="leaderAndGuideIcon.lua"/>
+    <!-- <Script file="groupIndicator.lua"/>
     <Script file="restIndicator.lua"/>
     <Script file="attackIcon.lua"/>
     <Script file="readyCheckIndicator.lua"/>
     <Script file="roleIcon.lua"/>
-    <Script file="leaderAndGuideIcon.lua"/>
     <Script file="pvpIcon.lua"/>
     <Script file="prestigePortrait.lua"/>
     <Script file="playTime.lua"/>
-    <Script file="hitIndicator.lua"/>
+    <Script file="hitIndicator.lua"/> -->
 </Ui>

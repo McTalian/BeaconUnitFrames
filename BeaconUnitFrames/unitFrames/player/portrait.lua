@@ -147,21 +147,13 @@ function BUFPlayerPortrait:SetCornerIndicator()
 end
 
 function BUFPlayerPortrait:RefreshMask()
-    local parent = BUFPlayer
-    local maskPath = ns.db.profile.unitFrames.player.portrait.mask
+    local mask = BUFPlayer.container.PlayerPortraitMask
+    self:_RefreshMask(mask)
 
-    local sPos, ePos = string.find(maskPath, "%.")
-    local isTexture = sPos ~= nil
-    if isTexture then
-        -- File path
-        parent.container.PlayerPortraitMask:SetTexture(maskPath)
-    else
-        -- Atlas
-        parent.container.PlayerPortraitMask:SetAtlas(maskPath, false)
-    end
-    local width = ns.db.profile.unitFrames.player.portrait.width
-    local height = ns.db.profile.unitFrames.player.portrait.height
-    local widthScale = ns.db.profile.unitFrames.player.portrait.maskWidthScale or 1
-    local heightScale = ns.db.profile.unitFrames.player.portrait.maskHeightScale or 1
-    parent.container.PlayerPortraitMask:SetSize(width * widthScale, height * heightScale)
+
+    local width = self:GetWidth()
+    local height = self:GetHeight()
+    local widthScale = self:GetMaskWidthScale() or 1
+    local heightScale = self:GetMaskHeightScale() or 1
+    mask:SetSize(width * widthScale, height * heightScale)
 end

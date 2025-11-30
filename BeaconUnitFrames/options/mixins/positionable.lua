@@ -141,7 +141,7 @@ function ns.AddPositionableOptions(optionsTable, _orderMap)
 end
 
 ---@class PositionableHandler: BUFConfigHandler
----@field defaultRelativeTo string?
+---@field defaultRelativeTo string | Frame?
 ---@field defaultRelativePoint string?
 ---@field SetPosition fun(self: PositionableHandler)
 ---@field _SetPosition fun(self: PositionableHandler, positionable: ScriptRegionResizing)
@@ -218,8 +218,15 @@ function Positionable:GetYOffset(info)
     return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".yOffset")
 end
 
-function Positionable:_SetPosition(positionable)
-    ---@type string | nil
+---@class AnchorInfo
+---@field point string
+---@field relativeTo Frame
+---@field relativePoint string
+---@field xOffset number
+---@field yOffset number
+
+function Positionable:GetPositionAnchorInfo()
+    ---@type string | Frame | nil
     local relativeTo = self:GetRelativeTo() or ns.DEFAULT
     if relativeTo == ns.DEFAULT then
         relativeTo = self.defaultRelativeTo or nil
@@ -234,20 +241,47 @@ function Positionable:_SetPosition(positionable)
     local anchorPoint = self:GetAnchorPoint() or "TOPLEFT"
     local xOffset = self:GetXOffset() or 0
     local yOffset = self:GetYOffset() or 0
-    positionable:ClearAllPoints()
-    if relativeTo == nil or relativePoint == nil then
-        positionable:SetPoint(anchorPoint, xOffset, yOffset)
-        return
-    end
+    ---@type Frame
+    local relFrame
 
     if type(relativeTo) == "string" then
         if _G[relativeTo] == nil then
             error("Relative frame '" .. relativeTo .. "' does not exist.")
         else
-            relativeTo = _G[relativeTo]
+            ---@type Frame
+            relFrame = _G[relativeTo] --[[@as Frame]]
         end
+    elseif relativeTo ~= nil then
+        relFrame = relativeTo
     end
 
+    ---@type AnchorInfo
+    local anchorInfo = {
+        point = anchorPoint,
+        relativeTo = relFrame,
+        relativePoint = relativePoint,
+        xOffset = xOffset,
+        yOffset = yOffset,
+    }
+
+    return anchorInfo
+end
+
+function Positionable:_SetPosition(positionable)
+    local anchorInfo = self:GetPositionAnchorInfo()
+
+    local anchorPoint = anchorInfo.point
+    local relativeTo = anchorInfo.relativeTo
+    local relativePoint = anchorInfo.relativePoint
+    local xOffset = anchorInfo.xOffset
+    local yOffset = anchorInfo.yOffset
+    
+    positionable:ClearAllPoints()
+    if relativeTo == nil or relativePoint == nil then
+        positionable:SetPoint(anchorPoint, xOffset, yOffset)
+        return
+    end
+    
     if relativePoint == nil then
         positionable:SetPoint(
             anchorPoint,

@@ -46,7 +46,7 @@ function foregroundHandler:RefreshConfig()
         self.statusBar = ns.BUFPlayer.healthBar
         self.defaultStatusBarTexture = "UI-HUD-UnitFrame-Player-PortraitOn-Bar-Health"
     end
-    self:RefreshStatusBarConfig()
+    self:RefreshStatusBarForegroundConfig()
 end
 
 BUFPlayerHealth.foregroundHandler = foregroundHandler

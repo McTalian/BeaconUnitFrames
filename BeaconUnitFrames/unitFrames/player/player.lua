@@ -51,6 +51,21 @@ function BUFPlayer:OnEnable()
 end
 
 function BUFPlayer:RefreshConfig()
+    if not self.initialized then
+        -- self.initialized = true
+        local ArtUpdater = CreateFrame("Frame", nil, nil, "SecureHandlerAttributeTemplate")
+        Mixin(ArtUpdater, ns.BUFSecureHandler)
+
+        -- Kudos to Spyro from the WoWUIDev Discord for figuring out repositioning/resizing
+        -- on entering/exiting vehicles
+        ArtUpdater:SecureSetFrameRef("AlternatePowerBarArea", PlayerFrameAlternatePowerBarArea)
+        ArtUpdater:SecureSetFrameRef("PlayerHealthBarContainer", PlayerFrame_GetHealthBarContainer())
+        ArtUpdater:SecureSetFrameRef("PlayerHealthBar", PlayerFrame_GetHealthBar())
+        ArtUpdater:SecureSetFrameRef("PlayerManaBar", PlayerFrame_GetManaBar())
+
+        ns.PlayerArtUpdater = ArtUpdater
+    end
+
     self.Frame:RefreshConfig()
     self.Portrait:RefreshConfig()
     self.Name:RefreshConfig()
@@ -63,15 +78,7 @@ function BUFPlayer:RefreshConfig()
     if not self.initialized then
         self.initialized = true
         
-        local ArtUpdater = CreateFrame("Frame", nil, nil, "SecureHandlerAttributeTemplate")
-        Mixin(ArtUpdater, ns.BUFSecureHandler)
-
-        -- Kudos to Spyro from the WoWUIDev Discord for figuring out repositioning/resizing
-        -- on entering/exiting vehicles
-        ArtUpdater:SecureSetFrameRef("AlternatePowerBarArea", PlayerFrameAlternatePowerBarArea)
-        ArtUpdater:SecureSetFrameRef("PlayerHealthBarContainer", PlayerFrame_GetHealthBarContainer())
-        ArtUpdater:SecureSetFrameRef("PlayerHealthBar", PlayerFrame_GetHealthBar())
-        ArtUpdater:SecureSetFrameRef("PlayerManaBar", PlayerFrame_GetManaBar())
+        local ArtUpdater = ns.PlayerArtUpdater
 
         ArtUpdater:SetAttribute("buf_restore_size_position",[[
             PlayerHealthBarContainer:RunAttribute("buf_restore_size")
@@ -81,11 +88,6 @@ function BUFPlayer:RefreshConfig()
             PlayerHealthBarContainer:RunAttribute("buf_restore_position")
             PlayerManaBar:RunAttribute("buf_restore_position")
         ]])
-
-        -- ns.emergencyFixButtonWrapper:Inject("PlayerVehicleListener", ArtUpdateListener)
-
-        -- TODO: Need to figure out player name, level, and frame texture for player art
-        -- Need to figure out vehicle frame for vehicle art
 
         ArtUpdater:SetAttribute("_onattributechanged", [[
             self:RunAttribute("buf_restore_size_position")
@@ -136,8 +138,6 @@ function BUFPlayer:RefreshConfig()
             self.Indicators:RefreshConfig()
             self.ClassResources:RefreshConfig()
         end)
-
-        ns.PlayerArtUpdater = ArtUpdater
     end
 end
 

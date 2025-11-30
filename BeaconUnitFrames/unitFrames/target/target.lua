@@ -4,8 +4,8 @@ local addonName, ns = ...
 ---@class BUFNamespace
 ns = ns
 
----@class BUFTarget: AceModule, AceHook-3.0
-local BUFTarget = ns.BUF:NewModule("BUFTarget", "AceHook-3.0")
+---@class BUFTarget: AceModule, AceHook-3.0, AceEvent-3.0
+local BUFTarget = ns.BUF:NewModule("BUFTarget", "AceHook-3.0", "AceEvent-3.0")
 
 ns.BUFTarget = BUFTarget
 
@@ -61,8 +61,9 @@ BUFTarget.optionsOrder = {
     REPUTATION_BAR = 3,
     NAME = 4,
     LEVEL = 5,
-    HEALTH = 6,
-    POWER = 7,
+    INDICATORS = 6,
+    HEALTH = 7,
+    POWER = 8,
 }
 
 function BUFTarget:OnEnable()
@@ -92,11 +93,24 @@ function BUFTarget:RefreshConfig()
             SetCVar("showTempMaxHealthLoss", ns.db.global.restoreCvars.showTempMaxHealthLoss)
         end)
         SetCVar("showTempMaxHealthLoss", "0")
+
+        self:SecureHook(self.frame, "Update", function()
+            -- Be careful in here, if you do anything insecure, it could cause lua errors during combat
+            self.Health.foregroundHandler:RefreshConfig()
+            self.Power.foregroundHandler:RefreshConfig()
+        end)
+
+        self:SecureHook("UnitFrameManaBar_UpdateType", function(manaBar)
+            if manaBar == self.manaBar then
+                self.Power.foregroundHandler:RefreshConfig()
+            end
+        end)
     end
     self.Frame:RefreshConfig()
     self.Portrait:RefreshConfig()
     self.Name:RefreshConfig()
     self.Level:RefreshConfig()
+    self.Indicators:RefreshConfig()
     self.Health:RefreshConfig()
     self.Power:RefreshConfig()
     self.ReputationBar:RefreshConfig()

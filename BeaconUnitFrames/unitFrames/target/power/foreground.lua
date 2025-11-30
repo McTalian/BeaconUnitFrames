@@ -47,6 +47,10 @@ ns.options.args.unitFrames.args.target.args.powerBar.args.foreground = foregroun
 function foregroundHandler:RefreshConfig()
     self:RefreshStatusBarTexture()
     self:RefreshColor()
+
+    if not self.initialized then
+        self.initialized = true
+    end
 end
 
 function foregroundHandler:RefreshStatusBarTexture()
@@ -58,14 +62,8 @@ function foregroundHandler:RefreshStatusBarTexture()
         if not texturePath then
             texturePath = ns.lsm:Fetch(ns.lsm.MediaType.STATUSBAR, "Blizzard") or "Interface\\Buttons\\WHITE8x8"
         end
-        if BUFTarget:IsHooked(parent.manaBar, "SetStatusBarTexture") then
-            BUFTarget:Unhook(parent.manaBar, "SetStatusBarTexture")
-        end
         parent.manaBar:SetStatusBarTexture(texturePath)
-        BUFTarget:SecureHook(parent.manaBar, "SetStatusBarTexture", function(s, texture)
-            self:RefreshStatusBarTexture()
-        end)
-        --BUFTargetPower:SetLevel()
+        parent.manaBar.ManaBarMask:Hide()
     else
         parent.manaBar:SetStatusBarTexture("UI-HUD-UnitFrame-Player-PortraitOn-Bar-Mana")
     end
@@ -76,7 +74,7 @@ function foregroundHandler:RefreshColor()
     local useCustomColor = ns.db.profile.unitFrames.target.powerBar.foreground.useCustomColor
     local usePowerColor = ns.db.profile.unitFrames.target.powerBar.foreground.usePowerColor
     if usePowerColor then
-        local powerType, powerToken, rX, gY, bZ = UnitPowerType("player")
+        local powerType, powerToken, rX, gY, bZ = UnitPowerType("target")
         local info = PowerBarColor[powerToken]
         local r, g, b
         if info then
@@ -88,6 +86,9 @@ function foregroundHandler:RefreshColor()
             end
         else
             r, g, b = rX, gY, bZ
+        end
+        if r == nil then
+            return
         end
         if BUFTarget:IsHooked(parent.manaBar, "SetStatusBarColor") then
             BUFTarget:Unhook(parent.manaBar, "SetStatusBarColor")

@@ -74,7 +74,7 @@ function StatusBarForeground:ApplyMixin(handler, classColorable, reactionColorab
     end
 end
 
-function StatusBarForeground:RefreshStatusBarConfig()
+function StatusBarForeground:RefreshStatusBarForegroundConfig()
     self:RefreshStatusBarTexture()
     self:RefreshColor()
 end
@@ -97,7 +97,7 @@ function StatusBarForeground:RefreshStatusBarTexture()
         end
         if self.statusBarMask and self.defaultStatusBarMaskTexture then
             self.statusBarMask:Show()
-            self.statusBarMask:SetAtlas(self.defaultStatusBarMaskTexture, true)
+            self.statusBarMask:SetAtlas(self.defaultStatusBarMaskTexture, false)
         end
     end
 end

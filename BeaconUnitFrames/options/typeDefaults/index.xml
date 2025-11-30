@@ -1,6 +1,7 @@
 <Ui xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
     <Script file="fontString.lua"/>
     <Script file="texture.lua"/>
+    <Script file="statusBar.lua"/>
     <Script file="statusBarForeground.lua"/>
     <Script file="scaleOnlyTexture.lua"/>
 </Ui>

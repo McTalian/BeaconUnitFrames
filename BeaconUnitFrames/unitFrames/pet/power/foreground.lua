@@ -43,11 +43,35 @@ function foregroundHandler:RefreshConfig()
         self.initialized = true
 
         self.unit = "pet"
-        self.statusBar = ns.BUFPet.manaBar
+        self.statusBar = PetFrameManaBar
         self.statusBarMask = PetFrameManaBarMask
         self.defaultStatusBarMaskTexture = "UI-HUD-UnitFrame-Party-PortraitOn-Bar-Mana-Mask"
+
+        --- Hide the mask if the status bar texture is being used
+        --- @param m MaskTexture
+        local function HideMaskIfOverridden(m)
+            if self:GetUseStatusBarTexture() then
+                m:Hide()
+            end
+        end
+
+        if not BUFPet:IsHooked(self.statusBarMask, "Show") then
+            BUFPet:SecureHook(self.statusBarMask, "Show", HideMaskIfOverridden)
+        end
+
+        if not BUFPet:IsHooked(self.statusBarMask, "SetShown") then
+            BUFPet:SecureHook(self.statusBarMask, "SetShown", HideMaskIfOverridden)
+        end
+
+        if not BUFPet:IsHooked(self.statusBarMask, "SetAtlas") then
+            BUFPet:SecureHook(self.statusBarMask, "SetAtlas", HideMaskIfOverridden)
+        end
     end
-    self:RefreshStatusBarConfig()
+    self:RefreshStatusBarForegroundConfig()
+
+    if self:GetUseStatusBarTexture() then
+        self.statusBarMask:Hide()
+    end
 end
 
 BUFPetPower.foregroundHandler = foregroundHandler

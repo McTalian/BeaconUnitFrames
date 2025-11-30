@@ -7,12 +7,21 @@ ns = ns
 ---@class BUFPet
 local BUFPet = ns.BUFPet
 
----@class BUFPet.Health: BUFConfigHandler, Positionable, Sizable, Levelable
+---@class BUFPet.Health: BUFConfigHandler, BUFStatusBar
 local BUFPetHealth = {
     configPath = "unitFrames.pet.healthBar",
 }
 
-ns.Mixin(BUFPetHealth, ns.Positionable, ns.Sizable, ns.Levelable)
+BUFPetHealth.optionsTable = {
+    type = "group",
+    handler = BUFPetHealth,
+    name = HEALTH,
+    order = BUFPet.optionsOrder.HEALTH,
+    childGroups = "tree",
+    args = {},
+}
+
+ns.BUFStatusBar:ApplyMixin(BUFPetHealth)
 
 BUFPet.Health = BUFPetHealth
 
@@ -42,57 +51,26 @@ healthBarOrder.BACKGROUND = healthBarOrder.FOREGROUND + .1
 
 BUFPetHealth.topGroupOrder = healthBarOrder
 
-local healthBar = {
-    type = "group",
-    handler = BUFPetHealth,
-    name = HEALTH,
-    order = BUFPet.optionsOrder.HEALTH,
-    childGroups = "tree",
-    args = {},
-}
-
-ns.AddSizableOptions(healthBar.args, healthBarOrder)
-ns.AddPositionableOptions(healthBar.args, healthBarOrder)
-ns.AddFrameLevelOption(healthBar.args, healthBarOrder)
-
-ns.options.args.unitFrames.args.pet.args.healthBar = healthBar
+ns.options.args.unitFrames.args.pet.args.healthBar = BUFPetHealth.optionsTable
 
 BUFPetHealth.coeffs = {
-    maskWidth = 1.05,
-    maskHeight = 1.0,
+    maskWidth = (128 / ns.dbDefaults.profile.unitFrames.pet.healthBar.width),
+    maskHeight = (16 / ns.dbDefaults.profile.unitFrames.pet.healthBar.height),
     maskXOffset = (-29 / ns.dbDefaults.profile.unitFrames.pet.healthBar.width),
-    maskYOffset = 3 / ns.dbDefaults.profile.unitFrames.pet.healthBar.height,
+    maskYOffset = (3 / ns.dbDefaults.profile.unitFrames.pet.healthBar.height),
 }
 
 function BUFPetHealth:RefreshConfig()
     if not self.initialized then
         self.initialized = true
+
         self.defaultRelativeTo = PetPortrait
         self.defaultRelativePoint = "RIGHT"
+
+        self.barOrContainer = PetFrameHealthBar
+        self.maskTexture = PetFrameHealthBarMask
+        self.maskTextureAtlas = "UI-HUD-UnitFrame-Party-PortraitOn-Bar-Health-Mask"
+        self.positionMask = true
     end
-    self:SetPosition()
-    self:SetSize()
-    self:SetLevel()
-    self.leftTextHandler:RefreshConfig()
-    self.rightTextHandler:RefreshConfig()
-    self.centerTextHandler:RefreshConfig()
-    self.foregroundHandler:RefreshConfig()
-    -- self.backgroundHandler:RefreshConfig()
-end
-
-function BUFPetHealth:SetSize()
-    self:_SetSize(PetFrameHealthBar)
-    self:_SetSize(PetFrameHealthBarMask)
-    
-end
-
-function BUFPetHealth:SetPosition()
-    self:_SetPosition(PetFrameHealthBar)
-end
-
-function BUFPetHealth:SetLevel()
-    local parent = BUFPet
-    local frameLevel = ns.db.profile.unitFrames.pet.healthBar.frameLevel
-    parent.healthBar:SetUsingParentLevel(false)
-    parent.healthBar:SetFrameLevel(frameLevel)
+    self:RefreshStatusBarConfig()
 end

@@ -49,29 +49,9 @@ function foregroundHandler:RefreshConfig()
 
     if not self.initialized then
         self.initialized = true
-
----@diagnostic disable-next-line: undefined-field
-        BUFTarget:SecureHook(ns.BUFTarget.healthBar.HealthBarTexture, "SetAtlas", function(_, texture)
-            self:RefreshStatusBarTexture()
-            self:RefreshColor()
-        end)
-
-        BUFTarget:SecureHook(ns.BUFTarget.healthBarContainer.HealthBarMask, "SetAtlas", function(_, texture)
-            self:RefreshStatusBarTexture()
-            self:RefreshColor()
-        end)
     end
 end
 
-local function SetStatusTextureWithoutHooks(healthBar, texturePath)
-    if BUFTarget:IsHooked(healthBar, "SetStatusBarTexture") then
-        BUFTarget:Unhook(healthBar, "SetStatusBarTexture")
-    end
-    healthBar:SetStatusBarTexture(texturePath)
-    BUFTarget:SecureHook(healthBar, "SetStatusBarTexture", function(_, texture)
-        foregroundHandler:RefreshStatusBarTexture()
-    end)
-end
 
 function foregroundHandler:RefreshStatusBarTexture()
     local parent = ns.BUFTarget
@@ -85,7 +65,7 @@ function foregroundHandler:RefreshStatusBarTexture()
             texturePath = ns.lsm:Fetch(ns.lsm.MediaType.STATUSBAR, "Blizzard") or "Interface\\Buttons\\WHITE8x8"
         end
     end
-    SetStatusTextureWithoutHooks(parent.healthBar, texturePath)
+    parent.healthBar:SetStatusBarTexture(texturePath)
 end
 
 function foregroundHandler:RefreshColor()

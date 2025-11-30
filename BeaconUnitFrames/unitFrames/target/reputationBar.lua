@@ -49,6 +49,7 @@ local repBar = {
             values = {
                 ["UI-HUD-UnitFrame-Target-PortraitOn-Type"] = "Default",
                 ["_ItemUpgradeTooltip-NineSlice-EdgeBottom"] = "Bottom Glow",
+                ["Interface/AddOns/BeaconUnitFrames/icons/underhighlight_mask.png"] = "Custom Bottom Glow",
             },
             get = function(info)
                 return ns.db.profile.unitFrames.target.reputationBar.atlasTexture
@@ -110,7 +111,13 @@ end
 function BUFTargetReputationBar:SetTexture()
     local repColorBar = ns.BUFTarget.contentMain.ReputationColor
     local atlasTexture = ns.db.profile.unitFrames.target.reputationBar.atlasTexture
-    repColorBar:SetAtlas(atlasTexture, false)
+    local sPos, ePos = string.find(atlasTexture, "%.")
+    if not sPos then
+        repColorBar:SetAtlas(atlasTexture, false)
+    else
+        -- If there's a dot, it's a file path
+        repColorBar:SetTexture(atlasTexture)
+    end
 end
 
 function BUFTargetReputationBar:RefreshColor()

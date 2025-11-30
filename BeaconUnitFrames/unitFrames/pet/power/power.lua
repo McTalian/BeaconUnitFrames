@@ -7,20 +7,24 @@ ns = ns
 ---@class BUFPet
 local BUFPet = ns.BUFPet
 
----@class BUFPet.Power: BUFConfigHandler, Positionable, Sizable, Levelable
+---@class BUFPet.Power: BUFConfigHandler, BUFStatusBar
 local BUFPetPower = {
     configPath = "unitFrames.pet.powerBar",
 }
 
-ns.Mixin(BUFPetPower, ns.Positionable, ns.Sizable, ns.Levelable)
+BUFPetPower.optionsTable = {
+    type = "group",
+    handler = BUFPetPower,
+    name = POWER_TYPE_POWER,
+    order = BUFPet.optionsOrder.POWER,
+    childGroups = "tree",
+    args = {},
+}
 
-BUFPet.Power = BUFPetPower
-
----@class BUFDbSchema.UF.Pet
-ns.dbDefaults.profile.unitFrames.pet = ns.dbDefaults.profile.unitFrames.pet
+ns.BUFStatusBar:ApplyMixin(BUFPetPower)
 
 ---@class BUFDbSchema.UF.Pet.Power
-ns.dbDefaults.profile.unitFrames.pet.powerBar = {
+BUFPetPower.dbDefaults = {
     anchorPoint = "TOPLEFT",
     relativeTo = ns.DEFAULT,
     relativePoint = ns.DEFAULT,
@@ -30,6 +34,13 @@ ns.dbDefaults.profile.unitFrames.pet.powerBar = {
     yOffset = -1,
     frameLevel = 3,
 }
+
+BUFPet.Power = BUFPetPower
+
+---@class BUFDbSchema.UF.Pet
+ns.dbDefaults.profile.unitFrames.pet = ns.dbDefaults.profile.unitFrames.pet
+
+ns.dbDefaults.profile.unitFrames.pet.powerBar = BUFPetPower.dbDefaults
 
 local powerBarOrder = {}
 
@@ -42,24 +53,11 @@ powerBarOrder.BACKGROUND = powerBarOrder.FOREGROUND + .1
 
 BUFPetPower.topGroupOrder = powerBarOrder
 
-local powerBar = {
-    type = "group",
-    handler = BUFPetPower,
-    name = POWER_TYPE_POWER,
-    order = BUFPet.optionsOrder.POWER,
-    childGroups = "tree",
-    args = {},
-}
-
-ns.AddSizableOptions(powerBar.args, powerBarOrder)
-ns.AddPositionableOptions(powerBar.args, powerBarOrder)
-ns.AddFrameLevelOption(powerBar.args, powerBarOrder)
-
-ns.options.args.unitFrames.args.pet.args.powerBar = powerBar
+ns.options.args.unitFrames.args.pet.args.powerBar = BUFPetPower.optionsTable
 
 BUFPetPower.coeffs = {
-    maskWidth = 1.05,
-    maskHeight = 1.0,
+    maskWidth = (128 / ns.dbDefaults.profile.unitFrames.pet.powerBar.width),
+    maskHeight = (16 / ns.dbDefaults.profile.unitFrames.pet.powerBar.height),
     maskXOffset = (-27 / ns.dbDefaults.profile.unitFrames.pet.powerBar.width),
     maskYOffset = 4 / ns.dbDefaults.profile.unitFrames.pet.powerBar.height,
 }
@@ -67,30 +65,15 @@ BUFPetPower.coeffs = {
 function BUFPetPower:RefreshConfig()
     if not self.initialized then
         self.initialized = true
+
         self.defaultRelativeTo = PetFrameHealthBar
         self.defaultRelativePoint = "BOTTOMLEFT"
+
+        self.barOrContainer = PetFrameManaBar
+        self.maskTexture = PetFrameManaBarMask
+        self.maskTextureAtlas = "UI-HUD-UnitFrame-Party-PortraitOn-Bar-Mana-Mask"
+        self.positionMask = false
     end
-    self:SetPosition()
-    self:SetSize()
-    self:SetLevel()
-    self.leftTextHandler:RefreshConfig()
-    self.rightTextHandler:RefreshConfig()
-    self.centerTextHandler:RefreshConfig()
-    self.foregroundHandler:RefreshConfig()
+    self:RefreshStatusBarConfig()
     -- self.backgroundHandler:RefreshConfig()
-end
-
-function BUFPetPower:SetSize()
-    self:_SetSize(BUFPet.manaBar)
-end
-
-function BUFPetPower:SetPosition()
-    self:_SetPosition(BUFPet.manaBar)
-end
-
-function BUFPetPower:SetLevel()
-    local parent = BUFPet
-    local frameLevel = ns.db.profile.unitFrames.pet.powerBar.frameLevel
-    parent.manaBar:SetUsingParentLevel(false)
-    parent.manaBar:SetFrameLevel(frameLevel)
 end

@@ -4,33 +4,26 @@ local addonName, ns = ...
 ---@class BUFNamespace
 ns = ns
 
----@class AnchorInfo
----@field point string
----@field relativeTo Frame
----@field relativePoint string
----@field xOffset number
----@field yOffset number
-
 local anchorFrameCounter = 0
 
 --- Mixin providing secure handler functionality
 ---@class BUFSecureHandler: BUFConfigHandler
 local SecureHandler = {}
 
-function SecureHandler:SecureExecute(CodeSnippet, ...)
+function SecureHandler.SecureExecute(frame, CodeSnippet, ...)
     local outSnippet = format(CodeSnippet, ...)
-    SecureHandlerExecute(self, format(CodeSnippet, ...))
+    SecureHandlerExecute(frame, format(CodeSnippet, ...))
 end
 
-function SecureHandler:SecureSetFrameRef(name, frame)
-    SecureHandlerSetFrameRef(self, name, frame)
-    self:SecureExecute([[ %s = self:GetFrameRef("%s") ]], name, name)
+function SecureHandler.SecureSetFrameRef(sFrame, name, frame)
+    SecureHandlerSetFrameRef(sFrame, name, frame)
+    SecureHandler.SecureExecute(sFrame, [[ %s = self:GetFrameRef("%s") ]], name, name)
 end
 
 --- Saves the anchor information into the given table
 --- @param tableName string The name of the table to save into
 --- @param anchor AnchorInfo The anchor information to save
-function SecureHandler:SaveAnchor(tableName, anchor)
+function SecureHandler.SaveAnchor(frame, tableName, anchor)
     local relFrame = anchor.relativeTo
     local nameRef = relFrame and relFrame:GetName()
 
@@ -39,8 +32,9 @@ function SecureHandler:SaveAnchor(tableName, anchor)
         nameRef = "AnchorFrame" .. anchorFrameCounter
     end
 
-    SecureHandlerSetFrameRef(self, nameRef, relFrame)
-    self:SecureExecute(
+    SecureHandlerSetFrameRef(frame, nameRef, relFrame)
+    SecureHandler.SecureExecute(
+        frame,
         [[ %s = newtable("%s", self:GetFrameRef("%s"), "%s", %d, %d) ]],
         tableName,
         anchor.point,
