@@ -56,6 +56,9 @@ ns.options.args.unitFrames.args.player.args.powerBar.args.rightText = rightTextH
 function rightTextHandler:RefreshConfig()
     if not self.fontString then
         self.fontString = BUFPlayer.manaBar.RightText
+        self.demoText = "123k"
+        self.defaultRelativeTo = BUFPlayer.manaBar
+        self.defaultRelativePoint = "RIGHT"
     end
     self:RefreshFontStringConfig()
 end

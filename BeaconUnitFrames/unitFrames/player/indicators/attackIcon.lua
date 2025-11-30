@@ -49,6 +49,8 @@ function BUFPlayerAttackIcon:RefreshConfig()
     if not self.texture then
         self.texture = BUFPlayer.contentContextual.AttackIcon
         self.atlasName = ATTACK_ICON_ATLAS
+        self.defaultRelativeTo = BUFPlayer.contentContextual
+        self.defaultRelativePoint = "TOPLEFT"
     end
     self:RefreshTextureConfig()
 end

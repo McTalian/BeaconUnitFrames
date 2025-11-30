@@ -104,9 +104,16 @@ end
 
 function BUFPlayerHitIndicator:ShowHide()
     if ns.db.profile.unitFrames.player.hitIndicator.enabled then
-        BUFPlayer.contentMain.HitIndicator:Show()
+        if BUFPlayer:IsHooked(self.fontString, "Hide") then
+            BUFPlayer:Unhook(self.fontString, "Hide")
+        end
     else
-        BUFPlayer.contentMain.HitIndicator:Hide()
+        if not BUFPlayer:IsHooked(self.fontString, "Show") then
+            BUFPlayer:SecureHook(self.fontString, "Show", function()
+                self.fontString:Hide()
+            end)
+        end
+        self.fontString:Hide()
     end
 end
 

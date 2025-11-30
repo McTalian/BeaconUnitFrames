@@ -7,29 +7,41 @@ ns = ns
 ---@class BUFTarget
 local BUFTarget = ns.BUFTarget
 
----@class BUFTarget.Power: BUFConfigHandler, Positionable, Sizable, Levelable
+---@class BUFTarget.Power: BUFConfigHandler, BUFStatusBar
 local BUFTargetPower = {
     configPath = "unitFrames.target.powerBar",
 }
 
-ns.Mixin(BUFTargetPower, ns.Sizable, ns.Positionable, ns.Levelable)
+BUFTargetPower.optionsTable = {
+    type = "group",
+    handler = BUFTargetPower,
+    name = POWER_TYPE_POWER,
+    order = BUFTarget.optionsOrder.POWER,
+    childGroups = "tree",
+    args = {},
+}
+
+---@class BUFDbSchema.UF.Target.Power
+BUFTargetPower.dbDefaults = {
+    width = 134,
+    height = 10,
+    anchorPoint = "TOPRIGHT",
+    relativeTo = ns.DEFAULT,
+    relativePoint = ns.DEFAULT,
+    xOffset = 8,
+    yOffset = -1,
+    frameLevel = 3,
+}
+
+ns.BUFStatusBar:ApplyMixin(BUFTargetPower)
 
 BUFTarget.Power = BUFTargetPower
 
 ---@class BUFDbSchema.UF.Target
 ns.dbDefaults.profile.unitFrames.target = ns.dbDefaults.profile.unitFrames.target
 
----@class BUFDbSchema.UF.Target.Power
-ns.dbDefaults.profile.unitFrames.target.powerBar = {
-    width = 134,
-    height = 10,
-    anchorPoint = "TOPRIGHT",
-    relativeTo = "TargetFrame",
-    relativePoint = "BOTTOMRIGHT",
-    xOffset = 8,
-    yOffset = -1,
-    frameLevel = 3,
-}
+
+ns.dbDefaults.profile.unitFrames.target.powerBar = BUFTargetPower.dbDefaults
 
 local powerBarOrder = {}
 
@@ -42,37 +54,25 @@ powerBarOrder.BACKGROUND = powerBarOrder.FOREGROUND + .1
 
 BUFTargetPower.topGroupOrder = powerBarOrder
 
-local powerBar = {
-    type = "group",
-    handler = BUFTargetPower,
-    name = POWER_TYPE_POWER,
-    order = BUFTarget.optionsOrder.POWER,
-    childGroups = "tree",
-    args = {},
-}
-
-ns.AddSizableOptions(powerBar.args, powerBarOrder)
-ns.AddPositionableOptions(powerBar.args, powerBarOrder)
-ns.AddFrameLevelOption(powerBar.args, powerBarOrder)
-
-ns.options.args.unitFrames.args.target.args.powerBar = powerBar
+ns.options.args.unitFrames.args.target.args.powerBar = BUFTargetPower.optionsTable
 
 BUFTargetPower.coeffs = {
-    maskWidth = 1.05,
-    maskHeight = 1.0,
+    maskWidth = (256 / ns.dbDefaults.profile.unitFrames.target.powerBar.width),
+    maskHeight = (16 / ns.dbDefaults.profile.unitFrames.target.powerBar.height),
     maskXOffset = (-61 / ns.dbDefaults.profile.unitFrames.target.powerBar.width),
-    maskYOffset = 3 / ns.dbDefaults.profile.unitFrames.target.powerBar.height,
+    maskYOffset = (3 / ns.dbDefaults.profile.unitFrames.target.powerBar.height),
 }
 
 function BUFTargetPower:RefreshConfig()
     self:InitializeTargetPower()
-    self:SetPosition()
-    self:SetSize()
-    self:SetLevel()
-    self.leftTextHandler:RefreshConfig()
-    self.rightTextHandler:RefreshConfig()
-    self.centerTextHandler:RefreshConfig()
-    self.foregroundHandler:RefreshConfig()
+    self:RefreshStatusBarConfig()
+    -- self:SetPosition()
+    -- self:SetSize()
+    -- self:SetLevel()
+    -- self.leftTextHandler:RefreshConfig()
+    -- self.rightTextHandler:RefreshConfig()
+    -- self.centerTextHandler:RefreshConfig()
+    -- self.foregroundHandler:RefreshConfig()
     -- self.backgroundHandler:RefreshConfig()
 end
 
@@ -83,6 +83,12 @@ function BUFTargetPower:InitializeTargetPower()
 
     self.isInitialized = true
 
+    self.barOrContainer = BUFTarget.manaBar
+    self.maskTexture = BUFTarget.manaBar.ManaBarMask
+    self.maskTextureAtlas = "UI-HUD-UnitFrame-Target-PortraitOn-Bar-Mana-Mask"
+    self.defaultRelativeTo = BUFTarget.healthBar
+    self.defaultRelativePoint = "BOTTOMRIGHT"
+
     local parent = BUFTarget
     parent.manaBar.ManaBarMask:Hide()
     if not ns.BUFTarget:IsHooked(parent.manaBar.ManaBarMask, "SetAtlas") then
@@ -90,36 +96,4 @@ function BUFTargetPower:InitializeTargetPower()
             print("SetAtlas called on Target Power Bar ManaBarMask.")
         end)
     end
-end
-
-function BUFTargetPower:SetSize()
-    local parent = BUFTarget
-    local width = ns.db.profile.unitFrames.target.powerBar.width
-    local height = ns.db.profile.unitFrames.target.powerBar.height
-    PixelUtil.SetWidth(parent.manaBar, width, 18)
-    PixelUtil.SetHeight(parent.manaBar, height, 18)
-    PixelUtil.SetWidth(parent.manaBar.ManaBarMask, width * self.coeffs.maskWidth, 18)
-    PixelUtil.SetHeight(parent.manaBar.ManaBarMask, height * self.coeffs.maskHeight, 18)
-    parent.manaBar.ManaBarMask:SetPoint("TOPLEFT", width * self.coeffs.maskXOffset, height * self.coeffs.maskYOffset)
-end
-
-function BUFTargetPower:SetPosition()
-    local parent = BUFTarget
-    local xOffset = ns.db.profile.unitFrames.target.powerBar.xOffset
-    local yOffset = ns.db.profile.unitFrames.target.powerBar.yOffset
-    parent.manaBar:ClearAllPoints()
-    parent.manaBar:SetPoint(
-        ns.db.profile.unitFrames.target.powerBar.anchorPoint,
-        _G[ns.db.profile.unitFrames.target.powerBar.relativeTo],
-        ns.db.profile.unitFrames.target.powerBar.relativePoint,
-        xOffset,
-        yOffset
-    )
-end
-
-function BUFTargetPower:SetLevel()
-    local parent = BUFTarget
-    local frameLevel = ns.db.profile.unitFrames.target.powerBar.frameLevel
-    parent.manaBar:SetUsingParentLevel(false)
-    parent.manaBar:SetFrameLevel(frameLevel)
 end

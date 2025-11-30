@@ -5,5 +5,5 @@
     <Script file="portrait.lua"/>
     <Include file="health/index.xml"/>
     <Include file="power/index.xml"/>
-    <!-- <Include file="indicators/index.xml"/> -->
+    <Include file="indicators/index.xml"/>
 </Ui>

@@ -56,6 +56,9 @@ ns.options.args.unitFrames.args.pet.args.healthBar.args.rightText = rightTextHan
 function rightTextHandler:RefreshConfig()
     if not self.fontString then
         self.fontString = PetFrameHealthBarTextRight
+        self.demoText = "123k"
+        self.defaultRelativeTo = PetFrameHealthBar
+        self.defaultRelativePoint = "RIGHT"
     end
     self:RefreshFontStringConfig()
 end

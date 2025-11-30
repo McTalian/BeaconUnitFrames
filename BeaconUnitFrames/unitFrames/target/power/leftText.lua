@@ -56,6 +56,9 @@ ns.options.args.unitFrames.args.target.args.powerBar.args.leftText = leftTextHan
 function leftTextHandler:RefreshConfig()
     if not self.fontString then
         self.fontString = BUFTarget.manaBar.LeftText
+        self.demoText = "100%"
+        self.defaultRelativeTo = BUFTarget.manaBar
+        self.defaultRelativePoint = "LEFT"
     end
     self:RefreshFontStringConfig()
 end

@@ -56,6 +56,9 @@ ns.options.args.unitFrames.args.player.args.healthBar.args.centerText = centerTe
 function centerTextHandler:RefreshConfig()
     if not self.fontString then
         self.fontString = BUFPlayer.healthBarContainer.HealthBarText
+        self.demoText = "123k / 123k"
+        self.defaultRelativeTo = BUFPlayer.healthBarContainer
+        self.defaultRelativePoint = "CENTER"
     end
     self:RefreshFontStringConfig()
 end

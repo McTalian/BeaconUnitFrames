@@ -56,6 +56,9 @@ ns.options.args.unitFrames.args.target.args.powerBar.args.rightText = rightTextH
 function rightTextHandler:RefreshConfig()
     if not self.fontString then
         self.fontString = BUFTarget.manaBar.RightText
+        self.demoText = "123k"
+        self.defaultRelativeTo = BUFTarget.manaBar
+        self.defaultRelativePoint = "RIGHT"
     end
     self:RefreshFontStringConfig()
 end

@@ -56,8 +56,9 @@ ns.options.args.unitFrames.args.pet.args.powerBar.args.rightText = rightTextHand
 function rightTextHandler:RefreshConfig()
     if not self.fontString then
         self.fontString = PetFrameManaBarTextRight
+        self.demoText = "123k"
         self.defaultRelativeTo = PetFrameManaBar
-        self.defaultAnchorPoint = "RIGHT"
+        self.defaultRelativePoint = "RIGHT"
     end
     self:RefreshFontStringConfig()
 end

@@ -67,23 +67,17 @@ function BUFPet:RefreshConfig(_eName)
         return
     end
 
-    if not UnitExists("pet") then
-        if not self.registered then
-            self.registered = true
-            self:RegisterEvent("PET_UI_UPDATE", "RefreshConfig")
-        end
-        return
-    end
-
     self.Frame:RefreshConfig()
     self.Portrait:RefreshConfig()
     self.Name:RefreshConfig()
-    -- self.Indicators:RefreshConfig()
+    self.Indicators:RefreshConfig()
     self.Health:RefreshConfig()
     self.Power:RefreshConfig()
 
     if not self.initialized then
         self.initialized = true
+
+        self:RegisterEvent("PET_UI_UPDATE", "RefreshConfig")
 
         if not self:IsHooked(PetFrame, "Update") then
             self:SecureHook(PetFrame, "Update", function()

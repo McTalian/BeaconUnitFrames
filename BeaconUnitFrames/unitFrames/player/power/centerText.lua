@@ -55,6 +55,9 @@ ns.options.args.unitFrames.args.player.args.powerBar.args.centerText = centerTex
 function centerTextHandler:RefreshConfig()
     if not self.fontString then
         self.fontString = BUFPlayer.manaBar.ManaBarText
+        self.demoText = "123k / 123k"
+        self.defaultRelativeTo = BUFPlayer.manaBar
+        self.defaultRelativePoint = "CENTER"
     end
     self:RefreshFontStringConfig()
 end

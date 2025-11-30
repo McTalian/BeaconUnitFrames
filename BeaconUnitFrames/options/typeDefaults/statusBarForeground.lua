@@ -119,6 +119,9 @@ function StatusBarForeground:RefreshColor()
         local r, g, b = GameTooltip_UnitColor(self.unit)
         self.statusBar:SetStatusBarColor(r, g, b, 1)
     elseif usePowerColor then
+        if self.unit == nil or not UnitExists(self.unit) then
+            return
+        end
         local powerType, powerToken, rX, gY, bZ = UnitPowerType(self.unit)
         local info = PowerBarColor[powerToken]
         local r, g, b

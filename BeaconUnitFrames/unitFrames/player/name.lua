@@ -64,6 +64,8 @@ function BUFPlayerName:RefreshConfig()
         self.initialized = true
 
         self.fontString = PlayerName
+        self.defaultRelativeTo = BUFPlayer.contentMain
+        self.defaultRelativePoint = "TOPLEFT"
 
         local player = BUFPlayer
 

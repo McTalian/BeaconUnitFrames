@@ -65,6 +65,13 @@ ns.AddBoxMaskableOptions(portrait.args)
 ns.options.args.unitFrames.args.pet.args.portrait = portrait
 
 function BUFPetPortrait:RefreshConfig()
+    if not self.initialized then
+        self.initialized = true
+
+        self.defaultRelativeTo = PetFrame
+        self.defaultRelativePoint = "TOPLEFT"
+    end
+
     self:ShowHidePortrait()
     self:SetPosition()
     self:SetSize()

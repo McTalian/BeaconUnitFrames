@@ -81,19 +81,6 @@ local frame = {
             end,
             order = frameOrder.STATUS_TEXTURE,
         },
-        -- TODO: Move this to indicators and add more options
-        hitIndicator = {
-            type = "toggle",
-            name = ns.L["EnableHitIndicator"],
-            set = function(info, value)
-                ns.db.profile.unitFrames.pet.frame.enableHitIndicator = value
-                BUFPetFrame:SetHitIndicator()
-            end,
-            get = function(info)
-                return ns.db.profile.unitFrames.pet.frame.enableHitIndicator
-            end,
-            order = frameOrder.HIT_INDICATOR,
-        },
     },
 }
 
@@ -107,7 +94,6 @@ function BUFPetFrame:RefreshConfig()
     self:SetFrameFlash()
     self:SetFrameTexture()
     self:SetStatusTexture()
-    self:SetHitIndicator()
     self:RefreshBackgroundTexture()
 
     if not self.initialized then
@@ -138,7 +124,6 @@ function BUFPetFrame:SetFrameFlash()
     local enable = ns.db.profile.unitFrames.pet.frame.enableFrameFlash
     if enable then
         pet:Unhook(PetFrameFlash, "Show")
-        PetFrameFlash:Show()
     else
         PetFrameFlash:Hide()
         if not ns.BUFPet:IsHooked(PetFrameFlash, "Show") then
@@ -170,27 +155,10 @@ function BUFPetFrame:SetStatusTexture()
     local enable = ns.db.profile.unitFrames.pet.frame.enableStatusTexture
     if enable then
         pet:Unhook(PetAttackModeTexture, "Show")
-        PetAttackModeTexture:Show()
     else
         PetAttackModeTexture:Hide()
         if not ns.BUFPet:IsHooked(PetAttackModeTexture, "Show") then
             pet:SecureHook(PetAttackModeTexture, "Show", function(s)
-                s:Hide()
-            end)
-        end
-    end
-end
-
-function BUFPetFrame:SetHitIndicator()
-    local pet = BUFPet
-    local enable = ns.db.profile.unitFrames.pet.frame.enableHitIndicator
-    if enable then
-        pet:Unhook(PetHitIndicator, "Show")
-        PetHitIndicator:Show()
-    else
-        PetHitIndicator:Hide()
-        if not ns.BUFPet:IsHooked(PetHitIndicator, "Show") then
-            pet:SecureHook(PetHitIndicator, "Show", function(s)
                 s:Hide()
             end)
         end

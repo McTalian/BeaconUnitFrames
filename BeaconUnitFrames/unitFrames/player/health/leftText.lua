@@ -56,6 +56,9 @@ ns.options.args.unitFrames.args.player.args.healthBar.args.leftText = leftTextHa
 function leftTextHandler:RefreshConfig()
     if not self.fontString then
         self.fontString = BUFPlayer.healthBarContainer.LeftText
+        self.demoText = "100%"
+        self.defaultRelativeTo = BUFPlayer.healthBarContainer
+        self.defaultRelativePoint = "LEFT"
     end
     self:RefreshFontStringConfig()
 end

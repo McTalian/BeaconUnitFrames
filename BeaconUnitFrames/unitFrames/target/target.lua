@@ -32,7 +32,7 @@ StaticPopupDialogs["BUF_RELOAD_UI"] = {
 
 ns.options.args.unitFrames.args.target = {
     type = "group",
-    name = ns.L["TargetFrame"],
+    name = HUD_EDIT_MODE_TARGET_FRAME_LABEL,
     order = ns.BUFUnitFrames.optionsOrder.TARGET,
     childGroups = "tree",
     args = {
@@ -83,6 +83,28 @@ function BUFTarget:RefreshConfig()
         return
     end
     if not self.initialized then
+        local ClassificationCheckUpdater = CreateFrame("Frame", nil, nil, "SecureHandlerAttributeTemplate")
+        Mixin(ClassificationCheckUpdater, ns.BUFSecureHandler)
+
+        -- healthBarsContainer gets moved during CheckClassification
+        -- if we don't anchor anything to it, we can avoid having to reapply our position/size changes
+        -- leaving this in here in case there ever turns out to be a reliable secure trigger
+        ClassificationCheckUpdater:SecureSetFrameRef("TargetHealthBarContainer", self.healthBarContainer)
+        ClassificationCheckUpdater:SecureSetFrameRef("TargetHealthBar", self.healthBar)
+        ClassificationCheckUpdater:SecureSetFrameRef("TargetManaBar", self.manaBar)
+
+        ns.TargetClassificationCheckUpdater = ClassificationCheckUpdater
+    end
+    self.Frame:RefreshConfig()
+    self.Portrait:RefreshConfig()
+    self.Name:RefreshConfig()
+    self.Level:RefreshConfig()
+    self.Indicators:RefreshConfig()
+    self.Health:RefreshConfig()
+    self.Power:RefreshConfig()
+    self.ReputationBar:RefreshConfig()
+
+    if not self.initialized then
         self.initialized = true
         if not ns.db.global.restoreCvars.showTempMaxHealthLoss then
             print("Storing original 'showTempMaxHealthLoss' CVar for restoration on shutdown.")
@@ -105,13 +127,29 @@ function BUFTarget:RefreshConfig()
                 self.Power.foregroundHandler:RefreshConfig()
             end
         end)
+
+        -- We won't end up actually triggering anything but keeping the code here
+        -- in case something changes in the future.
+        local ClassificationCheckUpdater = ns.TargetClassificationCheckUpdater
+
+        ClassificationCheckUpdater:SetAttribute("buf_restore_size_position",[[
+            TargetHealthBarContainer:RunAttribute("buf_restore_size")
+            -- TargetHealthBar:RunAttribute("buf_restore_size")
+            -- TargetManaBar:RunAttribute("buf_restore_size")
+            
+            -- TargetHealthBarContainer:RunAttribute("buf_restore_position")
+            -- TargetManaBar:RunAttribute("buf_restore_position")
+            print("Restored sizes/positions for Target Health and Mana Bars.")
+        ]])
+
+        ClassificationCheckUpdater:SetAttribute("_onattributechanged", [[
+            self:RunAttribute("buf_restore_size_position")
+            if name == "manual" then
+                return
+            end
+        ]])
+
+        -- I need something to securely trigger the classification check updater when the target changes
+        -- but for now, we'll just completely ignore healthBarsContainer in anchors
     end
-    self.Frame:RefreshConfig()
-    self.Portrait:RefreshConfig()
-    self.Name:RefreshConfig()
-    self.Level:RefreshConfig()
-    self.Indicators:RefreshConfig()
-    self.Health:RefreshConfig()
-    self.Power:RefreshConfig()
-    self.ReputationBar:RefreshConfig()
 end

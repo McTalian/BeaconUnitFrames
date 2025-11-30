@@ -56,6 +56,9 @@ ns.options.args.unitFrames.args.target.args.healthBar.args.centerText = centerTe
 function centerTextHandler:RefreshConfig()
     if not self.fontString then
         self.fontString = BUFTarget.healthBarContainer.HealthBarText
+        self.demoText = "123k / 123k"
+        self.defaultRelativeTo = BUFTarget.healthBar
+        self.defaultRelativePoint = "CENTER"
     end
     self:RefreshFontStringConfig()
 end

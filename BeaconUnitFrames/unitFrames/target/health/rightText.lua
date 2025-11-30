@@ -56,6 +56,9 @@ ns.options.args.unitFrames.args.target.args.healthBar.args.rightText = rightText
 function rightTextHandler:RefreshConfig()
     if not self.fontString then
         self.fontString = BUFTarget.healthBarContainer.RightText
+        self.demoText = "123k"
+        self.defaultRelativeTo = BUFTarget.healthBar
+        self.defaultRelativePoint = "RIGHT"
     end
     self:RefreshFontStringConfig()
 end

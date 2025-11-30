@@ -56,8 +56,9 @@ ns.options.args.unitFrames.args.pet.args.powerBar.args.leftText = leftTextHandle
 function leftTextHandler:RefreshConfig()
     if not self.fontString then
         self.fontString = PetFrameManaBarTextLeft
+        self.demoText = "100%"
         self.defaultRelativeTo = PetFrameManaBar
-        self.defaultAnchorPoint = "LEFT"
+        self.defaultRelativePoint = "LEFT"
     end
     self:RefreshFontStringConfig()
 end

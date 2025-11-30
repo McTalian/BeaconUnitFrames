@@ -56,6 +56,9 @@ ns.options.args.unitFrames.args.player.args.powerBar.args.leftText = leftTextHan
 function leftTextHandler:RefreshConfig()
     if not self.fontString then
         self.fontString = BUFPlayer.manaBar.LeftText
+        self.demoText = "100%"
+        self.defaultRelativeTo = BUFPlayer.manaBar
+        self.defaultRelativePoint = "LEFT"
     end
     self:RefreshFontStringConfig()
 end

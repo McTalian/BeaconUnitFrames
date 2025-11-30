@@ -64,6 +64,12 @@ ns.AddBoxMaskableOptions(portrait.args)
 ns.options.args.unitFrames.args.target.args.portrait = portrait
 
 function BUFTargetPortrait:RefreshConfig()
+    if not self.initialized then
+        self.initialized = true
+
+        self.defaultRelativeTo = BUFTarget.container
+        self.defaultRelativePoint = "TOPRIGHT"
+    end
     self:ShowHidePortrait()
     self:SetPosition()
     self:SetSize()

@@ -56,6 +56,10 @@ ns.options.args.unitFrames.args.target.args.healthBar.args.deadText = deadTextHa
 function deadTextHandler:RefreshConfig()
     if not self.fontString then
         self.fontString = BUFTarget.healthBarContainer.DeadText
+        self.defaultRelativeTo = BUFTarget.healthBar
+        self.defaultRelativePoint = "CENTER"
     end
     self:RefreshFontStringConfig()
+    local ai = self:GetPositionAnchorInfo()
+    print(ai.relativeTo:GetName())
 end

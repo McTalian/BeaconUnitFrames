@@ -56,6 +56,8 @@ ns.options.args.unitFrames.args.target.args.healthBar.args.unconsciousText = unc
 function unconsciousTextHandler:RefreshConfig()
     if not self.fontString then
         self.fontString = BUFTarget.healthBarContainer.UnconsciousText
+        self.defaultRelativeTo = BUFTarget.healthBar
+        self.defaultRelativePoint = "CENTER"
     end
     self:RefreshFontStringConfig()
 end

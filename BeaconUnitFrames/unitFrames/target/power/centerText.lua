@@ -56,6 +56,9 @@ ns.options.args.unitFrames.args.target.args.powerBar.args.centerText = centerTex
 function centerTextHandler:RefreshConfig()
     if not self.fontString then
         self.fontString = BUFTarget.manaBar.ManaBarText
+        self.demoText = "123k / 123k"
+        self.defaultRelativeTo = BUFTarget.manaBar
+        self.defaultRelativePoint = "CENTER"
     end
     self:RefreshFontStringConfig()
 end

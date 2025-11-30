@@ -86,6 +86,9 @@ ns.dbDefaults.profile.unitFrames.player.leaderAndGuideIcon = {
     guide = {
         xOffset = 86,
         yOffset = -10,
+        anchorPoint = "TOPLEFT",
+        relativeTo = ns.DEFAULT,
+        relativePoint = ns.DEFAULT,
         useAtlasSize = true,
         width = 16,
         height = 16,
@@ -102,10 +105,14 @@ function BUFPlayerLeaderAndGuideIcon:RefreshConfig()
     if not self.texture then
         self.texture = BUFPlayer.contentContextual.LeaderIcon
         self.atlasName = LEADER_ICON_ATLAS
+        self.defaultRelativeTo = BUFPlayer.contentContextual
+        self.defaultRelativePoint = "TOPLEFT"
     end
     if not Guide.texture then
         Guide.texture = BUFPlayer.contentContextual.GuideIcon
         Guide.atlasName = GUIDE_ICON_ATLAS
+        Guide.defaultRelativeTo = BUFPlayer.contentContextual
+        Guide.defaultRelativePoint = "TOPLEFT"
     end
     self:RefreshTextureConfig()
     if ns.db.profile.unitFrames.player.leaderAndGuideIcon.separateGuideStyle then

@@ -132,7 +132,6 @@ function BUFPlayerFrame:SetFrameFlash()
     local enable = ns.db.profile.unitFrames.player.frame.enableFrameFlash
     if enable then
         player:Unhook(player.container.FrameFlash, "Show")
-        player.container.FrameFlash:Show()
     else
         player.container.FrameFlash:Hide()
         if not ns.BUFPlayer:IsHooked(player.container.FrameFlash, "Show") then
@@ -175,7 +174,6 @@ function BUFPlayerFrame:SetStatusTexture()
     local enable = ns.db.profile.unitFrames.player.frame.enableStatusTexture
     if enable then
         player:Unhook(player.contentMain.StatusTexture, "Show")
-        player.contentMain.StatusTexture:Show()
     else
         player.contentMain.StatusTexture:Hide()
         if not ns.BUFPlayer:IsHooked(player.contentMain.StatusTexture, "Show") then

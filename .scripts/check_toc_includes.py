@@ -10,7 +10,7 @@ base_dir = os.path.join(
 )
 
 
-def get_all_lua_files(base_dir):
+def get_all_lua_files(base_dir, ignore_files):
     """Get all Lua files in the addon directory, excluding test directories"""
     lua_files = set()
 
@@ -26,6 +26,9 @@ def get_all_lua_files(base_dir):
                 rel_path = os.path.relpath(full_path, base_dir)
                 # Normalize path separators for consistency
                 rel_path = rel_path.replace("\\", "/")
+                if rel_path in ignore_files:
+                    print(f"⚠️  Ignoring Lua file: {rel_path}")
+                    continue
                 lua_files.add(rel_path)
 
     return lua_files
@@ -109,13 +112,13 @@ def parse_xml_file(xml_path):
 
 
 def walk_includes(
-    base_dir, file_path, included_lua_files, ignore_xml_files=None, processed_files=None
+    base_dir, file_path, included_lua_files, ignore_files=None, processed_files=None
 ):
     """Recursively walk through include/import tree and track Lua files"""
     if processed_files is None:
         processed_files = set()
-    if ignore_xml_files is None:
-        ignore_xml_files = set()
+    if ignore_files is None:
+        ignore_files = set()
 
     # Normalize path
     file_path = file_path.replace("\\", "/")
@@ -126,8 +129,11 @@ def walk_includes(
     processed_files.add(file_path)
 
     # Check if this XML file should be ignored
-    if file_path.endswith(".xml") and file_path in ignore_xml_files:
-        print(f"Ignoring XML file: {file_path}")
+    if file_path in ignore_files:
+        if file_path.endswith(".xml"):
+            print(f"⚠️  Ignoring XML file and includes: {file_path}")
+        else:
+            print(f"⚠️  Ignoring file: {file_path}")
         return
 
     full_path = os.path.join(base_dir, file_path)
@@ -166,15 +172,15 @@ def walk_includes(
                 base_dir,
                 include_path,
                 included_lua_files,
-                ignore_xml_files,
+                ignore_files,
                 processed_files,
             )
 
 
-def check_toc_includes(ignore_xml_files=None):
+def check_toc_includes(ignore_files=None):
     """Main function to check TOC includes"""
-    if ignore_xml_files is None:
-        ignore_xml_files = set()
+    if ignore_files is None:
+        ignore_files = set()
 
     toc_path = os.path.join(base_dir, "BeaconUnitFrames.toc")
 
@@ -183,16 +189,16 @@ def check_toc_includes(ignore_xml_files=None):
         return
 
     # Get all Lua files in the addon directory
-    all_lua_files = get_all_lua_files(base_dir)
+    all_lua_files = get_all_lua_files(base_dir, ignore_files)
     print(f"Found {len(all_lua_files)} Lua files in addon directory")
 
     # Parse TOC file to get initial includes
     toc_includes = parse_toc_file(toc_path)
     print(f"Found {len(toc_includes)} includes in TOC file")
 
-    if ignore_xml_files:
+    if ignore_files:
         print(
-            f"Ignoring {len(ignore_xml_files)} XML files: {', '.join(sorted(ignore_xml_files))}"
+            f"\nℹ️  Ignoring {len(ignore_files)} files:\n  {'\n  '.join(sorted(ignore_files))}"
         )
 
     # Track included Lua files
@@ -200,7 +206,7 @@ def check_toc_includes(ignore_xml_files=None):
 
     # Walk through each include in the TOC
     for include_file in toc_includes:
-        walk_includes(base_dir, include_file, included_lua_files, ignore_xml_files)
+        walk_includes(base_dir, include_file, included_lua_files, ignore_files)
 
     print(f"Found {len(included_lua_files)} Lua files included in TOC tree")
 
@@ -242,17 +248,17 @@ def parse_arguments():
         epilog="""
 Examples:
   python check_toc_includes.py
-  python check_toc_includes.py --ignoreXML embeds.xml
-  python check_toc_includes.py --ignoreXML embeds.xml --ignoreXML unitFrames/dummyFrame/index.xml
+  python check_toc_includes.py --ignore embeds.xml
+  python check_toc_includes.py --ignore embeds.xml --ignore unitFrames/dummyFrame/index.xml
         """,
     )
 
     parser.add_argument(
-        "--ignoreXML",
+        "--ignore",
         action="append",
-        dest="ignore_xml_files",
+        dest="ignore_files",
         default=[],
-        help="XML files to ignore during parsing (can be used multiple times)",
+        help="Files to ignore during parsing (can be used multiple times)",
     )
 
     return parser.parse_args()
@@ -262,10 +268,10 @@ if __name__ == "__main__":
     args = parse_arguments()
 
     # Convert ignore list to set and normalize paths
-    ignore_xml_files = set()
-    for xml_file in args.ignore_xml_files:
+    ignore_files = set()
+    for xml_file in args.ignore_files:
         normalized_path = xml_file.replace("\\", "/")
-        ignore_xml_files.add(normalized_path)
+        ignore_files.add(normalized_path)
 
-    success = check_toc_includes(ignore_xml_files)
+    success = check_toc_includes(ignore_files)
     exit(0 if success else 1)

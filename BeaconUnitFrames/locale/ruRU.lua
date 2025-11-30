@@ -103,7 +103,6 @@ end
 -- L["Status Bar Options"] = "Status Bar Options"
 -- L["Status Bar Texture"] = "Status Bar Texture"
 -- L["Target Name"] = "Target Name"
--- L["TargetFrame"] = "Target Frame"
 -- L["Text Customization"] = "Text Customization"
 -- L["Texturing"] = "Texturing"
 -- L["Thick Outline"] = "Thick Outline"

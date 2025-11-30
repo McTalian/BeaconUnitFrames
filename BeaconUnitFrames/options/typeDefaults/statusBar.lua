@@ -40,10 +40,17 @@ function BUFStatusBar:ApplyMixin(handler)
     end
 end
 
-function BUFStatusBar:RefreshStatusBarConfig()
-    self:SetPosition()
-    self:SetSize()
-    self:SetLevel()
+--- Refresh the status bar configuration
+--- @param self BUFStatusBar
+--- @param inCombatLockdown? boolean
+function BUFStatusBar:RefreshStatusBarConfig(inCombatLockdown)
+    if inCombatLockdown then
+        self:_SetMaskSize()
+    else
+        self:SetPosition()
+        self:SetSize()
+        self:SetLevel()
+    end
 
     if self.leftTextHandler then
         self.leftTextHandler:RefreshConfig()
@@ -68,8 +75,7 @@ function BUFStatusBar:RefreshStatusBarConfig()
     end
 end
 
-function BUFStatusBar:SetSize()
-    self:_SetSize(self.barOrContainer)
+function BUFStatusBar:_SetMaskSize()
     if self.maskTexture then
         local width = self:GetWidth()
         local height = self:GetHeight()
@@ -87,6 +93,11 @@ function BUFStatusBar:SetSize()
             self.maskTexture:SetPoint("TOPLEFT", xOffset, yOffset)
         end
     end
+end
+
+function BUFStatusBar:SetSize()
+    self:_SetSize(self.barOrContainer)
+    self:_SetMaskSize()
 end
 
 function BUFStatusBar:SetPosition()

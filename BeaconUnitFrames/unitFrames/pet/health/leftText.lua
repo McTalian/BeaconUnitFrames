@@ -56,6 +56,9 @@ ns.options.args.unitFrames.args.pet.args.healthBar.args.leftText = leftTextHandl
 function leftTextHandler:RefreshConfig()
     if not self.fontString then
         self.fontString = PetFrameHealthBarTextLeft
+        self.demoText = "100%"
+        self.defaultRelativeTo = PetFrameHealthBar
+        self.defaultRelativePoint = "LEFT"
     end
     self:RefreshFontStringConfig()
 end

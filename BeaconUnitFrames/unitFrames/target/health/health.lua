@@ -64,8 +64,6 @@ BUFTargetHealth.coeffs = {
 function BUFTargetHealth:RefreshConfig()
     self:InitializeTargetHealth()
     self:RefreshStatusBarConfig()
-    self.deadTextHandler:RefreshConfig()
-    self.unconsciousTextHandler:RefreshConfig()
 end
 
 function BUFTargetHealth:InitializeTargetHealth()
@@ -74,7 +72,7 @@ function BUFTargetHealth:InitializeTargetHealth()
     end
 
     self.isInitialized = true
-    self.barOrContainer = BUFTarget.healthBarContainer.HealthBar
+    self.barOrContainer = BUFTarget.healthBar
     self.maskTexture = BUFTarget.healthBarContainer.HealthBarMask
     self.maskTextureAtlas = "UI-HUD-UnitFrame-Target-PortraitOn-Bar-Health-Mask"
 

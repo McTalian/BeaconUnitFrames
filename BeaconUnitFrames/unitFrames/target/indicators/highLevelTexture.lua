@@ -53,6 +53,7 @@ function BUFTargetHighLevelTexture:RefreshConfig()
         self.atlasName = HIGH_LEVEL_TEXTURE_ATLAS
 
         self.defaultRelativeTo = BUFTarget.contentMain.LevelText
+        self.defaultRelativePoint = "TOPLEFT"
     end
     self:RefreshScaleTextureConfig()
 end

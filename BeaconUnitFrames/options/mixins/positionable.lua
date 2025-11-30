@@ -30,17 +30,40 @@ local anchorPointSort = {
 
 local anchorRelativeToOptions = {
     ["UIParent"] = ns.L["UIParent"],
-    ["TargetFrame"] = ns.L["TargetFrame"],
+    ["TargetFrame"] = HUD_EDIT_MODE_TARGET_FRAME_LABEL,
     ["PlayerFrame"] = HUD_EDIT_MODE_PLAYER_FRAME_LABEL,
+    ["FocusFrame"] = HUD_EDIT_MODE_FOCUS_FRAME_LABEL,
+    ["PetFrame"] = HUD_EDIT_MODE_PET_FRAME_LABEL,
 }
 anchorRelativeToOptions[ns.DEFAULT] = ns.L["Default Relative Frame"]
 
+--- Helper to get the relative frame from a string key
+--- @param strKey string
+--- @return Frame | string
+function ns.GetRelativeFrame(strKey)
+    if strKey == ns.DEFAULT then return ns.DEFAULT
+    elseif strKey == "UIParent" then return _G.UIParent
+    elseif strKey == "TargetFrame" then return _G.TargetFrame
+    elseif strKey == "PlayerFrame" then return _G.PlayerFrame
+    elseif strKey == "FocusFrame" then return _G.FocusFrame
+    elseif strKey == "PetFrame" then return _G.PetFrame
+    end
+
+    -- Catch-all for other global frames
+    if _G[strKey] == nil then
+        error("Relative frame '" .. strKey .. "' does not exist.")
+    end
+    return _G[strKey]
+end
+
 local anchorRelativeToSort = {
+    ns.DEFAULT,
     "UIParent",
     "TargetFrame",
     "PlayerFrame",
+    "FocusFrame",
+    "PetFrame",
 }
-table.insert(anchorRelativeToSort, 1, ns.DEFAULT)
 
 local anchorRelativePointOptions = {
     TOPLEFT = ns.L["TOPLEFT"],
@@ -143,6 +166,7 @@ end
 ---@class PositionableHandler: BUFConfigHandler
 ---@field defaultRelativeTo string | Frame?
 ---@field defaultRelativePoint string?
+---@field GetRelativeFrame fun(self: PositionableHandler): Frame
 ---@field SetPosition fun(self: PositionableHandler)
 ---@field _SetPosition fun(self: PositionableHandler, positionable: ScriptRegionResizing)
 
@@ -226,8 +250,8 @@ end
 ---@field yOffset number
 
 function Positionable:GetPositionAnchorInfo()
-    ---@type string | Frame | nil
-    local relativeTo = self:GetRelativeTo() or ns.DEFAULT
+    ---@type string | Frame
+    local relativeTo = self:GetRelativeFrame()
     if relativeTo == ns.DEFAULT then
         relativeTo = self.defaultRelativeTo or nil
     end
@@ -298,6 +322,15 @@ function Positionable:_SetPosition(positionable)
             yOffset
         )
     end
+end
+
+function Positionable:_GetRelativeFrame()
+    return ns.GetRelativeFrame(self:GetRelativeTo() or ns.DEFAULT)
+end
+
+--- Can be overridden by the implementing class to provide a custom relative frame
+function Positionable:GetRelativeFrame()
+    return self:_GetRelativeFrame()
 end
 
 ns.Positionable = Positionable

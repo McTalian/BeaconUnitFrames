@@ -55,8 +55,9 @@ ns.options.args.unitFrames.args.pet.args.powerBar.args.centerText = centerTextHa
 function centerTextHandler:RefreshConfig()
     if not self.fontString then
         self.fontString = PetFrameManaBarText
+        self.demoText = "123k / 123k"
         self.defaultRelativeTo = PetFrameManaBar
-        self.defaultAnchorPoint = "CENTER"
+        self.defaultRelativePoint = "CENTER"
     end
     self:RefreshFontStringConfig()
 end

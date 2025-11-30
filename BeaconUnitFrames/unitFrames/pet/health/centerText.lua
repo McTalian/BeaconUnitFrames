@@ -56,6 +56,9 @@ ns.options.args.unitFrames.args.pet.args.healthBar.args.centerText = centerTextH
 function centerTextHandler:RefreshConfig()
     if not self.fontString then
         self.fontString = PetFrameHealthBarText
+        self.demoText = "123k / 123k"
+        self.defaultRelativeTo = PetFrameHealthBar
+        self.defaultRelativePoint = "CENTER"
     end
     self:RefreshFontStringConfig()
 end
