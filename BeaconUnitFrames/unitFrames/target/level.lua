@@ -1,13 +1,10 @@
----@type string, table
-local addonName, ns = ...
-
 ---@class BUFNamespace
-ns = ns
+local ns = select(2, ...)
 
 ---@class BUFTarget
 local BUFTarget = ns.BUFTarget
 
----@class BUFTarget.Level: BUFConfigHandler, BUFFontString
+---@class BUFTarget.Level: BUFFontString
 local BUFTargetLevel = {
     configPath = "unitFrames.target.level",
 }

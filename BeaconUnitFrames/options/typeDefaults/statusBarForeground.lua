@@ -1,8 +1,5 @@
----@type string, table
-local addonName, ns = ...
-
 ---@class BUFNamespace
-ns = ns
+local ns = select(2, ...)
 
 --- Add status bar foreground options to the given options table
 --- @param optionsTable table
@@ -82,7 +79,7 @@ end
 function StatusBarForeground:RefreshStatusBarTexture()
     local useCustomTexture = self:GetUseStatusBarTexture()
     if useCustomTexture then
-        local textureName = self:GetStatusBarTexture()
+        local textureName = self:GetStatusBarTexture() or "Blizzard"
         local texturePath = ns.lsm:Fetch(ns.lsm.MediaType.STATUSBAR, textureName)
         if not texturePath then
             texturePath = ns.lsm:Fetch(ns.lsm.MediaType.STATUSBAR, "Blizzard") or "Interface\\Buttons\\WHITE8x8"
@@ -152,7 +149,8 @@ end
 
 function StatusBarForeground:RefreshColor()
     local r, g, b, a = self:_GetOptionsBasedColor()
-    if not r then
+    a = a or 1.0
+    if not r or not g or not b then
         return
     end
     self.statusBar:SetStatusBarColor(r, g, b, a)

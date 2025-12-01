@@ -1,8 +1,5 @@
----@type string, table
-local addonName, ns = ...
-
 ---@class BUFNamespace
-ns = ns
+local ns = select(2, ...)
 
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
@@ -10,71 +7,53 @@ local BUFPlayer = ns.BUFPlayer
 ---@class BUFPlayer.Indicators
 local BUFPlayerIndicators = ns.BUFPlayer.Indicators
 
----@class BUFPlayer.Indicators.RestIndicator: BUFConfigHandler, Positionable, Sizable, Demoable
+---@class BUFPlayer.Indicators.RestIndicator: BUFScaleTexture
 local BUFPlayerRestIndicator = {
     configPath = "unitFrames.player.restIndicator",
 }
 
-ns.Mixin(BUFPlayerRestIndicator, ns.Positionable, ns.Sizable, ns.Demoable)
-
-BUFPlayerIndicators.RestIndicator = BUFPlayerRestIndicator
-
----@class BUFDbSchema.UF.Player
-ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
-
----@class BUFDbSchema.UF.Player.RestIndicator
-ns.dbDefaults.profile.unitFrames.player.restIndicator = {
-    xOffset = 64,
-    yOffset = -6,
-    width = 30,
-    height = 30,
-}
-
-local restIndicator = {
+BUFPlayerRestIndicator.optionsTable = {
     type = "group",
     handler = BUFPlayerRestIndicator,
     name = ns.L["Rest Indicator"],
     order = BUFPlayerIndicators.optionsOrder.REST_INDICATOR,
-    args = {}
+    args = {},
 }
 
-ns.AddPositionableOptions(restIndicator.args)
-ns.AddSizableOptions(restIndicator.args)
-ns.AddDemoOptions(restIndicator.args)
+---@class BUFDbSchema.UF.Player.RestIndicator
+BUFPlayerRestIndicator.dbDefaults = {
+    scale = 1.0,
+    anchorPoint = "TOPLEFT",
+    relativeTo = ns.DEFAULT,
+    relativePoint = "TOPLEFT",
+    xOffset = 64,
+    yOffset = -6,
+}
 
-ns.options.args.player.args.indicators.args.restIndicator = restIndicator
+ns.BUFScaleTexture:ApplyMixin(BUFPlayerRestIndicator)
+
+---@class BUFDbSchema.UF.Player
+ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
+ns.dbDefaults.profile.unitFrames.player.restIndicator = BUFPlayerRestIndicator.dbDefaults
+
+ns.options.args.player.args.indicators.args.restIndicator = BUFPlayerRestIndicator.optionsTable
 
 function BUFPlayerRestIndicator:ToggleDemoMode()
-    local restIndicatorFrame = BUFPlayer.contentContextual.PlayerRestLoop
+    self:_ToggleDemoMode(self.texture)
     if self.demoMode then
-        self.demoMode = false
-        restIndicatorFrame:Hide()
-        restIndicatorFrame.PlayerRestLoopAnim:Stop()
+        self.texture.PlayerRestLoopAnim:Play()
     else
-        self.demoMode = true
-        restIndicatorFrame:Show()
-        restIndicatorFrame.PlayerRestLoopAnim:Play()
+        self.texture.PlayerRestLoopAnim:Stop()
     end
 end
 
 function BUFPlayerRestIndicator:RefreshConfig()
-    self:SetPosition()
-    self:SetSize()
+    if not self.initialized then
+        self.initialized = true
+        self.defaultRelativeTo = BUFPlayer.contentContextual
+        self.texture = BUFPlayer.contentContextual.PlayerRestLoop
+    end
+    self:RefreshScaleTextureConfig()
 end
 
-function BUFPlayerRestIndicator:SetPosition()
-    local restIndicatorFrame = BUFPlayer.contentContextual.PlayerRestLoop
-    local xOffset = ns.db.profile.unitFrames.player.restIndicator.xOffset
-    local yOffset = ns.db.profile.unitFrames.player.restIndicator.yOffset
-
-    restIndicatorFrame:ClearAllPoints()
-    restIndicatorFrame:SetPoint("TOPLEFT", xOffset, yOffset)
-end
-
-function BUFPlayerRestIndicator:SetSize()
-    local restTexture = BUFPlayer.contentContextual.PlayerRestLoop.RestTexture
-    local width = ns.db.profile.unitFrames.player.restIndicator.width
-    local height = ns.db.profile.unitFrames.player.restIndicator.height
-
-    restTexture:SetSize(width, height)
-end
+BUFPlayerIndicators.RestIndicator = BUFPlayerRestIndicator

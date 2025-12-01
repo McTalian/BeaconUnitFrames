@@ -1,8 +1,5 @@
----@type string, table
-local addonName, ns = ...
-
 ---@class BUFNamespace
-ns = ns
+local ns = select(2, ...)
 
 ---@class BUFTarget: AceModule, AceHook-3.0, AceEvent-3.0
 local BUFTarget = ns.BUF:NewModule("BUFTarget", "AceHook-3.0", "AceEvent-3.0")

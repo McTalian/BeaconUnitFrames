@@ -1,29 +1,25 @@
----@type string, table
-local addonName, ns = ...
-
 ---@class BUFNamespace
-ns = ns
+local ns = select(2, ...)
 
 ---@class BUFPet
 local BUFPet = ns.BUFPet
 
----@class BUFPet.Indicators: BUFConfigHandler
+---@class BUFPet.Indicators: BUFParentHandler
 local BUFPetIndicators = {}
 
+BUFPetIndicators.optionsTable = {
+    type = "group",
+    handler = BUFPetIndicators,
+    name = ns.L["Indicators and Icons"],
+    order = BUFPet.optionsOrder.INDICATORS,
+    args = {},
+}
 
 BUFPetIndicators.optionsOrder = {
   HIT_INDICATOR = 1,
 }
 
-local indicators = {
-    type = "group",
-    name = ns.L["Indicators and Icons"],
-    order = BUFPet.optionsOrder.INDICATORS,
-    childGroups = "tree",
-    args = {},
-}
-
-ns.options.args.pet.args.indicators = indicators
+ns.options.args.pet.args.indicators = BUFPetIndicators.optionsTable
 
 function BUFPetIndicators:RefreshConfig()
   self.HitIndicator:RefreshConfig()

@@ -1,8 +1,5 @@
----@type string, table
-local addonName, ns = ...
-
 ---@class BUFNamespace
-ns = ns
+local ns = select(2, ...)
 
 ---@class BUFTarget
 local BUFTarget = ns.BUFTarget
@@ -10,7 +7,7 @@ local BUFTarget = ns.BUFTarget
 ---@class BUFTarget.Health
 local BUFTargetHealth = BUFTarget.Health
 
----@class BUFTarget.Health.Foreground: BUFConfigHandler, StatusBarTexturable, Colorable, ClassColorable, ReactionColorable
+---@class BUFTarget.Health.Foreground: StatusBarTexturable, Colorable, ClassColorable, ReactionColorable
 local foregroundHandler = {
     configPath = "unitFrames.target.healthBar.foreground",
 }
@@ -56,14 +53,11 @@ end
 function foregroundHandler:RefreshStatusBarTexture()
     local parent = ns.BUFTarget
     local useCustomTexture = ns.db.profile.unitFrames.target.healthBar.foreground.useStatusBarTexture
-    ---@type string?
+    ---@type string
     local texturePath = "UI-HUD-UnitFrame-Player-PortraitOn-Bar-Health"
     if useCustomTexture then
         texturePath = ns.lsm:Fetch(ns.lsm.MediaType.STATUSBAR,
-            ns.db.profile.unitFrames.target.healthBar.foreground.statusBarTexture)
-        if not texturePath then
-            texturePath = ns.lsm:Fetch(ns.lsm.MediaType.STATUSBAR, "Blizzard") or "Interface\\Buttons\\WHITE8x8"
-        end
+            ns.db.profile.unitFrames.target.healthBar.foreground.statusBarTexture) or "Interface/Buttons/WHITE8x8"
     end
     parent.healthBar:SetStatusBarTexture(texturePath)
 end

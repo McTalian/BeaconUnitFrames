@@ -1,8 +1,5 @@
----@type string, table
-local addonName, ns = ...
-
 ---@class BUFNamespace
-ns = ns
+local ns = select(2, ...)
 
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
@@ -10,69 +7,51 @@ local BUFPlayer = ns.BUFPlayer
 ---@class BUFPlayer.Indicators
 local BUFPlayerIndicators = ns.BUFPlayer.Indicators
 
----@class BUFPlayer.Indicators.ReadyCheckIndicator: BUFConfigHandler, Positionable, Sizable, Demoable
+---@class BUFPlayer.Indicators.ReadyCheckIndicator: BUFScaleTexture
 local BUFPlayerReadyCheckIndicator = {
     configPath = "unitFrames.player.readyCheckIndicator",
 }
 
-ns.Mixin(BUFPlayerReadyCheckIndicator, ns.Positionable, ns.Sizable, ns.Demoable)
-
-BUFPlayerIndicators.ReadyCheckIndicator = BUFPlayerReadyCheckIndicator
-
----@class BUFDbSchema.UF.Player
-ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
-
----@class BUFDbSchema.UF.Player.ReadyCheckIndicator
-ns.dbDefaults.profile.unitFrames.player.readyCheckIndicator = {
-    xOffset = 0,
-    yOffset = 0,
-    width = 40,
-    height = 40,
-}
-
-local readyCheckIndicator = {
+BUFPlayerReadyCheckIndicator.optionsTable = {
     type = "group",
     handler = BUFPlayerReadyCheckIndicator,
     name = ns.L["Ready Check Indicator"],
     order = BUFPlayerIndicators.optionsOrder.READY_CHECK_INDICATOR,
-    args = {}
+    args = {},
 }
 
-ns.AddPositionableOptions(readyCheckIndicator.args)
-ns.AddSizableOptions(readyCheckIndicator.args)
-ns.AddDemoOptions(readyCheckIndicator.args)
+---@class BUFDbSchema.UF.Player.ReadyCheckIndicator
+BUFPlayerReadyCheckIndicator.dbDefaults = {
+    scale = 1.0,
+    anchorPoint = "CENTER",
+    relativeTo = ns.DEFAULT,
+    relativePoint = "CENTER",
+    xOffset = 0,
+    yOffset = 0,
+}
 
-ns.options.args.player.args.indicators.args.readyCheckIndicator = readyCheckIndicator
+ns.BUFScaleTexture:ApplyMixin(BUFPlayerReadyCheckIndicator)
+
+---@class BUFDbSchema.UF.Player
+ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
+ns.dbDefaults.profile.unitFrames.player.readyCheckIndicator = BUFPlayerReadyCheckIndicator.dbDefaults
+
+ns.options.args.player.args.indicators.args.readyCheckIndicator = BUFPlayerReadyCheckIndicator.optionsTable
 
 function BUFPlayerReadyCheckIndicator:ToggleDemoMode()
-    local readyCheckFrame = BUFPlayer.contentContextual.ReadyCheck
+    self:_ToggleDemoMode(self.texture)
     if self.demoMode then
-        self.demoMode = false
-        readyCheckFrame:Hide()
-    else
-        self.demoMode = true
-        readyCheckFrame.Texture:SetAtlas(READY_CHECK_READY_TEXTURE)
-        readyCheckFrame:Show()
+        self.texture.Texture:SetAtlas(READY_CHECK_READY_TEXTURE)
     end
 end
 
 function BUFPlayerReadyCheckIndicator:RefreshConfig()
-    self:SetPosition()
-    self:SetSize()
+    if not self.initialized then
+        self.initialized = true
+        self.defaultRelativeTo = BUFPlayer.contentContextual
+        self.texture = BUFPlayer.contentContextual.ReadyCheck
+    end
+    self:RefreshScaleTextureConfig()
 end
 
-function BUFPlayerReadyCheckIndicator:SetPosition()
-    local readyCheckFrame = BUFPlayer.contentContextual.ReadyCheck
-    local xOffset = ns.db.profile.unitFrames.player.readyCheckIndicator.xOffset
-    local yOffset = ns.db.profile.unitFrames.player.readyCheckIndicator.yOffset
-    readyCheckFrame:ClearAllPoints()
-    readyCheckFrame:SetPoint("CENTER", BUFPlayer.container.PlayerPortrait, "CENTER", xOffset, yOffset)
-end
-
-function BUFPlayerReadyCheckIndicator:SetSize()
-    local readyCheckFrame = BUFPlayer.contentContextual.ReadyCheck
-    local width = ns.db.profile.unitFrames.player.readyCheckIndicator.width
-    local height = ns.db.profile.unitFrames.player.readyCheckIndicator.height
-    readyCheckFrame:SetWidth(width)
-    readyCheckFrame:SetHeight(height)
-end
+BUFPlayerIndicators.ReadyCheckIndicator = BUFPlayerReadyCheckIndicator

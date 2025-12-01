@@ -1,8 +1,5 @@
----@type string, table
-local addonName, ns = ...
-
 ---@class BUFNamespace
-ns = ns
+local ns = select(2, ...)
 
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
@@ -10,82 +7,64 @@ local BUFPlayer = ns.BUFPlayer
 ---@class BUFPlayer.Indicators
 local BUFPlayerIndicators = ns.BUFPlayer.Indicators
 
----@class BUFPlayer.Indicators.PrestigePortrait: BUFConfigHandler, Positionable, Sizable, Demoable
+---@class BUFPlayer.Indicators.PrestigePortrait: BUFScaleTexture
 local BUFPlayerPrestigePortrait = {
     configPath = "unitFrames.player.prestigePortrait",
 }
 
-ns.Mixin(BUFPlayerPrestigePortrait, ns.Positionable, ns.Sizable, ns.Demoable)
-
-BUFPlayerIndicators.PrestigePortrait = BUFPlayerPrestigePortrait
-
----@class BUFDbSchema.UF.Player
-ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
-
----@class BUFDbSchema.UF.Player.PrestigePortrait
-ns.dbDefaults.profile.unitFrames.player.prestigePortrait = {
-  xOffset = -2,
-  yOffset = -38,
-  width = 50,
-  height = 52,
-}
-
-local prestigePortrait = {
+BUFPlayerPrestigePortrait.optionsTable = {
     type = "group",
     handler = BUFPlayerPrestigePortrait,
     name = ns.L["Prestige Portrait"],
     order = BUFPlayerIndicators.optionsOrder.PRESTIGE_PORTRAIT,
-    args = {}
+    args = {},
 }
 
-ns.AddPositionableOptions(prestigePortrait.args)
-ns.AddSizableOptions(prestigePortrait.args)
-ns.AddDemoOptions(prestigePortrait.args)
+---@class BUFDbSchema.UF.Player.PrestigePortrait
+BUFPlayerPrestigePortrait.dbDefaults = {
+    scale = 1.0,
+    anchorPoint = "TOPLEFT",
+    relativeTo = ns.DEFAULT,
+    relativePoint = "TOPLEFT",
+    xOffset = -2,
+    yOffset = -38,
+}
 
-ns.options.args.player.args.indicators.args.prestigePortrait = prestigePortrait
+ns.BUFScaleTexture:ApplyMixin(BUFPlayerPrestigePortrait)
+
+---@class BUFDbSchema.UF.Player
+ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
+ns.dbDefaults.profile.unitFrames.player.prestigePortrait = BUFPlayerPrestigePortrait.dbDefaults
+
+ns.options.args.player.args.indicators.args.prestigePortrait = BUFPlayerPrestigePortrait.optionsTable
 
 function BUFPlayerPrestigePortrait:ToggleDemoMode()
-    local prestigePortraitFrame = BUFPlayer.contentContextual.PrestigePortrait
-    local prestigeBadgeFrame = BUFPlayer.contentContextual.PrestigeBadge
     if self.demoMode then
         self.demoMode = false
-        prestigePortraitFrame:Hide()
-        prestigeBadgeFrame:Hide()
+        self.texture:Hide()
+        self.secondaryTexture:Hide()
     else
         self.demoMode = true
-        prestigePortraitFrame:SetAtlas("honorsystem-portrait-neutral", false)
-        prestigePortraitFrame:Show()
-        prestigeBadgeFrame:SetTexture("interface/pvpframe/icons/prestige-icon-1.blp")
-        prestigeBadgeFrame:Show()
+        self.texture:SetAtlas("honorsystem-portrait-neutral", false)
+        self.texture:Show()
+        self.secondaryTexture:SetTexture("interface/pvpframe/icons/prestige-icon-1.blp")
+        self.secondaryTexture:Show()
     end
 end
 
 function BUFPlayerPrestigePortrait:RefreshConfig()
-    self:SetPosition()
-    self:SetSize()
+    if not self.initialized then
+        self.initialized = true
+        self.defaultRelativeTo = BUFPlayer.contentContextual
+        self.texture = BUFPlayer.contentContextual.PrestigePortrait
+        self.secondaryTexture = BUFPlayer.contentContextual.PrestigeBadge
+    end
+    self:RefreshScaleTextureConfig()
 end
 
-BUFPlayerPrestigePortrait.coeffs = {
-    badgeWidth = (30 / ns.dbDefaults.profile.unitFrames.player.prestigePortrait.width),
-    badgeHeight = (30 / ns.dbDefaults.profile.unitFrames.player.prestigePortrait.height),
-}
-
-function BUFPlayerPrestigePortrait:SetPosition()
-    local prestigePortraitFrame = BUFPlayer.contentContextual.PrestigePortrait
-    local xOffset = ns.db.profile.unitFrames.player.prestigePortrait.xOffset
-    local yOffset = ns.db.profile.unitFrames.player.prestigePortrait.yOffset
-
-    prestigePortraitFrame:SetPoint("TOPLEFT", xOffset, yOffset)
+function BUFPlayerPrestigePortrait:SetScaleFactor()
+    self:_SetScaleFactor(self.texture)
+    self:_SetScaleFactor(self.secondaryTexture)
 end
 
-function BUFPlayerPrestigePortrait:SetSize()
-    local prestigePortraitFrame = BUFPlayer.contentContextual.PrestigePortrait
-    local prestigeBadgeFrame = BUFPlayer.contentContextual.PrestigeBadge
-    local width = ns.db.profile.unitFrames.player.prestigePortrait.width
-    local height = ns.db.profile.unitFrames.player.prestigePortrait.height
-    local badgeWidth = width * self.coeffs.badgeWidth
-    local badgeHeight = height * self.coeffs.badgeHeight
-
-    prestigePortraitFrame:SetSize(width, height)
-    prestigeBadgeFrame:SetSize(badgeWidth, badgeHeight)
-end
+BUFPlayerIndicators.PrestigePortrait = BUFPlayerPrestigePortrait

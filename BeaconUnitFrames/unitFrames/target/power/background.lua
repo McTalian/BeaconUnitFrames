@@ -1,8 +1,5 @@
----@type string, table
-local addonName, ns = ...
-
 ---@class BUFNamespace
-ns = ns
+local ns = select(2, ...)
 
 ---@class BUFTarget
 local BUFTarget = ns.BUFTarget
@@ -10,7 +7,7 @@ local BUFTarget = ns.BUFTarget
 ---@class BUFTarget.Power
 local BUFTargetPower = BUFTarget.Power
 
----@class BUFTarget.Power.Background: BUFConfigHandler, BackgroundTexturable, Colorable, ClassColorable
+---@class BUFTarget.Power.Background: BackgroundTexturable, Colorable, ClassColorable
 local backgroundHandler = {
     configPath = "unitFrames.target.powerBar.background",
 }

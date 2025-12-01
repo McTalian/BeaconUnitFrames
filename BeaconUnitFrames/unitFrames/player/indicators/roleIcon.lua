@@ -1,8 +1,5 @@
----@type string, table
-local addonName, ns = ...
-
 ---@class BUFNamespace
-ns = ns
+local ns = select(2, ...)
 
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
@@ -10,27 +7,12 @@ local BUFPlayer = ns.BUFPlayer
 ---@class BUFPlayer.Indicators
 local BUFPlayerIndicators = ns.BUFPlayer.Indicators
 
----@class BUFPlayer.Indicators.RoleIcon: BUFConfigHandler, Positionable, Sizable, Demoable
+---@class BUFPlayer.Indicators.RoleIcon: BUFScaleTexture
 local BUFPlayerRoleIcon = {
     configPath = "unitFrames.player.roleIcon",
 }
 
-ns.Mixin(BUFPlayerRoleIcon, ns.Positionable, ns.Sizable, ns.Demoable)
-
-BUFPlayerIndicators.RoleIcon = BUFPlayerRoleIcon
-
----@class BUFDbSchema.UF.Player
-ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
-
----@class BUFDbSchema.UF.Player.RoleIcon
-ns.dbDefaults.profile.unitFrames.player.roleIcon = {
-    xOffset = 196,
-    yOffset = -27,
-    width = 12,
-    height = 12,
-}
-
-local roleIcon = {
+BUFPlayerRoleIcon.optionsTable = {
     type = "group",
     handler = BUFPlayerRoleIcon,
     name = ns.L["Role Icon"],
@@ -38,41 +20,31 @@ local roleIcon = {
     args = {},
 }
 
-ns.AddPositionableOptions(roleIcon.args)
-ns.AddSizableOptions(roleIcon.args)
-ns.AddDemoOptions(roleIcon.args)
+---@class BUFDbSchema.UF.Player.RoleIcon
+BUFPlayerRoleIcon.dbDefaults = {
+    scale = 1.0,
+    anchorPoint = "TOPLEFT",
+    relativeTo = ns.DEFAULT,
+    relativePoint = "TOPLEFT",
+    xOffset = 196,
+    yOffset = -27,
+}
 
-ns.options.args.player.args.indicators.args.roleIcon = roleIcon
+ns.BUFScaleTexture:ApplyMixin(BUFPlayerRoleIcon)
 
-function BUFPlayerRoleIcon:ToggleDemoMode()
-    local roleIcon = BUFPlayer.contentContextual.RoleIcon
-    if self.demoMode then
-        self.demoMode = false
-        roleIcon:Hide()
-    else
-        self.demoMode = true
-        roleIcon:Show()
-    end
-end
+---@class BUFDbSchema.UF.Player
+ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
+ns.dbDefaults.profile.unitFrames.player.roleIcon = BUFPlayerRoleIcon.dbDefaults
+
+ns.options.args.player.args.indicators.args.roleIcon = BUFPlayerRoleIcon.optionsTable
 
 function BUFPlayerRoleIcon:RefreshConfig()
-    self:SetPosition()
-    self:SetSize()
+    if not self.initialized then
+        self.initialized = true
+        self.defaultRelativeTo = BUFPlayer.contentContextual
+        self.texture = BUFPlayer.contentContextual.RoleIcon
+    end
+    self:RefreshScaleTextureConfig()
 end
 
-function BUFPlayerRoleIcon:SetPosition()
-    local roleIcon = BUFPlayer.contentContextual.RoleIcon
-    local xOffset = ns.db.profile.unitFrames.player.roleIcon.xOffset
-    local yOffset = ns.db.profile.unitFrames.player.roleIcon.yOffset
-    roleIcon:ClearAllPoints()
-    roleIcon:SetPoint("TOPLEFT", xOffset, yOffset)
-end
-
-function BUFPlayerRoleIcon:SetSize()
-    local roleIcon = BUFPlayer.contentContextual.RoleIcon
-    local width = ns.db.profile.unitFrames.player.roleIcon.width
-    local height = ns.db.profile.unitFrames.player.roleIcon.height
-    roleIcon:SetWidth(width)
-    roleIcon:SetHeight(height)
-end
-
+BUFPlayerIndicators.RoleIcon = BUFPlayerRoleIcon

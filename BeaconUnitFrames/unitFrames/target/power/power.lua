@@ -1,13 +1,10 @@
----@type string, table
-local addonName, ns = ...
-
 ---@class BUFNamespace
-ns = ns
+local ns = select(2, ...)
 
 ---@class BUFTarget
 local BUFTarget = ns.BUFTarget
 
----@class BUFTarget.Power: BUFConfigHandler, BUFStatusBar
+---@class BUFTarget.Power: BUFStatusBar
 local BUFTargetPower = {
     configPath = "unitFrames.target.powerBar",
 }

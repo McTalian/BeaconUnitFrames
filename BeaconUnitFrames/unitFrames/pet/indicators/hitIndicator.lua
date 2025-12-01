@@ -1,8 +1,5 @@
----@type string, table
-local addonName, ns = ...
-
 ---@class BUFNamespace
-ns = ns
+local ns = select(2, ...)
 
 ---@class BUFPet
 local BUFPet = ns.BUFPet
@@ -10,7 +7,7 @@ local BUFPet = ns.BUFPet
 ---@class BUFPet.Indicators
 local BUFPetIndicators = ns.BUFPet.Indicators
 
----@class BUFPet.Indicators.HitIndicator: BUFConfigHandler, BUFFontString
+---@class BUFPet.Indicators.HitIndicator: BUFFontString
 local BUFPetHitIndicator = {
     configPath = "unitFrames.pet.hitIndicator",
 }

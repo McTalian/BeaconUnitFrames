@@ -1,8 +1,5 @@
----@type string, table
-local addonName, ns = ...
-
 ---@class BUFNamespace
-ns = ns
+local ns = select(2, ...)
 
 ---@class BUFPet
 local BUFPet = ns.BUFPet
@@ -10,7 +7,7 @@ local BUFPet = ns.BUFPet
 ---@class BUFPet.Power
 local BUFPetPower = BUFPet.Power
 
----@class BUFPet.Power.Foreground: BUFConfigHandler, StatusBarForeground
+---@class BUFPet.Power.Foreground: StatusBarForeground
 local foregroundHandler = {
     configPath = "unitFrames.pet.powerBar.foreground",
 }

@@ -1,8 +1,5 @@
----@type string, table
-local addonName, ns = ...
-
 ---@class BUFNamespace
-ns = ns
+local ns = select(2, ...)
 
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
@@ -10,7 +7,7 @@ local BUFPlayer = ns.BUFPlayer
 ---@class BUFPlayer.Indicators
 local BUFPlayerIndicators = ns.BUFPlayer.Indicators
 
----@class BUFPlayer.Indicators.LeaderAndGuideIcon: BUFTexture
+---@class BUFPlayer.Indicators.LeaderAndGuideIcon: BUFScaleTexture
 local BUFPlayerLeaderAndGuideIcon = {
     configPath = "unitFrames.player.leaderAndGuideIcon",
 }
@@ -43,9 +40,28 @@ BUFPlayerLeaderAndGuideIcon.optionsTable = {
     },
 }
 
-ns.BUFTexture:ApplyMixin(BUFPlayerLeaderAndGuideIcon)
+---@class BUFDbSchema.UF.Player.LeaderAndGuideIcon
+ns.dbDefaults.profile.unitFrames.player.leaderAndGuideIcon = {
+    anchorPoint = "TOPLEFT",
+    relativeTo = ns.DEFAULT,
+    relativePoint = "TOPLEFT",
+    xOffset = 86,
+    yOffset = -10,
+    scale = 1,
+    separateGuideStyle = false,
+    guide = {
+        xOffset = 86,
+        yOffset = -10,
+        anchorPoint = "TOPLEFT",
+        relativeTo = ns.DEFAULT,
+        relativePoint = "TOPLEFT",
+        scale = 1,
+    }
+}
 
----@class BUFPlayer.LeaderAndGuideIcon.Guide: BUFTexture
+ns.BUFScaleTexture:ApplyMixin(BUFPlayerLeaderAndGuideIcon)
+
+---@class BUFPlayer.LeaderAndGuideIcon.Guide: BUFScaleTexture
 local Guide = {
     configPath = "unitFrames.player.leaderAndGuideIcon.guide",
 }
@@ -62,7 +78,7 @@ Guide.optionsTable = {
     args = {},
 }
 
-ns.BUFTexture:ApplyMixin(Guide)
+ns.BUFScaleTexture:ApplyMixin(Guide)
 
 BUFPlayerLeaderAndGuideIcon.Guide = Guide
 BUFPlayerLeaderAndGuideIcon.optionsTable.args.guide = Guide.optionsTable
@@ -70,51 +86,20 @@ BUFPlayerIndicators.LeaderAndGuideIcon = BUFPlayerLeaderAndGuideIcon
 
 ---@class BUFDbSchema.UF.Player
 ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
-
----@class BUFDbSchema.UF.Player.LeaderAndGuideIcon
-ns.dbDefaults.profile.unitFrames.player.leaderAndGuideIcon = {
-    anchorPoint = "TOPLEFT",
-    relativeTo = ns.DEFAULT,
-    relativePoint = ns.DEFAULT,
-    xOffset = 86,
-    yOffset = -10,
-    useAtlasSize = true,
-    width = 16,
-    height = 16,
-    scale = 1,
-    separateGuideStyle = false,
-    guide = {
-        xOffset = 86,
-        yOffset = -10,
-        anchorPoint = "TOPLEFT",
-        relativeTo = ns.DEFAULT,
-        relativePoint = ns.DEFAULT,
-        useAtlasSize = true,
-        width = 16,
-        height = 16,
-        scale = 1,
-    }
-}
+ns.dbDefaults.profile.unitFrames.player.leaderAndGuideIcon = BUFPlayerLeaderAndGuideIcon.dbDefaults
 
 ns.options.args.player.args.indicators.args.leaderAndGuideIcon = BUFPlayerLeaderAndGuideIcon.optionsTable
-
-local LEADER_ICON_ATLAS = "UI-HUD-UnitFrame-Player-Group-LeaderIcon"
-local GUIDE_ICON_ATLAS = "UI-HUD-UnitFrame-Player-Group-GuideIcon"
 
 function BUFPlayerLeaderAndGuideIcon:RefreshConfig()
     if not self.texture then
         self.texture = BUFPlayer.contentContextual.LeaderIcon
-        self.atlasName = LEADER_ICON_ATLAS
         self.defaultRelativeTo = BUFPlayer.contentContextual
-        self.defaultRelativePoint = "TOPLEFT"
     end
     if not Guide.texture then
         Guide.texture = BUFPlayer.contentContextual.GuideIcon
-        Guide.atlasName = GUIDE_ICON_ATLAS
         Guide.defaultRelativeTo = BUFPlayer.contentContextual
-        Guide.defaultRelativePoint = "TOPLEFT"
     end
-    self:RefreshTextureConfig()
+    self:RefreshScaleTextureConfig()
     if ns.db.profile.unitFrames.player.leaderAndGuideIcon.separateGuideStyle then
         self.Guide:RefreshConfig()
     end
@@ -124,15 +109,7 @@ function BUFPlayerLeaderAndGuideIcon:SetPosition()
     self:_SetPosition(self.texture)
 
     if not ns.db.profile.unitFrames.player.leaderAndGuideIcon.separateGuideStyle then
-        self:_SetPosition(Guide.texture)
-    end
-end
-
-function BUFPlayerLeaderAndGuideIcon:SetSize()
-    self:_SetSize(self.texture)
-
-    if not ns.db.profile.unitFrames.player.leaderAndGuideIcon.separateGuideStyle then
-        self:_SetSize(Guide.texture, Guide.atlasName)
+        self.Guide:SetPosition()
     end
 end
 
@@ -146,5 +123,5 @@ function BUFPlayerLeaderAndGuideIcon:SeparateLeaderAndGuideStyle()
 end
 
 function Guide:RefreshConfig()
-    self:RefreshTextureConfig()
+    self:RefreshScaleTextureConfig()
 end

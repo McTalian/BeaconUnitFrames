@@ -1,8 +1,5 @@
----@type string, table
-local addonName, ns = ...
-
 ---@class BUFNamespace
-ns = ns
+local ns = select(2, ...)
 
 ---@class BUFPet
 local BUFPet = ns.BUFPet
@@ -10,7 +7,7 @@ local BUFPet = ns.BUFPet
 ---@class BUFPet.Health
 local BUFPetHealth = BUFPet.Health
 
----@class BUFPet.Health.RightText: BUFConfigHandler, BUFFontString
+---@class BUFPet.Health.RightText: BUFFontString
 local rightTextHandler = {
     configPath = "unitFrames.pet.healthBar.rightText",
 }

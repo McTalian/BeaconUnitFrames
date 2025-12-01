@@ -1,8 +1,5 @@
----@type string, table
-local addonName, ns = ...
-
 ---@class BUFNamespace
-ns = ns
+local ns = select(2, ...)
 
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
@@ -10,7 +7,7 @@ local BUFPlayer = ns.BUFPlayer
 ---@class BUFPlayer.Indicators
 local BUFPlayerIndicators = ns.BUFPlayer.Indicators
 
----@class BUFPlayer.Indicators.AttackIcon: BUFConfigHandler, BUFTexture
+---@class BUFPlayer.Indicators.AttackIcon: BUFScaleTexture
 local BUFPlayerAttackIcon = {
     configPath = "unitFrames.player.attackIcon",
 }
@@ -23,36 +20,30 @@ BUFPlayerAttackIcon.optionsTable = {
     args = {},
 }
 
-ns.BUFTexture:ApplyMixin(BUFPlayerAttackIcon)
+---@class BUFDbSchema.UF.Player.AttackIcon
+BUFPlayerAttackIcon.dbDefaults = {
+    scale = 1.0,
+    anchorPoint = "TOPLEFT",
+    relativeTo = ns.DEFAULT,
+    relativePoint = "TOPLEFT",
+    xOffset = 64,
+    yOffset = -62,
+}
+
+ns.BUFScaleTexture:ApplyMixin(BUFPlayerAttackIcon)
 
 ---@class BUFDbSchema.UF.Player
 ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
-
----@class BUFDbSchema.UF.Player.AttackIcon
-ns.dbDefaults.profile.unitFrames.player.attackIcon = {
-    anchorPoint = "TOPLEFT",
-    relativeTo = ns.DEFAULT,
-    relativePoint = ns.DEFAULT,
-    xOffset = 64,
-    yOffset = -62,
-    useAtlasSize = true,
-    width = 16,
-    height = 16,
-    scale = 1,
-}
+ns.dbDefaults.profile.unitFrames.player.attackIcon = BUFPlayerAttackIcon.dbDefaults
 
 ns.options.args.player.args.indicators.args.attackIcon = BUFPlayerAttackIcon.optionsTable
-
-local ATTACK_ICON_ATLAS = "UI-HUD-UnitFrame-Player-CombatIcon"
 
 function BUFPlayerAttackIcon:RefreshConfig()
     if not self.texture then
         self.texture = BUFPlayer.contentContextual.AttackIcon
-        self.atlasName = ATTACK_ICON_ATLAS
         self.defaultRelativeTo = BUFPlayer.contentContextual
-        self.defaultRelativePoint = "TOPLEFT"
     end
-    self:RefreshTextureConfig()
+    self:RefreshScaleTextureConfig()
 end
 
 BUFPlayerIndicators.AttackIcon = BUFPlayerAttackIcon

@@ -1,8 +1,5 @@
----@type string, table
-local addonName, ns = ...
-
 ---@class BUFNamespace
-ns = ns
+local ns = select(2, ...)
 
 function ns.AddStatusBarOptions(optionsTable, _orderMap)
     local orderMap = _orderMap or ns.defaultOrderMap
@@ -26,7 +23,7 @@ end
 ---@field deadTextHandler? BUFFontString
 ---@field unconsciousTextHandler? BUFFontString
 
----@class BUFStatusBar: BUFConfigHandler, StatusBarHandler, Sizable, Positionable, Levelable
+---@class BUFStatusBar: StatusBarHandler, Sizable, Positionable, Levelable
 local BUFStatusBar = {}
 
 --- Apply mixins to a BUFStatusBar

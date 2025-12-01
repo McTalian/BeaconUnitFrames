@@ -1,8 +1,5 @@
----@type string, table
-local addonName, ns = ...
-
 ---@class BUFNamespace
-ns = ns
+local ns = select(2, ...)
 
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
@@ -10,70 +7,44 @@ local BUFPlayer = ns.BUFPlayer
 ---@class BUFPlayer.Indicators
 local BUFPlayerIndicators = ns.BUFPlayer.Indicators
 
----@class BUFPlayer.Indicators.PlayTime: BUFConfigHandler, Positionable, Sizable, Demoable
+---@class BUFPlayer.Indicators.PlayTime: BUFScaleTexture
 local BUFPlayerPlayTime = {
     configPath = "unitFrames.player.playTime",
 }
 
-ns.Mixin(BUFPlayerPlayTime, ns.Positionable, ns.Sizable, ns.Demoable)
-
-BUFPlayerIndicators.PlayTime = BUFPlayerPlayTime
-
----@class BUFDbSchema.UF.Player
-ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
-
----@class BUFDbSchema.UF.Player.PlayTime
-ns.dbDefaults.profile.unitFrames.player.playTime = {
-    xOffset = -21,
-    yOffset = -24,
-    width = 29,
-    height = 29,
-}
-
-local playTime = {
+BUFPlayerPlayTime.optionsTable = {
     type = "group",
     handler = BUFPlayerPlayTime,
     name = ns.L["Play Time"],
     order = BUFPlayerIndicators.optionsOrder.PLAY_TIME,
-    args = {}
+    args = {},
 }
 
-ns.AddPositionableOptions(playTime.args)
-ns.AddSizableOptions(playTime.args)
-ns.AddDemoOptions(playTime.args)
+---@class BUFDbSchema.UF.Player.PlayTime
+BUFPlayerPlayTime.dbDefaults = {
+    scale = 1.0,
+    anchorPoint = "TOPLEFT",
+    relativeTo = ns.DEFAULT,
+    relativePoint = "TOPRIGHT",
+    xOffset = -21,
+    yOffset = -24,
+}
 
-ns.options.args.player.args.indicators.args.playTime = playTime
+ns.BUFScaleTexture:ApplyMixin(BUFPlayerPlayTime)
 
-function BUFPlayerPlayTime:ToggleDemoMode()
-    local playTimeFrame = BUFPlayer.contentContextual.PlayerPlayTime
-    if self.demoMode then
-        self.demoMode = false
-        playTimeFrame:Hide()
-    else
-        self.demoMode = true
-        playTimeFrame:Show()
-    end
-end
+---@class BUFDbSchema.UF.Player
+ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
+ns.dbDefaults.profile.unitFrames.player.playTime = BUFPlayerPlayTime.dbDefaults
+
+ns.options.args.player.args.indicators.args.playTime = BUFPlayerPlayTime.optionsTable
 
 function BUFPlayerPlayTime:RefreshConfig()
-    self:SetPosition()
-    self:SetSize()
+    if not self.initialized then
+        self.initialized = true
+        self.defaultRelativeTo = BUFPlayer.contentContextual
+        self.texture = BUFPlayer.contentContextual.PlayerPlayTime
+    end
+    self:RefreshScaleTextureConfig()
 end
 
-function BUFPlayerPlayTime:SetPosition()
-    local playTimeFrame = BUFPlayer.contentContextual.PlayerPlayTime
-    local xOffset = ns.db.profile.unitFrames.player.playTime.xOffset
-    local yOffset = ns.db.profile.unitFrames.player.playTime.yOffset
-
-    playTimeFrame:ClearAllPoints()
-    playTimeFrame:SetPoint("TOPLEFT", BUFPlayer.contentContextual, "TOPRIGHT", xOffset, yOffset)
-end
-
-function BUFPlayerPlayTime:SetSize()
-    local playTimeFrame = BUFPlayer.contentContextual.PlayerPlayTime
-    local width = ns.db.profile.unitFrames.player.playTime.width
-    local height = ns.db.profile.unitFrames.player.playTime.height
-
-    playTimeFrame:SetSize(width, height)
-end
-
+BUFPlayerIndicators.PlayTime = BUFPlayerPlayTime

@@ -1,46 +1,36 @@
----@type string, table
-local addonName, ns = ...
-
 ---@class BUFNamespace
-ns = ns
+local ns = select(2, ...)
 
 --- Add texture options to the given options table
 --- @param optionsTable table
 --- @param _orderMap BUFOptionsOrder?
---- @param _noAtlas boolean?
-function ns.AddScaleTextureOptions(optionsTable, _orderMap, _noAtlas)
+function ns.AddScaleTextureOptions(optionsTable, _orderMap)
     local orderMap = _orderMap or ns.defaultOrderMap
     ns.AddPositionableOptions(optionsTable, orderMap)
-    if _noAtlas == true then
-        ns.AddScalableOptions(optionsTable, orderMap)
-    else
-        ns.AddAtlasSizableOptions(optionsTable, ns.AtlasSizableFlags.SCALABLE, orderMap)
-    end
+    ns.AddScalableOptions(optionsTable, orderMap)
     ns.AddDemoOptions(optionsTable, orderMap)
 end
 
 ---@class ScaleTextureHandler
 ---@field RefreshScaleTextureConfig fun(self: BUFScaleTexture)
 ---@field texture Texture
----@field noAtlas? boolean
 ---@field defaultRelativeTo string?
 ---@field defaultRelativePoint string?
 
----@class BUFScaleTexture: ScaleTextureHandler, AtlasSizable, Positionable, Demoable
+---@class BUFScaleTexture: ScaleTextureHandler, Scalable, Positionable, Demoable
 local BUFScaleTexture = {}
 
 --- Apply mixins to a BUFScaleTexture
 --- @param self BUFScaleTexture
 --- @param handler BUFConfigHandler
 function BUFScaleTexture:ApplyMixin(handler)
-    ns.AtlasSizable:ApplyMixin(handler, ns.AtlasSizableFlags.SCALABLE)
-    ns.Mixin(handler, ns.Demoable, ns.Positionable, self)
+    ns.Mixin(handler, ns.Demoable, ns.Scalable, ns.Positionable, self)
 
     ---@type BUFScaleTexture
     handler = handler --[[@as BUFScaleTexture]]
 
     if handler.optionsTable then
-        ns.AddScaleTextureOptions(handler.optionsTable.args, handler.orderMap, handler.noAtlas)
+        ns.AddScaleTextureOptions(handler.optionsTable.args, handler.orderMap)
     end
 end
 

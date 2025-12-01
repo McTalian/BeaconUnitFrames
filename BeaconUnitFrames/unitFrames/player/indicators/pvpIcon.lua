@@ -1,8 +1,5 @@
----@type string, table
-local addonName, ns = ...
-
 ---@class BUFNamespace
-ns = ns
+local ns = select(2, ...)
 
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
@@ -23,30 +20,21 @@ BUFPlayerPvPIcon.optionsTable = {
     args = {},
 }
 
+BUFPlayerPvPIcon.dbDefaults = {
+    anchorPoint = "TOPLEFT",
+    relativeTo = ns.DEFAULT,
+    relativePoint = "TOPRIGHT",
+    xOffset = 25,
+    yOffset = -50,
+    scale = 1.0,
+}
+
 ns.BUFScaleTexture:ApplyMixin(BUFPlayerPvPIcon)
 
 BUFPlayerIndicators.PvPIcon = BUFPlayerPvPIcon
 
 ---@class BUFDbSchema.UF.Player
 ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
-
----@class BUFDbSchema.UF.Player.PvPIcon
-ns.dbDefaults.profile.unitFrames.player.pvpIcon = {
-    anchorPoint = "TOPLEFT",
-    relativeTo = ns.DEFAULT,
-    relativePoint = ns.DEFAULT,
-    xOffset = 25,
-    yOffset = -50,
-    useAtlasSize = true,
-    scale = 1.0,
-}
-
-
--- We will always use the atlas size for the PvP icon
--- since the icon is dynamic and they all have different sizes.
--- We will rely on scaling to adjust size instead.
-BUFPlayerPvPIcon.optionsTable.args.useAtlasSize = nil
-
 ns.options.args.player.args.indicators.args.pvpIcon = BUFPlayerPvPIcon.optionsTable
 
 function BUFPlayerPvPIcon:ToggleDemoMode()
@@ -64,9 +52,7 @@ end
 function BUFPlayerPvPIcon:RefreshConfig()
   if not self.texture then
       self.texture = BUFPlayer.contentContextual.PVPIcon
-      self.atlasName = "UI-HUD-UnitFrame-Player-PvP-FFAIcon"
       self.defaultRelativeTo = BUFPlayer.contentContextual
-      self.defaultRelativePoint = "TOPRIGHT"
   end
   self:RefreshScaleTextureConfig()
 end

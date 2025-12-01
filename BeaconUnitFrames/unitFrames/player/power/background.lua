@@ -1,8 +1,5 @@
----@type string, table
-local addonName, ns = ...
-
 ---@class BUFNamespace
-ns = ns
+local ns = select(2, ...)
 
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
@@ -10,7 +7,7 @@ local BUFPlayer = ns.BUFPlayer
 ---@class BUFPlayer.Power
 local BUFPlayerPower = BUFPlayer.Power
 
----@class BUFPlayer.Power.Background: BUFConfigHandler, BackgroundTexturable, Colorable, ClassColorable
+---@class BUFPlayer.Power.Background: BackgroundTexturable, Colorable, ClassColorable
 local backgroundHandler = {
     configPath = "unitFrames.player.powerBar.background",
 }

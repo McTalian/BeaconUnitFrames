@@ -1,13 +1,10 @@
----@type string, table
-local addonName, ns = ...
-
 ---@class BUFNamespace
-ns = ns
+local ns = select(2, ...)
 
 ---@class BUFPet
 local BUFPet = ns.BUFPet
 
----@class BUFPet.Portrait: BUFConfigHandler, Sizable, Positionable, BoxMaskable
+---@class BUFPet.Portrait: Sizable, Positionable, BoxMaskable
 local BUFPetPortrait = {
     configPath = "unitFrames.pet.portrait",
 }

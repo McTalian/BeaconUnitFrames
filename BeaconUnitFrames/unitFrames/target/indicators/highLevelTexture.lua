@@ -1,8 +1,5 @@
----@type string, table
-local addonName, ns = ...
-
 ---@class BUFNamespace
-ns = ns
+local ns = select(2, ...)
 
 ---@class BUFTarget
 local BUFTarget = ns.BUFTarget
@@ -10,7 +7,7 @@ local BUFTarget = ns.BUFTarget
 ---@class BUFTarget.Indicators
 local BUFTargetIndicators = ns.BUFTarget.Indicators
 
----@class BUFTarget.Indicators.HighLevelTexture: BUFConfigHandler, BUFScaleTexture
+---@class BUFTarget.Indicators.HighLevelTexture: BUFScaleTexture
 local BUFTargetHighLevelTexture = {
     configPath = "unitFrames.target.highLevelTexture",
 }
@@ -45,13 +42,9 @@ ns.dbDefaults.profile.unitFrames.target = ns.dbDefaults.profile.unitFrames.targe
 
 ns.dbDefaults.profile.unitFrames.target.highLevelTexture = BUFTargetHighLevelTexture.dbDefaults
 
-local HIGH_LEVEL_TEXTURE_ATLAS = "UI-HUD-UnitFrame-Target-HighLevelTarget_Icon"
-
 function BUFTargetHighLevelTexture:RefreshConfig()
     if not self.texture then
         self.texture = BUFTarget.contentContextual.HighLevelTexture
-        self.atlasName = HIGH_LEVEL_TEXTURE_ATLAS
-
         self.defaultRelativeTo = BUFTarget.contentMain.LevelText
         self.defaultRelativePoint = "TOPLEFT"
     end

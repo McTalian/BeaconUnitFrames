@@ -1,8 +1,5 @@
----@type string, table
-local addonName, ns = ...
-
 ---@class BUFNamespace
-ns = ns
+local ns = select(2, ...)
 
 ---@class BUFDbSchema: AceDB.Schema
 ns.dbDefaults = ns.dbDefaults

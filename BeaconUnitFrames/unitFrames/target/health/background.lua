@@ -10,7 +10,7 @@
 -- ---@class BUFTarget.Health
 -- local BUFTargetHealth = BUFTarget.Health
 
--- ---@class BUFTarget.Health.Background: BUFConfigHandler, BackgroundTexturable, Colorable, ClassColorable
+-- ---@class BUFTarget.Health.Background: BackgroundTexturable, Colorable, ClassColorable
 -- local backgroundHandler = {
 --     configPath = "unitFrames.target.healthBar.background",
 -- }

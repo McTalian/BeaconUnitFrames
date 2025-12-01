@@ -1,13 +1,10 @@
----@type string, table
-local addonName, ns = ...
-
 ---@class BUFNamespace
-ns = ns
+local ns = select(2, ...)
 
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
 
----@class BUFPlayer.Health: BUFConfigHandler, BUFStatusBar
+---@class BUFPlayer.Health: BUFStatusBar
 local BUFPlayerHealth = {
     configPath = "unitFrames.player.healthBar",
 }

@@ -1,8 +1,5 @@
----@type string, table
-local addonName, ns = ...
-
 ---@class BUFNamespace
-ns = ns
+local ns = select(2, ...)
 
 ---@class MaskableBaseHandler: BUFConfigHandler
 ---@field RefreshMask fun(self: MaskableBaseHandler)
@@ -39,6 +36,10 @@ end
 
 function MaskableBase:_RefreshMask(maskTexture)
     local maskPath = self:GetMask()
+
+    if not maskPath then
+        return
+    end
 
     local sPos, ePos = string.find(maskPath, "%.")
     local isTexture = sPos ~= nil
@@ -113,7 +114,7 @@ function ns.AddBoxMaskableOptions(optionsTable, _orderMap)
     }
 end
 
----@class BoxMaskableHandler: BUFConfigHandler, MaskableBase
+---@class BoxMaskableHandler: MaskableBase
 
 ---@class BoxMaskable: BoxMaskableHandler
 local BoxMaskable = {}

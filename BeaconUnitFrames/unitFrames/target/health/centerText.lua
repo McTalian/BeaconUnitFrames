@@ -1,8 +1,5 @@
----@type string, table
-local addonName, ns = ...
-
 ---@class BUFNamespace
-ns = ns
+local ns = select(2, ...)
 
 ---@class BUFTarget
 local BUFTarget = ns.BUFTarget
@@ -10,7 +7,7 @@ local BUFTarget = ns.BUFTarget
 ---@class BUFTarget.Health
 local BUFTargetHealth = BUFTarget.Health
 
----@class BUFTarget.Health.CenterText: BUFConfigHandler, BUFFontString
+---@class BUFTarget.Health.CenterText: BUFFontString
 local centerTextHandler = {
     configPath = "unitFrames.target.healthBar.centerText",
 }

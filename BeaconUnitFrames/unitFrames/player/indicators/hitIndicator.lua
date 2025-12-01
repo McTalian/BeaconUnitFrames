@@ -1,8 +1,5 @@
----@type string, table
-local addonName, ns = ...
-
 ---@class BUFNamespace
-ns = ns
+local ns = select(2, ...)
 
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
@@ -10,7 +7,7 @@ local BUFPlayer = ns.BUFPlayer
 ---@class BUFPlayer.Indicators
 local BUFPlayerIndicators = ns.BUFPlayer.Indicators
 
----@class BUFPlayer.Indicators.HitIndicator: BUFConfigHandler, BUFFontString
+---@class BUFPlayer.Indicators.HitIndicator: BUFFontString
 local BUFPlayerHitIndicator = {
     configPath = "unitFrames.player.hitIndicator",
 }

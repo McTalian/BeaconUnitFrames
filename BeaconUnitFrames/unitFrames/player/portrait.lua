@@ -1,13 +1,10 @@
----@type string, table
-local addonName, ns = ...
-
 ---@class BUFNamespace
-ns = ns
+local ns = select(2, ...)
 
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
 
----@class BUFPlayer.Portrait: BUFConfigHandler, Sizable, Positionable, BoxMaskable
+---@class BUFPlayer.Portrait: Sizable, Positionable, BoxMaskable
 local BUFPlayerPortrait = {
     configPath = "unitFrames.player.portrait",
 }

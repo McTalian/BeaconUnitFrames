@@ -1,17 +1,15 @@
----@type string, table
-local addonName, ns = ...
-
 ---@class BUFNamespace
-ns = ns
+local ns = select(2, ...)
 
 ---@class BUFTarget
 local BUFTarget = ns.BUFTarget
 
----@class BUFTarget.Indicators: BUFConfigHandler
+---@class BUFTarget.Indicators: BUFParentHandler
 local BUFTargetIndicators = {}
 
 
 BUFTargetIndicators.optionsOrder = {
+  BOSS_PORTRAIT_FRAME_TEXTURE = 0.5,
   HIGH_LEVEL_TEXTURE = 1,
   LEADER_AND_GUIDE_ICON = 2,
   RAID_TARGET_ICON = 3,
@@ -33,9 +31,15 @@ local indicators = {
 ns.options.args.target.args.indicators = indicators
 
 function BUFTargetIndicators:RefreshConfig()
+  self.BossPortraitFrameTexture:RefreshConfig()
   self.HighLevelTexture:RefreshConfig()
   self.LeaderAndGuideIcon:RefreshConfig()
   self.RaidTargetIcon:RefreshConfig()
+  self.BossIcon:RefreshConfig()
+  self.QuestIcon:RefreshConfig()
+  self.PvPIcon:RefreshConfig()
+  self.PrestigePortrait:RefreshConfig()
+  self.PetBattleIcon:RefreshConfig()
 end
 
 BUFTarget.Indicators = BUFTargetIndicators
