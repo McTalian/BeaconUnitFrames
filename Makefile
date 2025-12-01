@@ -11,16 +11,15 @@ lua_deps:
 watch: check_untracked_files toc_check i18n_check
 	@wow-build-tools watch -t BeaconUnitFrames -r ./.release
 
-dev:
+dev: check_untracked_files toc_check i18n_check
 	@wow-build-tools build -d -t BeaconUnitFrames -r ./.release --skipChangelog
 
-build:
+build: check_untracked_files toc_check i18n_check
 	@wow-build-tools build -d -t BeaconUnitFrames -r ./.release
 
 toc_check:
 	@uv run .scripts/check_toc_includes.py \
-		--ignore embeds.xml \
-		--ignore emergencyFixButton.lua \
+		--ignore libs/index.xml \
 		--ignore unitFrames/pet/power/background.lua \
 		--ignore unitFrames/player/power/background.lua \
 		--ignore unitFrames/target/health/background.lua \

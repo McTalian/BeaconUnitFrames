@@ -9,15 +9,15 @@ local BUFTargetHealth = BUFTarget.Health
 
 ---@class BUFTarget.Health.UnconsciousText: BUFFontString
 local unconsciousTextHandler = {
-    configPath = "unitFrames.target.healthBar.unconsciousText",
+	configPath = "unitFrames.target.healthBar.unconsciousText",
 }
 
 unconsciousTextHandler.optionsTable = {
-    type = "group",
-    handler = unconsciousTextHandler,
-    name = ns.L["Unconscious Text"],
-    order = BUFTargetHealth.topGroupOrder.UNCONSCIOUS_TEXT,
-    args = {}
+	type = "group",
+	handler = unconsciousTextHandler,
+	name = ns.L["Unconscious Text"],
+	order = BUFTargetHealth.topGroupOrder.UNCONSCIOUS_TEXT,
+	args = {},
 }
 
 ns.BUFFontString:ApplyMixin(unconsciousTextHandler)
@@ -28,33 +28,32 @@ BUFTargetHealth.unconsciousTextHandler = unconsciousTextHandler
 ns.dbDefaults.profile.unitFrames.target.healthBar = ns.dbDefaults.profile.unitFrames.target.healthBar
 
 ns.dbDefaults.profile.unitFrames.target.healthBar.unconsciousText = {
-    anchorPoint = "CENTER",
-    relativeTo = ns.DEFAULT,
-    relativePoint = ns.DEFAULT,
-    xOffset = 0,
-    yOffset = 0,
-    useFontObjects = true,
-    fontObject = "GameFontNormalSmall",
-    fontColor = { 1, 0, 0, 1 },
-    fontFace = "Friz Quadrata TT",
-    fontSize = 12,
-    fontFlags = {
-        [ns.FontFlags.OUTLINE] = false,
-        [ns.FontFlags.THICKOUTLINE] = false,
-        [ns.FontFlags.MONOCHROME] = false,
-    },
-    fontShadowColor = { 0, 0, 0, 1 },
-    fontShadowOffsetX = 1,
-    fontShadowOffsetY = -1,
+	anchorPoint = "CENTER",
+	relativeTo = ns.DEFAULT,
+	relativePoint = "CENTER",
+	xOffset = 0,
+	yOffset = 0,
+	useFontObjects = true,
+	fontObject = "GameFontNormalSmall",
+	fontColor = { 1, 0, 0, 1 },
+	fontFace = "Friz Quadrata TT",
+	fontSize = 12,
+	fontFlags = {
+		[ns.FontFlags.OUTLINE] = false,
+		[ns.FontFlags.THICKOUTLINE] = false,
+		[ns.FontFlags.MONOCHROME] = false,
+	},
+	fontShadowColor = { 0, 0, 0, 1 },
+	fontShadowOffsetX = 1,
+	fontShadowOffsetY = -1,
 }
 
 ns.options.args.target.args.healthBar.args.unconsciousText = unconsciousTextHandler.optionsTable
 
 function unconsciousTextHandler:RefreshConfig()
-    if not self.fontString then
-        self.fontString = BUFTarget.healthBarContainer.UnconsciousText
-        self.defaultRelativeTo = BUFTarget.healthBar
-        self.defaultRelativePoint = "CENTER"
-    end
-    self:RefreshFontStringConfig()
+	if not self.fontString then
+		self.fontString = BUFTarget.healthBarContainer.UnconsciousText
+		self.defaultRelativeTo = BUFTarget.healthBar
+	end
+	self:RefreshFontStringConfig()
 end

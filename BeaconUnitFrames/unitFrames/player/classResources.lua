@@ -6,25 +6,25 @@ local BUFPlayer = ns.BUFPlayer
 
 ---@class BUFPlayer.ClassResources: Positionable, Scalable
 local BUFPlayerClassResources = {
-    configPath = "unitFrames.player.classResources",
+	configPath = "unitFrames.player.classResources",
 }
 
 BUFPlayerClassResources.optionsTable = {
-    type = "group",
-    handler = BUFPlayerClassResources,
-    name = ns.L["ClassResources"],
-    order = BUFPlayer.optionsOrder.CLASS_RESOURCES,
-    args = {}
+	type = "group",
+	handler = BUFPlayerClassResources,
+	name = ns.L["ClassResources"],
+	order = BUFPlayer.optionsOrder.CLASS_RESOURCES,
+	args = {},
 }
 
 ---@class BUFDbSchema.UF.Player.ClassResources
 BUFPlayerClassResources.dbDefaults = {
-    scale = 1.0,
-    anchorPoint = "TOP",
-    relativeTo = ns.DEFAULT,
-    relativePoint = "BOTTOM",
-    xOffset = 30,
-    yOffset = 25,
+	scale = 1.0,
+	anchorPoint = "TOP",
+	relativeTo = ns.DEFAULT,
+	relativePoint = "BOTTOM",
+	xOffset = 30,
+	yOffset = 25,
 }
 
 ns.Mixin(BUFPlayerClassResources, ns.Positionable, ns.Scalable)
@@ -38,21 +38,21 @@ ns.AddScalableOptions(BUFPlayerClassResources.optionsTable.args)
 ns.options.args.player.args.classResources = BUFPlayerClassResources.optionsTable
 
 function BUFPlayerClassResources:RefreshConfig()
-    if not self.initialized then
-        self.initialized = true
+	if not self.initialized then
+		self.initialized = true
 
-        self.frame = PlayerFrameBottomManagedFramesContainer
-    end
-    self:SetPosition()
-    self:SetScaleFactor()
+		self.frame = PlayerFrameBottomManagedFramesContainer
+	end
+	self:SetPosition()
+	self:SetScaleFactor()
 end
 
 function BUFPlayerClassResources:SetPosition()
-    self:_SetPosition(self.frame)
+	self:_SetPosition(self.frame)
 end
 
 function BUFPlayerClassResources:SetScaleFactor()
-    self:_SetScaleFactor(self.frame)
+	self:_SetScaleFactor(self.frame)
 end
 
 BUFPlayer.ClassResources = BUFPlayerClassResources

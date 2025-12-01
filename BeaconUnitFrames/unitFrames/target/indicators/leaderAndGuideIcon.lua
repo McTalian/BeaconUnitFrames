@@ -9,71 +9,71 @@ local BUFTargetIndicators = ns.BUFTarget.Indicators
 
 ---@class BUFTarget.Indicators.LeaderAndGuideIcon: BUFScaleTexture
 local BUFTargetLeaderAndGuideIcon = {
-    configPath = "unitFrames.target.leaderAndGuideIcon",
+	configPath = "unitFrames.target.leaderAndGuideIcon",
 }
 
 local leaderAndGuideIconOrder = {}
 ns.Mixin(leaderAndGuideIconOrder, ns.defaultOrderMap)
-leaderAndGuideIconOrder.SEPARATE_GUIDE_STYLE = leaderAndGuideIconOrder.Y_OFFSET + .1
-leaderAndGuideIconOrder.GUIDE = leaderAndGuideIconOrder.SEPARATE_GUIDE_STYLE + .1
-BUFTargetLeaderAndGuideIcon.orderMap = leaderAndGuideIconOrder
+leaderAndGuideIconOrder.SEPARATE_GUIDE_STYLE = leaderAndGuideIconOrder.Y_OFFSET + 0.1
+leaderAndGuideIconOrder.GUIDE = leaderAndGuideIconOrder.SEPARATE_GUIDE_STYLE + 0.1
+BUFTargetLeaderAndGuideIcon.optionsOrder = leaderAndGuideIconOrder
 
 BUFTargetLeaderAndGuideIcon.optionsTable = {
-    type = "group",
-    handler = BUFTargetLeaderAndGuideIcon,
-    name = ns.L["LeaderAndGuideIcon"],
-    order = BUFTargetIndicators.optionsOrder.LEADER_AND_GUIDE_ICON,
-    args = {
-        separateGuideStyle = {
-            type = "toggle",
-            name = ns.L["SeparateGuideStyle"],
-            desc = ns.L["SeparateGuideStyleDesc"],
-            set = "SetUseSeparateGuideStyle",
-            get = "GetUseSeparateGuideStyle",
-            order = leaderAndGuideIconOrder.SEPARATE_GUIDE_STYLE,
-        },
-    },
+	type = "group",
+	handler = BUFTargetLeaderAndGuideIcon,
+	name = ns.L["LeaderAndGuideIcon"],
+	order = BUFTargetIndicators.optionsOrder.LEADER_AND_GUIDE_ICON,
+	args = {
+		separateGuideStyle = {
+			type = "toggle",
+			name = ns.L["SeparateGuideStyle"],
+			desc = ns.L["SeparateGuideStyleDesc"],
+			set = "SetUseSeparateGuideStyle",
+			get = "GetUseSeparateGuideStyle",
+			order = leaderAndGuideIconOrder.SEPARATE_GUIDE_STYLE,
+		},
+	},
 }
 
 ---@class BUFDbSchema.UF.Target.LeaderAndGuideIcon
 BUFTargetLeaderAndGuideIcon.dbDefaults = {
-    anchorPoint = "TOPRIGHT",
-    relativeTo = ns.DEFAULT,
-    relativePoint = "TOPRIGHT",
-    xOffset = -85,
-    yOffset = -8,
-    scale = 1,
-    separateGuideStyle = false,
-    guide = {
-        anchorPoint = "TOPRIGHT",
-        relativeTo = ns.DEFAULT,
-        relativePoint = "TOPRIGHT",
-        xOffset = -85,
-        yOffset = -8,
-        scale = 1,
-    }
+	anchorPoint = "TOPRIGHT",
+	relativeTo = ns.DEFAULT,
+	relativePoint = "TOPRIGHT",
+	xOffset = -85,
+	yOffset = -8,
+	scale = 1,
+	separateGuideStyle = false,
+	guide = {
+		anchorPoint = "TOPRIGHT",
+		relativeTo = ns.DEFAULT,
+		relativePoint = "TOPRIGHT",
+		xOffset = -85,
+		yOffset = -8,
+		scale = 1,
+	},
 }
 
 ns.BUFScaleTexture:ApplyMixin(BUFTargetLeaderAndGuideIcon)
 
 ---@class BUFTarget.LeaderAndGuideIcon.Guide: BUFScaleTexture
 local Guide = {
-    configPath = "unitFrames.target.leaderAndGuideIcon.guide",
+	configPath = "unitFrames.target.leaderAndGuideIcon.guide",
 }
 
 Guide.optionsTable = {
-    type = "group",
-    handler = Guide,
-    name = ns.L["GuideIcon"],
-    hidden = function()
-        return not BUFTargetLeaderAndGuideIcon:GetUseSeparateGuideStyle()
-    end,
-    inline = true,
-    order = leaderAndGuideIconOrder.GUIDE,
-    args = {},
+	type = "group",
+	handler = Guide,
+	name = ns.L["GuideIcon"],
+	hidden = function()
+		return not BUFTargetLeaderAndGuideIcon:GetUseSeparateGuideStyle()
+	end,
+	inline = true,
+	order = leaderAndGuideIconOrder.GUIDE,
+	args = {},
 }
 
-ns.BUFTexture:ApplyMixin(Guide)
+ns.BUFScaleTexture:ApplyMixin(Guide)
 
 BUFTargetLeaderAndGuideIcon.Guide = Guide
 BUFTargetLeaderAndGuideIcon.optionsTable.args.guide = Guide.optionsTable
@@ -86,46 +86,56 @@ ns.dbDefaults.profile.unitFrames.target.leaderAndGuideIcon = BUFTargetLeaderAndG
 ns.options.args.target.args.indicators.args.leaderAndGuideIcon = BUFTargetLeaderAndGuideIcon.optionsTable
 
 function BUFTargetLeaderAndGuideIcon:SetUseSeparateGuideStyle(info, value)
-    ns.db.profile.unitFrames.target.leaderAndGuideIcon.separateGuideStyle = value
-    BUFTargetLeaderAndGuideIcon:SeparateLeaderAndGuideStyle()
+	ns.db.profile.unitFrames.target.leaderAndGuideIcon.separateGuideStyle = value
+	BUFTargetLeaderAndGuideIcon:SeparateLeaderAndGuideStyle()
 end
 
 function BUFTargetLeaderAndGuideIcon:GetUseSeparateGuideStyle(info)
-    return ns.db.profile.unitFrames.target.leaderAndGuideIcon.separateGuideStyle
+	return ns.db.profile.unitFrames.target.leaderAndGuideIcon.separateGuideStyle
+end
+
+function BUFTargetLeaderAndGuideIcon:Initialize()
+	if not self.initialized then
+		self.initialized = true
+		self.texture = BUFTarget.contentContextual.LeaderIcon
+		self.defaultRelativeTo = BUFTarget.contentContextual
+	end
+	self.Guide:Initialize()
 end
 
 function BUFTargetLeaderAndGuideIcon:RefreshConfig()
-    if not self.texture then
-        self.texture = BUFTarget.contentContextual.LeaderIcon
-        self.defaultRelativeTo = BUFTarget.contentContextual
-    end
-    self:RefreshScaleTextureConfig()
-    self.Guide:RefreshConfig()
+	self:Initialize()
+	self:RefreshScaleTextureConfig()
+	self.Guide:RefreshConfig()
 end
 
 function BUFTargetLeaderAndGuideIcon:SetPosition()
-    self:_SetPosition(self.texture)
+	self:_SetPosition(self.texture)
 
-    if not self:GetUseSeparateGuideStyle() then
-        self.Guide:SetPosition()
-    end
+	if not self:GetUseSeparateGuideStyle() then
+		self.Guide:SetPosition()
+	end
 end
 
 function BUFTargetLeaderAndGuideIcon:SeparateLeaderAndGuideStyle()
-    local isSeparated = self:GetUseSeparateGuideStyle()
-    if isSeparated then
-        self.Guide:RefreshConfig()
-    else
-        self:RefreshConfig()
-    end
+	local isSeparated = self:GetUseSeparateGuideStyle()
+	if isSeparated then
+		self.Guide:RefreshConfig()
+	else
+		self:RefreshConfig()
+	end
+end
+
+function Guide:Initialize()
+	if not self.initialized then
+		self.initialized = true
+		self.texture = BUFTarget.contentContextual.GuideIcon
+		self.defaultRelativeTo = BUFTarget.contentContextual
+	end
 end
 
 function Guide:RefreshConfig()
-    if not self.texture then
-        self.texture = BUFTarget.contentContextual.GuideIcon
-        self.defaultRelativeTo = BUFTarget.contentContextual
-    end
-    if BUFTargetLeaderAndGuideIcon:GetUseSeparateGuideStyle() then
-        self:RefreshScaleTextureConfig()
-    end
+	if BUFTargetLeaderAndGuideIcon:GetUseSeparateGuideStyle() then
+		self:RefreshScaleTextureConfig()
+	end
 end

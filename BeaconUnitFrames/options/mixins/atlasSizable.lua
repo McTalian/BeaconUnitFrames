@@ -2,9 +2,9 @@
 local ns = select(2, ...)
 
 ns.AtlasSizableFlags = {
-    NONE = 0x0,
-    SIZABLE = 0x1,
-    SCALABLE = 0x2,
+	NONE = 0x0,
+	SIZABLE = 0x1,
+	SCALABLE = 0x2,
 }
 
 --- Add atlas sizable options to the given options table
@@ -12,70 +12,72 @@ ns.AtlasSizableFlags = {
 --- @param _flags number?
 --- @param _orderMap BUFOptionsOrder?
 function ns.AddAtlasSizableOptions(optionsTable, _flags, _orderMap)
-    local orderMap = _orderMap or ns.defaultOrderMap
-    optionsTable.useAtlasSize = {
-        type = "toggle",
-        name = ns.L["UseAtlasSize"],
-        desc = ns.L["UseAtlasSizeDesc"],
-        set = "SetUseAtlasSize",
-        get = "GetUseAtlasSize",
-        order = orderMap.USE_ATLAS_SIZE,
-    }
+	local orderMap = _orderMap or ns.defaultOrderMap
+	optionsTable.useAtlasSize = {
+		type = "toggle",
+		name = ns.L["UseAtlasSize"],
+		desc = ns.L["UseAtlasSizeDesc"],
+		set = "SetUseAtlasSize",
+		get = "GetUseAtlasSize",
+		order = orderMap.USE_ATLAS_SIZE,
+	}
 
-    local flags = _flags or ns.AtlasSizableFlags.SIZABLE
-    if bit.band(flags, ns.AtlasSizableFlags.SIZABLE) == ns.AtlasSizableFlags.SIZABLE then
-        ns.AddSizableOptions(optionsTable, orderMap)
-    end
-    if bit.band(flags, ns.AtlasSizableFlags.SCALABLE) == ns.AtlasSizableFlags.SCALABLE then
-        ns.AddScalableOptions(optionsTable, orderMap)
-    end
+	local flags = _flags or ns.AtlasSizableFlags.SIZABLE
+	if bit.band(flags, ns.AtlasSizableFlags.SIZABLE) == ns.AtlasSizableFlags.SIZABLE then
+		ns.AddSizableOptions(optionsTable, orderMap)
+	end
+	if bit.band(flags, ns.AtlasSizableFlags.SCALABLE) == ns.AtlasSizableFlags.SCALABLE then
+		ns.AddScalableOptions(optionsTable, orderMap)
+	end
 end
 
----@class AtlasSizableHandler: SizableHandler, ScalableHandler
+---@class AtlasSizableHandler: MixinBase, SizableHandler, ScalableHandler
 ---@field atlasName? string
 ---@field _SetSize fun(self: AtlasSizableHandler, atlasSizable: TextureBase)
 
 ---@class AtlasSizable: AtlasSizableHandler, Sizable
 local AtlasSizable = {}
 
+ns.Mixin(AtlasSizable, ns.MixinBase)
+
 function AtlasSizable:ApplyMixin(handler, flags)
-    if bit.band(flags, ns.AtlasSizableFlags.SIZABLE) == ns.AtlasSizableFlags.SIZABLE then
-        self.sizable = true
-        ns.Mixin(handler, ns.Sizable)
-    end
-    if bit.band(flags, ns.AtlasSizableFlags.SCALABLE) == ns.AtlasSizableFlags.SCALABLE then
-        self.scalable = true
-        ns.Mixin(handler, ns.Scalable)
-    end
-    ns.Mixin(handler, self)
+	if bit.band(flags, ns.AtlasSizableFlags.SIZABLE) == ns.AtlasSizableFlags.SIZABLE then
+		self.sizable = true
+		ns.Mixin(handler, ns.Sizable)
+	end
+	if bit.band(flags, ns.AtlasSizableFlags.SCALABLE) == ns.AtlasSizableFlags.SCALABLE then
+		self.scalable = true
+		ns.Mixin(handler, ns.Scalable)
+	end
+	ns.Mixin(handler, self)
 end
 
 function AtlasSizable:SetUseAtlasSize(info, value)
-    ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".useAtlasSize", value)
-    if self.sizable then
-        self:SetSize()
-    end
-    if self.scalable then
-        self:SetScaleFactor()
-    end
+	self:DbSet("useAtlasSize", value)
+	if self.sizable then
+		self:SetSize()
+	end
+	if self.scalable then
+		self:SetScaleFactor()
+	end
 end
 
 function AtlasSizable:GetUseAtlasSize(info)
-    return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".useAtlasSize")
+	return self:DbGet("useAtlasSize")
 end
 
 function AtlasSizable:_SetSize(atlasSizable, overrideAtlasTexture)
-    local useAtlasSize = self:GetUseAtlasSize()
-    local atlasTexture = overrideAtlasTexture or self.atlasName
-    local width, height = self:GetWidth(), self:GetHeight()
+	local useAtlasSize = self:GetUseAtlasSize()
+	local atlasTexture = overrideAtlasTexture or self.atlasName
+	local width, height = self:GetWidth(), self:GetHeight()
 
-    if useAtlasSize and self.atlasName then
-        atlasSizable:SetAtlas(self.atlasName, true)
-    else
-        atlasSizable:SetAtlas(self.atlasName, false)
-        atlasSizable:SetWidth(width)
-        atlasSizable:SetHeight(height)
-    end
+	if useAtlasSize and atlasTexture then
+		atlasSizable:SetAtlas(atlasTexture, true)
+	else
+		atlasSizable:SetAtlas(atlasTexture, false)
+		atlasSizable:SetWidth(width)
+		atlasSizable:SetHeight(height)
+	end
 end
 
 ns.AtlasSizable = AtlasSizable

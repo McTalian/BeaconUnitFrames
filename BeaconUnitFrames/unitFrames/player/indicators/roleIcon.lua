@@ -9,25 +9,25 @@ local BUFPlayerIndicators = ns.BUFPlayer.Indicators
 
 ---@class BUFPlayer.Indicators.RoleIcon: BUFScaleTexture
 local BUFPlayerRoleIcon = {
-    configPath = "unitFrames.player.roleIcon",
+	configPath = "unitFrames.player.roleIcon",
 }
 
 BUFPlayerRoleIcon.optionsTable = {
-    type = "group",
-    handler = BUFPlayerRoleIcon,
-    name = ns.L["Role Icon"],
-    order = BUFPlayerIndicators.optionsOrder.ROLE_ICON,
-    args = {},
+	type = "group",
+	handler = BUFPlayerRoleIcon,
+	name = ns.L["Role Icon"],
+	order = BUFPlayerIndicators.optionsOrder.ROLE_ICON,
+	args = {},
 }
 
 ---@class BUFDbSchema.UF.Player.RoleIcon
 BUFPlayerRoleIcon.dbDefaults = {
-    scale = 1.0,
-    anchorPoint = "TOPLEFT",
-    relativeTo = ns.DEFAULT,
-    relativePoint = "TOPLEFT",
-    xOffset = 196,
-    yOffset = -27,
+	scale = 1.0,
+	anchorPoint = "TOPLEFT",
+	relativeTo = ns.DEFAULT,
+	relativePoint = "TOPLEFT",
+	xOffset = 196,
+	yOffset = -27,
 }
 
 ns.BUFScaleTexture:ApplyMixin(BUFPlayerRoleIcon)
@@ -39,12 +39,12 @@ ns.dbDefaults.profile.unitFrames.player.roleIcon = BUFPlayerRoleIcon.dbDefaults
 ns.options.args.player.args.indicators.args.roleIcon = BUFPlayerRoleIcon.optionsTable
 
 function BUFPlayerRoleIcon:RefreshConfig()
-    if not self.initialized then
-        self.initialized = true
-        self.defaultRelativeTo = BUFPlayer.contentContextual
-        self.texture = BUFPlayer.contentContextual.RoleIcon
-    end
-    self:RefreshScaleTextureConfig()
+	if not self.initialized then
+		self.initialized = true
+		self.defaultRelativeTo = BUFPlayer.contentContextual
+		self.texture = BUFPlayer.contentContextual.RoleIcon
+	end
+	self:RefreshScaleTextureConfig()
 end
 
 BUFPlayerIndicators.RoleIcon = BUFPlayerRoleIcon

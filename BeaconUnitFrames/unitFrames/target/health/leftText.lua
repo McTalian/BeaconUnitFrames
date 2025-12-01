@@ -9,15 +9,15 @@ local BUFTargetHealth = BUFTarget.Health
 
 ---@class BUFTarget.Health.LeftText: BUFFontString
 local leftTextHandler = {
-    configPath = "unitFrames.target.healthBar.leftText",
+	configPath = "unitFrames.target.healthBar.leftText",
 }
 
 leftTextHandler.optionsTable = {
-    type = "group",
-    handler = leftTextHandler,
-    name = ns.L["Left Text"],
-    order = BUFTargetHealth.topGroupOrder.LEFT_TEXT,
-    args = {}
+	type = "group",
+	handler = leftTextHandler,
+	name = ns.L["Left Text"],
+	order = BUFTargetHealth.topGroupOrder.LEFT_TEXT,
+	args = {},
 }
 
 ns.BUFFontString:ApplyMixin(leftTextHandler)
@@ -28,34 +28,33 @@ BUFTargetHealth.leftTextHandler = leftTextHandler
 ns.dbDefaults.profile.unitFrames.target.healthBar = ns.dbDefaults.profile.unitFrames.target.healthBar
 
 ns.dbDefaults.profile.unitFrames.target.healthBar.leftText = {
-    anchorPoint = "LEFT",
-    relativeTo = ns.DEFAULT,
-    relativePoint = ns.DEFAULT,
-    xOffset = 2,
-    yOffset = 0,
-    useFontObjects = true,
-    fontObject = "TextStatusBarText",
-    fontColor = { 1, 1, 1, 1 },
-    fontFace = "Friz Quadrata TT",
-    fontSize = 10,
-    fontFlags = {
-        [ns.FontFlags.OUTLINE] = false,
-        [ns.FontFlags.THICKOUTLINE] = false,
-        [ns.FontFlags.MONOCHROME] = false,
-    },
-    fontShadowColor = { 0, 0, 0, 1 },
-    fontShadowOffsetX = 1,
-    fontShadowOffsetY = -1,
+	anchorPoint = "LEFT",
+	relativeTo = ns.DEFAULT,
+	relativePoint = "LEFT",
+	xOffset = 2,
+	yOffset = 0,
+	useFontObjects = true,
+	fontObject = "TextStatusBarText",
+	fontColor = { 1, 1, 1, 1 },
+	fontFace = "Friz Quadrata TT",
+	fontSize = 10,
+	fontFlags = {
+		[ns.FontFlags.OUTLINE] = false,
+		[ns.FontFlags.THICKOUTLINE] = false,
+		[ns.FontFlags.MONOCHROME] = false,
+	},
+	fontShadowColor = { 0, 0, 0, 1 },
+	fontShadowOffsetX = 1,
+	fontShadowOffsetY = -1,
 }
 
 ns.options.args.target.args.healthBar.args.leftText = leftTextHandler.optionsTable
 
 function leftTextHandler:RefreshConfig()
-    if not self.fontString then
-        self.fontString = BUFTarget.healthBarContainer.LeftText
-        self.demoText = "100%"
-        self.defaultRelativeTo = BUFTarget.healthBar
-        self.defaultRelativePoint = "LEFT"
-    end
-    self:RefreshFontStringConfig()
+	if not self.fontString then
+		self.fontString = BUFTarget.healthBarContainer.LeftText
+		self.demoText = "100%"
+		self.defaultRelativeTo = BUFTarget.healthBar
+	end
+	self:RefreshFontStringConfig()
 end

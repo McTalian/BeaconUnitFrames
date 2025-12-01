@@ -1,16 +1,8 @@
---@strip-comments@
 ---@class BUFNamespace
 local ns = select(2, ...)
 
-local L = LibStub("AceLocale-3.0"):NewLocale(ns.localeName, "koKR")
-if not L then
-	return
-end
-
---- Place newest translations/locale keys at the top, wrapped in --#region and --#endregion for the version number that they were added in.
---- You may translate these comments, but do not translate "region" or "endregion" as they are used by the localization tool to determine where to place the translations.
---- To add translations, simply uncomment the line(s) and replace the English text after the equal sign (=) with the translated value.
-
+---@class BUFLocale
+ns.L = LibStub("AceLocale-3.0"):GetLocale(ns.localeName)
 --#region v1.0.0
 -- L["Anchor Point"] = "Anchor Point"
 -- L["Atlas Texture"] = "Atlas Texture"

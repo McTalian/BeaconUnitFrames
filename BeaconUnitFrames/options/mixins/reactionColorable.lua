@@ -5,22 +5,23 @@ local ns = select(2, ...)
 --- @param optionsTable table
 --- @param _orderMap BUFOptionsOrder?
 function ns.AddReactionColorOptions(optionsTable, _orderMap)
-    local orderMap = _orderMap or ns.defaultOrderMap
+	local orderMap = _orderMap or ns.defaultOrderMap
 
-    optionsTable.coloring = optionsTable.coloring or {
-        type = "header",
-        name = ns.L["Coloring"],
-        order = orderMap.COLORING_HEADER,
-    }
+	optionsTable.coloring = optionsTable.coloring
+		or {
+			type = "header",
+			name = ns.L["Coloring"],
+			order = orderMap.COLORING_HEADER,
+		}
 
-    optionsTable.useReactionColor = {
-        type = "toggle",
-        name = ns.L["Use Reaction Color"],
-        desc = ns.L["UseReactionColorDesc"],
-        set = "SetUseReactionColor",
-        get = "GetUseReactionColor",
-        order = orderMap.REACTION_COLOR,
-    }
+	optionsTable.useReactionColor = {
+		type = "toggle",
+		name = ns.L["Use Reaction Color"],
+		desc = ns.L["UseReactionColorDesc"],
+		set = "SetUseReactionColor",
+		get = "GetUseReactionColor",
+		order = orderMap.REACTION_COLOR,
+	}
 end
 
 ---@class ReactionColorable: ColorableHandler
@@ -30,15 +31,15 @@ local ReactionColorable = {}
 ---@param info table AceConfig info table
 ---@param value boolean Whether to use class color
 function ReactionColorable:SetUseReactionColor(info, value)
-    ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".useReactionColor", value)
-    self:RefreshColor()
+	ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".useReactionColor", value)
+	self:RefreshColor()
 end
 
 ---Get whether to use class color
 ---@param info? table AceConfig info table
 ---@return boolean|nil Whether to use class color
 function ReactionColorable:GetUseReactionColor(info)
-    return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".useReactionColor")
+	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".useReactionColor")
 end
 
 ns.ReactionColorable = ReactionColorable

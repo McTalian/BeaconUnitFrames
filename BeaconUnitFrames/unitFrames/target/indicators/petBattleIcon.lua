@@ -9,25 +9,25 @@ local BUFTargetIndicators = ns.BUFTarget.Indicators
 
 ---@class BUFTarget.Indicators.PetBattleIcon: BUFScaleTexture
 local BUFTargetPetBattleIcon = {
-    configPath = "unitFrames.target.petBattleIcon",
+	configPath = "unitFrames.target.petBattleIcon",
 }
 
 BUFTargetPetBattleIcon.optionsTable = {
-    type = "group",
-    handler = BUFTargetPetBattleIcon,
-    name = ns.L["Pet Battle Icon"],
-    order = BUFTargetIndicators.optionsOrder.PET_BATTLE_ICON,
-    args = {},
+	type = "group",
+	handler = BUFTargetPetBattleIcon,
+	name = ns.L["Pet Battle Icon"],
+	order = BUFTargetIndicators.optionsOrder.PET_BATTLE_ICON,
+	args = {},
 }
 
 ---@class BUFDbSchema.UF.Target.PetBattleIcon
 BUFTargetPetBattleIcon.dbDefaults = {
-    anchorPoint = "TOPRIGHT",
-    relativeTo = ns.DEFAULT,
-    relativePoint = "TOPRIGHT",
-    xOffset = -13,
-    yOffset = -52,
-    scale = 1.0,
+	anchorPoint = "TOPRIGHT",
+	relativeTo = ns.DEFAULT,
+	relativePoint = "TOPRIGHT",
+	xOffset = -13,
+	yOffset = -52,
+	scale = 1.0,
 }
 
 ns.BUFScaleTexture:ApplyMixin(BUFTargetPetBattleIcon)
@@ -39,11 +39,11 @@ ns.dbDefaults.profile.unitFrames.target.petBattleIcon = BUFTargetPetBattleIcon.d
 ns.options.args.target.args.indicators.args.petBattleIcon = BUFTargetPetBattleIcon.optionsTable
 
 function BUFTargetPetBattleIcon:RefreshConfig()
-  if not self.texture then
-      self.texture = BUFTarget.contentContextual.PetBattleIcon
-      self.defaultRelativeTo = BUFTarget.contentContextual
-  end
-  self:RefreshScaleTextureConfig()
+	if not self.texture then
+		self.texture = BUFTarget.contentContextual.PetBattleIcon
+		self.defaultRelativeTo = BUFTarget.contentContextual
+	end
+	self:RefreshScaleTextureConfig()
 end
 
 BUFTargetIndicators.PetBattleIcon = BUFTargetPetBattleIcon

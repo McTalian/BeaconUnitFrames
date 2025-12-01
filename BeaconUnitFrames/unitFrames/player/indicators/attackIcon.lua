@@ -9,25 +9,25 @@ local BUFPlayerIndicators = ns.BUFPlayer.Indicators
 
 ---@class BUFPlayer.Indicators.AttackIcon: BUFScaleTexture
 local BUFPlayerAttackIcon = {
-    configPath = "unitFrames.player.attackIcon",
+	configPath = "unitFrames.player.attackIcon",
 }
 
 BUFPlayerAttackIcon.optionsTable = {
-    type = "group",
-    handler = BUFPlayerAttackIcon,
-    name = ns.L["Attack Icon"],
-    order = BUFPlayerIndicators.optionsOrder.ATTACK_ICON,
-    args = {},
+	type = "group",
+	handler = BUFPlayerAttackIcon,
+	name = ns.L["Attack Icon"],
+	order = BUFPlayerIndicators.optionsOrder.ATTACK_ICON,
+	args = {},
 }
 
 ---@class BUFDbSchema.UF.Player.AttackIcon
 BUFPlayerAttackIcon.dbDefaults = {
-    scale = 1.0,
-    anchorPoint = "TOPLEFT",
-    relativeTo = ns.DEFAULT,
-    relativePoint = "TOPLEFT",
-    xOffset = 64,
-    yOffset = -62,
+	scale = 1.0,
+	anchorPoint = "TOPLEFT",
+	relativeTo = ns.DEFAULT,
+	relativePoint = "TOPLEFT",
+	xOffset = 64,
+	yOffset = -62,
 }
 
 ns.BUFScaleTexture:ApplyMixin(BUFPlayerAttackIcon)
@@ -39,11 +39,11 @@ ns.dbDefaults.profile.unitFrames.player.attackIcon = BUFPlayerAttackIcon.dbDefau
 ns.options.args.player.args.indicators.args.attackIcon = BUFPlayerAttackIcon.optionsTable
 
 function BUFPlayerAttackIcon:RefreshConfig()
-    if not self.texture then
-        self.texture = BUFPlayer.contentContextual.AttackIcon
-        self.defaultRelativeTo = BUFPlayer.contentContextual
-    end
-    self:RefreshScaleTextureConfig()
+	if not self.texture then
+		self.texture = BUFPlayer.contentContextual.AttackIcon
+		self.defaultRelativeTo = BUFPlayer.contentContextual
+	end
+	self:RefreshScaleTextureConfig()
 end
 
 BUFPlayerIndicators.AttackIcon = BUFPlayerAttackIcon

@@ -1,6 +1,17 @@
 {
   "wowAPI.luals.frameXML": true,
   "wowAPI.luals.configurationScope": "User",
+  "Lua.workspace.ignoreDir": [
+    ".*",
+    "*_spec/",
+    "*.lock",
+    "*.md",
+    "*.toml",
+    "*.rockspec",
+    "/LICENSE",
+    "/Makefile",
+    "/trunk"
+  ],
   "Lua.diagnostics.globals": [
     "CloseDropDownMenus",
     "UIDROPDOWNMENU_MAXLEVELS",
@@ -74,6 +85,7 @@
     "PET_TYPE_PET",
     "PET",
     "HUD_EDIT_MODE_PET_FRAME_LABEL",
-    "OPTIONS_MENU"
+    "OPTIONS_MENU",
+    "UIParent"
   ]
 }

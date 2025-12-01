@@ -19,16 +19,15 @@ ns.dbDefaults.profile.unitFrames = {}
 local UnitFrames = {}
 
 UnitFrames.optionsOrder = {
-    PLAYER = 1,
-    TARGET = 2,
-    PET = 3,
+	PLAYER = 1,
+	TARGET = 2,
+	PET = 3,
 }
 
 function UnitFrames:RefreshConfig()
-    ns.BUFPlayer:RefreshConfig()
-    ns.BUFTarget:RefreshConfig()
-    ns.BUFPet:RefreshConfig()
+	ns.BUFPlayer:RefreshConfig()
+	ns.BUFTarget:RefreshConfig()
+	ns.BUFPet:RefreshConfig()
 end
 
 ns.BUFUnitFrames = UnitFrames
-

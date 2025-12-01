@@ -9,25 +9,25 @@ local BUFPlayerIndicators = ns.BUFPlayer.Indicators
 
 ---@class BUFPlayer.Indicators.ReadyCheckIndicator: BUFScaleTexture
 local BUFPlayerReadyCheckIndicator = {
-    configPath = "unitFrames.player.readyCheckIndicator",
+	configPath = "unitFrames.player.readyCheckIndicator",
 }
 
 BUFPlayerReadyCheckIndicator.optionsTable = {
-    type = "group",
-    handler = BUFPlayerReadyCheckIndicator,
-    name = ns.L["Ready Check Indicator"],
-    order = BUFPlayerIndicators.optionsOrder.READY_CHECK_INDICATOR,
-    args = {},
+	type = "group",
+	handler = BUFPlayerReadyCheckIndicator,
+	name = ns.L["Ready Check Indicator"],
+	order = BUFPlayerIndicators.optionsOrder.READY_CHECK_INDICATOR,
+	args = {},
 }
 
 ---@class BUFDbSchema.UF.Player.ReadyCheckIndicator
 BUFPlayerReadyCheckIndicator.dbDefaults = {
-    scale = 1.0,
-    anchorPoint = "CENTER",
-    relativeTo = ns.DEFAULT,
-    relativePoint = "CENTER",
-    xOffset = 0,
-    yOffset = 0,
+	scale = 1.0,
+	anchorPoint = "CENTER",
+	relativeTo = ns.DEFAULT,
+	relativePoint = "CENTER",
+	xOffset = 0,
+	yOffset = 0,
 }
 
 ns.BUFScaleTexture:ApplyMixin(BUFPlayerReadyCheckIndicator)
@@ -39,19 +39,19 @@ ns.dbDefaults.profile.unitFrames.player.readyCheckIndicator = BUFPlayerReadyChec
 ns.options.args.player.args.indicators.args.readyCheckIndicator = BUFPlayerReadyCheckIndicator.optionsTable
 
 function BUFPlayerReadyCheckIndicator:ToggleDemoMode()
-    self:_ToggleDemoMode(self.texture)
-    if self.demoMode then
-        self.texture.Texture:SetAtlas(READY_CHECK_READY_TEXTURE)
-    end
+	self:_ToggleDemoMode(self.texture)
+	if self.demoMode then
+		self.texture.Texture:SetAtlas(READY_CHECK_READY_TEXTURE)
+	end
 end
 
 function BUFPlayerReadyCheckIndicator:RefreshConfig()
-    if not self.initialized then
-        self.initialized = true
-        self.defaultRelativeTo = BUFPlayer.contentContextual
-        self.texture = BUFPlayer.contentContextual.ReadyCheck
-    end
-    self:RefreshScaleTextureConfig()
+	if not self.initialized then
+		self.initialized = true
+		self.defaultRelativeTo = BUFPlayer.contentContextual
+		self.texture = BUFPlayer.contentContextual.ReadyCheck
+	end
+	self:RefreshScaleTextureConfig()
 end
 
 BUFPlayerIndicators.ReadyCheckIndicator = BUFPlayerReadyCheckIndicator

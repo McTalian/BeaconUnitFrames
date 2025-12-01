@@ -1,9 +1,6 @@
 --@strip-comments@
----@type string, table
-local _, ns = ...
-
 ---@class BUFNamespace
-ns = ns
+local ns = select(2, ...)
 
 local L = LibStub("AceLocale-3.0"):NewLocale(ns.localeName, "enGB")
 if not L then
@@ -101,7 +98,6 @@ end
 -- L["Scale"] = "Scale"
 -- L["ScaleDesc"] = "Adjust the scale of the selected element."
 -- L["SeparateGuideStyle"] = "Separate Guide Style"
--- L["SeparateGuideStyleDesc"] = "When enabled, the guide icon will have its own style settings separate from the leader icon."
 -- L["Show/Hide Minimap Icon"] = "Show/Hide Minimap Icon"
 -- L["Sizing"] = "Sizing"
 -- L["SquareShape"] = "Square"
@@ -128,9 +124,7 @@ end
 -- L["UseBackgroundTextureDesc"] = "When enabled, the selected background texture will be applied to the health bar."
 -- L["UseClassColorDesc"] = "When enabled, the health bar will use the player's class color."
 -- L["UseCustomColorDesc"] = "When enabled, a custom color can be set for the health bar."
--- L["UseFontObjectsDesc"] = "If enabled, the font face, size, and flags options will be disabled and the selected font object will be used instead."
 -- L["UsePowerColorDesc"] = "When enabled, the power bar will use the player's power type color."
--- L["UseReactionColorDesc"] = "When enabled, the bar will use the unit's reaction color based on friendliness, if Class Color is also selected it will take precedence for players."
 -- L["UseStatusBarTextureDesc"] = "When enabled, the selected status bar texture will be applied to the health bar."
 -- L["Vertical Justification"] = "Vertical Justification"
 -- L["X Offset"] = "X Offset"

@@ -5,19 +5,17 @@ local ns = select(2, ...)
 --- @param optionsTable table
 --- @param _orderMap BUFOptionsOrder?
 function ns.AddFontStringOptions(optionsTable, _orderMap)
-    local orderMap = _orderMap or ns.defaultOrderMap
-    ns.AddPositionableOptions(optionsTable, orderMap)
-    ns.AddSizableOptions(optionsTable, orderMap)
-    ns.AddFontOptions(optionsTable, orderMap)
-    ns.AddJustifiableOptions(optionsTable, orderMap)
-    ns.AddDemoOptions(optionsTable, orderMap)
+	local orderMap = _orderMap or ns.defaultOrderMap
+	ns.AddPositionableOptions(optionsTable, orderMap)
+	ns.AddSizableOptions(optionsTable, orderMap)
+	ns.AddFontOptions(optionsTable, orderMap)
+	ns.AddJustifiableOptions(optionsTable, orderMap)
+	ns.AddDemoOptions(optionsTable, orderMap)
 end
 
 ---@class FontStringHandler
 ---@field RefreshFontStringConfig fun(self: BUFFontString)
 ---@field fontString FontString
----@field defaultRelativeTo string?
----@field defaultRelativePoint string?
 ---@field demoText string?
 
 ---@class BUFFontString: FontStringHandler, Justifiable, Fontable, Sizable, Positionable, Sizable, Demoable
@@ -27,50 +25,50 @@ local BUFFontString = {}
 ---@param self BUFFontString
 ---@param handler BUFConfigHandler
 function BUFFontString:ApplyMixin(handler)
-    ns.Mixin(handler, ns.Demoable, ns.Sizable, ns.Positionable, ns.Justifiable, ns.Fontable, self)
+	ns.Mixin(handler, ns.Demoable, ns.Sizable, ns.Positionable, ns.Justifiable, ns.Fontable, self)
 
-    if handler.optionsTable then
-        ns.AddFontStringOptions(handler.optionsTable.args, handler.orderMap)
-    end
+	if handler.optionsTable then
+		ns.AddFontStringOptions(handler.optionsTable.args, handler.optionsOrder)
+	end
 end
 
 function BUFFontString:ToggleDemoMode()
-    self:_ToggleDemoMode(self.fontString)
-    if self.demoText then
-        self.fontString:SetText(self.demoText)
-    end
+	self:_ToggleDemoMode(self.fontString)
+	if self.demoText then
+		self.fontString:SetText(self.demoText)
+	end
 end
 
 function BUFFontString:SetSize()
-    self:_SetSize(self.fontString)
+	self:_SetSize(self.fontString)
 end
 
 function BUFFontString:SetPosition()
-    self:_SetPosition(self.fontString)
+	self:_SetPosition(self.fontString)
 end
 
 function BUFFontString:SetFont()
-    self:_SetFont(self.fontString)
+	self:_SetFont(self.fontString)
 end
 
 function BUFFontString:UpdateFontColor()
-    self:_UpdateFontColor(self.fontString)
+	self:_UpdateFontColor(self.fontString)
 end
 
 function BUFFontString:SetFontShadow()
-    self:_SetFontShadow(self.fontString)
+	self:_SetFontShadow(self.fontString)
 end
 
 function BUFFontString:UpdateJustification()
-    self:_UpdateJustification(self.fontString)
+	self:_UpdateJustification(self.fontString)
 end
 
 function BUFFontString:RefreshFontStringConfig()
-    self:SetPosition()
-    self:SetSize()
-    self:SetFont()
-    self:SetFontShadow()
-    self:UpdateJustification()
+	self:SetPosition()
+	self:SetSize()
+	self:SetFont()
+	self:SetFontShadow()
+	self:UpdateJustification()
 end
 
 ns.BUFFontString = BUFFontString

@@ -1,29 +1,27 @@
 ---@class BUFNamespace
 local ns = select(2, ...)
 
-ns.DbManager = {
-    dbName = "BUFDB", -- Must match the TOC file
+---@class DbManager
+local DbManager = {
+	dbName = "BUFDB", -- Must match the TOC file
 }
 
 ---@class BUFDbSchema: AceDB.Schema
 ns.dbDefaults = {
-    global = {
-        lastVersionLoaded = "",
-        minimap = {
-            hide = true,
-        },
-		restoreCvars = {}
-    },
-    profile = {},
+	global = {
+		lastVersionLoaded = "",
+		minimap = {
+			hide = true,
+		},
+		restoreCvars = {},
+	},
+	profile = {},
 }
 
-function ns.DbManager:Initialize()
-    ---@class BUFDB: AceDBObject-3.0, BUFDbSchema
-    ns.db = LibStub("AceDB-3.0"):New(self.dbName, ns.dbDefaults, true)
+function DbManager:Initialize()
+	---@class BUFDB: AceDBObject-3.0, BUFDbSchema
+	ns.db = LibStub("AceDB-3.0"):New(self.dbName, ns.dbDefaults, true)
 end
-
----@class DbUtils
-local DbUtils = {}
 
 -- Helper function to interpret a key part (convert to number if numeric)
 local function interpretKey(key)
@@ -31,7 +29,10 @@ local function interpretKey(key)
 	return num ~= nil and num or key -- Return number if key is numeric, otherwise string
 end
 
--- Helper function to get or set a nested table value by path
+---@class DbUtils
+local DbUtils = {}
+
+-- Helper function to get a nested table value by path
 function DbUtils.getPath(db, path, errorIfMissing)
 	local current = db
 	for part in path:gmatch("[^.]+") do
@@ -46,6 +47,7 @@ function DbUtils.getPath(db, path, errorIfMissing)
 	return current
 end
 
+-- Helper function to set a nested table value by path
 function DbUtils.setPath(db, path, value)
 	local parts = {}
 	for part in path:gmatch("[^.]+") do
@@ -66,6 +68,7 @@ function DbUtils.setPath(db, path, value)
 	current[interpretKey(lastKey)] = value
 end
 
+-- Helper function to clear a nested table value by path
 function DbUtils.clearPath(db, path)
 	local parts = {}
 	for part in path:gmatch("[^.]+") do
@@ -86,3 +89,4 @@ function DbUtils.clearPath(db, path)
 end
 
 ns.DbUtils = DbUtils
+ns.DbManager = DbManager

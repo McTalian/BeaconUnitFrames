@@ -5,17 +5,15 @@ local ns = select(2, ...)
 --- @param optionsTable table
 --- @param _orderMap BUFOptionsOrder?
 function ns.AddTextureOptions(optionsTable, _orderMap)
-    local orderMap = _orderMap or ns.defaultOrderMap
-    ns.AddPositionableOptions(optionsTable, orderMap)
-    ns.AddAtlasSizableOptions(optionsTable, ns.AtlasSizableFlags.SIZABLE + ns.AtlasSizableFlags.SCALABLE, orderMap)
-    ns.AddDemoOptions(optionsTable, orderMap)
+	local orderMap = _orderMap or ns.defaultOrderMap
+	ns.AddPositionableOptions(optionsTable, orderMap)
+	ns.AddAtlasSizableOptions(optionsTable, ns.AtlasSizableFlags.SIZABLE + ns.AtlasSizableFlags.SCALABLE, orderMap)
+	ns.AddDemoOptions(optionsTable, orderMap)
 end
 
 ---@class TextureHandler
 ---@field RefreshTextureConfig fun(self: BUFTexture)
 ---@field texture Texture
----@field defaultRelativeTo string?
----@field defaultRelativePoint string?
 
 ---@class BUFTexture: TextureHandler, AtlasSizable, Positionable, Demoable
 local BUFTexture = {}
@@ -24,34 +22,34 @@ local BUFTexture = {}
 --- @param self BUFTexture
 --- @param handler BUFConfigHandler
 function BUFTexture:ApplyMixin(handler)
-    ns.AtlasSizable:ApplyMixin(handler, ns.AtlasSizableFlags.SIZABLE + ns.AtlasSizableFlags.SCALABLE)
-    ns.Mixin(handler, ns.Demoable, ns.Positionable, self)
+	ns.AtlasSizable:ApplyMixin(handler, ns.AtlasSizableFlags.SIZABLE + ns.AtlasSizableFlags.SCALABLE)
+	ns.Mixin(handler, ns.Demoable, ns.Positionable, self)
 
-    if handler.optionsTable then
-        ns.AddTextureOptions(handler.optionsTable.args, handler.orderMap)
-    end
+	if handler.optionsTable then
+		ns.AddTextureOptions(handler.optionsTable.args, handler.optionsOrder)
+	end
 end
 
 function BUFTexture:ToggleDemoMode()
-    self:_ToggleDemoMode(self.texture)
+	self:_ToggleDemoMode(self.texture)
 end
 
 function BUFTexture:SetSize()
-    self:_SetSize(self.texture)
+	self:_SetSize(self.texture)
 end
 
 function BUFTexture:SetPosition()
-    self:_SetPosition(self.texture)
+	self:_SetPosition(self.texture)
 end
 
 function BUFTexture:SetScaleFactor()
-    self:_SetScaleFactor(self.texture)
+	self:_SetScaleFactor(self.texture)
 end
 
 function BUFTexture:RefreshTextureConfig()
-    self:SetSize()
-    self:SetPosition()
-    self:SetScaleFactor()
+	self:SetSize()
+	self:SetPosition()
+	self:SetScaleFactor()
 end
 
 ns.BUFTexture = BUFTexture

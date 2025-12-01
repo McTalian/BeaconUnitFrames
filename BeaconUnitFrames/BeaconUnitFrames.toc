@@ -23,15 +23,10 @@
 ## X-Wago-ID: 
 
 #@no-lib-strip@
-embeds.xml
+libs/index.xml
 #@end-no-lib-strip@
 
-core.lua
-
-locale/locales.xml
-db.lua
+core/index.xml
+locale/index.xml
 options/index.xml
-
-contextMenu.lua
-
 unitFrames/index.xml

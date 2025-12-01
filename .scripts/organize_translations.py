@@ -11,7 +11,7 @@ locale_dir = os.path.join(base_dir, "locale")
 
 
 def parse_locales_xml(xml_file):
-    """Parse locales.xml to extract Lua file names"""
+    """Parse locale/index.xml to extract Lua file names"""
     tree = ET.parse(xml_file)
     root = tree.getroot()
     namespace = {"ns": root.tag.split("}")[0].strip("{")}
@@ -187,7 +187,7 @@ def process_locale_file(reference_regions, locale_file_path):
 
 
 def main():
-    locales_xml = f"{locale_dir}/locales.xml"
+    locales_xml = f"{locale_dir}/index.xml"
     locale_files = parse_locales_xml(locales_xml)
 
     # Reference locale file (enUS.lua)

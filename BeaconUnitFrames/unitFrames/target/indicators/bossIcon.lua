@@ -9,25 +9,25 @@ local BUFTargetIndicators = ns.BUFTarget.Indicators
 
 ---@class BUFTarget.Indicators.BossIcon: BUFScaleTexture
 local BUFTargetBossIcon = {
-    configPath = "unitFrames.target.bossIcon",
+	configPath = "unitFrames.target.bossIcon",
 }
 
 BUFTargetBossIcon.optionsTable = {
-    type = "group",
-    handler = BUFTargetBossIcon,
-    name = ns.L["Boss Icon"],
-    order = BUFTargetIndicators.optionsOrder.BOSS_ICON,
-    args = {},
+	type = "group",
+	handler = BUFTargetBossIcon,
+	name = ns.L["Boss Icon"],
+	order = BUFTargetIndicators.optionsOrder.BOSS_ICON,
+	args = {},
 }
 
 ---@class BUFDbSchema.UF.Target.BossIcon
 BUFTargetBossIcon.dbDefaults = {
-    anchorPoint = "CENTER",
-    relativeTo = ns.DEFAULT,
-    relativePoint = "BOTTOM",
-    xOffset = -26,
-    yOffset = -50,
-    scale = 1.0,
+	anchorPoint = "CENTER",
+	relativeTo = ns.DEFAULT,
+	relativePoint = "BOTTOM",
+	xOffset = 0,
+	yOffset = 0,
+	scale = 1.0,
 }
 
 ns.BUFScaleTexture:ApplyMixin(BUFTargetBossIcon)
@@ -39,11 +39,11 @@ ns.dbDefaults.profile.unitFrames.target.bossIcon = BUFTargetBossIcon.dbDefaults
 ns.options.args.target.args.indicators.args.bossIcon = BUFTargetBossIcon.optionsTable
 
 function BUFTargetBossIcon:RefreshConfig()
-  if not self.texture then
-      self.texture = BUFTarget.contentContextual.BossIcon
-      self.defaultRelativeTo = BUFTarget.container.Portrait
-  end
-  self:RefreshScaleTextureConfig()
+	if not self.texture then
+		self.texture = BUFTarget.contentContextual.BossIcon
+		self.defaultRelativeTo = BUFTarget.container.Portrait
+	end
+	self:RefreshScaleTextureConfig()
 end
 
 BUFTargetIndicators.BossIcon = BUFTargetBossIcon

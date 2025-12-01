@@ -6,29 +6,27 @@ local ns = select(2, ...)
 --- @param _orderMap? BUFOptionsOrder
 --- @param handler? StatusBarForeground
 function ns.AddStatusBarForegroundOptions(optionsTable, _orderMap, handler)
-    local orderMap = _orderMap or ns.defaultOrderMap
-    ns.AddColorOptions(optionsTable, orderMap)
-    ns.AddStatusBarTextureOptions(optionsTable, orderMap)
+	local orderMap = _orderMap or ns.defaultOrderMap
+	ns.AddColorOptions(optionsTable, orderMap)
+	ns.AddStatusBarTextureOptions(optionsTable, orderMap)
 
-    if handler then
-        if handler.classColorable then
-            ns.AddClassColorOptions(optionsTable, orderMap)
-        end
-        if handler.reactionColorable then
-            ns.AddReactionColorOptions(optionsTable, orderMap)
-        end
-        if handler.powerColorable then
-            ns.AddPowerColorOptions(optionsTable, orderMap)
-        end
-    end
+	if handler then
+		if handler.classColorable then
+			ns.AddClassColorOptions(optionsTable, orderMap)
+		end
+		if handler.reactionColorable then
+			ns.AddReactionColorOptions(optionsTable, orderMap)
+		end
+		if handler.powerColorable then
+			ns.AddPowerColorOptions(optionsTable, orderMap)
+		end
+	end
 end
 
 ---@class StatusBarForegroundHandler
 ---@field unit string
 ---@field statusBar StatusBar
 ---@field defaultStatusBarTexture? string
----@field statusBarMask? MaskTexture
----@field defaultStatusBarMaskTexture? string
 ---@field RefreshColor fun(self: StatusBarForeground)
 ---@field RefreshStatusBarTexture fun(self: StatusBarForeground)
 
@@ -42,118 +40,111 @@ local StatusBarForeground = {}
 --- @param reactionColorable? boolean Whether to apply ReactionColorable mixin
 --- @param powerColorable? boolean Whether to apply PowerColorable mixin
 function StatusBarForeground:ApplyMixin(handler, classColorable, reactionColorable, powerColorable)
-    ns.Mixin(handler, ns.Colorable, ns.StatusBarTexturable)
-    if classColorable then
-        self.classColorable = true
-        ns.Mixin(handler, ns.ClassColorable)
-    else
-        self.classColorable = false
-    end
-    if reactionColorable then
-        self.reactionColorable = true
-        ns.Mixin(handler, ns.ReactionColorable)
-    else
-        self.reactionColorable = false
-    end
-    if powerColorable then
-        self.powerColorable = true
-        ns.Mixin(handler, ns.PowerColorable)
-    else
-        self.powerColorable = false
-    end
-    ns.Mixin(handler, self)
+	ns.Mixin(handler, ns.Colorable, ns.StatusBarTexturable)
+	if classColorable then
+		self.classColorable = true
+		ns.Mixin(handler, ns.ClassColorable)
+	else
+		self.classColorable = false
+	end
+	if reactionColorable then
+		self.reactionColorable = true
+		ns.Mixin(handler, ns.ReactionColorable)
+	else
+		self.reactionColorable = false
+	end
+	if powerColorable then
+		self.powerColorable = true
+		ns.Mixin(handler, ns.PowerColorable)
+	else
+		self.powerColorable = false
+	end
+	ns.Mixin(handler, self)
 
-    ---@type StatusBarForeground
-    handler = handler --[[@as StatusBarForeground]]
+	---@type StatusBarForeground
+	handler = handler --[[@as StatusBarForeground]]
 
-    if handler.optionsTable then
-        ns.AddStatusBarForegroundOptions(handler.optionsTable.args, handler.orderMap, handler)
-    end
+	if handler.optionsTable then
+		ns.AddStatusBarForegroundOptions(handler.optionsTable.args, handler.optionsOrder, handler)
+	end
 end
 
 function StatusBarForeground:RefreshStatusBarForegroundConfig()
-    self:RefreshStatusBarTexture()
-    self:RefreshColor()
+	self:RefreshStatusBarTexture()
+	self:RefreshColor()
 end
 
 function StatusBarForeground:RefreshStatusBarTexture()
-    local useCustomTexture = self:GetUseStatusBarTexture()
-    if useCustomTexture then
-        local textureName = self:GetStatusBarTexture() or "Blizzard"
-        local texturePath = ns.lsm:Fetch(ns.lsm.MediaType.STATUSBAR, textureName)
-        if not texturePath then
-            texturePath = ns.lsm:Fetch(ns.lsm.MediaType.STATUSBAR, "Blizzard") or "Interface\\Buttons\\WHITE8x8"
-        end
-        self.statusBar:SetStatusBarTexture(texturePath)
-        if self.statusBarMask then
-            self.statusBarMask:Hide()
-        end
-    else
-        if self.defaultStatusBarTexture then
-            self.statusBar:SetStatusBarTexture(self.defaultStatusBarTexture)
-        end
-        if self.statusBarMask and self.defaultStatusBarMaskTexture then
-            self.statusBarMask:Show()
-            self.statusBarMask:SetAtlas(self.defaultStatusBarMaskTexture, false)
-        end
-    end
+	local useCustomTexture = self:GetUseStatusBarTexture()
+	if useCustomTexture then
+		local textureName = self:GetStatusBarTexture() or "Blizzard"
+		local texturePath = ns.lsm:Fetch(ns.lsm.MediaType.STATUSBAR, textureName)
+		if not texturePath then
+			texturePath = ns.lsm:Fetch(ns.lsm.MediaType.STATUSBAR, "Blizzard") or "Interface\\Buttons\\WHITE8x8"
+		end
+		self.statusBar:SetStatusBarTexture(texturePath)
+	else
+		if self.defaultStatusBarTexture then
+			self.statusBar:SetStatusBarTexture(self.defaultStatusBarTexture)
+		end
+	end
 end
 
 function StatusBarForeground:_GetEffectiveUnit()
-    local trackedUnit = self.unit
-    if UnitInVehicle("player") then
-        if self.unit == "player" then
-            trackedUnit = "vehicle"
-        elseif self.unit == "pet" then
-            trackedUnit = "player"
-        end
-    end
-    return trackedUnit
+	local trackedUnit = self.unit
+	if UnitInVehicle("player") then
+		if self.unit == "player" then
+			trackedUnit = "vehicle"
+		elseif self.unit == "pet" then
+			trackedUnit = "player"
+		end
+	end
+	return trackedUnit
 end
 
 function StatusBarForeground:_GetOptionsBasedColor()
-    local useClassColor = self.classColorable and self:GetUseClassColor()
-    local useReactionColor = self.reactionColorable and self:GetUseReactionColor()
-    local usePowerColor = self.powerColorable and self:GetUsePowerColor()
-    local useCustomColor = self:GetUseCustomColor()
+	local useClassColor = self.classColorable and self:GetUseClassColor()
+	local useReactionColor = self.reactionColorable and self:GetUseReactionColor()
+	local usePowerColor = self.powerColorable and self:GetUsePowerColor()
+	local useCustomColor = self:GetUseCustomColor()
 
-    local trackedUnit = self:_GetEffectiveUnit()
-    local r, g, b, a = nil, nil, nil, 1
-    if useCustomColor then
-        r, g, b, a = self:GetCustomColor()
-    elseif useClassColor and (not useReactionColor or UnitPlayerControlled(self.unit)) then
-        local _, class = UnitClass(trackedUnit)
-        r, g, b = GetClassColor(class)
-    elseif useReactionColor then
-        r, g, b = GameTooltip_UnitColor(trackedUnit)
-    elseif usePowerColor then
-        if trackedUnit == nil or not UnitExists(trackedUnit) then
-            return
-        end
-        local powerType, powerToken, rX, gY, bZ = UnitPowerType(trackedUnit)
-        local info = PowerBarColor[powerToken]
-        if info then
-            r, g, b = info.r, info.g, info.b
-        elseif not rX then
-            local info = PowerBarColor[powerType]
-            if info then
-                r, g, b = info.r, info.g, info.b
-            end
-        else
-            r, g, b = rX, gY, bZ
-        end
-    end
+	local trackedUnit = self:_GetEffectiveUnit()
+	local r, g, b, a = nil, nil, nil, 1
+	if useCustomColor then
+		r, g, b, a = self:GetCustomColor()
+	elseif useClassColor and (not useReactionColor or UnitPlayerControlled(self.unit)) then
+		local _, class = UnitClass(trackedUnit)
+		r, g, b = GetClassColor(class)
+	elseif useReactionColor then
+		r, g, b = GameTooltip_UnitColor(trackedUnit)
+	elseif usePowerColor then
+		if trackedUnit == nil or not UnitExists(trackedUnit) then
+			return
+		end
+		local powerType, powerToken, rX, gY, bZ = UnitPowerType(trackedUnit)
+		local info = PowerBarColor[powerToken]
+		if info then
+			r, g, b = info.r, info.g, info.b
+		elseif not rX then
+			local info = PowerBarColor[powerType]
+			if info then
+				r, g, b = info.r, info.g, info.b
+			end
+		else
+			r, g, b = rX, gY, bZ
+		end
+	end
 
-    return r, g, b, a
+	return r, g, b, a
 end
 
 function StatusBarForeground:RefreshColor()
-    local r, g, b, a = self:_GetOptionsBasedColor()
-    a = a or 1.0
-    if not r or not g or not b then
-        return
-    end
-    self.statusBar:SetStatusBarColor(r, g, b, a)
+	local r, g, b, a = self:_GetOptionsBasedColor()
+	a = a or 1.0
+	if not r or not g or not b then
+		return
+	end
+	self.statusBar:SetStatusBarColor(r, g, b, a)
 end
 
 ns.StatusBarForeground = StatusBarForeground

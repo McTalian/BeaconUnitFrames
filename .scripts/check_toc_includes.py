@@ -1,7 +1,5 @@
 import argparse
 import os
-import re
-from collections import OrderedDict
 
 import defusedxml.ElementTree as ET
 
@@ -14,7 +12,7 @@ def get_all_lua_files(base_dir, ignore_files):
     """Get all Lua files in the addon directory, excluding test directories"""
     lua_files = set()
 
-    for root, dirs, files in os.walk(base_dir):
+    for root, _dirs, files in os.walk(base_dir):
         # Skip test directories
         if "_spec" in root or "test" in root.lower():
             continue
@@ -34,7 +32,7 @@ def get_all_lua_files(base_dir, ignore_files):
     return lua_files
 
 
-def parse_toc_file(toc_path):
+def parse_toc_file(toc_path, ignore_files):
     """Parse TOC file and return list of files that are included"""
     included_files = []
 
@@ -47,6 +45,10 @@ def parse_toc_file(toc_path):
 
             # Skip build directives
             if line.startswith("#@"):
+                continue
+
+            if line in ignore_files:
+                print(f"⚠️  Ignoring TOC include: {line}")
                 continue
 
             included_files.append(line)
@@ -139,7 +141,7 @@ def walk_includes(
     full_path = os.path.join(base_dir, file_path)
 
     if not os.path.exists(full_path):
-        print(f"Warning: File not found: {file_path}")
+        print(f"⚠️  Warning: File not found: {file_path}")
         return
 
     if file_path.endswith(".lua"):
@@ -190,16 +192,11 @@ def check_toc_includes(ignore_files=None):
 
     # Get all Lua files in the addon directory
     all_lua_files = get_all_lua_files(base_dir, ignore_files)
-    print(f"Found {len(all_lua_files)} Lua files in addon directory")
+    print(f"\nℹ️  Found {len(all_lua_files)} Lua files (after ignores) in addon directory")
 
     # Parse TOC file to get initial includes
-    toc_includes = parse_toc_file(toc_path)
-    print(f"Found {len(toc_includes)} includes in TOC file")
-
-    if ignore_files:
-        print(
-            f"\nℹ️  Ignoring {len(ignore_files)} files:\n  {'\n  '.join(sorted(ignore_files))}"
-        )
+    toc_includes = parse_toc_file(toc_path, ignore_files)
+    print(f"\nℹ️  Found {len(toc_includes)} includes (after ignores) in TOC file")
 
     # Track included Lua files
     included_lua_files = set()
@@ -208,7 +205,7 @@ def check_toc_includes(ignore_files=None):
     for include_file in toc_includes:
         walk_includes(base_dir, include_file, included_lua_files, ignore_files)
 
-    print(f"Found {len(included_lua_files)} Lua files included in TOC tree")
+    print(f"\nℹ️  Found {len(included_lua_files)} / {len(all_lua_files)} Lua files included in TOC tree")
 
     # Find missing files (Lua files not included in TOC tree)
     missing_files = all_lua_files - included_lua_files
@@ -231,7 +228,7 @@ def check_toc_includes(ignore_files=None):
         print("\n✅ All Lua files are properly included in the TOC tree!")
 
     # Print summary
-    print(f"\nSummary:")
+    print("\nSummary:")
     print(f"  Total Lua files in addon: {len(all_lua_files)}")
     print(f"  Lua files included in TOC: {len(included_lua_files)}")
     print(f"  Missing from TOC: {len(missing_files)}")
@@ -272,6 +269,11 @@ if __name__ == "__main__":
     for xml_file in args.ignore_files:
         normalized_path = xml_file.replace("\\", "/")
         ignore_files.add(normalized_path)
+
+    if ignore_files:
+        print(
+            f"\nℹ️  Ignoring {len(ignore_files)} files:\n  {'\n  '.join(sorted(ignore_files))}\n"
+        )
 
     success = check_toc_includes(ignore_files)
     exit(0 if success else 1)

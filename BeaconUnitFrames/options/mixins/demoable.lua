@@ -5,15 +5,15 @@ local ns = select(2, ...)
 --- @param optionsTable table
 --- @param _orderMap BUFOptionsOrder?
 function ns.AddDemoOptions(optionsTable, _orderMap)
-    local orderMap = _orderMap or ns.defaultOrderMap
-    optionsTable.enable = {
-        type = "execute",
-        name = ns.L["Demo"],
-        desc = ns.L["DemoDesc"],
-        width = "full",
-        func = "ToggleDemoMode",
-        order = orderMap.DEMO_MODE,
-    }
+	local orderMap = _orderMap or ns.defaultOrderMap
+	optionsTable.enable = {
+		type = "execute",
+		name = ns.L["Demo"],
+		desc = ns.L["DemoDesc"],
+		width = "full",
+		func = "ToggleDemoMode",
+		order = orderMap.DEMO_MODE,
+	}
 end
 
 ---@class DemoableHandler: BUFConfigHandler
@@ -25,13 +25,13 @@ end
 local Demoable = {}
 
 function Demoable:_ToggleDemoMode(showable)
-    if self.demoMode then
-        self.demoMode = false
-        showable:Hide()
-    else
-        self.demoMode = true
-        showable:Show()
-    end
+	if self.demoMode then
+		self.demoMode = false
+		showable:Hide()
+	else
+		self.demoMode = true
+		showable:Show()
+	end
 end
 
 ns.Demoable = Demoable

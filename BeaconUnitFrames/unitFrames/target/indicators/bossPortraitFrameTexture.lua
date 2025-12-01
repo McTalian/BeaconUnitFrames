@@ -9,25 +9,25 @@ local BUFTargetIndicators = ns.BUFTarget.Indicators
 
 ---@class BUFTarget.Indicators.BossPortraitFrameTexture: BUFScaleTexture
 local BUFTargetBossPortraitFrameTexture = {
-    configPath = "unitFrames.target.bossPortraitFrameTexture",
+	configPath = "unitFrames.target.bossPortraitFrameTexture",
 }
 
 BUFTargetBossPortraitFrameTexture.optionsTable = {
-    type = "group",
-    handler = BUFTargetBossPortraitFrameTexture,
-    name = ns.L["Boss Portrait Frame Texture"],
-    order = BUFTargetIndicators.optionsOrder.BOSS_PORTRAIT_FRAME_TEXTURE,
-    args = {},
+	type = "group",
+	handler = BUFTargetBossPortraitFrameTexture,
+	name = ns.L["Boss Portrait Frame Texture"],
+	order = BUFTargetIndicators.optionsOrder.BOSS_PORTRAIT_FRAME_TEXTURE,
+	args = {},
 }
 
 ---@class BUFDbSchema.UF.Target.BossPortraitFrameTexture
 BUFTargetBossPortraitFrameTexture.dbDefaults = {
-    anchorPoint = "TOPRIGHT",
-    relativeTo = ns.DEFAULT,
-    relativePoint = "TOPRIGHT",
-    xOffset = -11,
-    yOffset = -8,
-    scale = 1.0,
+	anchorPoint = "TOPRIGHT",
+	relativeTo = ns.DEFAULT,
+	relativePoint = "TOPRIGHT",
+	xOffset = -11,
+	yOffset = -8,
+	scale = 1.0,
 }
 
 ns.BUFScaleTexture:ApplyMixin(BUFTargetBossPortraitFrameTexture)
@@ -39,11 +39,11 @@ ns.dbDefaults.profile.unitFrames.target.bossPortraitFrameTexture = BUFTargetBoss
 ns.options.args.target.args.indicators.args.bossPortraitFrameTexture = BUFTargetBossPortraitFrameTexture.optionsTable
 
 function BUFTargetBossPortraitFrameTexture:RefreshConfig()
-  if not self.texture then
-      self.texture = BUFTarget.container.BossPortraitFrameTexture
-      self.defaultRelativeTo = BUFTarget.container
-  end
-  self:RefreshScaleTextureConfig()
+	if not self.texture then
+		self.texture = BUFTarget.container.BossPortraitFrameTexture
+		self.defaultRelativeTo = BUFTarget.container
+	end
+	self:RefreshScaleTextureConfig()
 end
 
 BUFTargetIndicators.BossPortraitFrameTexture = BUFTargetBossPortraitFrameTexture

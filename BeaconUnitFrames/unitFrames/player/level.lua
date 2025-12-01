@@ -6,15 +6,15 @@ local BUFPlayer = ns.BUFPlayer
 
 ---@class BUFPlayer.Level: BUFFontString
 local BUFPlayerLevel = {
-    configPath = "unitFrames.player.level",
+	configPath = "unitFrames.player.level",
 }
 
 BUFPlayerLevel.optionsTable = {
-    type = "group",
-    handler = BUFPlayerLevel,
-    name = LEVEL,
-    order = BUFPlayer.optionsOrder.LEVEL,
-    args = {}
+	type = "group",
+	handler = BUFPlayerLevel,
+	name = LEVEL,
+	order = BUFPlayer.optionsOrder.LEVEL,
+	args = {},
 }
 
 ns.BUFFontString:ApplyMixin(BUFPlayerLevel)
@@ -26,17 +26,17 @@ ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.playe
 
 ---@class BUFDbSchema.UF.Player.Level
 ns.dbDefaults.profile.unitFrames.player.level = {
-    anchorPoint = "TOPRIGHT",
-    relativeTo = ns.DEFAULT,
-    relativePoint = ns.DEFAULT,
-    xOffset = -24.5,
-    yOffset = -28,
-    useFontObjects = true,
-    fontObject = "GameFontNormalSmall",
-    fontColor = { NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, NORMAL_FONT_COLOR.a },
-    fontFace = "Friz Quadrata TT",
-    fontSize = 12,
-    fontFlags = {
+	anchorPoint = "TOPRIGHT",
+	relativeTo = ns.DEFAULT,
+	relativePoint = "TOPRIGHT",
+	xOffset = -24.5,
+	yOffset = -28,
+	useFontObjects = true,
+	fontObject = "GameFontNormalSmall",
+	fontColor = { NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, NORMAL_FONT_COLOR.a },
+	fontFace = "Friz Quadrata TT",
+	fontSize = 12,
+	fontFlags = {
 		[ns.FontFlags.OUTLINE] = false,
 		[ns.FontFlags.THICKOUTLINE] = false,
 		[ns.FontFlags.MONOCHROME] = false,
@@ -49,20 +49,19 @@ ns.dbDefaults.profile.unitFrames.player.level = {
 ns.options.args.player.args.level = BUFPlayerLevel.optionsTable
 
 function BUFPlayerLevel:RefreshConfig()
-    if not self.initialized then
-        self.initialized = true
+	if not self.initialized then
+		self.initialized = true
 
-        self.fontString = PlayerLevelText
-        self.defaultRelativeTo = BUFPlayer.contentMain
-        self.defaultRelativePoint = "TOPRIGHT"
+		self.fontString = PlayerLevelText
+		self.defaultRelativeTo = BUFPlayer.contentMain
 
-        local player = BUFPlayer
+		local player = BUFPlayer
 
-        if not player:IsHooked("PlayerFrame_UpdateLevel") then
-            player:SecureHook("PlayerFrame_UpdateLevel", function(f)
-                self:UpdateFontColor()
-            end)
-        end
-    end
-    self:RefreshFontStringConfig()
+		if not player:IsHooked("PlayerFrame_UpdateLevel") then
+			player:SecureHook("PlayerFrame_UpdateLevel", function(f)
+				self:UpdateFontColor()
+			end)
+		end
+	end
+	self:RefreshFontStringConfig()
 end

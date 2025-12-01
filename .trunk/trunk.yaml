@@ -18,12 +18,12 @@ runtimes:
 lint:
   enabled:
     - bandit@1.8.6
-    - black@25.11.0
     - checkov@3.2.493
     - git-diff-check
     - isort@7.0.0
     - markdownlint@0.45.0
     - prettier@3.6.2
+    - stylua@2.3.1
     - ruff@0.14.5
     - taplo@0.10.0
     - trufflehog@3.91.0
@@ -41,6 +41,3 @@ actions:
         - git_hooks: [pre-commit]
 
       run: uv run .scripts/organize_translations.py
-tools:
-  enabled:
-    - stylua@2.3.1
