@@ -39,3 +39,6 @@ check_untracked_files:
 
 i18n_check:
 	@uv run .scripts/check_for_missing_locale_keys.py
+
+i18n_fmt:
+	@uv run .scripts/organize_translations.py

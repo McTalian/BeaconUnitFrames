@@ -75,5 +75,4 @@ function BUFPetPower:RefreshConfig()
         self.positionMask = false
     end
     self:RefreshStatusBarConfig()
-    -- self.backgroundHandler:RefreshConfig()
 end

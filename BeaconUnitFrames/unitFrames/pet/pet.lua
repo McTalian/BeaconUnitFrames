@@ -78,23 +78,18 @@ function BUFPet:RefreshConfig(_eName)
             self.regenRegistered = true
             self:RegisterEvent("PLAYER_REGEN_ENABLED", "RefreshConfig")
         end
+        -- Refresh the config that does not require a secure environment
+        self.Portrait:RefreshConfig()
+        self.Name:RefreshConfig()
+        self.Indicators:RefreshConfig()
+        self.Health:RefreshConfig()
+        self.Power:RefreshConfig()
         return
     else
         if self.regenRegistered then
             self.regenRegistered = false
             self:UnregisterEvent("PLAYER_REGEN_ENABLED")
         end
-    end
-
-    if not self.initialized then
-        local ArtUpdater = CreateFrame("Frame", nil, nil, "SecureHandlerAttributeTemplate")
-        Mixin(ArtUpdater, ns.BUFSecureHandler)
-
-        ArtUpdater:SecureSetFrameRef("AlternatePowerBarArea", PlayerFrameAlternatePowerBarArea)
-        ArtUpdater:SecureSetFrameRef("PetHealthBar", PetFrameHealthBar)
-        ArtUpdater:SecureSetFrameRef("PetManaBar", PetFrameManaBar)
-
-        ns.PetArtUpdater = ArtUpdater
     end
 
     self.Frame:RefreshConfig()
@@ -106,18 +101,19 @@ function BUFPet:RefreshConfig(_eName)
 
     if not self.initialized then
         self.initialized = true
-        -- TODO I need to handle some in-combat secure handling here
-        -- much like Player with vehicles.
-        -- Both of these RefreshConfig triggers have issues in combat.
 
         self:RegisterEvent("PET_UI_UPDATE", "RefreshConfig")
 
         if not self:IsHooked(PetFrame, "Update") then
             self:SecureHook(PetFrame, "Update", function()
-                -- This one definitely caused a protected function call error
-                -- in combat vehicle testing
                 self:RefreshConfig()
             end)
         end
+
+        self:SecureHook("PlayerFrame_UpdateArt", function()
+            self:RefreshConfig()
+            self.Health.foregroundHandler:RefreshConfig()
+            self.Power.foregroundHandler:RefreshConfig()
+        end)
     end
 end

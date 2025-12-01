@@ -60,6 +60,4 @@ function deadTextHandler:RefreshConfig()
         self.defaultRelativePoint = "CENTER"
     end
     self:RefreshFontStringConfig()
-    local ai = self:GetPositionAnchorInfo()
-    print(ai.relativeTo:GetName())
 end

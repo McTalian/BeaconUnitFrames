@@ -102,29 +102,39 @@ function StatusBarForeground:RefreshStatusBarTexture()
     end
 end
 
-function StatusBarForeground:RefreshColor()
+function StatusBarForeground:_GetEffectiveUnit()
+    local trackedUnit = self.unit
+    if UnitInVehicle("player") then
+        if self.unit == "player" then
+            trackedUnit = "vehicle"
+        elseif self.unit == "pet" then
+            trackedUnit = "player"
+        end
+    end
+    return trackedUnit
+end
+
+function StatusBarForeground:_GetOptionsBasedColor()
     local useClassColor = self.classColorable and self:GetUseClassColor()
     local useReactionColor = self.reactionColorable and self:GetUseReactionColor()
     local usePowerColor = self.powerColorable and self:GetUsePowerColor()
     local useCustomColor = self:GetUseCustomColor()
 
+    local trackedUnit = self:_GetEffectiveUnit()
+    local r, g, b, a = nil, nil, nil, 1
     if useCustomColor then
-        local r, g, b, a = self:GetCustomColor()
-        self.statusBar:SetStatusBarColor(r, g, b, a)
+        r, g, b, a = self:GetCustomColor()
     elseif useClassColor and (not useReactionColor or UnitPlayerControlled(self.unit)) then
-        local _, class = UnitClass(self.unit)
-        local r, g, b = GetClassColor(class)
-        self.statusBar:SetStatusBarColor(r, g, b, 1)
+        local _, class = UnitClass(trackedUnit)
+        r, g, b = GetClassColor(class)
     elseif useReactionColor then
-        local r, g, b = GameTooltip_UnitColor(self.unit)
-        self.statusBar:SetStatusBarColor(r, g, b, 1)
+        r, g, b = GameTooltip_UnitColor(trackedUnit)
     elseif usePowerColor then
-        if self.unit == nil or not UnitExists(self.unit) then
+        if trackedUnit == nil or not UnitExists(trackedUnit) then
             return
         end
-        local powerType, powerToken, rX, gY, bZ = UnitPowerType(self.unit)
+        local powerType, powerToken, rX, gY, bZ = UnitPowerType(trackedUnit)
         local info = PowerBarColor[powerToken]
-        local r, g, b
         if info then
             r, g, b = info.r, info.g, info.b
         elseif not rX then
@@ -135,9 +145,17 @@ function StatusBarForeground:RefreshColor()
         else
             r, g, b = rX, gY, bZ
         end
-
-        self.statusBar:SetStatusBarColor(r, g, b, 1)
     end
+
+    return r, g, b, a
+end
+
+function StatusBarForeground:RefreshColor()
+    local r, g, b, a = self:_GetOptionsBasedColor()
+    if not r then
+        return
+    end
+    self.statusBar:SetStatusBarColor(r, g, b, a)
 end
 
 ns.StatusBarForeground = StatusBarForeground

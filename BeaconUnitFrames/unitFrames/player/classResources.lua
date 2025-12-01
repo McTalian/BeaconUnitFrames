@@ -7,25 +7,12 @@ ns = ns
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
 
----@class BUFPlayer.ClassResources: BUFConfigHandler, Positionable
+---@class BUFPlayer.ClassResources: BUFConfigHandler, Positionable, Scalable
 local BUFPlayerClassResources = {
     configPath = "unitFrames.player.classResources",
 }
 
-ns.Mixin(BUFPlayerClassResources, ns.Positionable)
-
-BUFPlayer.ClassResources = BUFPlayerClassResources
-
----@class BUFDbSchema.UF.Player
-ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
-
----@class BUFDbSchema.UF.Player.ClassResources
-ns.dbDefaults.profile.unitFrames.player.classResources = {
-    xOffset = 30,
-    yOffset = 25,
-}
-
-local classResources = {
+BUFPlayerClassResources.optionsTable = {
     type = "group",
     handler = BUFPlayerClassResources,
     name = ns.L["ClassResources"],
@@ -33,18 +20,42 @@ local classResources = {
     args = {}
 }
 
-ns.AddPositionableOptions(classResources.args)
+---@class BUFDbSchema.UF.Player.ClassResources
+BUFPlayerClassResources.dbDefaults = {
+    scale = 1.0,
+    anchorPoint = "TOP",
+    relativeTo = ns.DEFAULT,
+    relativePoint = "BOTTOM",
+    xOffset = 30,
+    yOffset = 25,
+}
 
-ns.options.args.player.args.classResources = classResources
+ns.Mixin(BUFPlayerClassResources, ns.Positionable, ns.Scalable)
+
+---@class BUFDbSchema.UF.Player
+ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
+ns.dbDefaults.profile.unitFrames.player.classResources = BUFPlayerClassResources.dbDefaults
+
+ns.AddPositionableOptions(BUFPlayerClassResources.optionsTable.args)
+ns.AddScalableOptions(BUFPlayerClassResources.optionsTable.args)
+ns.options.args.player.args.classResources = BUFPlayerClassResources.optionsTable
 
 function BUFPlayerClassResources:RefreshConfig()
+    if not self.initialized then
+        self.initialized = true
+
+        self.frame = PlayerFrameBottomManagedFramesContainer
+    end
     self:SetPosition()
+    self:SetScaleFactor()
 end
 
 function BUFPlayerClassResources:SetPosition()
-    local xOffset = ns.db.profile.unitFrames.player.classResources.xOffset
-    local yOffset = ns.db.profile.unitFrames.player.classResources.yOffset
-    local bottomFrame = PlayerFrameBottomManagedFramesContainer
-
-    bottomFrame:SetPoint("TOP", PlayerFrame, "BOTTOM", xOffset, yOffset)
+    self:_SetPosition(self.frame)
 end
+
+function BUFPlayerClassResources:SetScaleFactor()
+    self:_SetScaleFactor(self.frame)
+end
+
+BUFPlayer.ClassResources = BUFPlayerClassResources

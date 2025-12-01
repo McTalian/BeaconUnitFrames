@@ -7,26 +7,40 @@ ns = ns
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
 
----@class BUFPlayer.Power: BUFConfigHandler, Positionable, Sizable, Levelable
+---@class BUFPlayer.Power: BUFConfigHandler, BUFStatusBar
 local BUFPlayerPower = {
     configPath = "unitFrames.player.powerBar",
 }
 
-ns.Mixin(BUFPlayerPower, ns.Positionable, ns.Sizable, ns.Levelable)
+BUFPlayerPower.optionsTable = {
+    type = "group",
+    handler = BUFPlayerPower,
+    name = POWER_TYPE_POWER,
+    order = BUFPlayer.optionsOrder.POWER,
+    childGroups = "tree",
+    args = {},
+}
+
+---@class BUFDbSchema.UF.Player.Power
+BUFPlayerPower.dbDefaults = {
+    width = 124,
+    height = 10,
+    anchorPoint = "TOPLEFT",
+    relativeTo = ns.DEFAULT,
+    relativePoint = "TOPLEFT",
+    xOffset = 85,
+    yOffset = -61,
+    frameLevel = 3,
+}
+
+ns.BUFStatusBar:ApplyMixin(BUFPlayerPower)
 
 BUFPlayer.Power = BUFPlayerPower
 
 ---@class BUFDbSchema.UF.Player
 ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
 
----@class BUFDbSchema.UF.Player.Power
-ns.dbDefaults.profile.unitFrames.player.powerBar = {
-    width = 124,
-    height = 10,
-    xOffset = 85,
-    yOffset = -61,
-    frameLevel = 3,
-}
+ns.dbDefaults.profile.unitFrames.player.powerBar = BUFPlayerPower.dbDefaults
 
 local powerBarOrder = {}
 
@@ -39,86 +53,44 @@ powerBarOrder.BACKGROUND = powerBarOrder.FOREGROUND + .1
 
 BUFPlayerPower.topGroupOrder = powerBarOrder
 
-local powerBar = {
-    type = "group",
-    handler = BUFPlayerPower,
-    name = POWER_TYPE_POWER,
-    order = BUFPlayer.optionsOrder.POWER,
-    childGroups = "tree",
-    args = {},
-}
-
-ns.AddSizableOptions(powerBar.args, powerBarOrder)
-ns.AddPositionableOptions(powerBar.args, powerBarOrder)
-ns.AddFrameLevelOption(powerBar.args, powerBarOrder)
-
-ns.options.args.player.args.powerBar = powerBar
+ns.options.args.player.args.powerBar = BUFPlayerPower.optionsTable
 
 BUFPlayerPower.coeffs = {
-    maskWidth = 1.05,
-    maskHeight = 1.0,
-    maskXOffset = (-2 / ns.dbDefaults.profile.unitFrames.player.powerBar.width),
-    maskYOffset = 2 / ns.dbDefaults.profile.unitFrames.player.powerBar.height,
+    maskWidth = (128 / BUFPlayerPower.dbDefaults.width) + 1.0,
+    maskHeight = (16 / BUFPlayerPower.dbDefaults.height),
+    maskXOffset = (-2 / BUFPlayerPower.dbDefaults.width),
+    maskYOffset = 2 / BUFPlayerPower.dbDefaults.height,
 }
 
 function BUFPlayerPower:RefreshConfig()
     if not self.initialized then
         self.initialized = true
+        self.defaultRelativeTo = BUFPlayer.contentMain
 
-        if not BUFPlayer:IsHooked(BUFPlayer.manaBar.ManaBarMask, "SetWidth") then
-            BUFPlayer:SecureHook(BUFPlayer.manaBar.ManaBarMask, "SetWidth", function()
-                BUFPlayerPower:SetUnprotectedSize()
-            end)
-        end
-
-        if not BUFPlayer:IsHooked(BUFPlayer.manaBar.ManaBarMask, "SetAtlas") then
-            BUFPlayer:SecureHook(BUFPlayer.manaBar.ManaBarMask, "SetAtlas", function()
-                BUFPlayerPower:SetUnprotectedSize()
-            end)
-        end
+        self.barOrContainer = BUFPlayer.manaBar
+        self.maskTexture = BUFPlayer.manaBar.ManaBarMask
+        self.maskTextureAtlas = "UI-HUD-UnitFrame-Player-PortraitOn-Bar-Mana-Mask"
+        self.positionMask = false
     end
-    self:SetPosition()
-    self:SetSize()
-    self:SetLevel()
-    self.leftTextHandler:RefreshConfig()
-    self.rightTextHandler:RefreshConfig()
-    self.centerTextHandler:RefreshConfig()
-    self.foregroundHandler:RefreshConfig()
-    -- self.backgroundHandler:RefreshConfig()
+    self:RefreshStatusBarConfig()
 end
 
 function BUFPlayerPower:SetUnprotectedSize()
-    local parent = BUFPlayer
-    local width = ns.db.profile.unitFrames.player.powerBar.width
-    local height = ns.db.profile.unitFrames.player.powerBar.height
-    parent.manaBar.FullPowerFrame:SetWidth(width)
-    parent.manaBar.FullPowerFrame:SetHeight(height)
-    parent.manaBar.FullPowerFrame.SpikeFrame:SetWidth(width)
-    parent.manaBar.FullPowerFrame.SpikeFrame:SetHeight(height)
-    parent.manaBar.FullPowerFrame.PulseFrame:SetWidth(width)
-    parent.manaBar.FullPowerFrame.PulseFrame:SetHeight(height)
-    if BUFPlayer:IsHooked(parent.manaBar.ManaBarMask, "SetWidth") then
-        BUFPlayer:Unhook(parent.manaBar.ManaBarMask, "SetWidth")
-    end
-    parent.manaBar.ManaBarMask:SetWidth(width * self.coeffs.maskWidth)
-    if not BUFPlayer:IsHooked(parent.manaBar.ManaBarMask, "SetWidth") then
-        BUFPlayer:SecureHook(parent.manaBar.ManaBarMask, "SetWidth", function()
-            BUFPlayerPower:SetUnprotectedSize()
-        end)
-    end
-    parent.manaBar.ManaBarMask:SetHeight(height * self.coeffs.maskHeight)
-    parent.manaBar.ManaBarMask:SetPoint("TOPLEFT", width * self.coeffs.maskXOffset, height * self.coeffs.maskYOffset)
+    local manaBar = BUFPlayer.manaBar
+    self:_SetSize(manaBar.FullPowerFrame)
+    self:_SetSize(manaBar.FullPowerFrame.SpikeFrame)
+    self:_SetSize(manaBar.FullPowerFrame.PulseFrame)
+    self:_SetMaskSize()
 end
 
 function BUFPlayerPower:SetSize()
-    local parent = BUFPlayer
-    local width = ns.db.profile.unitFrames.player.powerBar.width
-    local height = ns.db.profile.unitFrames.player.powerBar.height
-    parent.manaBar:SetWidth(width)
-    parent.manaBar:SetHeight(height)
+    self:_SetSize(self.barOrContainer)
+    self:_SetMaskSize()
     self:SetUnprotectedSize()
 
-    parent.manaBar:SetAttribute("buf_restore_size", format([[
+    local width, height = self:GetWidth(), self:GetHeight()
+
+    BUFPlayer.manaBar:SetAttribute("buf_restore_size", format([[
         local width, height = %d, %d;
         self:SetWidth(width);
         self:SetHeight(height);
@@ -126,21 +98,17 @@ function BUFPlayerPower:SetSize()
 end
 
 function BUFPlayerPower:SetPosition()
-    local parent = BUFPlayer
-    local xOffset = ns.db.profile.unitFrames.player.powerBar.xOffset
-    local yOffset = ns.db.profile.unitFrames.player.powerBar.yOffset
-    parent.manaBar:SetPoint("TOPLEFT", xOffset, yOffset)
+    self:_SetPosition(self.barOrContainer)
 
-    parent.manaBar:SetAttribute("buf_restore_position", format([[
-        local xOffset, yOffset = %d, %d;
+    local anchorInfo = self:GetPositionAnchorInfo()
+
+    ns.BUFSecureHandler.SaveAnchor(
+        self.barOrContainer,
+        "PlayerManaBarAnchor",
+        anchorInfo
+    )
+    self.barOrContainer:SetAttribute("buf_restore_position", [[
         self:ClearAllPoints();
-        self:SetPoint("TOPLEFT", self:GetParent(), "TOPLEFT", xOffset, yOffset);
-    ]], xOffset, yOffset))
-end
-
-function BUFPlayerPower:SetLevel()
-    local parent = BUFPlayer
-    local frameLevel = ns.db.profile.unitFrames.player.powerBar.frameLevel
-    parent.manaBar:SetUsingParentLevel(false)
-    parent.manaBar:SetFrameLevel(frameLevel)
+        self:SetPoint(unpack(PlayerManaBarAnchor));
+    ]])
 end
