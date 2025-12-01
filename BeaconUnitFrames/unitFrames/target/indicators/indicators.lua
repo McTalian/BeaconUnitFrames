@@ -35,6 +35,7 @@ ns.options.args.target.args.indicators = indicators
 function BUFTargetIndicators:RefreshConfig()
   self.HighLevelTexture:RefreshConfig()
   self.LeaderAndGuideIcon:RefreshConfig()
+  self.RaidTargetIcon:RefreshConfig()
 end
 
 BUFTarget.Indicators = BUFTargetIndicators

@@ -83,6 +83,7 @@ end
 -- L["Positioning"] = "Positioning"
 -- L["Prestige Portrait"] = "Prestige Portrait"
 -- L["PvP Icon"] = "PvP Icon"
+-- L["Raid Target Icon"] = "Raid Target Icon"
 -- L["Ready Check Indicator"] = "Ready Check Indicator"
 -- L["Relative Point"] = "Relative Point"
 -- L["Relative To"] = "Relative To"
