@@ -121,6 +121,7 @@ function BUFTarget:RefreshConfig()
 		self:SecureHook("UnitFrameManaBar_UpdateType", function(manaBar)
 			if manaBar == self.manaBar then
 				self.Power.foregroundHandler:RefreshConfig()
+				self.Health.foregroundHandler:RefreshConfig()
 			end
 		end)
 

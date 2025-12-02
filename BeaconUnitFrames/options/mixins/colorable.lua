@@ -4,7 +4,8 @@ local ns = select(2, ...)
 --- Add color options to the given options table
 --- @param optionsTable table
 --- @param _orderMap BUFOptionsOrder?
-function ns.AddColorOptions(optionsTable, _orderMap)
+--- @param alwaysEnabled boolean? If true, the "Use Custom Color" option will be omitted
+function ns.AddColorOptions(optionsTable, _orderMap, alwaysEnabled)
 	local orderMap = _orderMap or ns.defaultOrderMap
 
 	optionsTable.coloring = optionsTable.coloring
@@ -14,14 +15,16 @@ function ns.AddColorOptions(optionsTable, _orderMap)
 			order = orderMap.COLORING_HEADER,
 		}
 
-	optionsTable.useCustomColor = {
-		type = "toggle",
-		name = ns.L["Use Custom Color"],
-		desc = ns.L["UseCustomColorDesc"],
-		set = "SetUseCustomColor",
-		get = "GetUseCustomColor",
-		order = orderMap.USE_CUSTOM_COLOR,
-	}
+	if not alwaysEnabled then
+		optionsTable.useCustomColor = {
+			type = "toggle",
+			name = ns.L["Use Custom Color"],
+			desc = ns.L["UseCustomColorDesc"],
+			set = "SetUseCustomColor",
+			get = "GetUseCustomColor",
+			order = orderMap.USE_CUSTOM_COLOR,
+		}
+	end
 
 	optionsTable.customColor = {
 		type = "color",

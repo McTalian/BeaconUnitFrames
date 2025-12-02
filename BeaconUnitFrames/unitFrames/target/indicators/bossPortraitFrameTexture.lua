@@ -39,9 +39,17 @@ ns.dbDefaults.profile.unitFrames.target.bossPortraitFrameTexture = BUFTargetBoss
 ns.options.args.target.args.indicators.args.bossPortraitFrameTexture = BUFTargetBossPortraitFrameTexture.optionsTable
 
 function BUFTargetBossPortraitFrameTexture:RefreshConfig()
-	if not self.texture then
+	if not self.initialized then
+		self.initialized = true
+
 		self.texture = BUFTarget.container.BossPortraitFrameTexture
 		self.defaultRelativeTo = BUFTarget.container
+
+		if not BUFTarget:IsHooked(self.texture, "Show") then
+			BUFTarget:SecureHook(self.texture, "Show", function()
+				self:RefreshConfig()
+			end)
+		end
 	end
 	self:RefreshScaleTextureConfig()
 end

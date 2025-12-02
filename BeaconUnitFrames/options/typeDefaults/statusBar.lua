@@ -13,7 +13,7 @@ end
 ---@field barOrContainer Frame
 ---@field positionMask? boolean
 ---@field foregroundHandler? StatusBarForeground
----@field backgroundHandler? table StatusBarBackground
+---@field backgroundHandler? StatusBarBackground
 ---@field leftTextHandler? BUFFontString
 ---@field rightTextHandler? BUFFontString
 ---@field centerTextHandler? BUFFontString

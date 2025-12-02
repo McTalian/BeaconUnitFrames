@@ -7,27 +7,12 @@ local BUFPlayer = ns.BUFPlayer
 ---@class BUFPlayer.Health
 local BUFPlayerHealth = BUFPlayer.Health
 
----@class BUFPlayer.Health.Background: BackgroundTexturable, Colorable, ClassColorable
+---@class BUFPlayer.Health.Background: StatusBarBackground
 local backgroundHandler = {
 	configPath = "unitFrames.player.healthBar.background",
 }
 
-BUFPlayerHealth.backgroundHandler = backgroundHandler
-
-ns.Mixin(backgroundHandler, ns.BackgroundTexturable, ns.Colorable, ns.ClassColorable)
-
----@class BUFDbSchema.UF.Player.Health
-ns.dbDefaults.profile.unitFrames.player.healthBar = ns.dbDefaults.profile.unitFrames.player.healthBar
-
-ns.dbDefaults.profile.unitFrames.player.healthBar.background = {
-	useBackgroundTexture = false,
-	backgroundTexture = "None",
-	useCustomColor = false,
-	customColor = { 0, 0, 0, 0.5 },
-	useClassColor = false,
-}
-
-local background = {
+backgroundHandler.optionsTable = {
 	type = "group",
 	handler = backgroundHandler,
 	name = BACKGROUND,
@@ -35,43 +20,33 @@ local background = {
 	args = {},
 }
 
-ns.AddBackgroundTextureOptions(background.args)
-ns.AddColorOptions(background.args)
-ns.AddClassColorOptions(background.args)
+---@class BUFDbSchema.UF.Player.Health.Background
+backgroundHandler.dbDefaults = {
+	useBackgroundTexture = false,
+	backgroundTexture = "None",
+	customColor = { 0, 0, 0, 1 }, -- BLACK_FONT_COLOR
+}
 
-ns.options.args.player.args.healthBar.args.background = background
+ns.StatusBarBackground:ApplyMixin(backgroundHandler)
+
+---@class BUFDbSchema.UF.Player.Health
+ns.dbDefaults.profile.unitFrames.player.healthBar = ns.dbDefaults.profile.unitFrames.player.healthBar
+ns.dbDefaults.profile.unitFrames.player.healthBar.background = backgroundHandler.dbDefaults
+
+ns.options.args.player.args.healthBar.args.background = backgroundHandler.optionsTable
 
 function backgroundHandler:RefreshConfig()
-	self:RefreshBackgroundTexture()
-	self:RefreshColor()
+	if not self.initialized then
+		self.initialized = true
+
+		self.background = BUFPlayer.healthBar.Background
+	end
+	self:RefreshStatusBarBackgroundConfig()
 end
 
-function backgroundHandler:RefreshBackgroundTexture()
-	local parent = ns.BUFPlayer
-	local useBackgroundTexture = ns.db.profile.unitFrames.player.healthBar.background.useBackgroundTexture
-	if useBackgroundTexture then
-		local texturePath = ns.lsm:Fetch(
-			ns.lsm.MediaType.BACKGROUND,
-			ns.db.profile.unitFrames.player.healthBar.background.backgroundTexture
-		)
-		if not texturePath then
-			texturePath = ns.lsm:Fetch(ns.lsm.MediaType.BACKGROUND, "Solid") or "Interface\\Buttons\\WHITE8x8"
-		end
-		parent.healthBar.Background:SetTexture(texturePath)
-		parent.healthBar.Background:Show()
-	end
+function backgroundHandler:RestoreDefaultBackgroundTexture()
+	local default = BLACK_FONT_COLOR
+	self.background:SetColorTexture(default.r, default.g, default.b, default.a)
 end
 
-function backgroundHandler:RefreshColor()
-	local parent = ns.BUFPlayer
-	local useCustomColor = ns.db.profile.unitFrames.player.healthBar.background.useCustomColor
-	local useClassColor = ns.db.profile.unitFrames.player.healthBar.background.useClassColor
-	if useClassColor then
-		local _, class = UnitClass("player")
-		local r, g, b = GetClassColor(class)
-		parent.healthBar.Background:SetVertexColor(r, g, b, 1.0)
-	elseif useCustomColor then
-		local r, g, b, a = unpack(ns.db.profile.unitFrames.player.healthBar.background.customColor)
-		parent.healthBar.Background:SetVertexColor(r, g, b, a)
-	end
-end
+BUFPlayerHealth.backgroundHandler = backgroundHandler

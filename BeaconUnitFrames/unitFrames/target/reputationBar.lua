@@ -74,6 +74,15 @@ ns.AddReactionColorOptions(repBar.args)
 ns.options.args.target.args.reputationBar = repBar
 
 function BUFTargetReputationBar:RefreshConfig()
+	if not self.initialized then
+		self.initialized = true
+
+		if not BUFTarget:IsHooked(TargetFrame, "CheckFaction") then
+			BUFTarget:SecureHook(TargetFrame, "CheckFaction", function()
+				self:RefreshColor()
+			end)
+		end
+	end
 	self:SetSize()
 	self:SetPosition()
 	self:SetTexture()
@@ -118,9 +127,6 @@ function BUFTargetReputationBar:RefreshColor()
 	local useClassColor = ns.db.profile.unitFrames.target.reputationBar.useClassColor
 	local useReactionColor = ns.db.profile.unitFrames.target.reputationBar.useReactionColor
 
-	if parent:IsHooked(repColorBar, "SetVertexColor") then
-		parent:Unhook(repColorBar, "SetVertexColor")
-	end
 	local r, g, b, a = nil, nil, nil, 1
 	if useCustomColor then
 		r, g, b, a = unpack(ns.db.profile.unitFrames.target.reputationBar.customColor)
@@ -134,7 +140,4 @@ function BUFTargetReputationBar:RefreshColor()
 	end
 
 	repColorBar:SetVertexColor(r, g, b, a)
-	parent:SecureHook(repColorBar, "SetVertexColor", function(s, r, g, b, a)
-		self:RefreshColor()
-	end)
 end

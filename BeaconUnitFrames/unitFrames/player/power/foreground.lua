@@ -65,21 +65,9 @@ function foregroundHandler:RefreshConfig()
 			self.defaultStatusBarTexture = commonPrefix .. "Mana"
 		end
 
-		if not BUFPlayer:IsHooked(BUFPlayer.manaBar, "SetStatusBarTexture") then
-			BUFPlayer:SecureHook(BUFPlayer.manaBar, "SetStatusBarTexture", function(_, t)
-				local prefixCheck = string.sub(t, 1, #commonPrefix)
-				if prefixCheck == commonPrefix and self:GetUseStatusBarTexture() then
-					self:RefreshStatusBarTexture()
-				end
-			end)
-		end
-
-		if not BUFPlayer:IsHooked(BUFPlayer.manaBar, "SetStatusBarColor") then
-			BUFPlayer:SecureHook(BUFPlayer.manaBar, "SetStatusBarColor", function(_, r, g, b, a)
-				local cR, cG, cB, cA = self:_GetOptionsBasedColor()
-				if cR and (r ~= cR or g ~= cG or b ~= cB or a ~= cA) then
-					self:RefreshColor()
-				end
+		if not BUFPlayer:IsHooked("UnitFrameManaBar_UpdateType") then
+			BUFPlayer:SecureHook("UnitFrameManaBar_UpdateType", function()
+				self:RefreshStatusBarForegroundConfig()
 			end)
 		end
 	end

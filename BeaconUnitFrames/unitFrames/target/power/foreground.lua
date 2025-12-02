@@ -89,13 +89,7 @@ function foregroundHandler:RefreshColor()
 		if r == nil then
 			return
 		end
-		if BUFTarget:IsHooked(parent.manaBar, "SetStatusBarColor") then
-			BUFTarget:Unhook(parent.manaBar, "SetStatusBarColor")
-		end
 		parent.manaBar:SetStatusBarColor(r, g, b, 1.0)
-		BUFTarget:SecureHook(parent.manaBar, "SetStatusBarColor", function(s, r, g, b, a)
-			self:RefreshColor()
-		end)
 	elseif useCustomColor then
 		local r, g, b, a = unpack(ns.db.profile.unitFrames.target.powerBar.foreground.customColor)
 		parent.manaBar:SetStatusBarColor(r, g, b, a)

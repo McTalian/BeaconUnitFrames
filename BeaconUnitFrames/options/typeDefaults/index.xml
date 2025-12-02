@@ -3,5 +3,6 @@
     <Script file="texture.lua"/>
     <Script file="statusBar.lua"/>
     <Script file="statusBarForeground.lua"/>
+    <Script file="statusBarBackground.lua"/>
     <Script file="scaleOnlyTexture.lua"/>
 </Ui>

@@ -54,7 +54,7 @@ function BackgroundTexturable:SetUseBackgroundTexture(info, value)
 end
 
 ---Get whether to use a custom background texture
----@param info table AceConfig info table
+---@param info? table AceConfig info table
 ---@return boolean|nil Whether to use custom texture
 function BackgroundTexturable:GetUseBackgroundTexture(info)
 	return self:DbGet("useBackgroundTexture")
@@ -69,7 +69,7 @@ function BackgroundTexturable:SetBackgroundTexture(info, value)
 end
 
 ---Get the background texture
----@param info table AceConfig info table
+---@param info? table AceConfig info table
 ---@return string|nil The texture name
 function BackgroundTexturable:GetBackgroundTexture(info)
 	return self:DbGet("backgroundTexture")

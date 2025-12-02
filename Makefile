@@ -19,11 +19,7 @@ build: check_untracked_files toc_check i18n_check
 
 toc_check:
 	@uv run .scripts/check_toc_includes.py \
-		--ignore libs/index.xml \
-		--ignore unitFrames/pet/power/background.lua \
-		--ignore unitFrames/player/power/background.lua \
-		--ignore unitFrames/target/health/background.lua \
-		--ignore unitFrames/target/power/background.lua
+		--ignore libs/index.xml
 
 check_untracked_files:
 	@if [ -n "$$(git ls-files --others --exclude-standard)" ]; then \
