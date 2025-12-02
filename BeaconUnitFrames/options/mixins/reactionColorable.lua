@@ -17,7 +17,6 @@ function ns.AddReactionColorOptions(optionsTable, _orderMap)
 	optionsTable.useReactionColor = {
 		type = "toggle",
 		name = ns.L["Use Reaction Color"],
-		desc = ns.L["UseReactionColorDesc"],
 		set = "SetUseReactionColor",
 		get = "GetUseReactionColor",
 		order = orderMap.REACTION_COLOR,

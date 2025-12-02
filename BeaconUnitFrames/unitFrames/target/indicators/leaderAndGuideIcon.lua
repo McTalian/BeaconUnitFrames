@@ -27,7 +27,6 @@ BUFTargetLeaderAndGuideIcon.optionsTable = {
 		separateGuideStyle = {
 			type = "toggle",
 			name = ns.L["SeparateGuideStyle"],
-			desc = ns.L["SeparateGuideStyleDesc"],
 			set = "SetUseSeparateGuideStyle",
 			get = "GetUseSeparateGuideStyle",
 			order = leaderAndGuideIconOrder.SEPARATE_GUIDE_STYLE,

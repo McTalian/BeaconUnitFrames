@@ -56,7 +56,6 @@ function ns.AddFontOptions(optionsTable, _orderMap)
 	optionsTable.useFontObjects = {
 		type = "toggle",
 		name = ns.L["Use Font Objects"],
-		desc = ns.L["UseFontObjectsDesc"],
 		set = "SetUseFontObjects",
 		get = "GetUseFontObjects",
 		order = orderMap.USE_FONT_OBJECTS,

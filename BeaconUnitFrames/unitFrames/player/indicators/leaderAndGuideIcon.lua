@@ -27,7 +27,6 @@ BUFPlayerLeaderAndGuideIcon.optionsTable = {
 		separateGuideStyle = {
 			type = "toggle",
 			name = ns.L["SeparateGuideStyle"],
-			desc = ns.L["SeparateGuideStyleDesc"],
 			set = function(info, value)
 				ns.db.profile.unitFrames.player.leaderAndGuideIcon.separateGuideStyle = value
 				BUFPlayerLeaderAndGuideIcon:SeparateLeaderAndGuideStyle()
