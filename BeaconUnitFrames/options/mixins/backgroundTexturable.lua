@@ -37,17 +37,19 @@ function ns.AddBackgroundTextureOptions(optionsTable, _orderMap)
 	}
 end
 
----@class BackgroundTexturableHandler: BUFConfigHandler
+---@class BackgroundTexturableHandler: MixinBase
 ---@field RefreshBackgroundTexture fun(self: BackgroundTexturableHandler)
 
 ---@class BackgroundTexturable: BackgroundTexturableHandler
 local BackgroundTexturable = {}
 
+ns.Mixin(BackgroundTexturable, ns.MixinBase)
+
 ---Set whether to use a custom background texture
 ---@param info table AceConfig info table
 ---@param value boolean Whether to use custom texture
 function BackgroundTexturable:SetUseBackgroundTexture(info, value)
-	ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".useBackgroundTexture", value)
+	self:DbSet("useBackgroundTexture", value)
 	self:RefreshBackgroundTexture()
 end
 
@@ -55,14 +57,14 @@ end
 ---@param info table AceConfig info table
 ---@return boolean|nil Whether to use custom texture
 function BackgroundTexturable:GetUseBackgroundTexture(info)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".useBackgroundTexture")
+	return self:DbGet("useBackgroundTexture")
 end
 
 ---Set the background texture
 ---@param info table AceConfig info table
 ---@param value string The texture name
 function BackgroundTexturable:SetBackgroundTexture(info, value)
-	ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".backgroundTexture", value)
+	self:DbSet("backgroundTexture", value)
 	self:RefreshBackgroundTexture()
 end
 
@@ -70,14 +72,14 @@ end
 ---@param info table AceConfig info table
 ---@return string|nil The texture name
 function BackgroundTexturable:GetBackgroundTexture(info)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".backgroundTexture")
+	return self:DbGet("backgroundTexture")
 end
 
 ---Check if background texture selection is disabled
 ---@param info table AceConfig info table
 ---@return boolean Whether texture selection is disabled
 function BackgroundTexturable:IsBackgroundTextureDisabled(info)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".useBackgroundTexture") == false
+	return self:DbGet("useBackgroundTexture") == false
 end
 
 ns.BackgroundTexturable = BackgroundTexturable

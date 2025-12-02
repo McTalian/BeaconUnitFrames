@@ -167,7 +167,7 @@ function ns.AddPositionableOptions(optionsTable, _orderMap)
 	}
 end
 
----@class PositionableHandler: BUFConfigHandler
+---@class PositionableHandler: MixinBase
 ---@field defaultRelativeTo string | Frame?
 ---@field GetRelativeFrame fun(self: PositionableHandler): Frame
 ---@field SetPosition fun(self: PositionableHandler)
@@ -176,11 +176,13 @@ end
 ---@class Positionable: PositionableHandler
 local Positionable = {}
 
+ns.Mixin(Positionable, ns.MixinBase)
+
 ---Set the anchor point
 ---@param info table AceConfig info table
 ---@param value string The anchor point name
 function Positionable:SetAnchorPoint(info, value)
-	ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".anchorPoint", value)
+	self:DbSet("anchorPoint", value)
 	self:SetPosition()
 end
 
@@ -188,14 +190,14 @@ end
 ---@param info? table AceConfig info table
 ---@return string|nil The anchor point name
 function Positionable:GetAnchorPoint(info)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".anchorPoint")
+	return self:DbGet("anchorPoint")
 end
 
 ---Set the relative to frame
 ---@param info table AceConfig info table
 ---@param value Frame The relative to frame
 function Positionable:SetRelativeTo(info, value)
-	ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".relativeTo", value)
+	self:DbSet("relativeTo", value)
 	self:SetPosition()
 end
 
@@ -203,14 +205,14 @@ end
 ---@param info? table AceConfig info table
 ---@return string|nil The relative to frame
 function Positionable:GetRelativeTo(info)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".relativeTo")
+	return self:DbGet("relativeTo")
 end
 
 ---Set the relative point
 ---@param info table AceConfig info table
 ---@param value string The relative point name
 function Positionable:SetRelativePoint(info, value)
-	ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".relativePoint", value)
+	self:DbSet("relativePoint", value)
 	self:SetPosition()
 end
 
@@ -218,11 +220,11 @@ end
 ---@param info? table AceConfig info table
 ---@return string|nil The relative point name
 function Positionable:GetRelativePoint(info)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".relativePoint")
+	return self:DbGet("relativePoint")
 end
 
 function Positionable:SetXOffset(info, value)
-	ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".xOffset", value)
+	self:DbSet("xOffset", value)
 	self:SetPosition()
 end
 
@@ -230,11 +232,11 @@ end
 --- @param info? table AceConfig info table
 --- @return number|nil xOffset
 function Positionable:GetXOffset(info)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".xOffset")
+	return self:DbGet("xOffset")
 end
 
 function Positionable:SetYOffset(info, value)
-	ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".yOffset", value)
+	self:DbSet("yOffset", value)
 	self:SetPosition()
 end
 
@@ -242,7 +244,7 @@ end
 --- @param info? table AceConfig info table
 --- @return number|nil yOffset
 function Positionable:GetYOffset(info)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".yOffset")
+	return self:DbGet("yOffset")
 end
 
 ---@class AnchorInfo

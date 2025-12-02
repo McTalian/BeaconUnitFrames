@@ -156,7 +156,7 @@ function ns.AddFontOptions(optionsTable, _orderMap)
 	}
 end
 
----@class FontableHandler: BUFConfigHandler
+---@class FontableHandler: MixinBase
 ---@field SetFont fun(self: FontableHandler)
 ---@field UpdateFontColor fun(self: FontableHandler)
 ---@field SetFontShadow fun(self: FontableHandler)
@@ -167,31 +167,33 @@ end
 ---@class Fontable: FontableHandler
 local Fontable = {}
 
+ns.Mixin(Fontable, ns.MixinBase)
+
 function Fontable:SetUseFontObjects(info, value)
-	ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".useFontObjects", value)
+	self:DbSet("useFontObjects", value)
 	self:SetFont()
 end
 
 function Fontable:GetUseFontObjects(info)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".useFontObjects")
+	return self:DbGet("useFontObjects")
 end
 
 function Fontable:SetFontObject(info, value)
-	ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".fontObject", value)
+	self:DbSet("fontObject", value)
 	self:SetFont()
 end
 
 function Fontable:GetFontObject(info)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".fontObject")
+	return self:DbGet("fontObject")
 end
 
 function Fontable:SetFontColor(info, r, g, b, a)
-	ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".fontColor", { r, g, b, a })
+	self:DbSet("fontColor", { r, g, b, a })
 	self:UpdateFontColor()
 end
 
 function Fontable:GetFontColor(info)
-	local color = ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".fontColor")
+	local color = self:DbGet("fontColor")
 	if color then
 		return unpack(color)
 	end
@@ -199,43 +201,43 @@ function Fontable:GetFontColor(info)
 end
 
 function Fontable:SetFontFace(info, value)
-	ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".fontFace", value)
+	self:DbSet("fontFace", value)
 	self:SetFont()
 end
 
 function Fontable:GetFontFace(info)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".fontFace")
+	return self:DbGet("fontFace")
 end
 
 function Fontable:SetFontSize(info, value)
-	ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".fontSize", value)
+	self:DbSet("fontSize", value)
 	self:SetFont()
 end
 
 function Fontable:GetFontSize(info)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".fontSize")
+	return self:DbGet("fontSize")
 end
 
 function Fontable:SetFontFlag(info, key, value)
-	ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".fontFlags." .. key, value)
+	self:DbSet("fontFlags." .. key, value)
 	self:SetFont()
 end
 
 function Fontable:GetFontFlag(info, key)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".fontFlags." .. key)
+	return self:DbGet("fontFlags." .. key)
 end
 
 function Fontable:GetFontFlags(info)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".fontFlags")
+	return self:DbGet("fontFlags")
 end
 
 function Fontable:SetShadowColor(info, r, g, b, a)
-	ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".fontShadowColor", { r, g, b, a })
+	self:DbSet("fontShadowColor", { r, g, b, a })
 	self:SetFontShadow()
 end
 
 function Fontable:GetShadowColor(info)
-	local color = ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".fontShadowColor")
+	local color = self:DbGet("fontShadowColor")
 	if color then
 		return unpack(color)
 	end
@@ -243,30 +245,30 @@ function Fontable:GetShadowColor(info)
 end
 
 function Fontable:SetShadowOffsetX(info, value)
-	ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".fontShadowOffsetX", value)
+	self:DbSet("fontShadowOffsetX", value)
 	self:SetFontShadow()
 end
 
 function Fontable:GetShadowOffsetX(info)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".fontShadowOffsetX")
+	return self:DbGet("fontShadowOffsetX")
 end
 
 function Fontable:SetShadowOffsetY(info, value)
-	ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".fontShadowOffsetY", value)
+	self:DbSet("fontShadowOffsetY", value)
 	self:SetFontShadow()
 end
 
 function Fontable:GetShadowOffsetY(info)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".fontShadowOffsetY")
+	return self:DbGet("fontShadowOffsetY")
 end
 
 -- Disabled state functions
 function Fontable:IsCustomFontDisabled(info)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".useFontObjects") == false
+	return self:DbGet("useFontObjects") == false
 end
 
 function Fontable:IsFontObjectEnabled(info)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".useFontObjects") == true
+	return self:DbGet("useFontObjects") == true
 end
 
 function Fontable:_SetFont(fontable)

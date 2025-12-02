@@ -1,37 +1,39 @@
 ---@class BUFNamespace
 local ns = select(2, ...)
 
----@class MaskableBaseHandler: BUFConfigHandler
+---@class MaskableBaseHandler: MixinBase
 ---@field RefreshMask fun(self: MaskableBaseHandler)
 
 ---@class MaskableBase: MaskableBaseHandler
 local MaskableBase = {}
 
+ns.Mixin(MaskableBase, ns.MixinBase)
+
 function MaskableBase:SetMask(info, value)
-	ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".mask", value)
+	self:DbSet("mask", value)
 	self:RefreshMask()
 end
 
 function MaskableBase:GetMask(info)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".mask")
+	return self:DbGet("mask")
 end
 
 function MaskableBase:SetMaskWidthScale(info, value)
-	ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".maskWidthScale", value)
+	self:DbSet("maskWidthScale", value)
 	self:RefreshMask()
 end
 
 function MaskableBase:GetMaskWidthScale(info)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".maskWidthScale")
+	return self:DbGet("maskWidthScale")
 end
 
 function MaskableBase:SetMaskHeightScale(info, value)
-	ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".maskHeightScale", value)
+	self:DbSet("maskHeightScale", value)
 	self:RefreshMask()
 end
 
 function MaskableBase:GetMaskHeightScale(info)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".maskHeightScale")
+	return self:DbGet("maskHeightScale")
 end
 
 function MaskableBase:_RefreshMask(maskTexture)

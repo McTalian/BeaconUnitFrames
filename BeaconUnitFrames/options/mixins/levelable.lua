@@ -27,19 +27,21 @@ function ns.AddFrameLevelOption(optionsTable, _orderMap)
 	}
 end
 
----@class LevelableHandler: BUFConfigHandler
+---@class LevelableHandler: MixinBase
 ---@field SetLevel fun(self: LevelableHandler)
 
 ---@class Levelable: LevelableHandler
 local Levelable = {}
 
+ns.Mixin(Levelable, ns.MixinBase)
+
 function Levelable:SetFrameLevel(info, value)
-	ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".frameLevel", value)
+	self:DbSet("frameLevel", value)
 	self:SetLevel()
 end
 
 function Levelable:GetFrameLevel(info)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".frameLevel")
+	return self:DbGet("frameLevel")
 end
 
 --- Set the frame level of the given frame

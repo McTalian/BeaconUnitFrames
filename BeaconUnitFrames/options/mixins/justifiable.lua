@@ -74,20 +74,22 @@ function ns.AddJustifiableOptions(optionsTable, _orderMap)
 	ns.AddVJustifiableOptions(optionsTable, orderMap)
 end
 
----@class JustifiableHandler: BUFConfigHandler
+---@class JustifiableHandler: MixinBase
 ---@field UpdateJustification fun(self: JustifiableHandler)
 ---@field _UpdateJustification fun(self: JustifiableHandler, justifiable: FontString)
 
 ---@class HJustifiable: JustifiableHandler
 local HJustifiable = {}
 
+ns.Mixin(HJustifiable, ns.MixinBase)
+
 function HJustifiable:SetJustifyH(info, value)
-	ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".justifyH", value)
+	self:DbSet("justifyH", value)
 	self:UpdateJustification()
 end
 
 function HJustifiable:GetJustifyH(info)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".justifyH")
+	return self:DbGet("justifyH")
 end
 
 function HJustifiable:_UpdateJustification(justifiable)
@@ -100,13 +102,15 @@ end
 ---@class VJustifiable: JustifiableHandler
 local VJustifiable = {}
 
+ns.Mixin(VJustifiable, ns.MixinBase)
+
 function VJustifiable:SetJustifyV(info, value)
-	ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".justifyV", value)
+	self:DbSet("justifyV", value)
 	self:UpdateJustification()
 end
 
 function VJustifiable:GetJustifyV(info)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".justifyV")
+	return self:DbGet("justifyV")
 end
 
 function VJustifiable:_UpdateJustification(justifiable)

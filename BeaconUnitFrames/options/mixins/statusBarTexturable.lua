@@ -37,17 +37,19 @@ function ns.AddStatusBarTextureOptions(optionsTable, _orderMap)
 	}
 end
 
----@class StatusBarTexturableHandler: BUFConfigHandler
+---@class StatusBarTexturableHandler: MixinBase
 ---@field RefreshStatusBarTexture fun(self: StatusBarTexturableHandler)
 
 ---@class StatusBarTexturable: StatusBarTexturableHandler
 local StatusBarTexturable = {}
 
+ns.Mixin(StatusBarTexturable, ns.MixinBase)
+
 ---Set whether to use a custom status bar texture
 ---@param info table AceConfig info table
 ---@param value boolean Whether to use custom texture
 function StatusBarTexturable:SetUseStatusBarTexture(info, value)
-	ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".useStatusBarTexture", value)
+	self:DbSet("useStatusBarTexture", value)
 	self:RefreshStatusBarTexture()
 end
 
@@ -55,14 +57,14 @@ end
 ---@param info? table AceConfig info table
 ---@return boolean|nil Whether to use custom texture
 function StatusBarTexturable:GetUseStatusBarTexture(info)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".useStatusBarTexture")
+	return self:DbGet("useStatusBarTexture")
 end
 
 ---Set the status bar texture
 ---@param info table AceConfig info table
 ---@param value string The texture name
 function StatusBarTexturable:SetStatusBarTexture(info, value)
-	ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".statusBarTexture", value)
+	self:DbSet("statusBarTexture", value)
 	self:RefreshStatusBarTexture()
 end
 
@@ -70,14 +72,14 @@ end
 ---@param info? table AceConfig info table
 ---@return string|nil The texture name
 function StatusBarTexturable:GetStatusBarTexture(info)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".statusBarTexture")
+	return self:DbGet("statusBarTexture")
 end
 
 ---Check if status bar texture selection is disabled
 ---@param info table AceConfig info table
 ---@return boolean Whether texture selection is disabled
 function StatusBarTexturable:IsStatusBarTextureDisabled(info)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".useStatusBarTexture") == false
+	return self:DbGet("useStatusBarTexture") == false
 end
 
 ns.StatusBarTexturable = StatusBarTexturable

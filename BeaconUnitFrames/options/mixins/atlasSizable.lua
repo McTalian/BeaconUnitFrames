@@ -31,11 +31,11 @@ function ns.AddAtlasSizableOptions(optionsTable, _flags, _orderMap)
 	end
 end
 
----@class AtlasSizableHandler: MixinBase, SizableHandler, ScalableHandler
+---@class AtlasSizableHandler: MixinBase, Sizable, Scalable
 ---@field atlasName? string
 ---@field _SetSize fun(self: AtlasSizableHandler, atlasSizable: TextureBase)
 
----@class AtlasSizable: AtlasSizableHandler, Sizable
+---@class AtlasSizable: AtlasSizableHandler
 local AtlasSizable = {}
 
 ns.Mixin(AtlasSizable, ns.MixinBase)

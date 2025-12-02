@@ -30,20 +30,22 @@ function ns.AddScalableOptions(optionsTable, _orderMap)
 	}
 end
 
----@class ScalableHandler: BUFConfigHandler
+---@class ScalableHandler: MixinBase
 ---@field SetScaleFactor fun(self: ScalableHandler)
 ---@field _SetScaleFactor fun(self: ScalableHandler, scalable: Region)
 
 ---@class Scalable: ScalableHandler
 local Scalable = {}
 
+ns.Mixin(Scalable, ns.MixinBase)
+
 function Scalable:SetScale(info, value)
-	ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".scale", value)
+	self:DbSet("scale", value)
 	self:SetScaleFactor()
 end
 
 function Scalable:GetScale(info)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".scale")
+	return self:DbGet("scale")
 end
 
 function Scalable:_SetScaleFactor(scalable)

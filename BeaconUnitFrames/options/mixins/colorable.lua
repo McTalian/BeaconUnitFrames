@@ -34,17 +34,19 @@ function ns.AddColorOptions(optionsTable, _orderMap)
 	}
 end
 
----@class ColorableHandler: BUFConfigHandler
+---@class ColorableHandler: MixinBase
 ---@field RefreshColor fun(self: ColorableHandler)
 
 ---@class Colorable: ColorableHandler
 local Colorable = {}
 
+ns.Mixin(Colorable, ns.MixinBase)
+
 ---Set whether to use a custom color
 ---@param info table AceConfig info table
 ---@param value boolean Whether to use custom color
 function Colorable:SetUseCustomColor(info, value)
-	ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".useCustomColor", value)
+	self:DbSet("useCustomColor", value)
 	self:RefreshColor()
 end
 
@@ -52,7 +54,7 @@ end
 ---@param info? table AceConfig info table
 ---@return boolean|nil Whether to use custom color
 function Colorable:GetUseCustomColor(info)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".useCustomColor")
+	return self:DbGet("useCustomColor")
 end
 
 ---Set the custom color
@@ -62,7 +64,7 @@ end
 ---@param b number Blue component (0-1)
 ---@param a number Alpha component (0-1)
 function Colorable:SetCustomColor(info, r, g, b, a)
-	ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".customColor", { r, g, b, a })
+	self:DbSet("customColor", { r, g, b, a })
 	self:RefreshColor()
 end
 
@@ -73,7 +75,7 @@ end
 ---@return number b Blue component
 ---@return number a Alpha component
 function Colorable:GetCustomColor(info)
-	local color = ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".customColor")
+	local color = self:DbGet("customColor")
 	if color then
 		return unpack(color)
 	end
@@ -84,7 +86,7 @@ end
 ---@param info table AceConfig info table
 ---@return boolean Whether custom color selection is disabled
 function Colorable:IsCustomColorDisabled(info)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".useCustomColor") == false
+	return self:DbGet("useCustomColor") == false
 end
 
 ns.Colorable = Colorable

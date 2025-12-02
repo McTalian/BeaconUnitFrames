@@ -26,11 +26,13 @@ end
 ---@class ReactionColorable: ColorableHandler
 local ReactionColorable = {}
 
+ns.Mixin(ReactionColorable, ns.MixinBase)
+
 ---Set whether to use class color
 ---@param info table AceConfig info table
 ---@param value boolean Whether to use class color
 function ReactionColorable:SetUseReactionColor(info, value)
-	ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".useReactionColor", value)
+	self:DbSet("useReactionColor", value)
 	self:RefreshColor()
 end
 
@@ -38,7 +40,7 @@ end
 ---@param info? table AceConfig info table
 ---@return boolean|nil Whether to use class color
 function ReactionColorable:GetUseReactionColor(info)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".useReactionColor")
+	return self:DbGet("useReactionColor")
 end
 
 ns.ReactionColorable = ReactionColorable

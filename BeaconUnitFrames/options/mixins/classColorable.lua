@@ -27,11 +27,13 @@ end
 ---@class ClassColorable: ColorableHandler
 local ClassColorable = {}
 
+ns.Mixin(ClassColorable, ns.MixinBase)
+
 ---Set whether to use class color
 ---@param info table AceConfig info table
 ---@param value boolean Whether to use class color
 function ClassColorable:SetUseClassColor(info, value)
-	ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".useClassColor", value)
+	self:DbSet("useClassColor", value)
 	self:RefreshColor()
 end
 
@@ -39,7 +41,7 @@ end
 ---@param info? table AceConfig info table
 ---@return boolean|nil Whether to use class color
 function ClassColorable:GetUseClassColor(info)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".useClassColor")
+	return self:DbGet("useClassColor")
 end
 
 ns.ClassColorable = ClassColorable

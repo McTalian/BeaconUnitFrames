@@ -24,17 +24,19 @@ ns.AddTextCustomizableOptions = function(optionsTable, _orderMap)
 	}
 end
 
----@class TextCustomizableHandler: BUFConfigHandler
+---@class TextCustomizableHandler: MixinBase
 ---@field RefreshText fun(self: TextCustomizableHandler)
 
 ---@class TextCustomizable: TextCustomizableHandler
 local TextCustomizable = {}
 
+ns.Mixin(TextCustomizable, ns.MixinBase)
+
 ---Set the custom text
 ---@param info table AceConfig info table
 ---@param value string The custom text
 function TextCustomizable:SetCustomText(info, value)
-	ns.DbUtils.setPath(ns.db.profile, self.configPath .. ".customText", value)
+	self:DbSet("customText", value)
 	self:RefreshText()
 end
 
@@ -42,7 +44,7 @@ end
 ---@param info table AceConfig info table
 ---@return string|nil The custom text
 function TextCustomizable:GetCustomText(info)
-	return ns.DbUtils.getPath(ns.db.profile, self.configPath .. ".customText")
+	return self:DbGet("customText")
 end
 
 ns.TextCustomizable = TextCustomizable
