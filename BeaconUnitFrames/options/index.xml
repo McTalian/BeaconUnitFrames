@@ -3,4 +3,5 @@
     <Script file="mixin.lua"/>
     <Include file="mixins/index.xml"/>
     <Include file="typeDefaults/index.xml"/>
+    <Include file="general/index.xml"/>
 </Ui>
