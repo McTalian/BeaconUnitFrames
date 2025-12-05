@@ -71,16 +71,15 @@ ns.options = {
 	args = {},
 }
 
----@class BUFBaseHandler
+---@class BUFBaseHandler: BUFDbBackedHandler
 ---@field optionsTable table
 ---@field dbDefaults? table
 ---@field optionsOrder? BUFOptionsOrder
 ---@field initialized? boolean
----@field CombatSafeRefresh fun(self: BUFFeatureModule)
----@field RefreshConfig fun(self: BUFConfigHandler)
+---@field CombatSafeRefresh? fun(self: BUFFeatureModule)
+---@field RefreshConfig? fun(self: BUFConfigHandler)
 
 ---@class BUFConfigHandler: BUFBaseHandler
----@field configPath string
 
 ---@class BUFParentHandler: BUFBaseHandler
 

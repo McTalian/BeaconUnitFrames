@@ -1,0 +1,10 @@
+<Ui xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+    <Script file="tourStep.lua"/>
+    <!--
+        ORDER MATTERS FOR THE FOLLOWING INCLUDES
+
+        Each step is included in the order it should appear in the tour.
+    -->
+    <Script file="chooseFrame.lua"/>
+    <Script file="playerGeneral.lua"/>
+</Ui>
