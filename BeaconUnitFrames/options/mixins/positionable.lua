@@ -1,6 +1,17 @@
 ---@class BUFNamespace
 local ns = select(2, ...)
 
+---@class PositionableHandler: MixinBase
+---@field defaultRelativeTo string | Frame?
+---@field customRelativeToOptions table<string, string>?
+---@field customRelativeToSorting string[]?
+---@field GetRelativeFrame fun(self: PositionableHandler): Frame
+---@field SetPosition fun(self: PositionableHandler)
+---@field _SetPosition fun(self: PositionableHandler, positionable: ScriptRegionResizing)
+
+---@class Positionable: PositionableHandler
+local Positionable = {}
+
 local anchorPointOptions = {
 	TOPLEFT = ns.L["TOPLEFT"],
 	TOP = ns.L["TOP"],
@@ -25,14 +36,14 @@ local anchorPointSort = {
 	"BOTTOMRIGHT",
 }
 
-local anchorRelativeToOptions = {
+Positionable.anchorRelativeToOptions = {
 	["UIParent"] = ns.L["UIParent"],
 	["TargetFrame"] = HUD_EDIT_MODE_TARGET_FRAME_LABEL,
 	["PlayerFrame"] = HUD_EDIT_MODE_PLAYER_FRAME_LABEL,
 	["FocusFrame"] = HUD_EDIT_MODE_FOCUS_FRAME_LABEL,
 	["PetFrame"] = HUD_EDIT_MODE_PET_FRAME_LABEL,
 }
-anchorRelativeToOptions[ns.DEFAULT] = ns.L["Default Relative Frame"]
+Positionable.anchorRelativeToOptions[ns.DEFAULT] = ns.L["Default Relative Frame"]
 
 --- Helper to get the relative frame from a string key
 --- @param strKey string
@@ -59,7 +70,7 @@ function ns.GetRelativeFrame(strKey)
 	return _G[strKey]
 end
 
-local anchorRelativeToSort = {
+Positionable.anchorRelativeToSort = {
 	ns.DEFAULT,
 	"UIParent",
 	"TargetFrame",
@@ -67,32 +78,6 @@ local anchorRelativeToSort = {
 	"FocusFrame",
 	"PetFrame",
 }
-
-local anchorRelativePointOptions = {
-	TOPLEFT = ns.L["TOPLEFT"],
-	TOP = ns.L["TOP"],
-	TOPRIGHT = ns.L["TOPRIGHT"],
-	LEFT = ns.L["LEFT"],
-	CENTER = ns.L["CENTER"],
-	RIGHT = ns.L["RIGHT"],
-	BOTTOMLEFT = ns.L["BOTTOMLEFT"],
-	BOTTOM = ns.L["BOTTOM"],
-	BOTTOMRIGHT = ns.L["BOTTOMRIGHT"],
-}
-anchorRelativePointOptions[ns.DEFAULT] = ns.L["Default Relative Point"]
-
-local anchorRelativePointSort = {
-	"TOPLEFT",
-	"TOP",
-	"TOPRIGHT",
-	"LEFT",
-	"CENTER",
-	"RIGHT",
-	"BOTTOMLEFT",
-	"BOTTOM",
-	"BOTTOMRIGHT",
-}
-table.insert(anchorRelativePointSort, 1, ns.DEFAULT)
 
 --- Add positionable options to the given options table
 --- @param optionsTable table
@@ -121,8 +106,8 @@ function ns.AddPositionableOptions(optionsTable, _orderMap)
 		type = "select",
 		name = ns.L["Relative To"],
 		desc = ns.L["RelativeToDesc"],
-		values = anchorRelativeToOptions,
-		sorting = anchorRelativeToSort,
+		values = "GetRelativeToOptions",
+		sorting = "GetRelativeToSorting",
 		set = "SetRelativeTo",
 		get = "GetRelativeTo",
 		order = orderMap.RELATIVE_TO,
@@ -131,8 +116,8 @@ function ns.AddPositionableOptions(optionsTable, _orderMap)
 	optionsTable.relativePoint = {
 		type = "select",
 		name = ns.L["Relative Point"],
-		values = anchorRelativePointOptions,
-		sorting = anchorRelativePointSort,
+		values = anchorPointOptions,
+		sorting = anchorPointSort,
 		set = "SetRelativePoint",
 		get = "GetRelativePoint",
 		order = orderMap.RELATIVE_POINT,
@@ -167,15 +152,6 @@ function ns.AddPositionableOptions(optionsTable, _orderMap)
 	}
 end
 
----@class PositionableHandler: MixinBase
----@field defaultRelativeTo string | Frame?
----@field GetRelativeFrame fun(self: PositionableHandler): Frame
----@field SetPosition fun(self: PositionableHandler)
----@field _SetPosition fun(self: PositionableHandler, positionable: ScriptRegionResizing)
-
----@class Positionable: PositionableHandler
-local Positionable = {}
-
 ns.Mixin(Positionable, ns.MixinBase)
 
 ---Set the anchor point
@@ -206,6 +182,22 @@ end
 ---@return string|nil The relative to frame
 function Positionable:GetRelativeTo(info)
 	return self:DbGet("relativeTo")
+end
+
+---Get the relative to options
+function Positionable:GetRelativeToOptions()
+	if self.customRelativeToOptions then
+		return self.customRelativeToOptions
+	end
+	return anchorRelativeToOptions
+end
+
+---Get the relative to sorting
+function Positionable:GetRelativeToSorting()
+	if self.customRelativeToOptions and self.customRelativeToSorting then
+		return self.customRelativeToSorting
+	end
+	return anchorRelativeToSort
 end
 
 ---Set the relative point

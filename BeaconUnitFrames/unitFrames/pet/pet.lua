@@ -4,6 +4,33 @@ local ns = select(2, ...)
 ---@class BUFPet: BUFFeatureModule
 local BUFPet = ns.NewFeatureModule("BUFPet")
 
+BUFPET.relativeToFrames = {
+	FRAME = "PetFrame",
+	PORTRAIT = "PetPortrait",
+	NAME = "PetName",
+	HEALTH = "PetHealthBar",
+	POWER = "PetManaBar",
+	CASTING = "PetCastingBarFrame",
+}
+
+BUFPET.customRelativeToOptions = {
+	["UIParent"] = ns.L["UIParent"],
+	["PetFrame"] = HUD_EDIT_MODE_PET_FRAME_LABEL,
+	["PetPortrait"] = ns.L["PetPortrait"],
+	["PetName"] = ns.L["PetName"],
+	["PetHealthBar"] = ns.L["PetHealthBar"],
+	["PetManaBar"] = ns.L["PetManaBar"],
+}
+
+BUFPET.customRelativeToSort = {
+	"UIParent",
+	"PetFrame",
+	"PetPortrait",
+	"PetName",
+	"PetHealthBar",
+	"PetManaBar",
+}
+
 BUFPet.optionsTable = {
 	type = "group",
 	name = HUD_EDIT_MODE_PET_FRAME_LABEL,

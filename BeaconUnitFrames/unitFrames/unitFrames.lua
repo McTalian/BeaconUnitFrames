@@ -7,14 +7,6 @@ ns.dbDefaults = ns.dbDefaults
 ---@class BUFDbSchema.UF
 ns.dbDefaults.profile.unitFrames = {}
 
--- ns.options.args.unitFrames = {
---     type = "group",
---     name = UNITFRAME_LABEL,
---     childGroups = "tree",
---     order = 1,
---     args = {},
--- }
-
 ---@class BUFUnitFrames
 local UnitFrames = {}
 

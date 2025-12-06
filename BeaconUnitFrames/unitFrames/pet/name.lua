@@ -29,7 +29,7 @@ ns.dbDefaults.profile.unitFrames.pet.name = {
 	width = 68,
 	height = 10,
 	anchorPoint = "TOPLEFT",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFPet.relativeToFrames.PORTRAIT,
 	relativePoint = "TOPRIGHT",
 	xOffset = 2,
 	yOffset = 0,
@@ -56,8 +56,10 @@ function BUFPetName:RefreshConfig()
 	if not self.initialized then
 		self.initialized = true
 
+		self.customRelativeToOptions = BUFPET.customRelativeToOptions
+		self.customRelativeToSorting = BUFPET.customRelativeToSorting
+
 		self.fontString = PetName
-		self.defaultRelativeTo = PetPortrait
 	end
 	self:RefreshFontStringConfig()
 end

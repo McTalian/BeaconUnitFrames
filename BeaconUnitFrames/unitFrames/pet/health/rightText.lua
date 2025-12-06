@@ -29,7 +29,7 @@ ns.dbDefaults.profile.unitFrames.pet.healthBar = ns.dbDefaults.profile.unitFrame
 
 ns.dbDefaults.profile.unitFrames.pet.healthBar.rightText = {
 	anchorPoint = "RIGHT",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFPet.relativeToFrames.HEALTH,
 	relativePoint = "RIGHT",
 	xOffset = 0,
 	yOffset = 0,
@@ -51,10 +51,14 @@ ns.dbDefaults.profile.unitFrames.pet.healthBar.rightText = {
 ns.options.args.pet.args.healthBar.args.rightText = rightTextHandler.optionsTable
 
 function rightTextHandler:RefreshConfig()
-	if not self.fontString then
+	if not self.initialized then
+		self.initialized = true
+
+		self.customRelativeToOptions = BUFPET.customRelativeToOptions
+		self.customRelativeToSorting = BUFPET.customRelativeToSorting
+
 		self.fontString = PetFrameHealthBarTextRight
 		self.demoText = "123k"
-		self.defaultRelativeTo = PetFrameHealthBar
 	end
 	self:RefreshFontStringConfig()
 end

@@ -30,7 +30,7 @@ ns.dbDefaults.profile.unitFrames.pet.healthBar = {
 	width = 70,
 	height = 10,
 	anchorPoint = "BOTTOMLEFT",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFPet.relativeToFrames.PORTRAIT,
 	relativePoint = "RIGHT",
 	xOffset = 2,
 	yOffset = -3.5,
@@ -54,7 +54,8 @@ function BUFPetHealth:RefreshConfig()
 	if not self.initialized then
 		self.initialized = true
 
-		self.defaultRelativeTo = PetPortrait
+		self.customRelativeToOptions = BUFPET.customRelativeToOptions
+		self.customRelativeToSorting = BUFPET.customRelativeToSorting
 
 		self.barOrContainer = PetFrameHealthBar
 	end

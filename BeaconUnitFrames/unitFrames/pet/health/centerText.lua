@@ -29,7 +29,7 @@ ns.dbDefaults.profile.unitFrames.pet.healthBar = ns.dbDefaults.profile.unitFrame
 
 ns.dbDefaults.profile.unitFrames.pet.healthBar.centerText = {
 	anchorPoint = "CENTER",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFPet.relativeToFrames.HEALTH,
 	relativePoint = "CENTER",
 	xOffset = 0,
 	yOffset = 0,
@@ -51,10 +51,14 @@ ns.dbDefaults.profile.unitFrames.pet.healthBar.centerText = {
 ns.options.args.pet.args.healthBar.args.centerText = centerTextHandler.optionsTable
 
 function centerTextHandler:RefreshConfig()
-	if not self.fontString then
+	if not self.initialized then
+		self.initialized = true
+
+		self.customRelativeToOptions = BUFPET.customRelativeToOptions
+		self.customRelativeToSorting = BUFPET.customRelativeToSorting
+
 		self.fontString = PetFrameHealthBarText
 		self.demoText = "123k / 123k"
-		self.defaultRelativeTo = PetFrameHealthBar
 	end
 	self:RefreshFontStringConfig()
 end

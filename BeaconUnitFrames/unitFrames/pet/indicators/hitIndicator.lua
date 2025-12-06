@@ -38,7 +38,7 @@ BUFPetHitIndicator.optionsTable = {
 BUFPetHitIndicator.dbDefaults = {
 	enabled = true,
 	anchorPoint = "TOPLEFT",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFPet.relativeToFrames.FRAME,
 	relativePoint = "TOPLEFT",
 	xOffset = 5,
 	yOffset = -5,
@@ -89,11 +89,14 @@ function BUFPetHitIndicator:ToggleDemoMode()
 end
 
 function BUFPetHitIndicator:RefreshConfig()
-	if not self.fontString then
+	if not self.initialized then
+		self.initialized = true
+
+		self.customRelativeToOptions = BUFPET.customRelativeToOptions
+		self.customRelativeToSorting = BUFPET.customRelativeToSorting
+
 		self.fontString = PetHitIndicator
 		self.demoText = "1234567"
-
-		self.defaultRelativeTo = PetFrame
 	end
 	self:RefreshFontStringConfig()
 	self:ShowHide()

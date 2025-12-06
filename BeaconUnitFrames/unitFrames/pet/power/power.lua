@@ -23,7 +23,7 @@ ns.BUFStatusBar:ApplyMixin(BUFPetPower)
 ---@class BUFDbSchema.UF.Pet.Power
 BUFPetPower.dbDefaults = {
 	anchorPoint = "TOPLEFT",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFPet.relativeToFrames.HEALTH,
 	relativePoint = "BOTTOMLEFT",
 	width = 74,
 	height = 7,
@@ -56,7 +56,8 @@ function BUFPetPower:RefreshConfig()
 	if not self.initialized then
 		self.initialized = true
 
-		self.defaultRelativeTo = PetFrameHealthBar
+		self.customRelativeToOptions = BUFPET.customRelativeToOptions
+		self.customRelativeToSorting = BUFPET.customRelativeToSorting
 
 		self.barOrContainer = PetFrameManaBar
 	end

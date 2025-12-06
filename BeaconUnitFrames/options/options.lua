@@ -84,6 +84,9 @@ ns.options = {
 ---@class BUFParentHandler: BUFBaseHandler
 
 ---@class BUFFeatureModule: AceModule, AceHook-3.0, AceEvent-3.0, BUFBaseHandler
+---@field relativeToFrames table<string, string>?
+---@field customRelativeToOptions table<string, string>?
+---@field customRelativeToSorting string[]?
 
 --- Create a new feature module
 --- @param moduleName string

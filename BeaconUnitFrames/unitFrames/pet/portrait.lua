@@ -23,7 +23,7 @@ ns.dbDefaults.profile.unitFrames.pet.portrait = {
 	height = 37,
 	scale = 1,
 	anchorPoint = "TOPLEFT",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFPet.relativeToFrames.FRAME,
 	relativePoint = "TOPLEFT",
 	xOffset = 5,
 	yOffset = -5,
@@ -64,8 +64,6 @@ ns.options.args.pet.args.portrait = portrait
 function BUFPetPortrait:RefreshConfig()
 	if not self.initialized then
 		self.initialized = true
-
-		self.defaultRelativeTo = PetFrame
 	end
 
 	self:ShowHidePortrait()

@@ -29,7 +29,7 @@ ns.dbDefaults.profile.unitFrames.pet.powerBar = ns.dbDefaults.profile.unitFrames
 
 ns.dbDefaults.profile.unitFrames.pet.powerBar.leftText = {
 	anchorPoint = "LEFT",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFPet.relativeToFrames.POWER,
 	relativePoint = "LEFT",
 	xOffset = 4,
 	yOffset = 0,
@@ -51,10 +51,14 @@ ns.dbDefaults.profile.unitFrames.pet.powerBar.leftText = {
 ns.options.args.pet.args.powerBar.args.leftText = leftTextHandler.optionsTable
 
 function leftTextHandler:RefreshConfig()
-	if not self.fontString then
+	if not self.initialized then
+		self.initialized = true
+
+		self.customRelativeToOptions = BUFPET.customRelativeToOptions
+		self.customRelativeToSorting = BUFPET.customRelativeToSorting
+
 		self.fontString = PetFrameManaBarTextLeft
 		self.demoText = "100%"
-		self.defaultRelativeTo = PetFrameManaBar
 	end
 	self:RefreshFontStringConfig()
 end

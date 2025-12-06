@@ -29,7 +29,7 @@ ns.dbDefaults.profile.unitFrames.pet.powerBar = ns.dbDefaults.profile.unitFrames
 
 ns.dbDefaults.profile.unitFrames.pet.powerBar.rightText = {
 	anchorPoint = "RIGHT",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFPet.relativeToFrames.POWER,
 	relativePoint = "RIGHT",
 	xOffset = 0,
 	yOffset = 0,
@@ -51,10 +51,14 @@ ns.dbDefaults.profile.unitFrames.pet.powerBar.rightText = {
 ns.options.args.pet.args.powerBar.args.rightText = rightTextHandler.optionsTable
 
 function rightTextHandler:RefreshConfig()
-	if not self.fontString then
+	if not self.initialized then
+		self.initialized = true
+
+		self.customRelativeToOptions = BUFPET.customRelativeToOptions
+		self.customRelativeToSorting = BUFPET.customRelativeToSorting
+
 		self.fontString = PetFrameManaBarTextRight
 		self.demoText = "123k"
-		self.defaultRelativeTo = PetFrameManaBar
 	end
 	self:RefreshFontStringConfig()
 end

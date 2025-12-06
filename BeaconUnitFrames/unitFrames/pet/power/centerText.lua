@@ -29,7 +29,7 @@ ns.dbDefaults.profile.unitFrames.pet.powerBar = ns.dbDefaults.profile.unitFrames
 
 ns.dbDefaults.profile.unitFrames.pet.powerBar.centerText = {
 	anchorPoint = "CENTER",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFPet.relativeToFrames.POWER,
 	relativePoint = "CENTER",
 	xOffset = 2,
 	yOffset = 0,
@@ -50,10 +50,14 @@ ns.dbDefaults.profile.unitFrames.pet.powerBar.centerText = {
 ns.options.args.pet.args.powerBar.args.centerText = centerTextHandler.optionsTable
 
 function centerTextHandler:RefreshConfig()
-	if not self.fontString then
+	if not self.initialized then
+		self.initialized = true
+
+		self.customRelativeToOptions = BUFPET.customRelativeToOptions
+		self.customRelativeToSorting = BUFPET.customRelativeToSorting
+
 		self.fontString = PetFrameManaBarText
 		self.demoText = "123k / 123k"
-		self.defaultRelativeTo = PetFrameManaBar
 	end
 	self:RefreshFontStringConfig()
 end
