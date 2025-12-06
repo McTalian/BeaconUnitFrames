@@ -210,7 +210,7 @@ def main():
 
     # Now process each other locale file
     for locale_file in locale_files:
-        if locale_file in ["main.lua", reference_file]:
+        if locale_file in ["main.lua", "init.lua", "load.lua", reference_file]:
             continue
 
         locale_path = f"{locale_dir}/{locale_file}"
