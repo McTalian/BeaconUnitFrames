@@ -24,7 +24,7 @@ BUFPlayerRoleIcon.optionsTable = {
 BUFPlayerRoleIcon.dbDefaults = {
 	scale = 1.0,
 	anchorPoint = "TOPLEFT",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFPlayer.relativeToFrames.FRAME,
 	relativePoint = "TOPLEFT",
 	xOffset = 196,
 	yOffset = -27,
@@ -41,7 +41,10 @@ ns.options.args.player.args.indicators.args.roleIcon = BUFPlayerRoleIcon.options
 function BUFPlayerRoleIcon:RefreshConfig()
 	if not self.initialized then
 		self.initialized = true
-		self.defaultRelativeTo = BUFPlayer.contentContextual
+
+		self.customRelativeToOptions = BUFPlayer.customRelativeToOptions
+		self.customRelativeToSorting = BUFPlayer.customRelativeToSorting
+
 		self.texture = BUFPlayer.contentContextual.RoleIcon
 	end
 	self:RefreshScaleTextureConfig()

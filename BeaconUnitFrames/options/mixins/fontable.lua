@@ -165,6 +165,7 @@ end
 ---@field _SetFontShadow fun(self: FontableHandler, fontable: FontString)
 
 ---@class Fontable: FontableHandler
+---@field fontString FontString
 local Fontable = {}
 
 ns.Mixin(Fontable, ns.MixinBase)
@@ -295,10 +296,18 @@ function Fontable:_SetFont(fontable)
 	self:UpdateFontColor()
 end
 
+function Fontable:SetFont()
+	self:_SetFont(self.fontString)
+end
+
 function Fontable:_UpdateFontColor(fontable)
 	local fontColor = { self:GetFontColor() } or { 1, 1, 1, 1 }
 	local r, g, b, a = unpack(fontColor)
 	fontable:SetTextColor(r, g, b, a)
+end
+
+function Fontable:UpdateFontColor()
+	self:_UpdateFontColor(self.fontString)
 end
 
 function Fontable:_SetFontShadow(fontable)
@@ -317,6 +326,10 @@ function Fontable:_SetFontShadow(fontable)
 		fontable:SetShadowColor(r, g, b, a)
 		fontable:SetShadowOffset(offsetX, offsetY)
 	end
+end
+
+function Fontable:SetFontShadow()
+	self:_SetFontShadow(self.fontString)
 end
 
 ns.Fontable = Fontable

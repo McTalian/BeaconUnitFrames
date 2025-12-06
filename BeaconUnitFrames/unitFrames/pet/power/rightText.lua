@@ -52,10 +52,7 @@ ns.options.args.pet.args.powerBar.args.rightText = rightTextHandler.optionsTable
 
 function rightTextHandler:RefreshConfig()
 	if not self.initialized then
-		self.initialized = true
-
-		self.customRelativeToOptions = BUFPet.customRelativeToOptions
-		self.customRelativeToSorting = BUFPet.customRelativeToSorting
+		BUFPet.FrameInit(self)
 
 		self.fontString = PetFrameManaBarTextRight
 		self.demoText = "123k"

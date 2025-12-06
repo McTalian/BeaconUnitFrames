@@ -38,7 +38,7 @@ BUFPlayerHitIndicator.optionsTable = {
 BUFPlayerHitIndicator.dbDefaults = {
 	enabled = true,
 	anchorPoint = "CENTER",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFPlayer.relativeToFrames.FRAME,
 	relativePoint = "TOPLEFT",
 	xOffset = 54,
 	yOffset = -50,
@@ -89,11 +89,11 @@ function BUFPlayerHitIndicator:ToggleDemoMode()
 end
 
 function BUFPlayerHitIndicator:RefreshConfig()
-	if not self.fontString then
+	if not self.initialized then
+		BUFPlayer.FrameInit(self)
+
 		self.fontString = BUFPlayer.contentMain.HitIndicator.HitText
 		self.demoText = "1234567"
-
-		self.defaultRelativeTo = BUFPlayer.contentMain.HitIndicator
 	end
 	self:RefreshFontStringConfig()
 	self:ShowHide()

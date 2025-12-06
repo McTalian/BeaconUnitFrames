@@ -24,7 +24,7 @@ BUFPlayerRestIndicator.optionsTable = {
 BUFPlayerRestIndicator.dbDefaults = {
 	scale = 1.0,
 	anchorPoint = "TOPLEFT",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFPlayer.relativeToFrames.FRAME,
 	relativePoint = "TOPLEFT",
 	xOffset = 64,
 	yOffset = -6,
@@ -49,8 +49,8 @@ end
 
 function BUFPlayerRestIndicator:RefreshConfig()
 	if not self.initialized then
-		self.initialized = true
-		self.defaultRelativeTo = BUFPlayer.contentContextual
+		BUFPlayer.FrameInit(self)
+
 		self.texture = BUFPlayer.contentContextual.PlayerRestLoop
 	end
 	self:RefreshScaleTextureConfig()

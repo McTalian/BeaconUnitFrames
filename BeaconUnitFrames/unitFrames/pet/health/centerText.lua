@@ -52,10 +52,7 @@ ns.options.args.pet.args.healthBar.args.centerText = centerTextHandler.optionsTa
 
 function centerTextHandler:RefreshConfig()
 	if not self.initialized then
-		self.initialized = true
-
-		self.customRelativeToOptions = BUFPet.customRelativeToOptions
-		self.customRelativeToSorting = BUFPet.customRelativeToSorting
+		BUFPet.FrameInit(self)
 
 		self.fontString = PetFrameHealthBarText
 		self.demoText = "123k / 123k"

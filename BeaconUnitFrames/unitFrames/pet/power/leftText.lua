@@ -52,10 +52,7 @@ ns.options.args.pet.args.powerBar.args.leftText = leftTextHandler.optionsTable
 
 function leftTextHandler:RefreshConfig()
 	if not self.initialized then
-		self.initialized = true
-
-		self.customRelativeToOptions = BUFPet.customRelativeToOptions
-		self.customRelativeToSorting = BUFPet.customRelativeToSorting
+		BUFPet.FrameInit(self)
 
 		self.fontString = PetFrameManaBarTextLeft
 		self.demoText = "100%"

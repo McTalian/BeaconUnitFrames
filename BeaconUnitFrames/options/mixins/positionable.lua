@@ -40,6 +40,11 @@ Positionable.relativeToFrames = {
 	UI_PARENT = "UIParent",
 	TARGET_FRAME = "TargetFrame",
 	PLAYER_FRAME = "PlayerFrame",
+	PLAYER_PORTRAIT = "PlayerPortrait",
+	PLAYER_NAME = "PlayerName",
+	PLAYER_HEALTH_BAR = "PlayerFrameHealthBar",
+	PLAYER_POWER_BAR = "PlayerFrameManaBar",
+	PLAYER_CAST_BAR = "PlayerCastingBar",
 	FOCUS_FRAME = "FocusFrame",
 	PET_FRAME = "PetFrame",
 	PET_PORTRAIT = "PetPortrait",
@@ -71,6 +76,14 @@ function ns.GetRelativeFrame(strKey)
 		return _G.TargetFrame
 	elseif strKey == frames.PLAYER_FRAME then
 		return _G.PlayerFrame
+	elseif strKey == frames.PLAYER_PORTRAIT then
+		return _G.PlayerFrame.PlayerFrameContainer.PlayerPortrait
+	elseif strKey == frames.PLAYER_NAME then
+		return _G.PlayerName
+	elseif strKey == frames.PLAYER_HEALTH_BAR then
+		return PlayerFrame_GetHealthBar()
+	elseif strKey == frames.PLAYER_POWER_BAR then
+		return PlayerFrame_GetManaBar()
 	elseif strKey == frames.FOCUS_FRAME then
 		return _G.FocusFrame
 	elseif strKey == frames.PET_FRAME then
@@ -211,7 +224,6 @@ end
 ---Get the relative to options
 function Positionable:GetRelativeToOptions()
 	if self.customRelativeToOptions then
-		print("Using custom relative to options")
 		return self.customRelativeToOptions
 	end
 	return self.anchorRelativeToOptions
@@ -220,7 +232,6 @@ end
 ---Get the relative to sorting
 function Positionable:GetRelativeToSorting()
 	if self.customRelativeToOptions and self.customRelativeToSorting then
-		print("Using custom relative to sorting")
 		return self.customRelativeToSorting
 	end
 	return self.anchorRelativeToSort
@@ -287,17 +298,20 @@ function Positionable:GetPositionAnchorInfo()
 	local xOffset = self:GetXOffset() or 0
 	local yOffset = self:GetYOffset() or 0
 	---@type Frame
-	local relFrame
 
+	if relativeTo == nil then
+		relativeTo = self.relativeToFrames.UI_PARENT
+	end
+
+	local relFrame
 	if type(relativeTo) == "string" then
-		if _G[relativeTo] == nil then
-			error("Relative frame '" .. relativeTo .. "' does not exist.")
-		else
-			---@type Frame
-			relFrame = _G[relativeTo] --[[@as Frame]]
-		end
+		relFrame = ns.GetRelativeFrame(relativeTo)
 	elseif relativeTo ~= nil then
 		relFrame = relativeTo
+	end
+
+	if relFrame == nil then
+		print("Positionable:GetPositionAnchorInfo: relativeTo frame is nil")
 	end
 
 	---@type AnchorInfo

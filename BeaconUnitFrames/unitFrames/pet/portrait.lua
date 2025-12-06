@@ -7,6 +7,7 @@ local BUFPet = ns.BUFPet
 ---@class BUFPet.Portrait: Sizable, Positionable, BoxMaskable
 local BUFPetPortrait = {
 	configPath = "unitFrames.pet.portrait",
+	frameKey = BUFPet.relativeToFrames.PORTRAIT,
 }
 
 ns.Mixin(BUFPetPortrait, ns.Sizable, ns.Positionable, ns.BoxMaskable)

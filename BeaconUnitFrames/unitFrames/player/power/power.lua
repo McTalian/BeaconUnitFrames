@@ -7,6 +7,7 @@ local BUFPlayer = ns.BUFPlayer
 ---@class BUFPlayer.Power: BUFStatusBar
 local BUFPlayerPower = {
 	configPath = "unitFrames.player.powerBar",
+	frameKey = BUFPlayer.relativeToFrames.POWER,
 }
 
 BUFPlayerPower.optionsTable = {
@@ -23,7 +24,7 @@ BUFPlayerPower.dbDefaults = {
 	width = 124,
 	height = 10,
 	anchorPoint = "TOPLEFT",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFPlayer.relativeToFrames.FRAME,
 	relativePoint = "TOPLEFT",
 	xOffset = 85,
 	yOffset = -61,
@@ -54,8 +55,7 @@ ns.options.args.player.args.powerBar = BUFPlayerPower.optionsTable
 
 function BUFPlayerPower:RefreshConfig()
 	if not self.initialized then
-		self.initialized = true
-		self.defaultRelativeTo = BUFPlayer.contentMain
+		BUFPlayer.FrameInit(self)
 
 		self.barOrContainer = BUFPlayer.manaBar
 	end

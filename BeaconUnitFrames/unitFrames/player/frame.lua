@@ -7,6 +7,7 @@ local BUFPlayer = ns.BUFPlayer
 ---@class BUFPlayer.Frame: Sizable, BackgroundTexturable
 local BUFPlayerFrame = {
 	configPath = "unitFrames.player.frame",
+	frameKey = BUFPlayer.relativeToFrames.FRAME,
 }
 
 ns.Mixin(BUFPlayerFrame, ns.Sizable, ns.BackgroundTexturable)

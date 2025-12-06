@@ -24,7 +24,7 @@ BUFPlayerPrestigePortrait.optionsTable = {
 BUFPlayerPrestigePortrait.dbDefaults = {
 	scale = 1.0,
 	anchorPoint = "TOPLEFT",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFPlayer.relativeToFrames.FRAME,
 	relativePoint = "TOPLEFT",
 	xOffset = -2,
 	yOffset = -38,
@@ -55,7 +55,10 @@ end
 function BUFPlayerPrestigePortrait:RefreshConfig()
 	if not self.initialized then
 		self.initialized = true
-		self.defaultRelativeTo = BUFPlayer.contentContextual
+
+		self.customRelativeToOptions = BUFPlayer.customRelativeToOptions
+		self.customRelativeToSorting = BUFPlayer.customRelativeToSorting
+
 		self.texture = BUFPlayer.contentContextual.PrestigePortrait
 		self.secondaryTexture = BUFPlayer.contentContextual.PrestigeBadge
 	end

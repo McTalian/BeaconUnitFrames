@@ -29,7 +29,7 @@ ns.dbDefaults.profile.unitFrames.player.healthBar = ns.dbDefaults.profile.unitFr
 
 ns.dbDefaults.profile.unitFrames.player.healthBar.centerText = {
 	anchorPoint = "CENTER",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFPlayer.relativeToFrames.HEALTH,
 	relativePoint = "CENTER",
 	xOffset = 0,
 	yOffset = 0,
@@ -51,10 +51,11 @@ ns.dbDefaults.profile.unitFrames.player.healthBar.centerText = {
 ns.options.args.player.args.healthBar.args.centerText = centerTextHandler.optionsTable
 
 function centerTextHandler:RefreshConfig()
-	if not self.fontString then
+	if not self.initialized then
+		BUFPlayer.FrameInit(self)
+
 		self.fontString = BUFPlayer.healthBarContainer.HealthBarText
 		self.demoText = "123k / 123k"
-		self.defaultRelativeTo = BUFPlayer.healthBarContainer
 	end
 	self:RefreshFontStringConfig()
 end

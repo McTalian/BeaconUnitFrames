@@ -76,23 +76,60 @@ ns.options = {
 ---@field dbDefaults? table
 ---@field optionsOrder? BUFOptionsOrder
 ---@field initialized? boolean
+---@field customRelativeToOptions table<string, string>?
+---@field customRelativeToSorting string[]?
 ---@field CombatSafeRefresh? fun(self: BUFFeatureModule)
 ---@field RefreshConfig? fun(self: BUFConfigHandler)
 
 ---@class BUFConfigHandler: BUFBaseHandler
+---@field frameKey? string
+---@field noAtlas boolean?
 
 ---@class BUFParentHandler: BUFBaseHandler
 
 ---@class BUFFeatureModule: AceModule, AceHook-3.0, AceEvent-3.0, BUFBaseHandler
+---@field FrameInit? fun(self: BUFConfigHandler)
 ---@field relativeToFrames table<string, string>?
----@field customRelativeToOptions table<string, string>?
----@field customRelativeToSorting string[]?
 
 --- Create a new feature module
 --- @param moduleName string
 --- @return AceModule module basically a BUFFeatureModule
 function ns.NewFeatureModule(moduleName)
-	return ns.BUF:NewModule(moduleName, "AceHook-3.0", "AceEvent-3.0")
+	---@type BUFFeatureModule
+	local module = ns.BUF:NewModule(moduleName, "AceHook-3.0", "AceEvent-3.0") --[[@as BUFFeatureModule]]
+
+	function module.FrameInit(s)
+		if s.configPath == "unitFrames.player.groupIndicator" then
+			print("Inside FrameInit for groupIndicator")
+			print("Checking customRelativeToOptions:")
+			for k, v in pairs(module.customRelativeToOptions) do
+				print(k, v)
+			end
+			print("Checking customRelativeToSorting:")
+			for i, v in ipairs(module.customRelativeToSorting) do
+				print(i, v)
+			end
+		end
+		s.initialized = true
+
+		s.customRelativeToOptions = {}
+		Mixin(s.customRelativeToOptions, module.customRelativeToOptions)
+		s.customRelativeToSorting = {}
+		Mixin(s.customRelativeToSorting, module.customRelativeToSorting)
+
+		-- Can't anchor to ourselves
+		if s.frameKey then
+			s.customRelativeToOptions[s.frameKey] = nil
+			for i, v in ipairs(s.customRelativeToSorting) do
+				if v == s.frameKey then
+					table.remove(s.customRelativeToSorting, i)
+					break
+				end
+			end
+		end
+	end
+
+	return module
 end
 
 StaticPopupDialogs["BUF_RELOAD_UI"] = {

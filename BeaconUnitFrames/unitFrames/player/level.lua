@@ -27,7 +27,7 @@ ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.playe
 ---@class BUFDbSchema.UF.Player.Level
 ns.dbDefaults.profile.unitFrames.player.level = {
 	anchorPoint = "TOPRIGHT",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFPlayer.relativeToFrames.FRAME,
 	relativePoint = "TOPRIGHT",
 	xOffset = -24.5,
 	yOffset = -28,
@@ -50,15 +50,12 @@ ns.options.args.player.args.level = BUFPlayerLevel.optionsTable
 
 function BUFPlayerLevel:RefreshConfig()
 	if not self.initialized then
-		self.initialized = true
+		BUFPlayer.FrameInit(self)
 
 		self.fontString = PlayerLevelText
-		self.defaultRelativeTo = BUFPlayer.contentMain
 
-		local player = BUFPlayer
-
-		if not player:IsHooked("PlayerFrame_UpdateLevel") then
-			player:SecureHook("PlayerFrame_UpdateLevel", function(f)
+		if not BUFPlayer:IsHooked("PlayerFrame_UpdateLevel") then
+			BUFPlayer:SecureHook("PlayerFrame_UpdateLevel", function(f)
 				self:UpdateFontColor()
 			end)
 		end

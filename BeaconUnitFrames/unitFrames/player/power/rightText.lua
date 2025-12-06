@@ -29,7 +29,7 @@ ns.dbDefaults.profile.unitFrames.player.powerBar = ns.dbDefaults.profile.unitFra
 
 ns.dbDefaults.profile.unitFrames.player.powerBar.rightText = {
 	anchorPoint = "RIGHT",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFPlayer.relativeToFrames.POWER,
 	relativePoint = "RIGHT",
 	xOffset = -2,
 	yOffset = 0,
@@ -51,10 +51,11 @@ ns.dbDefaults.profile.unitFrames.player.powerBar.rightText = {
 ns.options.args.player.args.powerBar.args.rightText = rightTextHandler.optionsTable
 
 function rightTextHandler:RefreshConfig()
-	if not self.fontString then
+	if not self.initialized then
+		BUFPlayer.FrameInit(self)
+
 		self.fontString = BUFPlayer.manaBar.RightText
 		self.demoText = "123k"
-		self.defaultRelativeTo = BUFPlayer.manaBar
 	end
 	self:RefreshFontStringConfig()
 end

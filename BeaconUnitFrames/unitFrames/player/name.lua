@@ -7,6 +7,7 @@ local BUFPlayer = ns.BUFPlayer
 ---@class BUFPlayer.Name: BUFFontString, TextCustomizable
 local BUFPlayerName = {
 	configPath = "unitFrames.player.name",
+	frameKey = BUFPlayer.relativeToFrames.NAME,
 }
 
 BUFPlayerName.optionsTable = {
@@ -30,7 +31,7 @@ ns.dbDefaults.profile.unitFrames.player.name = {
 	width = 96,
 	height = 12,
 	anchorPoint = "TOPLEFT",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFPlayer.relativeToFrames.FRAME,
 	relativePoint = "TOPLEFT",
 	xOffset = 88,
 	yOffset = -27,
@@ -58,15 +59,12 @@ ns.options.args.player.args.playerName = BUFPlayerName.optionsTable
 
 function BUFPlayerName:RefreshConfig()
 	if not self.initialized then
-		self.initialized = true
+		BUFPlayer.FrameInit(self)
 
 		self.fontString = PlayerName
-		self.defaultRelativeTo = BUFPlayer.contentMain
 
-		local player = BUFPlayer
-
-		if not player:IsHooked("PlayerFrame_UpdatePlayerNameTextAnchor") then
-			player:SecureHook("PlayerFrame_UpdatePlayerNameTextAnchor", function()
+		if not BUFPlayer:IsHooked("PlayerFrame_UpdatePlayerNameTextAnchor") then
+			BUFPlayer:SecureHook("PlayerFrame_UpdatePlayerNameTextAnchor", function()
 				self:SetPosition()
 			end)
 		end
@@ -76,7 +74,7 @@ function BUFPlayerName:RefreshConfig()
 end
 
 function BUFPlayerName:RefreshText()
-	local customText = ns.db.profile.unitFrames.player.name.customText
+	local customText = self:DbGet("customText")
 	if customText and customText ~= "" then
 		PlayerName:SetText(customText)
 	else

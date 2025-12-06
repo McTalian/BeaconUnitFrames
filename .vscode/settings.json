@@ -130,6 +130,7 @@
     "PlayerFrameAlternatePowerBarArea",
     "TargetFrame",
     "SetCVar",
-    "GetCVar"
+    "GetCVar",
+    "OKAY"
   ]
 }

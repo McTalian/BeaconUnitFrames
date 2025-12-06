@@ -22,7 +22,7 @@ BUFPlayerPvPIcon.optionsTable = {
 
 BUFPlayerPvPIcon.dbDefaults = {
 	anchorPoint = "TOPLEFT",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFPlayer.relativeToFrames.FRAME,
 	relativePoint = "TOPRIGHT",
 	xOffset = 25,
 	yOffset = -50,
@@ -50,9 +50,10 @@ function BUFPlayerPvPIcon:ToggleDemoMode()
 end
 
 function BUFPlayerPvPIcon:RefreshConfig()
-	if not self.texture then
+	if not self.initialized then
+		BUFPlayer.FrameInit(self)
+
 		self.texture = BUFPlayer.contentContextual.PVPIcon
-		self.defaultRelativeTo = BUFPlayer.contentContextual
 	end
 	self:RefreshScaleTextureConfig()
 end

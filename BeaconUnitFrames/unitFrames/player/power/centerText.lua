@@ -29,7 +29,7 @@ ns.dbDefaults.profile.unitFrames.player.powerBar = ns.dbDefaults.profile.unitFra
 
 ns.dbDefaults.profile.unitFrames.player.powerBar.centerText = {
 	anchorPoint = "CENTER",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFPlayer.relativeToFrames.POWER,
 	relativePoint = "CENTER",
 	xOffset = 0,
 	yOffset = 0,
@@ -50,10 +50,11 @@ ns.dbDefaults.profile.unitFrames.player.powerBar.centerText = {
 ns.options.args.player.args.powerBar.args.centerText = centerTextHandler.optionsTable
 
 function centerTextHandler:RefreshConfig()
-	if not self.fontString then
+	if not self.initialized then
+		BUFPlayer.FrameInit(self)
+
 		self.fontString = BUFPlayer.manaBar.ManaBarText
 		self.demoText = "123k / 123k"
-		self.defaultRelativeTo = BUFPlayer.manaBar
 	end
 	self:RefreshFontStringConfig()
 end

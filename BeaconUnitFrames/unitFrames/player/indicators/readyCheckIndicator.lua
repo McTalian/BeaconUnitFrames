@@ -24,7 +24,7 @@ BUFPlayerReadyCheckIndicator.optionsTable = {
 BUFPlayerReadyCheckIndicator.dbDefaults = {
 	scale = 1.0,
 	anchorPoint = "CENTER",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFPlayer.relativeToFrames.FRAME,
 	relativePoint = "CENTER",
 	xOffset = 0,
 	yOffset = 0,
@@ -47,8 +47,8 @@ end
 
 function BUFPlayerReadyCheckIndicator:RefreshConfig()
 	if not self.initialized then
-		self.initialized = true
-		self.defaultRelativeTo = BUFPlayer.contentContextual
+		BUFPlayer.FrameInit(self)
+
 		self.texture = BUFPlayer.contentContextual.ReadyCheck
 	end
 	self:RefreshScaleTextureConfig()

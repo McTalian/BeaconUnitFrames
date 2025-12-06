@@ -1,20 +1,36 @@
 ---@class BUFNamespace
 local ns = select(2, ...)
 
----@class BUFPlayer: AceModule, AceHook-3.0
-local BUFPlayer = ns.BUF:NewModule("BUFPlayer", "AceHook-3.0")
+---@class BUFPlayer: BUFFeatureModule
+local BUFPlayer = ns.NewFeatureModule("BUFPlayer")
 
-ns.BUFPlayer = BUFPlayer
-
----@class BUFDbSchema.UF
-ns.dbDefaults.profile.unitFrames = ns.dbDefaults.profile.unitFrames
-
----@class BUFDbSchema.UF.Player
-ns.dbDefaults.profile.unitFrames.player = {
-	enabled = true,
+BUFPlayer.relativeToFrames = {
+	FRAME = ns.Positionable.relativeToFrames.PLAYER_FRAME,
+	PORTRAIT = ns.Positionable.relativeToFrames.PLAYER_PORTRAIT,
+	NAME = ns.Positionable.relativeToFrames.PLAYER_NAME,
+	HEALTH = ns.Positionable.relativeToFrames.PLAYER_HEALTH_BAR,
+	POWER = ns.Positionable.relativeToFrames.PLAYER_POWER_BAR,
 }
 
-ns.options.args.player = {
+BUFPlayer.customRelativeToOptions = {
+	[ns.Positionable.relativeToFrames.UI_PARENT] = ns.L["UIParent"],
+	[BUFPlayer.relativeToFrames.FRAME] = HUD_EDIT_MODE_PLAYER_FRAME_LABEL,
+	[BUFPlayer.relativeToFrames.PORTRAIT] = ns.L["PlayerPortrait"],
+	[BUFPlayer.relativeToFrames.NAME] = ns.L["PlayerName"],
+	[BUFPlayer.relativeToFrames.HEALTH] = ns.L["PlayerHealthBar"],
+	[BUFPlayer.relativeToFrames.POWER] = ns.L["PlayerManaBar"],
+}
+
+BUFPlayer.customRelativeToSorting = {
+	ns.Positionable.relativeToFrames.UI_PARENT,
+	BUFPlayer.relativeToFrames.FRAME,
+	BUFPlayer.relativeToFrames.PORTRAIT,
+	BUFPlayer.relativeToFrames.NAME,
+	BUFPlayer.relativeToFrames.HEALTH,
+	BUFPlayer.relativeToFrames.POWER,
+}
+
+BUFPlayer.optionsTable = {
 	type = "group",
 	name = HUD_EDIT_MODE_PLAYER_FRAME_LABEL,
 	order = ns.BUFUnitFrames.optionsOrder.PLAYER,
@@ -32,7 +48,7 @@ ns.options.args.player = {
 			type = "toggle",
 			name = ENABLE,
 			set = function(info, value)
-				ns.db.profile.unitFrames.target.enabled = value
+				ns.db.profile.unitFrames.player.enabled = value
 				if value then
 					BUFPlayer:RefreshConfig()
 				else
@@ -41,12 +57,23 @@ ns.options.args.player = {
 			end,
 			disabled = false,
 			get = function(info)
-				return ns.db.profile.unitFrames.target.enabled
+				return ns.db.profile.unitFrames.player.enabled
 			end,
 			order = 0.01,
 		},
 	},
 }
+
+---@class BUFDbSchema.UF.Player
+BUFPlayer.dbDefaults = {
+	enabled = true,
+}
+
+---@class BUFDbSchema.UF
+ns.dbDefaults.profile.unitFrames = ns.dbDefaults.profile.unitFrames
+ns.dbDefaults.profile.unitFrames.player = BUFPlayer.dbDefaults
+
+ns.options.args.player = BUFPlayer.optionsTable
 
 BUFPlayer.optionsOrder = {
 	FRAME = 1,
@@ -187,3 +214,5 @@ function BUFPlayer:RefreshConfig()
 		end)
 	end
 end
+
+ns.BUFPlayer = BUFPlayer

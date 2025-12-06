@@ -21,7 +21,7 @@ BUFPlayerClassResources.optionsTable = {
 BUFPlayerClassResources.dbDefaults = {
 	scale = 1.0,
 	anchorPoint = "TOP",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFPlayer.relativeToFrames.FRAME,
 	relativePoint = "BOTTOM",
 	xOffset = 30,
 	yOffset = 25,
@@ -39,7 +39,7 @@ ns.options.args.player.args.classResources = BUFPlayerClassResources.optionsTabl
 
 function BUFPlayerClassResources:RefreshConfig()
 	if not self.initialized then
-		self.initialized = true
+		BUFPlayer.FrameInit(self)
 
 		self.frame = PlayerFrameBottomManagedFramesContainer
 	end

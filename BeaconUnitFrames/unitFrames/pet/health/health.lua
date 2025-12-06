@@ -7,6 +7,7 @@ local BUFPet = ns.BUFPet
 ---@class BUFPet.Health: BUFStatusBar
 local BUFPetHealth = {
 	configPath = "unitFrames.pet.healthBar",
+	frameKey = BUFPet.relativeToFrames.HEALTH,
 }
 
 BUFPetHealth.optionsTable = {
@@ -52,10 +53,7 @@ ns.options.args.pet.args.healthBar = BUFPetHealth.optionsTable
 
 function BUFPetHealth:RefreshConfig()
 	if not self.initialized then
-		self.initialized = true
-
-		self.customRelativeToOptions = BUFPet.customRelativeToOptions
-		self.customRelativeToSorting = BUFPet.customRelativeToSorting
+		BUFPet.FrameInit(self)
 
 		self.barOrContainer = PetFrameHealthBar
 	end

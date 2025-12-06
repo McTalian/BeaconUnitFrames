@@ -7,6 +7,7 @@ local BUFPet = ns.BUFPet
 ---@class BUFPet.Power: BUFStatusBar
 local BUFPetPower = {
 	configPath = "unitFrames.pet.powerBar",
+	frameKey = BUFPet.relativeToFrames.POWER,
 }
 
 BUFPetPower.optionsTable = {
@@ -54,10 +55,7 @@ ns.options.args.pet.args.powerBar = BUFPetPower.optionsTable
 
 function BUFPetPower:RefreshConfig()
 	if not self.initialized then
-		self.initialized = true
-
-		self.customRelativeToOptions = BUFPet.customRelativeToOptions
-		self.customRelativeToSorting = BUFPet.customRelativeToSorting
+		BUFPet.FrameInit(self)
 
 		self.barOrContainer = PetFrameManaBar
 	end

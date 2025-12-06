@@ -4,10 +4,16 @@ local ns = select(2, ...)
 --- Add texture options to the given options table
 --- @param optionsTable table
 --- @param _orderMap BUFOptionsOrder?
-function ns.AddTextureOptions(optionsTable, _orderMap)
+--- @param noAtlas boolean?
+function ns.AddTextureOptions(optionsTable, _orderMap, noAtlas)
 	local orderMap = _orderMap or ns.defaultOrderMap
 	ns.AddPositionableOptions(optionsTable, orderMap)
-	ns.AddAtlasSizableOptions(optionsTable, ns.AtlasSizableFlags.SIZABLE + ns.AtlasSizableFlags.SCALABLE, orderMap)
+	if noAtlas then
+		ns.AddSizableOptions(optionsTable, orderMap)
+		ns.AddScalableOptions(optionsTable, orderMap)
+	else
+		ns.AddAtlasSizableOptions(optionsTable, ns.AtlasSizableFlags.SIZABLE + ns.AtlasSizableFlags.SCALABLE, orderMap)
+	end
 	ns.AddDemoOptions(optionsTable, orderMap)
 end
 
@@ -15,7 +21,7 @@ end
 ---@field RefreshTextureConfig fun(self: BUFTexture)
 ---@field texture Texture
 
----@class BUFTexture: TextureHandler, AtlasSizable, Positionable, Demoable
+---@class BUFTexture: TextureHandler, AtlasSizable, Sizable, Scalable, Positionable, Demoable
 local BUFTexture = {}
 
 --- Apply mixins to a BUFTexture
@@ -26,7 +32,7 @@ function BUFTexture:ApplyMixin(handler)
 	ns.Mixin(handler, ns.Demoable, ns.Positionable, self)
 
 	if handler.optionsTable then
-		ns.AddTextureOptions(handler.optionsTable.args, handler.optionsOrder)
+		ns.AddTextureOptions(handler.optionsTable.args, handler.optionsOrder, handler.noAtlas)
 	end
 end
 

@@ -7,6 +7,7 @@ local BUFPlayer = ns.BUFPlayer
 ---@class BUFPlayer.Health: BUFStatusBar
 local BUFPlayerHealth = {
 	configPath = "unitFrames.player.healthBar",
+	frameKey = BUFPlayer.relativeToFrames.HEALTH,
 }
 
 BUFPlayerHealth.optionsTable = {
@@ -21,7 +22,7 @@ BUFPlayerHealth.optionsTable = {
 ---@class BUFDbSchema.UF.Player.Health
 BUFPlayerHealth.dbDefaults = {
 	anchorPoint = "TOPLEFT",
-	relativeTo = "PlayerFrame",
+	relativeTo = BUFPlayer.relativeToFrames.FRAME,
 	relativePoint = "TOPLEFT",
 	width = 124,
 	height = 20,
@@ -55,9 +56,7 @@ ns.options.args.player.args.healthBar = BUFPlayerHealth.optionsTable
 
 function BUFPlayerHealth:RefreshConfig()
 	if not self.initialized then
-		self.initialized = true
-
-		self.defaultRelativeTo = PlayerFrame
+		BUFPlayer.FrameInit(self)
 
 		self.barOrContainer = BUFPlayer.healthBarContainer
 	end

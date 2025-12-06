@@ -29,7 +29,7 @@ ns.dbDefaults.profile.unitFrames.player.healthBar = ns.dbDefaults.profile.unitFr
 
 ns.dbDefaults.profile.unitFrames.player.healthBar.rightText = {
 	anchorPoint = "RIGHT",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFPlayer.relativeToFrames.HEALTH,
 	relativePoint = "RIGHT",
 	xOffset = -2,
 	yOffset = 0,
@@ -51,10 +51,11 @@ ns.dbDefaults.profile.unitFrames.player.healthBar.rightText = {
 ns.options.args.player.args.healthBar.args.rightText = rightTextHandler.optionsTable
 
 function rightTextHandler:RefreshConfig()
-	if not self.fontString then
+	if not self.initialized then
+		BUFPlayer.FrameInit(self)
+
 		self.fontString = BUFPlayer.healthBarContainer.RightText
 		self.demoText = "123k"
-		self.defaultRelativeTo = BUFPlayer.healthBarContainer
 	end
 	self:RefreshFontStringConfig()
 end

@@ -7,6 +7,7 @@ local BUFPet = ns.BUFPet
 ---@class BUFPet.Frame: Sizable, BackgroundTexturable
 local BUFPetFrame = {
 	configPath = "unitFrames.pet.frame",
+	frameKey = BUFPet.relativeToFrames.FRAME,
 }
 
 ns.Mixin(BUFPetFrame, ns.Sizable, ns.BackgroundTexturable)
@@ -93,7 +94,7 @@ function BUFPetFrame:RefreshConfig()
 	self:RefreshBackgroundTexture()
 
 	if not self.initialized then
-		self.initialized = true
+		BUFPet.FrameInit(self)
 
 		if not BUFPet:IsHooked(BUFPet.frame, "AnchorSelectionFrame") then
 			BUFPet:SecureHook(BUFPet.frame, "AnchorSelectionFrame", function()

@@ -29,7 +29,7 @@ ns.dbDefaults.profile.unitFrames.player.powerBar = ns.dbDefaults.profile.unitFra
 
 ns.dbDefaults.profile.unitFrames.player.powerBar.leftText = {
 	anchorPoint = "LEFT",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFPlayer.relativeToFrames.POWER,
 	relativePoint = "LEFT",
 	xOffset = 2,
 	yOffset = 0,
@@ -51,10 +51,11 @@ ns.dbDefaults.profile.unitFrames.player.powerBar.leftText = {
 ns.options.args.player.args.powerBar.args.leftText = leftTextHandler.optionsTable
 
 function leftTextHandler:RefreshConfig()
-	if not self.fontString then
+	if not self.initialized then
+		BUFPlayer.FrameInit(self)
+
 		self.fontString = BUFPlayer.manaBar.LeftText
 		self.demoText = "100%"
-		self.defaultRelativeTo = BUFPlayer.manaBar
 	end
 	self:RefreshFontStringConfig()
 end

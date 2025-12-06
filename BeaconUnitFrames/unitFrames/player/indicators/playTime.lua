@@ -24,7 +24,7 @@ BUFPlayerPlayTime.optionsTable = {
 BUFPlayerPlayTime.dbDefaults = {
 	scale = 1.0,
 	anchorPoint = "TOPLEFT",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFPlayer.relativeToFrames.FRAME,
 	relativePoint = "TOPRIGHT",
 	xOffset = -21,
 	yOffset = -24,
@@ -40,8 +40,8 @@ ns.options.args.player.args.indicators.args.playTime = BUFPlayerPlayTime.options
 
 function BUFPlayerPlayTime:RefreshConfig()
 	if not self.initialized then
-		self.initialized = true
-		self.defaultRelativeTo = BUFPlayer.contentContextual
+		BUFPlayer.FrameInit(self)
+
 		self.texture = BUFPlayer.contentContextual.PlayerPlayTime
 	end
 	self:RefreshScaleTextureConfig()

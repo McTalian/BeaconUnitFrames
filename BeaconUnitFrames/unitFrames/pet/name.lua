@@ -7,6 +7,7 @@ local BUFPet = ns.BUFPet
 ---@class BUFPet.Name: BUFFontString
 local BUFPetName = {
 	configPath = "unitFrames.pet.name",
+	frameKey = BUFPet.relativeToFrames.NAME,
 }
 
 BUFPetName.optionsTable = {
@@ -54,10 +55,7 @@ ns.options.args.pet.args.petName = BUFPetName.optionsTable
 
 function BUFPetName:RefreshConfig()
 	if not self.initialized then
-		self.initialized = true
-
-		self.customRelativeToOptions = BUFPet.customRelativeToOptions
-		self.customRelativeToSorting = BUFPet.customRelativeToSorting
+		BUFPet.FrameInit(self)
 
 		self.fontString = PetName
 	end

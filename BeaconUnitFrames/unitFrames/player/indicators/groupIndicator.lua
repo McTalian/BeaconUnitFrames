@@ -14,13 +14,14 @@ local BUFPlayerGroupIndicator = {
 
 ns.Mixin(BUFPlayerGroupIndicator, ns.Positionable, ns.Fontable, ns.BackgroundTexturable, ns.Colorable, ns.Demoable)
 
-BUFPlayerIndicators.GroupIndicator = BUFPlayerGroupIndicator
-
 ---@class BUFDbSchema.UF.Player
 ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
 
 ---@class BUFDbSchema.UF.Player.GroupIndicator
 ns.dbDefaults.profile.unitFrames.player.groupIndicator = {
+	anchorPoint = "BOTTOMRIGHT",
+	relativeTo = BUFPlayer.relativeToFrames.FRAME,
+	relativePoint = "TOPLEFT",
 	xOffset = 210,
 	yOffset = -29,
 	useFontObjects = true,
@@ -60,18 +61,19 @@ ns.options.args.player.args.indicators.args.groupIndicator = groupIndicator
 
 function BUFPlayerGroupIndicator:ToggleDemoMode()
 	local grpInd = BUFPlayer.contentContextual.GroupIndicator
+	self:_ToggleDemoMode(grpInd)
 	if self.demoMode then
-		self.demoMode = false
-		grpInd:Hide()
-	else
-		self.demoMode = true
-		PlayerFrameGroupIndicatorText:SetText(GROUP .. " " .. 1)
-		grpInd:SetWidth(PlayerFrameGroupIndicatorText:GetWidth() + 40)
-		grpInd:Show()
+		self.fontString:SetText(GROUP .. " " .. 1)
+		grpInd:SetWidth(self.fontString:GetWidth() + 40)
 	end
 end
 
 function BUFPlayerGroupIndicator:RefreshConfig()
+	if not self.initialized then
+		BUFPlayer.FrameInit(self)
+
+		self.fontString = PlayerFrameGroupIndicatorText
+	end
 	self:SetPosition()
 	self:SetFont()
 	self:SetFontShadow()
@@ -79,44 +81,7 @@ function BUFPlayerGroupIndicator:RefreshConfig()
 end
 
 function BUFPlayerGroupIndicator:SetPosition()
-	local grpInd = BUFPlayer.contentContextual.GroupIndicator
-	local xOffset = ns.db.profile.unitFrames.player.groupIndicator.xOffset
-	local yOffset = ns.db.profile.unitFrames.player.groupIndicator.yOffset
-	grpInd:SetPoint("BOTTOMRIGHT", BUFPlayer.contentContextual, "TOPLEFT", xOffset, yOffset)
-end
-
-function BUFPlayerGroupIndicator:SetFont()
-	local grpIndText = PlayerFrameGroupIndicatorText
-	local useFontObjects = ns.db.profile.unitFrames.player.groupIndicator.useFontObjects
-	if useFontObjects then
-		local fontObject = ns.db.profile.unitFrames.player.groupIndicator.fontObject
-		grpIndText:SetFontObject(_G[fontObject])
-	else
-		local fontFace = ns.db.profile.unitFrames.player.groupIndicator.fontFace
-		local fontPath = ns.lsm:Fetch(ns.lsm.MediaType.FONT, fontFace)
-		if not fontPath then
-			fontPath = STANDARD_TEXT_FONT
-		end
-		local fontSize = ns.db.profile.unitFrames.player.groupIndicator.fontSize
-		local fontFlags = ns.FontFlagsToString(ns.db.profile.unitFrames.player.groupIndicator.fontFlags)
-		grpIndText:SetFont(fontPath, fontSize, fontFlags)
-	end
-	local r, g, b, a = unpack(ns.db.profile.unitFrames.player.groupIndicator.fontColor)
-	grpIndText:SetTextColor(r, g, b, a)
-end
-
-function BUFPlayerGroupIndicator:SetFontShadow()
-	local grpIndText = PlayerFrameGroupIndicatorText
-	local useFontObjects = ns.db.profile.unitFrames.player.groupIndicator.useFontObjects
-	if useFontObjects then
-		-- Font objects handle shadow internally
-		return
-	end
-	local r, g, b, a = unpack(ns.db.profile.unitFrames.player.groupIndicator.fontShadowColor)
-	local offsetX = ns.db.profile.unitFrames.player.groupIndicator.fontShadowOffsetX
-	local offsetY = ns.db.profile.unitFrames.player.groupIndicator.fontShadowOffsetY
-	grpIndText:SetShadowColor(r, g, b, a)
-	grpIndText:SetShadowOffset(offsetX, offsetY)
+	self:_SetPosition(self.fontString)
 end
 
 function BUFPlayerGroupIndicator:RefreshBackgroundTexture()
@@ -155,3 +120,5 @@ function BUFPlayerGroupIndicator:RefreshBackgroundTexture()
 	self.background:SetTexture(bgTexturePath)
 	self.background:Show()
 end
+
+BUFPlayerIndicators.GroupIndicator = BUFPlayerGroupIndicator

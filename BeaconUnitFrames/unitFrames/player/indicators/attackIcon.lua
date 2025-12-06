@@ -24,7 +24,7 @@ BUFPlayerAttackIcon.optionsTable = {
 BUFPlayerAttackIcon.dbDefaults = {
 	scale = 1.0,
 	anchorPoint = "TOPLEFT",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFPlayer.relativeToFrames.FRAME,
 	relativePoint = "TOPLEFT",
 	xOffset = 64,
 	yOffset = -62,
@@ -39,9 +39,10 @@ ns.dbDefaults.profile.unitFrames.player.attackIcon = BUFPlayerAttackIcon.dbDefau
 ns.options.args.player.args.indicators.args.attackIcon = BUFPlayerAttackIcon.optionsTable
 
 function BUFPlayerAttackIcon:RefreshConfig()
-	if not self.texture then
+	if not self.initialized then
+		BUFPlayer.FrameInit(self)
+
 		self.texture = BUFPlayer.contentContextual.AttackIcon
-		self.defaultRelativeTo = BUFPlayer.contentContextual
 	end
 	self:RefreshScaleTextureConfig()
 end

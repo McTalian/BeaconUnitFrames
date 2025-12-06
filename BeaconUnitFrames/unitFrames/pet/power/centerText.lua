@@ -51,10 +51,7 @@ ns.options.args.pet.args.powerBar.args.centerText = centerTextHandler.optionsTab
 
 function centerTextHandler:RefreshConfig()
 	if not self.initialized then
-		self.initialized = true
-
-		self.customRelativeToOptions = BUFPet.customRelativeToOptions
-		self.customRelativeToSorting = BUFPet.customRelativeToSorting
+		BUFPet.FrameInit(self)
 
 		self.fontString = PetFrameManaBarText
 		self.demoText = "123k / 123k"

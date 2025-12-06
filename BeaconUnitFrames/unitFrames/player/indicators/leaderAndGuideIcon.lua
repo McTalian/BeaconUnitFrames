@@ -42,7 +42,7 @@ BUFPlayerLeaderAndGuideIcon.optionsTable = {
 ---@class BUFDbSchema.UF.Player.LeaderAndGuideIcon
 ns.dbDefaults.profile.unitFrames.player.leaderAndGuideIcon = {
 	anchorPoint = "TOPLEFT",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFPlayer.relativeToFrames.FRAME,
 	relativePoint = "TOPLEFT",
 	xOffset = 86,
 	yOffset = -10,
@@ -52,7 +52,7 @@ ns.dbDefaults.profile.unitFrames.player.leaderAndGuideIcon = {
 		xOffset = 86,
 		yOffset = -10,
 		anchorPoint = "TOPLEFT",
-		relativeTo = ns.DEFAULT,
+		relativeTo = BUFPlayer.relativeToFrames.FRAME,
 		relativePoint = "TOPLEFT",
 		scale = 1,
 	},
@@ -90,13 +90,18 @@ ns.dbDefaults.profile.unitFrames.player.leaderAndGuideIcon = BUFPlayerLeaderAndG
 ns.options.args.player.args.indicators.args.leaderAndGuideIcon = BUFPlayerLeaderAndGuideIcon.optionsTable
 
 function BUFPlayerLeaderAndGuideIcon:RefreshConfig()
-	if not self.texture then
+	if not self.initialized then
+		BUFPlayer.FrameInit(self)
+
 		self.texture = BUFPlayer.contentContextual.LeaderIcon
-		self.defaultRelativeTo = BUFPlayer.contentContextual
 	end
-	if not Guide.texture then
+	if not Guide.initialized then
+		Guide.initialized = true
+
+		Guide.customRelativeToOptions = BUFPlayer.customRelativeToOptions
+		Guide.customRelativeToSorting = BUFPlayer.customRelativeToSorting
+
 		Guide.texture = BUFPlayer.contentContextual.GuideIcon
-		Guide.defaultRelativeTo = BUFPlayer.contentContextual
 	end
 	self:RefreshScaleTextureConfig()
 	if ns.db.profile.unitFrames.player.leaderAndGuideIcon.separateGuideStyle then
