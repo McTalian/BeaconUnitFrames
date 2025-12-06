@@ -112,8 +112,7 @@ L["Status Bar Options"] = "Status Bar Options"
 L["Status Bar Texture"] = "Status Bar Texture"
 L["SubmitBugsAndFeatureRequestsHere"] = "(please submit bugs and feature requests here!)"
 L["Support"] = "Support"
-L["SupportMessage"] =
-	"If you enjoy using BeaconUnitFrames, consider supporting its development - your support helps keep the project going and is greatly appreciated <3"
+L["SupportMessage"] = "If you enjoy using BeaconUnitFrames, consider supporting its development - your support helps keep the project going and is greatly appreciated <3"
 L["Target Name"] = "Target Name"
 L["Text Customization"] = "Text Customization"
 L["Texturing"] = "Texturing"
@@ -122,28 +121,18 @@ L["TOP"] = "TOP"
 L["TOPLEFT"] = "TOPLEFT"
 L["TOPRIGHT"] = "TOPRIGHT"
 L["Tour"] = "Tour"
-L["TourBackground"] =
-	"Some frames and status bars allow you to customize the background texture and coloring. This can add some nice depth and contrast to your unit frames.\n\nSometimes it is helpful while positioning and sizing your frames, and then you can turn it off once you find your perfect layout."
+L["TourBackground"] = "Some frames and status bars allow you to customize the background texture and coloring. This can add some nice depth and contrast to your unit frames.\n\nSometimes it is helpful while positioning and sizing your frames, and then you can turn it off once you find your perfect layout."
 L["TourChooseFrame"] = "First, you will choose a unit frame.\n\nFor this tour, we'll choose Player Frame."
-L["TourColoring"] =
-	"Coloring options allow you to customize how components are colored. Some components have options for using class colors, power colors, reaction colors, or static custom colors. Experiment with these options to find the look that you like best!"
+L["TourColoring"] = "Coloring options allow you to customize how components are colored. Some components have options for using class colors, power colors, reaction colors, or static custom colors. Experiment with these options to find the look that you like best!"
 L["TourDesc"] = "Launch a quick tour of BeaconUnitFrames features."
-L["TourFinished"] =
-	"You have completed the BeaconUnitFrames tour... for now! You can revisit the tour at any time from the options menu. Keep an eye out for new tour tips when new updates are released.\n\nThank you for using BeaconUnitFrames!\n\nConsider joining the Discord to stay up to date with the latest news and updates."
-L["TourFontSettings"] =
-	"Font Settings allow you to customize the font face, size, color, and other settings for text displayed by components."
-L["TourIndicatorsAndIcons"] =
-	'Indicators and Icons commonly have the "Show/Hide Example" feature, which allows you to see an example of the component while you are styling it. This is very useful for components that don\'t always appear on the unit frame, such as the Leader Icon or Raid Target Icon.\n\nSometimes showing an example is a bit tricky, so if you find an issue, please let me know!'
-L["TourPlayerGeneral"] =
-	"Each unit frame has many components and indicators to customize. You can customize positioning, sizing, text, colors, and more for each component.\n\nThe other unit frame options will be structured very similarly to Player Frame. Let's take a look at some options in more detail!"
-L["TourPortraitSpecialOptions"] =
-	"Some components have special options that are unique to them. For example, the Portrait component has options for enabling a corner indicator, or disabling the portrait altogether.\n\nKeep an eye out for special options like these as you explore the addon!"
-L["TourPositioningOptions"] =
-	"Positioning options allow you to adjust where components are anchored. It can sometimes be a bit tricky to understand, but I always read it as \"This frame's [Anchor Point] will be placed at [Relative To]'s [Relative Point].\" Of course, you can use XOffset and YOffset to adjust the positioning further. Some frames even allow adjusting the level so that you can deal with overlap scenarios.\n\nPositioning is probably one of the more important aspects of customizing your unit frames, so take your time to get familiar with it! If you have any questions, reach out on Discord or GitHub discussions."
-L["TourSizingOptions"] =
-	"Sizing options allow you to adjust the width and height of components individually, and/or scale them up or down.\n\nNot all frames and textures have options for width, height, and scale, but if you want an option that is not available, let me know so I can get it added :)"
-L["TourStatusBarForeground"] =
-	"Status Bar Foregrounds allow you to customize the texture and coloring of status bars used by components."
+L["TourFinished"] = "You have completed the BeaconUnitFrames tour... for now! You can revisit the tour at any time from the options menu. Keep an eye out for new tour tips when new updates are released.\n\nThank you for using BeaconUnitFrames!\n\nConsider joining the Discord to stay up to date with the latest news and updates."
+L["TourFontSettings"] = "Font Settings allow you to customize the font face, size, color, and other settings for text displayed by components."
+L["TourIndicatorsAndIcons"] = 'Indicators and Icons commonly have the "Show/Hide Example" feature, which allows you to see an example of the component while you are styling it. This is very useful for components that don\'t always appear on the unit frame, such as the Leader Icon or Raid Target Icon.\n\nSometimes showing an example is a bit tricky, so if you find an issue, please let me know!'
+L["TourPlayerGeneral"] = "Each unit frame has many components and indicators to customize. You can customize positioning, sizing, text, colors, and more for each component.\n\nThe other unit frame options will be structured very similarly to Player Frame. Let's take a look at some options in more detail!"
+L["TourPortraitSpecialOptions"] = "Some components have special options that are unique to them. For example, the Portrait component has options for enabling a corner indicator, or disabling the portrait altogether.\n\nKeep an eye out for special options like these as you explore the addon!"
+L["TourPositioningOptions"] = "Positioning options allow you to adjust where components are anchored. It can sometimes be a bit tricky to understand, but I always read it as \"This frame's [Anchor Point] will be placed at [Relative To]'s [Relative Point].\" Of course, you can use XOffset and YOffset to adjust the positioning further. Some frames even allow adjusting the level so that you can deal with overlap scenarios.\n\nPositioning is probably one of the more important aspects of customizing your unit frames, so take your time to get familiar with it! If you have any questions, reach out on Discord or GitHub discussions."
+L["TourSizingOptions"] = "Sizing options allow you to adjust the width and height of components individually, and/or scale them up or down.\n\nNot all frames and textures have options for width, height, and scale, but if you want an option that is not available, let me know so I can get it added :)"
+L["TourStatusBarForeground"] = "Status Bar Foregrounds allow you to customize the texture and coloring of status bars used by components."
 L["UIParent"] = "UIParent"
 L["Unconscious Text"] = "Unconscious Text"
 L["Use Background Texture"] = "Use Background Texture"
