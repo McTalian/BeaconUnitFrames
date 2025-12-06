@@ -138,7 +138,6 @@ function BUFTarget:RefreshConfig()
             
             -- TargetHealthBarContainer:RunAttribute("buf_restore_position")
             -- TargetManaBar:RunAttribute("buf_restore_position")
-            print("Restored sizes/positions for Target Health and Mana Bars.")
         ]]
 		)
 

@@ -57,8 +57,6 @@ ns.Mixin(TourManager, ns.GlobalDbBackedHandler)
 ns.dbDefaults.global.tour = TourManager.dbDefaults
 
 function TourManager:LaunchTour()
-	print(self.dbKey, self.configPath)
-	print("Launching Tour with ", #self.stepsOrder, " steps.")
 	self:DbClear()
 	self:ContinueTour()
 end
@@ -66,25 +64,42 @@ end
 function TourManager:ContinueTour()
 	local nextStepKey = self:getNextStep()
 	if nextStepKey == nil then
-		print("No more tour steps to show.")
 		return
 	end
 	local step = self.steps[nextStepKey]
 	if not step then
-		print("Tour step not found: ", nextStepKey)
 		return
 	end
 	step:start()
 end
 
 function TourManager:FinishTour()
-	print("Tour finished.")
+	local finalStep = ns.TourStepFactory:Create("tourFinished", {
+		text = ns.L["TourFinished"],
+		targetPoint = HelpTip.Point.BottomEdgeCenter,
+		buttonStyle = HelpTip.ButtonStyle.GotIt,
+		frame = function(self)
+			local root = TourManager:getOptionsRoot()
+			if not root then
+				return nil
+			end
+			local postContactHeader = root.children[1].children[1].children[1].children[11]
+			return postContactHeader.frame
+		end,
+		navigate = function(self, callback)
+			ns.acd:SelectGroup(addonName, "general", "landingPage")
+			callback()
+		end,
+		onAcknowledgeCallback = function(self)
+			-- Nothing to do here
+		end,
+	}, true)
+	finalStep:start()
 end
 
 function TourManager:getOptionsRootFrame()
 	local root = self:getOptionsRoot()
 	if not root or not root.frame then
-		print("no root options frame found")
 		return nil
 	end
 	return root.frame
@@ -93,7 +108,6 @@ end
 function TourManager:getOptionsRoot()
 	local root = ns.acd.OpenFrames[addonName]
 	if not root then
-		print("no open options for addon found")
 		return nil
 	end
 	return root

@@ -60,12 +60,15 @@ local defaultBUFHelpTipStep = {
 --- Creates and returns a new Tour Step instance
 ---@param name string
 ---@param config BUFTourStepConfig
-function TourStepFactory:Create(name, config)
+function TourStepFactory:Create(name, config, noAppend)
 	local step = {}
 	ns.Mixin(step, defaultBUFHelpTipStep, config)
 	step.callbackArg = step
 	step.bufName = name
 
+	if noAppend then
+		return step
+	end
 	table.insert(manager.stepsOrder, name)
 	---@type BUFTourStep
 	manager.steps[name] = step

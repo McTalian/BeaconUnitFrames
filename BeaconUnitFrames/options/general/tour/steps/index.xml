@@ -7,4 +7,12 @@
     -->
     <Script file="chooseFrame.lua"/>
     <Script file="playerGeneral.lua"/>
+    <Script file="portraitSpecialOptions.lua"/>
+    <Script file="sizingOptions.lua"/>
+    <Script file="positioningOptions.lua"/>
+    <Script file="fontSettings.lua"/>
+    <Script file="statusBarForeground.lua"/>
+    <Script file="coloring.lua"/>
+    <Script file="backgroundSettings.lua"/>
+    <Script file="indicators.lua"/>
 </Ui>

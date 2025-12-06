@@ -13,6 +13,17 @@ LandingPage.optionsOrder = {
 	IMAGE = 2,
 	TOUR = 3,
 	CONTINUE_TOUR = 4,
+	ADDON_INFO = 5,
+	VERSION = 6,
+	AUTHOR = 7,
+	CONTACT = 8,
+	DISCORD = 9,
+	GITHUB = 10,
+	SPECIAL_THANKS = 11,
+	TRANSLATORS = 12,
+	SUPPORT = 13,
+	MESSAGE = 14,
+	COFFEE = 15,
 }
 
 LandingPage.optionsTable = {
@@ -53,6 +64,54 @@ LandingPage.optionsTable = {
 			width = "full",
 			disabled = "IsContinueTourDisabled",
 			order = LandingPage.optionsOrder.CONTINUE_TOUR,
+		},
+		addonInfo = {
+			type = "header",
+			name = ns.L["LandingPageAddonInfo"],
+			order = LandingPage.optionsOrder.ADDON_INFO,
+		},
+		version = {
+			type = "description",
+			name = ns.L["Version"] .. " " .. ns.addonVersion,
+			order = LandingPage.optionsOrder.VERSION,
+		},
+		author = {
+			type = "description",
+			name = ns.L["Author"] .. " McTalian",
+			order = LandingPage.optionsOrder.AUTHOR,
+		},
+		contact = {
+			type = "header",
+			name = ns.L["Contact"],
+			order = LandingPage.optionsOrder.CONTACT,
+		},
+		discord = {
+			type = "description",
+			name = ns.L["Discord"] .. " |cFF00AFF0https://discord.gg/czRYVWhe33|r",
+			order = LandingPage.optionsOrder.DISCORD,
+		},
+		github = {
+			type = "description",
+			name = ns.L["GitHub"]
+				.. " |cFF00AFF0https://github.com/McTalian/BeaconUnitFrames|r "
+				.. ns.L["SubmitBugsAndFeatureRequestsHere"],
+			order = LandingPage.optionsOrder.GITHUB,
+		},
+		-- Special Thanks and Translators will be added here once there are some
+		support = {
+			type = "header",
+			name = ns.L["Support"],
+			order = LandingPage.optionsOrder.SUPPORT,
+		},
+		message = {
+			type = "description",
+			name = ns.L["SupportMessage"],
+			order = LandingPage.optionsOrder.MESSAGE,
+		},
+		coffee = {
+			type = "description",
+			name = ns.L["BuyMeACoffee"],
+			order = LandingPage.optionsOrder.COFFEE,
 		},
 	},
 }

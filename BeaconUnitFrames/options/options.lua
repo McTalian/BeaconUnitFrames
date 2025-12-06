@@ -65,7 +65,7 @@ end
 
 ---@class BUFOptions: AceConfig.OptionsTable
 ns.options = {
-	name = OPTIONS_MENU,
+	name = format("%s %s", addonName, OPTIONS_MENU),
 	type = "group",
 	childGroups = "select",
 	args = {},
