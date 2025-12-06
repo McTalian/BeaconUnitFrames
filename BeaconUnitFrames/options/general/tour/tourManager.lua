@@ -8,11 +8,11 @@ local acd = ns.acd --[[@as AceConfigDialog-3.0]]
 
 ---@class HelpTipInfoTable
 ---@field text string
----@field textColor? Color = HIGHLIGHT_FONT_COLOR
+---@field textColor? ColorType = HIGHLIGHT_FONT_COLOR
 ---@field textJustifyH? "LEFT" | "CENTER" | "RIGHT" = "LEFT"
----@field buttonStyle? HelpTip.ButtonStyle = HelpTip.ButtonStyle.None
----@field targetPoint? HelpTip.Point = HelpTip.Point.BottomEdgeCenter
----@field alignment? HelpTip.Alignment = HelpTip.Alignment.Center
+---@field buttonStyle? integer = HelpTip.ButtonStyle.None
+---@field targetPoint? integer = HelpTip.Point.BottomEdgeCenter
+---@field alignment? integer = HelpTip.Alignment.Center
 ---@field hideArrow? boolean = false
 ---@field offsetX? number = 0
 ---@field offsetY? number = 0

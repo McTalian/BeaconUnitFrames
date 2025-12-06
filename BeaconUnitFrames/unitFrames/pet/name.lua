@@ -56,8 +56,8 @@ function BUFPetName:RefreshConfig()
 	if not self.initialized then
 		self.initialized = true
 
-		self.customRelativeToOptions = BUFPET.customRelativeToOptions
-		self.customRelativeToSorting = BUFPET.customRelativeToSorting
+		self.customRelativeToOptions = BUFPet.customRelativeToOptions
+		self.customRelativeToSorting = BUFPet.customRelativeToSorting
 
 		self.fontString = PetName
 	end

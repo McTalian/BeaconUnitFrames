@@ -4,31 +4,31 @@ local ns = select(2, ...)
 ---@class BUFPet: BUFFeatureModule
 local BUFPet = ns.NewFeatureModule("BUFPet")
 
-BUFPET.relativeToFrames = {
-	FRAME = "PetFrame",
-	PORTRAIT = "PetPortrait",
-	NAME = "PetName",
-	HEALTH = "PetHealthBar",
-	POWER = "PetManaBar",
-	CASTING = "PetCastingBarFrame",
+BUFPet.relativeToFrames = {
+	FRAME = ns.Positionable.relativeToFrames.PET_FRAME,
+	PORTRAIT = ns.Positionable.relativeToFrames.PET_PORTRAIT,
+	NAME = ns.Positionable.relativeToFrames.PET_NAME,
+	HEALTH = ns.Positionable.relativeToFrames.PET_HEALTH_BAR,
+	POWER = ns.Positionable.relativeToFrames.PET_POWER_BAR,
+	CASTING = ns.Positionable.relativeToFrames.PET_CAST_BAR,
 }
 
-BUFPET.customRelativeToOptions = {
-	["UIParent"] = ns.L["UIParent"],
-	["PetFrame"] = HUD_EDIT_MODE_PET_FRAME_LABEL,
-	["PetPortrait"] = ns.L["PetPortrait"],
-	["PetName"] = ns.L["PetName"],
-	["PetHealthBar"] = ns.L["PetHealthBar"],
-	["PetManaBar"] = ns.L["PetManaBar"],
+BUFPet.customRelativeToOptions = {
+	[ns.Positionable.relativeToFrames.UI_PARENT] = ns.L["UIParent"],
+	[BUFPet.relativeToFrames.FRAME] = HUD_EDIT_MODE_PET_FRAME_LABEL,
+	[BUFPet.relativeToFrames.PORTRAIT] = ns.L["PetPortrait"],
+	[BUFPet.relativeToFrames.NAME] = ns.L["PetName"],
+	[BUFPet.relativeToFrames.HEALTH] = ns.L["PetHealthBar"],
+	[BUFPet.relativeToFrames.POWER] = ns.L["PetManaBar"],
 }
 
-BUFPET.customRelativeToSort = {
-	"UIParent",
-	"PetFrame",
-	"PetPortrait",
-	"PetName",
-	"PetHealthBar",
-	"PetManaBar",
+BUFPet.customRelativeToSorting = {
+	ns.Positionable.relativeToFrames.UI_PARENT,
+	BUFPet.relativeToFrames.FRAME,
+	BUFPet.relativeToFrames.PORTRAIT,
+	BUFPet.relativeToFrames.NAME,
+	BUFPet.relativeToFrames.HEALTH,
+	BUFPet.relativeToFrames.POWER,
 }
 
 BUFPet.optionsTable = {

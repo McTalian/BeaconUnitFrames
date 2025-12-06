@@ -98,13 +98,11 @@ function DbBackedHandler:DbClear(key)
 	clearPath(ns.db[self.dbKey], self.configPath .. "." .. key)
 end
 
----@type BUFDbBackedHandler
 local ProfileDbBackedHandler = {
 	dbKey = "profile",
 }
 Mixin(ProfileDbBackedHandler, DbBackedHandler)
 
----@type BUFDbBackedHandler
 local GlobalDbBackedHandler = {
 	dbKey = "global",
 }

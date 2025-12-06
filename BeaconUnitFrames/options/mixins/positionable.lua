@@ -36,31 +36,55 @@ local anchorPointSort = {
 	"BOTTOMRIGHT",
 }
 
+Positionable.relativeToFrames = {
+	UI_PARENT = "UIParent",
+	TARGET_FRAME = "TargetFrame",
+	PLAYER_FRAME = "PlayerFrame",
+	FOCUS_FRAME = "FocusFrame",
+	PET_FRAME = "PetFrame",
+	PET_PORTRAIT = "PetPortrait",
+	PET_NAME = "PetName",
+	PET_HEALTH_BAR = "PetHealthBar",
+	PET_POWER_BAR = "PetManaBar",
+	PET_CAST_BAR = "PetCastingBarFrame",
+}
+
 Positionable.anchorRelativeToOptions = {
-	["UIParent"] = ns.L["UIParent"],
-	["TargetFrame"] = HUD_EDIT_MODE_TARGET_FRAME_LABEL,
-	["PlayerFrame"] = HUD_EDIT_MODE_PLAYER_FRAME_LABEL,
-	["FocusFrame"] = HUD_EDIT_MODE_FOCUS_FRAME_LABEL,
-	["PetFrame"] = HUD_EDIT_MODE_PET_FRAME_LABEL,
+	[Positionable.relativeToFrames.UI_PARENT] = ns.L["UIParent"],
+	[Positionable.relativeToFrames.TARGET_FRAME] = HUD_EDIT_MODE_TARGET_FRAME_LABEL,
+	[Positionable.relativeToFrames.PLAYER_FRAME] = HUD_EDIT_MODE_PLAYER_FRAME_LABEL,
+	[Positionable.relativeToFrames.FOCUS_FRAME] = HUD_EDIT_MODE_FOCUS_FRAME_LABEL,
+	[Positionable.relativeToFrames.PET_FRAME] = HUD_EDIT_MODE_PET_FRAME_LABEL,
 }
 Positionable.anchorRelativeToOptions[ns.DEFAULT] = ns.L["Default Relative Frame"]
 
 --- Helper to get the relative frame from a string key
 --- @param strKey string
---- @return Frame | string
+--- @return ScriptRegionResizing | string
 function ns.GetRelativeFrame(strKey)
+	local frames = Positionable.relativeToFrames
 	if strKey == ns.DEFAULT then
 		return ns.DEFAULT
-	elseif strKey == "UIParent" then
+	elseif strKey == frames.UI_PARENT then
 		return _G.UIParent
-	elseif strKey == "TargetFrame" then
+	elseif strKey == frames.TARGET_FRAME then
 		return _G.TargetFrame
-	elseif strKey == "PlayerFrame" then
+	elseif strKey == frames.PLAYER_FRAME then
 		return _G.PlayerFrame
-	elseif strKey == "FocusFrame" then
+	elseif strKey == frames.FOCUS_FRAME then
 		return _G.FocusFrame
-	elseif strKey == "PetFrame" then
+	elseif strKey == frames.PET_FRAME then
 		return _G.PetFrame
+	elseif strKey == frames.PET_PORTRAIT then
+		return _G.PetPortrait
+	elseif strKey == frames.PET_NAME then
+		return _G.PetName
+	elseif strKey == frames.PET_HEALTH_BAR then
+		return _G.PetFrameHealthBar
+	elseif strKey == frames.PET_POWER_BAR then
+		return _G.PetFrameManaBar
+	elseif strKey == frames.PET_CAST_BAR then
+		return _G.PetCastingBarFrame
 	end
 
 	-- Catch-all for other global frames
@@ -187,17 +211,19 @@ end
 ---Get the relative to options
 function Positionable:GetRelativeToOptions()
 	if self.customRelativeToOptions then
+		print("Using custom relative to options")
 		return self.customRelativeToOptions
 	end
-	return anchorRelativeToOptions
+	return self.anchorRelativeToOptions
 end
 
 ---Get the relative to sorting
 function Positionable:GetRelativeToSorting()
 	if self.customRelativeToOptions and self.customRelativeToSorting then
+		print("Using custom relative to sorting")
 		return self.customRelativeToSorting
 	end
-	return anchorRelativeToSort
+	return self.anchorRelativeToSort
 end
 
 ---Set the relative point

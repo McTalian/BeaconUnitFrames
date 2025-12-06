@@ -7,9 +7,9 @@ local manager = ns.TourManager
 local TourStepFactory = {}
 
 ---@class BUFTourStepConfig: HelpTipInfoTable
----@field frame fun(self): Frame
+---@field frame fun(self): Frame|nil
 ---@field navigate fun(self, callback)
----@field start fun(self)
+---@field start? fun(self)
 
 ---@class BUFTourStep: BUFTourStepConfig
 ---@field bufName string
