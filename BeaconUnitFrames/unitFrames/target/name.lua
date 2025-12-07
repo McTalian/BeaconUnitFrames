@@ -7,6 +7,7 @@ local BUFTarget = ns.BUFTarget
 ---@class BUFTarget.Name: BUFFontString
 local BUFTargetName = {
 	configPath = "unitFrames.target.name",
+	frameKey = BUFTarget.relativeToFrames.NAME,
 }
 
 BUFTargetName.optionsTable = {
@@ -29,7 +30,7 @@ ns.dbDefaults.profile.unitFrames.target.name = {
 	width = 96,
 	height = 12,
 	anchorPoint = "TOPLEFT",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFTarget.relativeToFrames.REPUTATION_BAR,
 	relativePoint = "TOPRIGHT",
 	xOffset = -106,
 	yOffset = -1,
@@ -53,9 +54,10 @@ ns.dbDefaults.profile.unitFrames.target.name = {
 ns.options.args.target.args.targetName = BUFTargetName.optionsTable
 
 function BUFTargetName:RefreshConfig()
-	if not self.fontString then
+	if not self.initialized then
+		BUFTarget.FrameInit(self)
+
 		self.fontString = ns.BUFTarget.contentMain.Name
-		self.defaultRelativeTo = ns.BUFTarget.contentMain.ReputationColor
 	end
 	self:RefreshFontStringConfig()
 end

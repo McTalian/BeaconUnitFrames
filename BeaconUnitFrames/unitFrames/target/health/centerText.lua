@@ -29,7 +29,7 @@ ns.dbDefaults.profile.unitFrames.target.healthBar = ns.dbDefaults.profile.unitFr
 
 ns.dbDefaults.profile.unitFrames.target.healthBar.centerText = {
 	anchorPoint = "CENTER",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFTarget.relativeToFrames.HEALTH,
 	relativePoint = "CENTER",
 	xOffset = 0,
 	yOffset = 0,
@@ -51,10 +51,11 @@ ns.dbDefaults.profile.unitFrames.target.healthBar.centerText = {
 ns.options.args.target.args.healthBar.args.centerText = centerTextHandler.optionsTable
 
 function centerTextHandler:RefreshConfig()
-	if not self.fontString then
+	if not self.initialized then
+		BUFTarget.FrameInit(self)
+
 		self.fontString = BUFTarget.healthBarContainer.HealthBarText
 		self.demoText = "123k / 123k"
-		self.defaultRelativeTo = BUFTarget.healthBar
 	end
 	self:RefreshFontStringConfig()
 end

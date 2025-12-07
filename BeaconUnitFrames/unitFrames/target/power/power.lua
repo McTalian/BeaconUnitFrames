@@ -7,6 +7,7 @@ local BUFTarget = ns.BUFTarget
 ---@class BUFTarget.Power: BUFStatusBar
 local BUFTargetPower = {
 	configPath = "unitFrames.target.powerBar",
+	frameKey = BUFTarget.relativeToFrames.POWER,
 }
 
 BUFTargetPower.optionsTable = {
@@ -23,7 +24,7 @@ BUFTargetPower.dbDefaults = {
 	width = 134,
 	height = 10,
 	anchorPoint = "TOPRIGHT",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFTarget.relativeToFrames.HEALTH,
 	relativePoint = "BOTTOMRIGHT",
 	xOffset = 8,
 	yOffset = -1,
@@ -58,12 +59,11 @@ function BUFTargetPower:RefreshConfig()
 end
 
 function BUFTargetPower:InitializeTargetPower()
-	if self.isInitialized then
+	if self.initialized then
 		return
 	end
 
-	self.isInitialized = true
+	BUFTarget.FrameInit(self)
 
 	self.barOrContainer = BUFTarget.manaBar
-	self.defaultRelativeTo = BUFTarget.healthBar
 end

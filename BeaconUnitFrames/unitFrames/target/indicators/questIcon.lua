@@ -23,7 +23,7 @@ BUFTargetQuestIcon.optionsTable = {
 ---@class BUFDbSchema.UF.Target.QuestIcon
 BUFTargetQuestIcon.dbDefaults = {
 	anchorPoint = "CENTER",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFTarget.relativeToFrames.PORTRAIT,
 	relativePoint = "BOTTOM",
 	xOffset = 0,
 	yOffset = 0,
@@ -39,9 +39,10 @@ ns.dbDefaults.profile.unitFrames.target.questIcon = BUFTargetQuestIcon.dbDefault
 ns.options.args.target.args.indicators.args.questIcon = BUFTargetQuestIcon.optionsTable
 
 function BUFTargetQuestIcon:RefreshConfig()
-	if not self.texture then
+	if not self.initialized then
+		BUFTarget.FrameInit(self)
+
 		self.texture = BUFTarget.contentContextual.QuestIcon
-		self.defaultRelativeTo = BUFTarget.container.Portrait
 	end
 	self:RefreshScaleTextureConfig()
 end

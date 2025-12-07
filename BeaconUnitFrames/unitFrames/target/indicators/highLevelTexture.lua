@@ -23,7 +23,7 @@ BUFTargetHighLevelTexture.optionsTable = {
 ---@class BUFDbSchema.UF.Target.HighLevelTexture
 BUFTargetHighLevelTexture.dbDefaults = {
 	anchorPoint = "TOPLEFT",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFTarget.relativeToFrames.LEVEL,
 	relativePoint = "TOPLEFT",
 	xOffset = 4,
 	yOffset = 2,
@@ -43,9 +43,10 @@ ns.dbDefaults.profile.unitFrames.target = ns.dbDefaults.profile.unitFrames.targe
 ns.dbDefaults.profile.unitFrames.target.highLevelTexture = BUFTargetHighLevelTexture.dbDefaults
 
 function BUFTargetHighLevelTexture:RefreshConfig()
-	if not self.texture then
+	if not self.initialized then
+		BUFTarget.FrameInit(self)
+
 		self.texture = BUFTarget.contentContextual.HighLevelTexture
-		self.defaultRelativeTo = BUFTarget.contentMain.LevelText
 	end
 	self:RefreshScaleTextureConfig()
 end

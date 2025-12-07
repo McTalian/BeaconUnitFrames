@@ -7,6 +7,7 @@ local BUFTarget = ns.BUFTarget
 ---@class BUFTarget.Frame: Sizable, BackgroundTexturable
 local BUFTargetFrame = {
 	configPath = "unitFrames.target.frame",
+	frameKey = BUFTarget.relativeToFrames.FRAME,
 }
 
 ns.Mixin(BUFTargetFrame, ns.Sizable, ns.BackgroundTexturable)

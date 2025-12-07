@@ -4,35 +4,13 @@ local ns = select(2, ...)
 ---@class BUFTarget
 local BUFTarget = ns.BUFTarget
 
----@class BUFTarget.Portrait: Sizable, Positionable, BoxMaskable
+---@class BUFTarget.Portrait: BUFTexture, BoxMaskable
 local BUFTargetPortrait = {
 	configPath = "unitFrames.target.portrait",
+	frameKey = BUFTarget.relativeToFrames.PORTRAIT,
 }
 
-ns.Mixin(BUFTargetPortrait, ns.Sizable, ns.Positionable, ns.BoxMaskable)
-
-BUFTarget.Portrait = BUFTargetPortrait
-
----@class BUFDbSchema.UF.Target
-ns.dbDefaults.profile.unitFrames.target = ns.dbDefaults.profile.unitFrames.target
-
----@class BUFDbSchema.UF.Target.Portrait
-ns.dbDefaults.profile.unitFrames.target.portrait = {
-	enabled = true,
-	width = 58,
-	height = 58,
-	anchorPoint = "TOPRIGHT",
-	relativeTo = ns.DEFAULT,
-	relativePoint = "TOPRIGHT",
-	xOffset = -26,
-	yOffset = -19,
-	mask = "interface/hud/uiunitframeplayerportraitmask.blp",
-	maskWidthScale = 1,
-	maskHeightScale = 1,
-	alpha = 1.0,
-}
-
-local portrait = {
+BUFTargetPortrait.optionsTable = {
 	type = "group",
 	handler = BUFTargetPortrait,
 	name = ns.L["Portrait"],
@@ -54,17 +32,40 @@ local portrait = {
 	},
 }
 
-ns.AddSizableOptions(portrait.args)
-ns.AddPositionableOptions(portrait.args)
-ns.AddBoxMaskableOptions(portrait.args)
+---@class BUFDbSchema.UF.Target.Portrait
+BUFTargetPortrait.dbDefaults = {
+	enabled = true,
+	width = 58,
+	height = 58,
+	scale = 1.0,
+	anchorPoint = "TOPRIGHT",
+	relativeTo = BUFTarget.relativeToFrames.FRAME,
+	relativePoint = "TOPRIGHT",
+	xOffset = -26,
+	yOffset = -19,
+	mask = "interface/hud/uiunitframeplayerportraitmask.blp",
+	maskWidthScale = 1,
+	maskHeightScale = 1,
+	alpha = 1.0,
+}
 
-ns.options.args.target.args.portrait = portrait
+BUFTargetPortrait.noAtlas = true
+
+ns.BUFTexture:ApplyMixin(BUFTargetPortrait)
+ns.Mixin(BUFTargetPortrait, ns.BoxMaskable)
+
+---@class BUFDbSchema.UF.Target
+ns.dbDefaults.profile.unitFrames.target = ns.dbDefaults.profile.unitFrames.target
+ns.dbDefaults.profile.unitFrames.target.portrait = BUFTargetPortrait.dbDefaults
+
+ns.options.args.target.args.portrait = BUFTargetPortrait.optionsTable
 
 function BUFTargetPortrait:RefreshConfig()
 	if not self.initialized then
-		self.initialized = true
+		BUFTarget.FrameInit(self)
 
-		self.defaultRelativeTo = BUFTarget.container
+		self.texture = BUFTarget.container.Portrait
+		self.maskTexture = BUFTarget.container.PortraitMask
 	end
 	self:ShowHidePortrait()
 	self:SetPosition()
@@ -73,37 +74,37 @@ function BUFTargetPortrait:RefreshConfig()
 end
 
 function BUFTargetPortrait:SetSize()
-	self:_SetSize(BUFTarget.container.Portrait)
+	self:_SetSize(self.texture)
 	self:RefreshMask()
 end
 
 function BUFTargetPortrait:SetPosition()
-	self:_SetPosition(BUFTarget.container.Portrait)
+	self:_SetPosition(self.texture)
+	self.maskTexture:ClearAllPoints()
+	self.maskTexture:SetPoint("CENTER", self.texture, "CENTER")
 end
 
 function BUFTargetPortrait:ShowHidePortrait()
-	local parent = BUFTarget
-	local container = parent.container
-	local show = ns.db.profile.unitFrames.target.portrait.enabled
+	local show = self:DbGet("enabled")
 	if show then
-		if parent:IsHooked(container.Portrait, "Show") then
-			parent:Unhook(container.Portrait, "Show")
+		if BUFTarget:IsHooked(self.texture, "Show") then
+			BUFTarget:Unhook(self.texture, "Show")
 		end
-		if parent:IsHooked(container.PortraitMask, "Show") then
-			parent:Unhook(container.PortraitMask, "Show")
+		if BUFTarget:IsHooked(self.maskTexture, "Show") then
+			BUFTarget:Unhook(self.maskTexture, "Show")
 		end
-		container.Portrait:Show()
-		container.PortraitMask:Show()
+		self.texture:Show()
+		self.maskTexture:Show()
 	else
-		container.Portrait:Hide()
-		container.PortraitMask:Hide()
-		if not ns.BUFTarget:IsHooked(container.Portrait, "Show") then
-			parent:SecureHook(container.Portrait, "Show", function(s)
+		self.texture:Hide()
+		self.maskTexture:Hide()
+		if not ns.BUFTarget:IsHooked(self.texture, "Show") then
+			BUFTarget:SecureHook(self.texture, "Show", function(s)
 				s:Hide()
 			end)
 		end
-		if not ns.BUFTarget:IsHooked(container.PortraitMask, "Show") then
-			parent:SecureHook(container.PortraitMask, "Show", function(s)
+		if not ns.BUFTarget:IsHooked(self.maskTexture, "Show") then
+			BUFTarget:SecureHook(self.maskTexture, "Show", function(s)
 				s:Hide()
 			end)
 		end
@@ -111,13 +112,11 @@ function BUFTargetPortrait:ShowHidePortrait()
 end
 
 function BUFTargetPortrait:RefreshMask()
-	local mask = BUFTarget.container.PortraitMask
-	self:_RefreshMask(mask)
-	mask:ClearAllPoints()
-	mask:SetPoint("CENTER", BUFTarget.container.Portrait, "CENTER")
-	local width = self:GetWidth()
-	local height = self:GetHeight()
+	self:_RefreshMask(self.maskTexture)
+	local width, height = self:GetWidth(), self:GetHeight()
 	local widthScale = self:GetMaskWidthScale() or 1
 	local heightScale = self:GetMaskHeightScale() or 1
-	mask:SetSize(width * widthScale, height * heightScale)
+	self.maskTexture:SetSize(width * widthScale, height * heightScale)
 end
+
+BUFTarget.Portrait = BUFTargetPortrait

@@ -29,7 +29,7 @@ ns.dbDefaults.profile.unitFrames.target.powerBar = ns.dbDefaults.profile.unitFra
 
 ns.dbDefaults.profile.unitFrames.target.powerBar.leftText = {
 	anchorPoint = "LEFT",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFTarget.relativeToFrames.POWER,
 	relativePoint = "LEFT",
 	xOffset = 2,
 	yOffset = 0,
@@ -51,10 +51,11 @@ ns.dbDefaults.profile.unitFrames.target.powerBar.leftText = {
 ns.options.args.target.args.powerBar.args.leftText = leftTextHandler.optionsTable
 
 function leftTextHandler:RefreshConfig()
-	if not self.fontString then
+	if not self.initialized then
+		BUFTarget.FrameInit(self)
+
 		self.fontString = BUFTarget.manaBar.LeftText
 		self.demoText = "100%"
-		self.defaultRelativeTo = BUFTarget.manaBar
 	end
 	self:RefreshFontStringConfig()
 end

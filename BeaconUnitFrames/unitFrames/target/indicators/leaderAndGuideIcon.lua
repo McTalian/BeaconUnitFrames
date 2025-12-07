@@ -37,7 +37,7 @@ BUFTargetLeaderAndGuideIcon.optionsTable = {
 ---@class BUFDbSchema.UF.Target.LeaderAndGuideIcon
 BUFTargetLeaderAndGuideIcon.dbDefaults = {
 	anchorPoint = "TOPRIGHT",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFTarget.relativeToFrames.FRAME,
 	relativePoint = "TOPRIGHT",
 	xOffset = -85,
 	yOffset = -8,
@@ -45,7 +45,7 @@ BUFTargetLeaderAndGuideIcon.dbDefaults = {
 	separateGuideStyle = false,
 	guide = {
 		anchorPoint = "TOPRIGHT",
-		relativeTo = ns.DEFAULT,
+		relativeTo = BUFTarget.relativeToFrames.FRAME,
 		relativePoint = "TOPRIGHT",
 		xOffset = -85,
 		yOffset = -8,
@@ -95,9 +95,9 @@ end
 
 function BUFTargetLeaderAndGuideIcon:Initialize()
 	if not self.initialized then
-		self.initialized = true
+		BUFTarget.FrameInit(self)
+
 		self.texture = BUFTarget.contentContextual.LeaderIcon
-		self.defaultRelativeTo = BUFTarget.contentContextual
 	end
 	self.Guide:Initialize()
 end
@@ -127,9 +127,9 @@ end
 
 function Guide:Initialize()
 	if not self.initialized then
-		self.initialized = true
+		BUFTarget.FrameInit(self)
+
 		self.texture = BUFTarget.contentContextual.GuideIcon
-		self.defaultRelativeTo = BUFTarget.contentContextual
 	end
 end
 

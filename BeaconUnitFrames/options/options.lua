@@ -5,8 +5,6 @@ local ns = select(2, ...)
 
 ns.lsm = LibStub("LibSharedMedia-3.0")
 
-ns.DEFAULT = "BUF_IGNORE_DEFAULT"
-
 ---@class BUFOptionsOrder
 ns.defaultOrderMap = {
 	DEMO_MODE = 1,
@@ -99,17 +97,6 @@ function ns.NewFeatureModule(moduleName)
 	local module = ns.BUF:NewModule(moduleName, "AceHook-3.0", "AceEvent-3.0") --[[@as BUFFeatureModule]]
 
 	function module.FrameInit(s)
-		if s.configPath == "unitFrames.player.groupIndicator" then
-			print("Inside FrameInit for groupIndicator")
-			print("Checking customRelativeToOptions:")
-			for k, v in pairs(module.customRelativeToOptions) do
-				print(k, v)
-			end
-			print("Checking customRelativeToSorting:")
-			for i, v in ipairs(module.customRelativeToSorting) do
-				print(i, v)
-			end
-		end
 		s.initialized = true
 
 		s.customRelativeToOptions = {}

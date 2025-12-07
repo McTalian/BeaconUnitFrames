@@ -29,7 +29,7 @@ ns.dbDefaults.profile.unitFrames.target.powerBar = ns.dbDefaults.profile.unitFra
 
 ns.dbDefaults.profile.unitFrames.target.powerBar.rightText = {
 	anchorPoint = "RIGHT",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFTarget.relativeToFrames.POWER,
 	relativePoint = "RIGHT",
 	xOffset = -13,
 	yOffset = 0,
@@ -51,10 +51,11 @@ ns.dbDefaults.profile.unitFrames.target.powerBar.rightText = {
 ns.options.args.target.args.powerBar.args.rightText = rightTextHandler.optionsTable
 
 function rightTextHandler:RefreshConfig()
-	if not self.fontString then
+	if not self.initialized then
+		BUFTarget.FrameInit(self)
+
 		self.fontString = BUFTarget.manaBar.RightText
 		self.demoText = "123k"
-		self.defaultRelativeTo = BUFTarget.manaBar
 	end
 	self:RefreshFontStringConfig()
 end

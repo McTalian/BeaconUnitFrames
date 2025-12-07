@@ -23,7 +23,7 @@ BUFTargetPvPIcon.optionsTable = {
 ---@class BUFDbSchema.UF.Target.PvPIcon
 BUFTargetPvPIcon.dbDefaults = {
 	anchorPoint = "TOP",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFTarget.relativeToFrames.FRAME,
 	relativePoint = "TOPRIGHT",
 	xOffset = -26,
 	yOffset = -50,
@@ -51,9 +51,10 @@ function BUFTargetPvPIcon:ToggleDemoMode()
 end
 
 function BUFTargetPvPIcon:RefreshConfig()
-	if not self.texture then
+	if not self.initialized then
+		BUFTarget.FrameInit(self)
+
 		self.texture = BUFTarget.contentContextual.PvpIcon
-		self.defaultRelativeTo = BUFTarget.contentContextual
 	end
 	self:RefreshScaleTextureConfig()
 end

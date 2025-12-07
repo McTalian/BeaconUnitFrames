@@ -7,6 +7,7 @@ local BUFTarget = ns.BUFTarget
 ---@class BUFTarget.ReputationBar: Positionable, Sizable, Colorable, ReactionColorable, ClassColorable
 local BUFTargetReputationBar = {
 	configPath = "unitFrames.target.reputationBar",
+	frameKey = BUFTarget.relativeToFrames.REPUTATION_BAR,
 }
 
 ns.Mixin(BUFTargetReputationBar, ns.Sizable, ns.Positionable, ns.Colorable, ns.ClassColorable, ns.ReactionColorable)

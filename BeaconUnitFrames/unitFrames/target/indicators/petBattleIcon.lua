@@ -23,7 +23,7 @@ BUFTargetPetBattleIcon.optionsTable = {
 ---@class BUFDbSchema.UF.Target.PetBattleIcon
 BUFTargetPetBattleIcon.dbDefaults = {
 	anchorPoint = "TOPRIGHT",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFTarget.relativeToFrames.FRAME,
 	relativePoint = "TOPRIGHT",
 	xOffset = -13,
 	yOffset = -52,
@@ -39,9 +39,10 @@ ns.dbDefaults.profile.unitFrames.target.petBattleIcon = BUFTargetPetBattleIcon.d
 ns.options.args.target.args.indicators.args.petBattleIcon = BUFTargetPetBattleIcon.optionsTable
 
 function BUFTargetPetBattleIcon:RefreshConfig()
-	if not self.texture then
+	if not self.initialized then
+		BUFTarget.FrameInit(self)
+
 		self.texture = BUFTarget.contentContextual.PetBattleIcon
-		self.defaultRelativeTo = BUFTarget.contentContextual
 	end
 	self:RefreshScaleTextureConfig()
 end

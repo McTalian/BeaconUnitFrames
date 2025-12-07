@@ -29,7 +29,7 @@ ns.dbDefaults.profile.unitFrames.target.healthBar = ns.dbDefaults.profile.unitFr
 
 ns.dbDefaults.profile.unitFrames.target.healthBar.rightText = {
 	anchorPoint = "RIGHT",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFTarget.relativeToFrames.HEALTH,
 	relativePoint = "RIGHT",
 	xOffset = -5,
 	yOffset = 0,
@@ -51,10 +51,11 @@ ns.dbDefaults.profile.unitFrames.target.healthBar.rightText = {
 ns.options.args.target.args.healthBar.args.rightText = rightTextHandler.optionsTable
 
 function rightTextHandler:RefreshConfig()
-	if not self.fontString then
+	if not self.initialized then
+		BUFTarget.FrameInit(self)
+
 		self.fontString = BUFTarget.healthBarContainer.RightText
 		self.demoText = "123k"
-		self.defaultRelativeTo = BUFTarget.healthBar
 	end
 	self:RefreshFontStringConfig()
 end

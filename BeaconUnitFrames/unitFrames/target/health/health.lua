@@ -7,6 +7,7 @@ local BUFTarget = ns.BUFTarget
 ---@class BUFTarget.Health: BUFStatusBar
 local BUFTargetHealth = {
 	configPath = "unitFrames.target.healthBar",
+	frameKey = BUFTarget.relativeToFrames.HEALTH,
 }
 
 BUFTargetHealth.optionsTable = {

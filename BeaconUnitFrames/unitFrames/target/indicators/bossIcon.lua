@@ -23,7 +23,7 @@ BUFTargetBossIcon.optionsTable = {
 ---@class BUFDbSchema.UF.Target.BossIcon
 BUFTargetBossIcon.dbDefaults = {
 	anchorPoint = "CENTER",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFTarget.relativeToFrames.PORTRAIT,
 	relativePoint = "BOTTOM",
 	xOffset = 0,
 	yOffset = 0,
@@ -39,9 +39,10 @@ ns.dbDefaults.profile.unitFrames.target.bossIcon = BUFTargetBossIcon.dbDefaults
 ns.options.args.target.args.indicators.args.bossIcon = BUFTargetBossIcon.optionsTable
 
 function BUFTargetBossIcon:RefreshConfig()
-	if not self.texture then
+	if not self.initialized then
+		BUFTarget.FrameInit(self)
+
 		self.texture = BUFTarget.contentContextual.BossIcon
-		self.defaultRelativeTo = BUFTarget.container.Portrait
 	end
 	self:RefreshScaleTextureConfig()
 end

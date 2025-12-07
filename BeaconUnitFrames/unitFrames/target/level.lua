@@ -7,6 +7,7 @@ local BUFTarget = ns.BUFTarget
 ---@class BUFTarget.Level: BUFFontString
 local BUFTargetLevel = {
 	configPath = "unitFrames.target.level",
+	frameKey = BUFTarget.relativeToFrames.LEVEL,
 }
 
 BUFTargetLevel.optionsTable = {
@@ -27,7 +28,7 @@ ns.dbDefaults.profile.unitFrames.target = ns.dbDefaults.profile.unitFrames.targe
 ---@class BUFDbSchema.UF.Target.Level
 ns.dbDefaults.profile.unitFrames.target.level = {
 	anchorPoint = "TOPLEFT",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFTarget.relativeToFrames.REPUTATION_BAR,
 	relativePoint = "TOPRIGHT",
 	xOffset = -133,
 	yOffset = -2,
@@ -50,9 +51,10 @@ ns.dbDefaults.profile.unitFrames.target.level = {
 ns.options.args.target.args.level = BUFTargetLevel.optionsTable
 
 function BUFTargetLevel:RefreshConfig()
-	if not self.fontString then
+	if not self.initialized then
+		BUFTarget.FrameInit(self)
+
 		self.fontString = BUFTarget.contentMain.LevelText
-		self.defaultRelativeTo = BUFTarget.contentMain.ReputationColor
 
 		BUFTarget:SecureHook(self.fontString, "SetVertexColor", function()
 			self:UpdateFontColor()

@@ -1,20 +1,42 @@
 ---@class BUFNamespace
 local ns = select(2, ...)
 
----@class BUFTarget: AceModule, AceHook-3.0, AceEvent-3.0
-local BUFTarget = ns.BUF:NewModule("BUFTarget", "AceHook-3.0", "AceEvent-3.0")
+---@class BUFTarget: BUFFeatureModule
+local BUFTarget = ns.NewFeatureModule("BUFTarget")
 
-ns.BUFTarget = BUFTarget
-
----@class BUFDbSchema.UF
-ns.dbDefaults.profile.unitFrames = ns.dbDefaults.profile.unitFrames
-
----@class BUFDbSchema.UF.Target
-ns.dbDefaults.profile.unitFrames.target = {
-	enabled = true,
+BUFTarget.relativeToFrames = {
+	FRAME = ns.Positionable.relativeToFrames.TARGET_FRAME,
+	PORTRAIT = ns.Positionable.relativeToFrames.TARGET_PORTRAIT,
+	REPUTATION_BAR = ns.Positionable.relativeToFrames.TARGET_REPUTATION_BAR,
+	NAME = ns.Positionable.relativeToFrames.TARGET_NAME,
+	LEVEL = ns.Positionable.relativeToFrames.TARGET_LEVEL,
+	HEALTH = ns.Positionable.relativeToFrames.TARGET_HEALTH_BAR,
+	POWER = ns.Positionable.relativeToFrames.TARGET_POWER_BAR,
 }
 
-ns.options.args.target = {
+BUFTarget.customRelativeToOptions = {
+	[ns.Positionable.relativeToFrames.UI_PARENT] = ns.L["UIParent"],
+	[BUFTarget.relativeToFrames.FRAME] = HUD_EDIT_MODE_TARGET_FRAME_LABEL,
+	[BUFTarget.relativeToFrames.REPUTATION_BAR] = ns.L["TargetReputationBar"],
+	[BUFTarget.relativeToFrames.PORTRAIT] = ns.L["TargetPortrait"],
+	[BUFTarget.relativeToFrames.NAME] = ns.L["TargetName"],
+	[BUFTarget.relativeToFrames.LEVEL] = ns.L["TargetLevel"],
+	[BUFTarget.relativeToFrames.HEALTH] = ns.L["TargetHealthBar"],
+	[BUFTarget.relativeToFrames.POWER] = ns.L["TargetManaBar"],
+}
+
+BUFTarget.customRelativeToSorting = {
+	ns.Positionable.relativeToFrames.UI_PARENT,
+	BUFTarget.relativeToFrames.FRAME,
+	BUFTarget.relativeToFrames.REPUTATION_BAR,
+	BUFTarget.relativeToFrames.PORTRAIT,
+	BUFTarget.relativeToFrames.NAME,
+	BUFTarget.relativeToFrames.LEVEL,
+	BUFTarget.relativeToFrames.HEALTH,
+	BUFTarget.relativeToFrames.POWER,
+}
+
+BUFTarget.optionsTable = {
 	type = "group",
 	name = HUD_EDIT_MODE_TARGET_FRAME_LABEL,
 	order = ns.BUFUnitFrames.optionsOrder.TARGET,
@@ -47,6 +69,17 @@ ns.options.args.target = {
 		},
 	},
 }
+
+---@class BUFDbSchema.UF.Target
+BUFTarget.dbDefaults = {
+	enabled = true,
+}
+
+---@class BUFDbSchema.UF
+ns.dbDefaults.profile.unitFrames = ns.dbDefaults.profile.unitFrames
+ns.dbDefaults.profile.unitFrames.target = BUFTarget.dbDefaults
+
+ns.options.args.target = BUFTarget.optionsTable
 
 BUFTarget.optionsOrder = {
 	FRAME = 1,
@@ -155,3 +188,5 @@ function BUFTarget:RefreshConfig()
 		-- but for now, we'll just completely ignore healthBarsContainer in anchors
 	end
 end
+
+ns.BUFTarget = BUFTarget

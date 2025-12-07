@@ -29,7 +29,7 @@ ns.dbDefaults.profile.unitFrames.target.healthBar = ns.dbDefaults.profile.unitFr
 
 ns.dbDefaults.profile.unitFrames.target.healthBar.deadText = {
 	anchorPoint = "CENTER",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFTarget.relativeToFrames.HEALTH,
 	relativePoint = "CENTER",
 	xOffset = 0,
 	yOffset = 0,
@@ -51,9 +51,10 @@ ns.dbDefaults.profile.unitFrames.target.healthBar.deadText = {
 ns.options.args.target.args.healthBar.args.deadText = deadTextHandler.optionsTable
 
 function deadTextHandler:RefreshConfig()
-	if not self.fontString then
+	if not self.initialized then
+		BUFTarget.FrameInit(self)
+
 		self.fontString = BUFTarget.healthBarContainer.DeadText
-		self.defaultRelativeTo = BUFTarget.healthBar
 	end
 	self:RefreshFontStringConfig()
 end

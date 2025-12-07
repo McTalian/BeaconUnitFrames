@@ -106,7 +106,7 @@ function BUFPlayer:RefreshConfig()
 	end
 	if not self.initialized then
 		local ArtUpdater = CreateFrame("Frame", nil, nil, "SecureHandlerAttributeTemplate")
-		Mixin(ArtUpdater, ns.BUFSecureHandler)
+		ns.Mixin(ArtUpdater, ns.BUFSecureHandler)
 
 		-- Kudos to Spyro from the WoWUIDev Discord for figuring out repositioning/resizing
 		-- on entering/exiting vehicles

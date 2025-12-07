@@ -39,12 +39,19 @@ local anchorPointSort = {
 Positionable.relativeToFrames = {
 	UI_PARENT = "UIParent",
 	TARGET_FRAME = "TargetFrame",
+	TARGET_REPUTATION_BAR = "TargetReputationBar",
+	TARGET_PORTRAIT = "TargetPortrait",
+	TARGET_NAME = "TargetName",
+	TARGET_LEVEL = "TargetLevel",
+	TARGET_HEALTH_BAR = "TargetFrameHealthBar",
+	TARGET_POWER_BAR = "TargetFrameManaBar",
+	-- TARGET_CAST_BAR = "TargetCastingBar",
 	PLAYER_FRAME = "PlayerFrame",
 	PLAYER_PORTRAIT = "PlayerPortrait",
 	PLAYER_NAME = "PlayerName",
 	PLAYER_HEALTH_BAR = "PlayerFrameHealthBar",
 	PLAYER_POWER_BAR = "PlayerFrameManaBar",
-	PLAYER_CAST_BAR = "PlayerCastingBar",
+	-- PLAYER_CAST_BAR = "PlayerCastingBar",
 	FOCUS_FRAME = "FocusFrame",
 	PET_FRAME = "PetFrame",
 	PET_PORTRAIT = "PetPortrait",
@@ -61,19 +68,32 @@ Positionable.anchorRelativeToOptions = {
 	[Positionable.relativeToFrames.FOCUS_FRAME] = HUD_EDIT_MODE_FOCUS_FRAME_LABEL,
 	[Positionable.relativeToFrames.PET_FRAME] = HUD_EDIT_MODE_PET_FRAME_LABEL,
 }
-Positionable.anchorRelativeToOptions[ns.DEFAULT] = ns.L["Default Relative Frame"]
 
 --- Helper to get the relative frame from a string key
 --- @param strKey string
 --- @return ScriptRegionResizing | string
 function ns.GetRelativeFrame(strKey)
+	if strKey == nil then
+		error("Relative frame key is nil.")
+		return _G.UIParent
+	end
 	local frames = Positionable.relativeToFrames
-	if strKey == ns.DEFAULT then
-		return ns.DEFAULT
-	elseif strKey == frames.UI_PARENT then
+	if strKey == frames.UI_PARENT then
 		return _G.UIParent
 	elseif strKey == frames.TARGET_FRAME then
 		return _G.TargetFrame
+	elseif strKey == frames.TARGET_REPUTATION_BAR then
+		return _G.TargetFrame.TargetFrameContent.TargetFrameContentMain.ReputationColor
+	elseif strKey == frames.TARGET_PORTRAIT then
+		return _G.TargetFrame.TargetFrameContainer.Portrait
+	elseif strKey == frames.TARGET_NAME then
+		return _G.TargetFrame.TargetFrameContent.TargetFrameContentMain.Name
+	elseif strKey == frames.TARGET_LEVEL then
+		return _G.TargetFrame.TargetFrameContent.TargetFrameContentMain.LevelText
+	elseif strKey == frames.TARGET_HEALTH_BAR then
+		return _G.TargetFrame.TargetFrameContent.TargetFrameContentMain.HealthBarsContainer.HealthBar
+	elseif strKey == frames.TARGET_POWER_BAR then
+		return _G.TargetFrame.TargetFrameContent.TargetFrameContentMain.ManaBar
 	elseif strKey == frames.PLAYER_FRAME then
 		return _G.PlayerFrame
 	elseif strKey == frames.PLAYER_PORTRAIT then
@@ -98,17 +118,17 @@ function ns.GetRelativeFrame(strKey)
 		return _G.PetFrameManaBar
 	elseif strKey == frames.PET_CAST_BAR then
 		return _G.PetCastingBarFrame
+	else
+		if _G[strKey] == nil then
+			error("Relative frame '" .. strKey .. "' does not exist.")
+		end
 	end
 
 	-- Catch-all for other global frames
-	if _G[strKey] == nil then
-		error("Relative frame '" .. strKey .. "' does not exist.")
-	end
 	return _G[strKey]
 end
 
 Positionable.anchorRelativeToSort = {
-	ns.DEFAULT,
 	"UIParent",
 	"TargetFrame",
 	"PlayerFrame",
@@ -286,9 +306,6 @@ end
 function Positionable:GetPositionAnchorInfo()
 	---@type string | Frame
 	local relativeTo = self:GetRelativeFrame()
-	if relativeTo == ns.DEFAULT then
-		relativeTo = self.defaultRelativeTo or nil
-	end
 
 	local anchorPoint = self:GetAnchorPoint() or "TOPLEFT"
 
@@ -345,7 +362,7 @@ function Positionable:_SetPosition(positionable)
 end
 
 function Positionable:_GetRelativeFrame()
-	return ns.GetRelativeFrame(self:GetRelativeTo() or ns.DEFAULT)
+	return ns.GetRelativeFrame(self:GetRelativeTo())
 end
 
 --- Can be overridden by the implementing class to provide a custom relative frame

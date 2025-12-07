@@ -29,7 +29,7 @@ ns.dbDefaults.profile.unitFrames.target.powerBar = ns.dbDefaults.profile.unitFra
 
 ns.dbDefaults.profile.unitFrames.target.powerBar.centerText = {
 	anchorPoint = "CENTER",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFTarget.relativeToFrames.POWER,
 	relativePoint = "CENTER",
 	xOffset = -4,
 	yOffset = 0,
@@ -51,10 +51,11 @@ ns.dbDefaults.profile.unitFrames.target.powerBar.centerText = {
 ns.options.args.target.args.powerBar.args.centerText = centerTextHandler.optionsTable
 
 function centerTextHandler:RefreshConfig()
-	if not self.fontString then
+	if not self.initialized then
+		BUFTarget.FrameInit(self)
+
 		self.fontString = BUFTarget.manaBar.ManaBarText
 		self.demoText = "123k / 123k"
-		self.defaultRelativeTo = BUFTarget.manaBar
 	end
 	self:RefreshFontStringConfig()
 end

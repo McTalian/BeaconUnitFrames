@@ -23,7 +23,7 @@ BUFTargetBossPortraitFrameTexture.optionsTable = {
 ---@class BUFDbSchema.UF.Target.BossPortraitFrameTexture
 BUFTargetBossPortraitFrameTexture.dbDefaults = {
 	anchorPoint = "TOPRIGHT",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFTarget.relativeToFrames.PORTRAIT,
 	relativePoint = "TOPRIGHT",
 	xOffset = -11,
 	yOffset = -8,
@@ -40,10 +40,9 @@ ns.options.args.target.args.indicators.args.bossPortraitFrameTexture = BUFTarget
 
 function BUFTargetBossPortraitFrameTexture:RefreshConfig()
 	if not self.initialized then
-		self.initialized = true
+		BUFTarget.FrameInit(self)
 
 		self.texture = BUFTarget.container.BossPortraitFrameTexture
-		self.defaultRelativeTo = BUFTarget.container
 
 		if not BUFTarget:IsHooked(self.texture, "Show") then
 			BUFTarget:SecureHook(self.texture, "Show", function()

@@ -24,7 +24,7 @@ BUFTargetRaidTargetIcon.optionsTable = {
 BUFTargetRaidTargetIcon.dbDefaults = {
 	scale = 1,
 	anchorPoint = "CENTER",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFTarget.relativeToFrames.PORTRAIT,
 	relativePoint = "TOP",
 	xOffset = 0,
 	yOffset = 0,
@@ -39,11 +39,10 @@ ns.dbDefaults.profile.unitFrames.target = ns.dbDefaults.profile.unitFrames.targe
 ns.dbDefaults.profile.unitFrames.target.raidTargetIcon = BUFTargetRaidTargetIcon.dbDefaults
 
 function BUFTargetRaidTargetIcon:RefreshConfig()
-	if not self.initiatlized then
-		self.initiatlized = true
+	if not self.initialized then
+		BUFTarget.FrameInit(self)
 
 		self.texture = BUFTarget.contentContextual.RaidTargetIcon
-		self.defaultRelativeTo = BUFTarget.container.Portrait
 	end
 
 	self:RefreshScaleTextureConfig()

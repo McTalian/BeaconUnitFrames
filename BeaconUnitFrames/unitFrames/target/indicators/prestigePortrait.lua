@@ -24,7 +24,7 @@ BUFTargetPrestigePortrait.optionsTable = {
 BUFTargetPrestigePortrait.dbDefaults = {
 	scale = 1.0,
 	anchorPoint = "TOPRIGHT",
-	relativeTo = ns.DEFAULT,
+	relativeTo = BUFTarget.relativeToFrames.FRAME,
 	relativePoint = "TOPRIGHT",
 	xOffset = -2,
 	yOffset = -38,
@@ -54,8 +54,8 @@ end
 
 function BUFTargetPrestigePortrait:RefreshConfig()
 	if not self.initialized then
-		self.initialized = true
-		self.defaultRelativeTo = BUFTarget.contentContextual
+		BUFTarget.FrameInit(self)
+
 		self.texture = BUFTarget.contentContextual.PrestigePortrait
 		self.secondaryTexture = BUFTarget.contentContextual.PrestigeBadge
 	end
