@@ -36,8 +36,7 @@ ns.AddPositionableOptions(BUFTargetBuffs.optionsTable.args)
 ns.options.args.target.args.buffs = BUFTargetBuffs.optionsTable
 
 function BUFTargetBuffs:RefreshConfig()
-	if ns.db.profile.unitFrames.target.frame.enableFrameTexture then
-		print("Buffs: Target frame texture enabled; not positioning buffs.")
+	if self:DbGet("enableFrameTexture") then
 		return
 	end
 

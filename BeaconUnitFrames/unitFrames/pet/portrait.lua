@@ -4,21 +4,31 @@ local ns = select(2, ...)
 ---@class BUFPet
 local BUFPet = ns.BUFPet
 
----@class BUFPet.Portrait: Sizable, Positionable, BoxMaskable
+---@class BUFPet.Portrait: BUFTexture, BoxMaskable
 local BUFPetPortrait = {
 	configPath = "unitFrames.pet.portrait",
 	frameKey = BUFPet.relativeToFrames.PORTRAIT,
 }
 
-ns.Mixin(BUFPetPortrait, ns.Sizable, ns.Positionable, ns.BoxMaskable)
-
-BUFPet.Portrait = BUFPetPortrait
-
----@class BUFDbSchema.UF.Pet
-ns.dbDefaults.profile.unitFrames.pet = ns.dbDefaults.profile.unitFrames.pet
+BUFPetPortrait.optionsTable = {
+	type = "group",
+	handler = BUFPetPortrait,
+	name = ns.L["Portrait"],
+	order = BUFPet.optionsOrder.PORTRAIT,
+	args = {
+		enabled = {
+			type = "toggle",
+			name = ENABLE,
+			desc = ns.L["EnablePlayerPortrait"],
+			set = "SetEnabled",
+			get = "GetEnabled",
+			order = ns.defaultOrderMap.ENABLE,
+		},
+	},
+}
 
 ---@class BUFDbSchema.UF.Pet.Portrait
-ns.dbDefaults.profile.unitFrames.pet.portrait = {
+BUFPetPortrait.dbDefaults = {
 	enabled = true,
 	width = 37,
 	height = 37,
@@ -34,33 +44,26 @@ ns.dbDefaults.profile.unitFrames.pet.portrait = {
 	alpha = 1.0,
 }
 
-local portrait = {
-	type = "group",
-	handler = BUFPetPortrait,
-	name = ns.L["Portrait"],
-	order = BUFPet.optionsOrder.PORTRAIT,
-	args = {
-		enabled = {
-			type = "toggle",
-			name = ENABLE,
-			desc = ns.L["EnablePlayerPortrait"],
-			set = function(info, value)
-				ns.db.profile.unitFrames.pet.portrait.enabled = value
-				BUFPetPortrait:ShowHidePortrait()
-			end,
-			get = function(info)
-				return ns.db.profile.unitFrames.pet.portrait.enabled
-			end,
-			order = ns.defaultOrderMap.ENABLE,
-		},
-	},
-}
+BUFPetPortrait.noAtlas = true
 
-ns.AddSizableOptions(portrait.args)
-ns.AddPositionableOptions(portrait.args)
-ns.AddBoxMaskableOptions(portrait.args)
+ns.BUFTexture:ApplyMixin(BUFPetPortrait)
+ns.Mixin(BUFPetPortrait, ns.BoxMaskable)
 
-ns.options.args.pet.args.portrait = portrait
+---@class BUFDbSchema.UF.Pet
+ns.dbDefaults.profile.unitFrames.pet = ns.dbDefaults.profile.unitFrames.pet
+ns.dbDefaults.profile.unitFrames.pet.portrait = BUFPetPortrait.dbDefaults
+
+ns.AddBoxMaskableOptions(BUFPetPortrait.optionsTable.args)
+ns.options.args.pet.args.portrait = BUFPetPortrait.optionsTable
+
+function BUFPetPortrait:SetEnabled(info, value)
+	self:DbSet("enabled", value)
+	self:ShowHidePortrait()
+end
+
+function BUFPetPortrait:GetEnabled(info)
+	return self:DbGet("enabled")
+end
 
 function BUFPetPortrait:RefreshConfig()
 	if not self.initialized then
@@ -83,7 +86,7 @@ end
 
 function BUFPetPortrait:ShowHidePortrait()
 	local parent = BUFPet
-	local show = ns.db.profile.unitFrames.pet.portrait.enabled
+	local show = self:DbGet("enabled")
 	if show then
 		if parent:IsHooked(PetPortrait, "Show") then
 			parent:Unhook(PetPortrait, "Show")
@@ -111,7 +114,7 @@ end
 
 function BUFPetPortrait:RefreshMask()
 	local parent = BUFPet
-	local maskPath = ns.db.profile.unitFrames.pet.portrait.mask
+	local maskPath = self:DbGet("mask")
 
 	local sPos, ePos = string.find(maskPath, "%.")
 	local isTexture = sPos ~= nil
@@ -120,9 +123,10 @@ function BUFPetPortrait:RefreshMask()
 	else
 		parent.frame.PortraitMask:SetAtlas(maskPath, false)
 	end
-	local width = ns.db.profile.unitFrames.pet.portrait.width
-	local height = ns.db.profile.unitFrames.pet.portrait.height
-	local widthScale = ns.db.profile.unitFrames.pet.portrait.maskWidthScale or 1
-	local heightScale = ns.db.profile.unitFrames.pet.portrait.maskHeightScale or 1
+	local width, height = self:GetWidth(), self:GetHeight()
+	local widthScale = self:GetMaskWidthScale() or 1
+	local heightScale = self:GetMaskHeightScale() or 1
 	parent.frame.PortraitMask:SetSize(width * widthScale, height * heightScale)
 end
+
+BUFPet.Portrait = BUFPetPortrait

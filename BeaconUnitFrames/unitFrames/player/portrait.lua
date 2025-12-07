@@ -24,13 +24,8 @@ BUFPlayerPortrait.optionsTable = {
 			type = "toggle",
 			name = ENABLE,
 			desc = ns.L["EnablePlayerPortrait"],
-			set = function(info, value)
-				ns.db.profile.unitFrames.player.portrait.enabled = value
-				BUFPlayerPortrait:ShowHidePortrait()
-			end,
-			get = function(info)
-				return ns.db.profile.unitFrames.player.portrait.enabled
-			end,
+			set = "SetEnabled",
+			get = "GetEnabled",
 			order = BUFPlayerPortrait.optionsOrder.ENABLE,
 		},
 		-- TODO: Move this to indicators file with more options
@@ -38,13 +33,8 @@ BUFPlayerPortrait.optionsTable = {
 			type = "toggle",
 			name = ns.L["EnableCornerIndicator"],
 			desc = ns.L["EnableCornerIndicatorDesc"],
-			set = function(info, value)
-				ns.db.profile.unitFrames.player.portrait.enableCornerIndicator = value
-				BUFPlayerPortrait:SetCornerIndicator()
-			end,
-			get = function(info)
-				return ns.db.profile.unitFrames.player.portrait.enableCornerIndicator
-			end,
+			set = "SetEnableCornerIndicator",
+			get = "GetEnableCornerIndicator",
 			order = BUFPlayerPortrait.optionsOrder.CORNER_INDICATOR,
 		},
 	},
@@ -77,7 +67,26 @@ ns.Mixin(BUFPlayerPortrait, ns.BoxMaskable)
 ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
 ns.dbDefaults.profile.unitFrames.player.portrait = BUFPlayerPortrait.dbDefaults
 
+ns.AddBoxMaskableOptions(BUFPlayerPortrait.optionsTable.args)
 ns.options.args.player.args.portrait = BUFPlayerPortrait.optionsTable
+
+function BUFPlayerPortrait:SetEnabled(info, value)
+	self:DbSet("enabled", value)
+	self:ShowHidePortrait()
+end
+
+function BUFPlayerPortrait:GetEnabled(info)
+	return self:DbGet("enabled")
+end
+
+function BUFPlayerPortrait:SetEnableCornerIndicator(info, value)
+	self:DbSet("enableCornerIndicator", value)
+	self:SetCornerIndicator()
+end
+
+function BUFPlayerPortrait:GetEnableCornerIndicator()
+	return self:DbGet("enableCornerIndicator")
+end
 
 function BUFPlayerPortrait:RefreshConfig()
 	if not self.initialized then

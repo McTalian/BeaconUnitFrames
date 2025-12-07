@@ -45,37 +45,22 @@ local frame = {
 		frameFlash = {
 			type = "toggle",
 			name = ns.L["EnableFrameFlash"],
-			set = function(info, value)
-				ns.db.profile.unitFrames.pet.frame.enableFrameFlash = value
-				BUFPetFrame:SetFrameFlash()
-			end,
-			get = function(info)
-				return ns.db.profile.unitFrames.pet.frame.enableFrameFlash
-			end,
+			set = "SetEnableFrameFlash",
+			get = "GetEnableFrameFlash",
 			order = frameOrder.FRAME_FLASH,
 		},
 		frameTexture = {
 			type = "toggle",
 			name = ns.L["EnableFrameTexture"],
-			set = function(info, value)
-				ns.db.profile.unitFrames.pet.frame.enableFrameTexture = value
-				BUFPetFrame:SetFrameTexture()
-			end,
-			get = function(info)
-				return ns.db.profile.unitFrames.pet.frame.enableFrameTexture
-			end,
+			set = "SetEnableFrameTexture",
+			get = "GetEnableFrameTexture",
 			order = frameOrder.FRAME_TEXTURE,
 		},
 		statusTexture = {
 			type = "toggle",
 			name = ns.L["EnableStatusTexture"],
-			set = function(info, value)
-				ns.db.profile.unitFrames.pet.frame.enableStatusTexture = value
-				BUFPetFrame:SetStatusTexture()
-			end,
-			get = function(info)
-				return ns.db.profile.unitFrames.pet.frame.enableStatusTexture
-			end,
+			set = "SetEnableStatusTexture",
+			get = "GetEnableStatusTexture",
 			order = frameOrder.STATUS_TEXTURE,
 		},
 	},
@@ -86,15 +71,38 @@ ns.AddSizableOptions(frame.args, frameOrder)
 
 ns.options.args.pet.args.frame = frame
 
-function BUFPetFrame:RefreshConfig()
-	self:SetSize()
-	self:SetFrameFlash()
-	self:SetFrameTexture()
-	self:SetStatusTexture()
-	self:RefreshBackgroundTexture()
+function BUFPetFrame:SetEnableFrameFlash(info, value)
+	self:DbSet("enableFrameFlash", value)
+	BUFPetFrame:SetFrameFlash()
+end
 
+function BUFPetFrame:GetEnableFrameFlash(info)
+	return self:DbGet("enableFrameFlash")
+end
+
+function BUFPetFrame:SetEnableFrameTexture(info, value)
+	self:DbSet("enableFrameTexture", value)
+	BUFPetFrame:SetFrameTexture()
+end
+
+function BUFPetFrame:GetEnableFrameTexture(info)
+	return self:DbGet("enableFrameTexture")
+end
+
+function BUFPetFrame:SetEnableStatusTexture(info, value)
+	self:DbSet("enableStatusTexture", value)
+	BUFPetFrame:SetStatusTexture()
+end
+
+function BUFPetFrame:GetEnableStatusTexture(info)
+	return self:DbGet("enableStatusTexture")
+end
+
+function BUFPetFrame:RefreshConfig()
 	if not self.initialized then
 		BUFPet.FrameInit(self)
+
+		self.frame = BUFPet.frame
 
 		if not BUFPet:IsHooked(BUFPet.frame, "AnchorSelectionFrame") then
 			BUFPet:SecureHook(BUFPet.frame, "AnchorSelectionFrame", function()
@@ -105,20 +113,21 @@ function BUFPetFrame:RefreshConfig()
 			end)
 		end
 	end
+	self:SetSize()
+	self:SetFrameFlash()
+	self:SetFrameTexture()
+	self:SetStatusTexture()
+	self:RefreshBackgroundTexture()
 end
 
 function BUFPetFrame:SetSize()
-	local pet = BUFPet
-	local width = ns.db.profile.unitFrames.pet.frame.width
-	local height = ns.db.profile.unitFrames.pet.frame.height
-	pet.frame:SetWidth(width)
-	pet.frame:SetHeight(height)
-	pet.frame:SetHitRectInsets(0, 0, 0, 0)
+	self:_SetSize(self.frame)
+	self.frame:SetHitRectInsets(0, 0, 0, 0)
 end
 
 function BUFPetFrame:SetFrameFlash()
 	local pet = BUFPet
-	local enable = ns.db.profile.unitFrames.pet.frame.enableFrameFlash
+	local enable = self:DbGet("enableFrameFlash")
 	if enable then
 		pet:Unhook(PetFrameFlash, "Show")
 	else
@@ -136,7 +145,7 @@ function BUFPetFrame:SetFrameTexture()
 	local texture = PetFrameTexture
 	local healthBarMask = PetFrameHealthBarMask
 	local manaBarMask = PetFrameManaBarMask
-	local enable = ns.db.profile.unitFrames.pet.frame.enableFrameTexture
+	local enable = self:DbGet("enableFrameTexture")
 	if enable then
 		pet:Unhook(texture, "Show")
 		pet:Unhook(healthBarMask, "Show")
@@ -173,7 +182,7 @@ end
 
 function BUFPetFrame:SetStatusTexture()
 	local pet = BUFPet
-	local enable = ns.db.profile.unitFrames.pet.frame.enableStatusTexture
+	local enable = self:DbGet("enableStatusTexture")
 	if enable then
 		pet:Unhook(PetAttackModeTexture, "Show")
 	else
@@ -187,7 +196,7 @@ function BUFPetFrame:SetStatusTexture()
 end
 
 function BUFPetFrame:RefreshBackgroundTexture()
-	local useBackgroundTexture = ns.db.profile.unitFrames.pet.frame.useBackgroundTexture
+	local useBackgroundTexture = self:DbGet("useBackgroundTexture")
 	if not useBackgroundTexture then
 		if self.backdropFrame then
 			self.backdropFrame:Hide()
@@ -200,7 +209,7 @@ function BUFPetFrame:RefreshBackgroundTexture()
 		self.backdropFrame:SetFrameStrata("BACKGROUND")
 	end
 
-	local backgroundTexture = ns.db.profile.unitFrames.pet.frame.backgroundTexture
+	local backgroundTexture = self:DbGet("backgroundTexture")
 	local bgTexturePath = ns.lsm:Fetch(ns.lsm.MediaType.BACKGROUND, backgroundTexture)
 	if not bgTexturePath then
 		bgTexturePath = "Interface/None"

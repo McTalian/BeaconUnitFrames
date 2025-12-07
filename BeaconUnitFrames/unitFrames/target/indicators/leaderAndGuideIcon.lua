@@ -85,12 +85,12 @@ ns.dbDefaults.profile.unitFrames.target.leaderAndGuideIcon = BUFTargetLeaderAndG
 ns.options.args.target.args.indicators.args.leaderAndGuideIcon = BUFTargetLeaderAndGuideIcon.optionsTable
 
 function BUFTargetLeaderAndGuideIcon:SetUseSeparateGuideStyle(info, value)
-	ns.db.profile.unitFrames.target.leaderAndGuideIcon.separateGuideStyle = value
+	self:DbSet("separateGuideStyle", value)
 	BUFTargetLeaderAndGuideIcon:SeparateLeaderAndGuideStyle()
 end
 
 function BUFTargetLeaderAndGuideIcon:GetUseSeparateGuideStyle(info)
-	return ns.db.profile.unitFrames.target.leaderAndGuideIcon.separateGuideStyle
+	return self:DbGet("separateGuideStyle")
 end
 
 function BUFTargetLeaderAndGuideIcon:Initialize()

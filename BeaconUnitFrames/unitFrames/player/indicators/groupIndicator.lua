@@ -86,7 +86,7 @@ end
 
 function BUFPlayerGroupIndicator:RefreshBackgroundTexture()
 	local grpInd = BUFPlayer.contentContextual.GroupIndicator
-	local useBackgroundTexture = ns.db.profile.unitFrames.player.groupIndicator.useBackgroundTexture
+	local useBackgroundTexture = self:DbGet("useBackgroundTexture")
 
 	local show
 	local regions = { grpInd:GetRegions() }
@@ -108,7 +108,7 @@ function BUFPlayerGroupIndicator:RefreshBackgroundTexture()
 		return
 	end
 
-	local backgroundTexture = ns.db.profile.unitFrames.player.groupIndicator.backgroundTexture
+	local backgroundTexture = self:DbGet("backgroundTexture")
 	local bgTexturePath = ns.lsm:Fetch(ns.lsm.MediaType.BACKGROUND, backgroundTexture)
 	if not bgTexturePath then
 		bgTexturePath = "Interface/None"

@@ -4,6 +4,8 @@ local ns = select(2, ...)
 ---@class BUFTarget: BUFFeatureModule
 local BUFTarget = ns.NewFeatureModule("BUFTarget")
 
+BUFTarget.configPath = "unitFrames.target"
+
 BUFTarget.relativeToFrames = {
 	FRAME = ns.Positionable.relativeToFrames.TARGET_FRAME,
 	PORTRAIT = ns.Positionable.relativeToFrames.TARGET_PORTRAIT,
@@ -39,10 +41,11 @@ BUFTarget.customRelativeToSorting = {
 BUFTarget.optionsTable = {
 	type = "group",
 	name = HUD_EDIT_MODE_TARGET_FRAME_LABEL,
+	handler = BUFTarget,
 	order = ns.BUFUnitFrames.optionsOrder.TARGET,
 	childGroups = "tree",
 	disabled = function()
-		return not ns.db.profile.unitFrames.target.enabled
+		BUFTarget:IsDisabled()
 	end,
 	args = {
 		title = {
@@ -53,18 +56,9 @@ BUFTarget.optionsTable = {
 		enable = {
 			type = "toggle",
 			name = ENABLE,
-			set = function(info, value)
-				ns.db.profile.unitFrames.target.enabled = value
-				if value then
-					BUFTarget:RefreshConfig()
-				else
-					StaticPopup_Show("BUF_RELOAD_UI")
-				end
-			end,
+			set = "SetEnabled",
 			disabled = false,
-			get = function(info)
-				return ns.db.profile.unitFrames.target.enabled
-			end,
+			get = "GetEnabled",
 			order = 0.01,
 		},
 	},
@@ -93,6 +87,23 @@ BUFTarget.optionsOrder = {
 	BUFFS = 9,
 }
 
+function BUFTarget:IsDisabled()
+	return not self:DbGet("enabled")
+end
+
+function BUFTarget:SetEnabled(info, value)
+	self:DbSet("enabled", value)
+	if value then
+		self:RefreshConfig()
+	else
+		StaticPopup_Show("BUF_RELOAD_UI")
+	end
+end
+
+function BUFTarget:GetEnabled(info)
+	return self:DbGet("enabled")
+end
+
 function BUFTarget:OnEnable()
 	self.frame = TargetFrame
 	self.container = self.frame.TargetFrameContainer
@@ -106,7 +117,7 @@ function BUFTarget:OnEnable()
 end
 
 function BUFTarget:RefreshConfig()
-	if not ns.db.profile.unitFrames.target.enabled then
+	if not self:GetEnabled() then
 		return
 	end
 	if not self.initialized then

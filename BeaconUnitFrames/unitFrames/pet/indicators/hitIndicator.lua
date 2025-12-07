@@ -22,13 +22,8 @@ BUFPetHitIndicator.optionsTable = {
 			type = "toggle",
 			name = ENABLE,
 			desc = ns.L["EnablePlayerPortrait"],
-			set = function(info, value)
-				ns.db.profile.unitFrames.pet.hitIndicator.enabled = value
-				BUFPetHitIndicator:ShowHide()
-			end,
-			get = function(info)
-				return ns.db.profile.unitFrames.pet.hitIndicator.enabled
-			end,
+			set = "SetEnabled",
+			get = "GetEnabled",
 			order = ns.defaultOrderMap.ENABLE,
 		},
 	},
@@ -61,10 +56,18 @@ ns.BUFFontString:ApplyMixin(BUFPetHitIndicator)
 
 ---@class BUFDbSchema.UF.Pet
 ns.dbDefaults.profile.unitFrames.pet = ns.dbDefaults.profile.unitFrames.pet
-
 ns.dbDefaults.profile.unitFrames.pet.hitIndicator = BUFPetHitIndicator.dbDefaults
 
 ns.options.args.pet.args.indicators.args.hitIndicator = BUFPetHitIndicator.optionsTable
+
+function BUFPetHitIndicator:SetEnabled(info, value)
+	self:DbSet("enabled", value)
+	self:ShowHide()
+end
+
+function BUFPetHitIndicator:GetEnabled(info)
+	return self:DbGet("enabled")
+end
 
 function BUFPetHitIndicator:ToggleDemoMode()
 	if not self.demoMode then
@@ -100,7 +103,7 @@ function BUFPetHitIndicator:RefreshConfig()
 end
 
 function BUFPetHitIndicator:ShowHide()
-	if ns.db.profile.unitFrames.pet.hitIndicator.enabled then
+	if self:GetEnabled() then
 		if BUFPet:IsHooked(self.fontString, "Hide") then
 			BUFPet:Unhook(self.fontString, "Hide")
 		end

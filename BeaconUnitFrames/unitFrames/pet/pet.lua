@@ -4,6 +4,8 @@ local ns = select(2, ...)
 ---@class BUFPet: BUFFeatureModule
 local BUFPet = ns.NewFeatureModule("BUFPet")
 
+BUFPet.configPath = "unitFrames.pet"
+
 BUFPet.relativeToFrames = {
 	FRAME = ns.Positionable.relativeToFrames.PET_FRAME,
 	PORTRAIT = ns.Positionable.relativeToFrames.PET_PORTRAIT,
@@ -33,11 +35,12 @@ BUFPet.customRelativeToSorting = {
 
 BUFPet.optionsTable = {
 	type = "group",
+	handler = BUFPet,
 	name = HUD_EDIT_MODE_PET_FRAME_LABEL,
 	order = ns.BUFUnitFrames.optionsOrder.PET,
 	childGroups = "tree",
 	disabled = function()
-		return not ns.db.profile.unitFrames.pet.enabled
+		BUFPet:IsDisabled()
 	end,
 	args = {
 		title = {
@@ -48,18 +51,9 @@ BUFPet.optionsTable = {
 		enable = {
 			type = "toggle",
 			name = ENABLE,
-			set = function(info, value)
-				ns.db.profile.unitFrames.pet.enabled = value
-				if value then
-					BUFPet:RefreshConfig()
-				else
-					StaticPopup_Show("BUF_RELOAD_UI")
-				end
-			end,
+			set = "SetEnabled",
+			get = "GetEnabled",
 			disabled = false,
-			get = function(info)
-				return ns.db.profile.unitFrames.pet.enabled
-			end,
 			order = 0.01,
 		},
 	},
@@ -87,6 +81,23 @@ BUFPet.optionsOrder = {
 	CLASS_RESOURCES = 8,
 }
 
+function BUFPet:IsDisabled()
+	return not self:DbGet("enabled")
+end
+
+function BUFPet:SetEnabled(info, value)
+	self:DbSet("enabled", value)
+	if value then
+		self:RefreshConfig()
+	else
+		StaticPopup_Show("BUF_RELOAD_UI")
+	end
+end
+
+function BUFPet:GetEnabled(info)
+	return self:DbGet("enabled")
+end
+
 function BUFPet:OnEnable()
 	self.frame = PetFrame
 	self.healthBar = PetFrameHealthBar
@@ -103,7 +114,7 @@ function BUFPet:CombatSafeRefresh()
 end
 
 function BUFPet:RefreshConfig(_eName)
-	if not ns.db.profile.unitFrames.pet.enabled then
+	if not self:DbGet("enabled") then
 		return
 	end
 

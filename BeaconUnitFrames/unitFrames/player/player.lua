@@ -4,6 +4,8 @@ local ns = select(2, ...)
 ---@class BUFPlayer: BUFFeatureModule
 local BUFPlayer = ns.NewFeatureModule("BUFPlayer")
 
+BUFPlayer.configPath = "unitFrames.player"
+
 BUFPlayer.relativeToFrames = {
 	FRAME = ns.Positionable.relativeToFrames.PLAYER_FRAME,
 	PORTRAIT = ns.Positionable.relativeToFrames.PLAYER_PORTRAIT,
@@ -33,10 +35,11 @@ BUFPlayer.customRelativeToSorting = {
 BUFPlayer.optionsTable = {
 	type = "group",
 	name = HUD_EDIT_MODE_PLAYER_FRAME_LABEL,
+	handler = BUFPlayer,
 	order = ns.BUFUnitFrames.optionsOrder.PLAYER,
 	childGroups = "tree",
 	disabled = function()
-		return not ns.db.profile.unitFrames.player.enabled
+		BUFPlayer:IsDisabled()
 	end,
 	args = {
 		title = {
@@ -47,18 +50,9 @@ BUFPlayer.optionsTable = {
 		enable = {
 			type = "toggle",
 			name = ENABLE,
-			set = function(info, value)
-				ns.db.profile.unitFrames.player.enabled = value
-				if value then
-					BUFPlayer:RefreshConfig()
-				else
-					StaticPopup_Show("BUF_RELOAD_UI")
-				end
-			end,
+			set = "SetEnabled",
 			disabled = false,
-			get = function(info)
-				return ns.db.profile.unitFrames.player.enabled
-			end,
+			get = "GetEnabled",
 			order = 0.01,
 		},
 	},
@@ -86,6 +80,23 @@ BUFPlayer.optionsOrder = {
 	CLASS_RESOURCES = 8,
 }
 
+function BUFPlayer:IsDisabled()
+	return not self:DbGet("enabled")
+end
+
+function BUFPlayer:SetEnabled(info, value)
+	self:DbSet("enabled", value)
+	if value then
+		self:RefreshConfig()
+	else
+		StaticPopup_Show("BUF_RELOAD_UI")
+	end
+end
+
+function BUFPlayer:GetEnabled(info)
+	return self:DbGet("enabled")
+end
+
 function BUFPlayer:OnEnable()
 	self.frame = PlayerFrame
 	self.container = self.frame.PlayerFrameContainer
@@ -101,7 +112,7 @@ function BUFPlayer:OnEnable()
 end
 
 function BUFPlayer:RefreshConfig()
-	if not ns.db.profile.unitFrames.player.enabled then
+	if not self:GetEnabled() then
 		return
 	end
 	if not self.initialized then

@@ -43,37 +43,22 @@ local frame = {
 		frameFlash = {
 			type = "toggle",
 			name = ns.L["EnableFrameFlash"],
-			set = function(info, value)
-				ns.db.profile.unitFrames.player.frame.enableFrameFlash = value
-				BUFPlayerFrame:SetFrameFlash()
-			end,
-			get = function(info)
-				return ns.db.profile.unitFrames.player.frame.enableFrameFlash
-			end,
+			set = "SetEnableFrameFlash",
+			get = "GetEnableFrameFlash",
 			order = frameOrder.FRAME_FLASH,
 		},
 		frameTexture = {
 			type = "toggle",
 			name = ns.L["EnableFrameTexture"],
-			set = function(info, value)
-				ns.db.profile.unitFrames.player.frame.enableFrameTexture = value
-				BUFPlayerFrame:SetFrameTexture()
-			end,
-			get = function(info)
-				return ns.db.profile.unitFrames.player.frame.enableFrameTexture
-			end,
+			set = "SetEnableFrameTexture",
+			get = "GetEnableFrameTexture",
 			order = frameOrder.FRAME_TEXTURE,
 		},
 		statusTexture = {
 			type = "toggle",
 			name = ns.L["EnableStatusTexture"],
-			set = function(info, value)
-				ns.db.profile.unitFrames.player.frame.enableStatusTexture = value
-				BUFPlayerFrame:SetStatusTexture()
-			end,
-			get = function(info)
-				return ns.db.profile.unitFrames.player.frame.enableStatusTexture
-			end,
+			set = "SetEnableStatusTexture",
+			get = "GetEnableStatusTexture",
 			order = frameOrder.STATUS_TEXTURE,
 		},
 	},
@@ -84,21 +69,44 @@ ns.AddSizableOptions(frame.args, frameOrder)
 
 ns.options.args.player.args.frame = frame
 
-function BUFPlayerFrame:RefreshConfig()
-	self:SetSize()
-	self:SetFrameFlash()
-	self:SetFrameTexture()
-	self:SetStatusTexture()
-	self:RefreshBackgroundTexture()
+function BUFPlayerFrame:SetEnableFrameFlash(info, value)
+	self:DbSet("enableFrameFlash", value)
+	BUFPlayerFrame:SetFrameFlash()
+end
 
+function BUFPlayerFrame:GetEnableFrameFlash(info)
+	return self:DbGet("enableFrameFlash")
+end
+
+function BUFPlayerFrame:SetEnableFrameTexture(info, value)
+	self:DbSet("enableFrameTexture", value)
+	BUFPlayerFrame:SetFrameTexture()
+end
+
+function BUFPlayerFrame:GetEnableFrameTexture(info)
+	return self:DbGet("enableFrameTexture")
+end
+
+function BUFPlayerFrame:SetEnableStatusTexture(info, value)
+	self:DbSet("enableStatusTexture", value)
+	BUFPlayerFrame:SetStatusTexture()
+end
+
+function BUFPlayerFrame:GetEnableStatusTexture(info)
+	return self:DbGet("enableStatusTexture")
+end
+
+function BUFPlayerFrame:RefreshConfig()
 	if not self.initialized then
 		self.initialized = true
+
+		self.frame = BUFPlayer.frame
 
 		local player = BUFPlayer
 
 		if not player:IsHooked(player.container.FrameTexture, "SetShown") then
 			player:SecureHook(player.container.FrameTexture, "SetShown", function(s, shown)
-				if not ns.db.profile.unitFrames.player.frame.enableFrameTexture then
+				if not self:GetEnableFrameTexture() then
 					s:Hide()
 				end
 			end)
@@ -113,20 +121,21 @@ function BUFPlayerFrame:RefreshConfig()
 			end)
 		end
 	end
+	self:SetSize()
+	self:SetFrameFlash()
+	self:SetFrameTexture()
+	self:SetStatusTexture()
+	self:RefreshBackgroundTexture()
 end
 
 function BUFPlayerFrame:SetSize()
-	local player = BUFPlayer
-	local width = ns.db.profile.unitFrames.player.frame.width
-	local height = ns.db.profile.unitFrames.player.frame.height
-	player.frame:SetWidth(width)
-	player.frame:SetHeight(height)
-	player.frame:SetHitRectInsets(0, 0, 0, 0)
+	self:_SetSize(self.frame)
+	self.frame:SetHitRectInsets(0, 0, 0, 0)
 end
 
 function BUFPlayerFrame:SetFrameFlash()
 	local player = BUFPlayer
-	local enable = ns.db.profile.unitFrames.player.frame.enableFrameFlash
+	local enable = self:DbGet("enableFrameFlash")
 	if enable then
 		player:Unhook(player.container.FrameFlash, "Show")
 	else
@@ -140,7 +149,7 @@ function BUFPlayerFrame:SetFrameFlash()
 end
 
 function BUFPlayerFrame:SetFrameTexture()
-	local enable = ns.db.profile.unitFrames.player.frame.enableFrameTexture
+	local enable = self:DbGet("enableFrameTexture")
 	local texture = BUFPlayer.container.FrameTexture
 	local vehicleTexture = BUFPlayer.container.VehicleFrameTexture
 	local healthBarMask = BUFPlayer.healthBarContainer.HealthBarMask
@@ -192,7 +201,7 @@ end
 
 function BUFPlayerFrame:SetStatusTexture()
 	local player = BUFPlayer
-	local enable = ns.db.profile.unitFrames.player.frame.enableStatusTexture
+	local enable = self:DbGet("enableStatusTexture")
 	if enable then
 		player:Unhook(player.contentMain.StatusTexture, "Show")
 	else
@@ -206,7 +215,7 @@ function BUFPlayerFrame:SetStatusTexture()
 end
 
 function BUFPlayerFrame:RefreshBackgroundTexture()
-	local useBackgroundTexture = ns.db.profile.unitFrames.player.frame.useBackgroundTexture
+	local useBackgroundTexture = self:DbGet("useBackgroundTexture")
 	if not useBackgroundTexture then
 		if self.backdropFrame then
 			self.backdropFrame:Hide()
@@ -218,7 +227,7 @@ function BUFPlayerFrame:RefreshBackgroundTexture()
 		self.backdropFrame = CreateFrame("Frame", nil, ns.BUFPlayer.frame, "BackdropTemplate")
 	end
 
-	local backgroundTexture = ns.db.profile.unitFrames.player.frame.backgroundTexture
+	local backgroundTexture = self:DbGet("backgroundTexture")
 	local bgTexturePath = ns.lsm:Fetch(ns.lsm.MediaType.BACKGROUND, backgroundTexture)
 	if not bgTexturePath then
 		bgTexturePath = "Interface/None"

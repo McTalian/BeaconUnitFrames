@@ -12,11 +12,10 @@ local BUFPlayerLeaderAndGuideIcon = {
 	configPath = "unitFrames.player.leaderAndGuideIcon",
 }
 
-local leaderAndGuideIconOrder = {}
-ns.Mixin(leaderAndGuideIconOrder, ns.defaultOrderMap)
-leaderAndGuideIconOrder.SEPARATE_GUIDE_STYLE = leaderAndGuideIconOrder.Y_OFFSET + 0.1
-leaderAndGuideIconOrder.GUIDE = leaderAndGuideIconOrder.SEPARATE_GUIDE_STYLE + 0.1
-BUFPlayerLeaderAndGuideIcon.optionsOrder = leaderAndGuideIconOrder
+BUFPlayerLeaderAndGuideIcon.optionsOrder = {}
+ns.Mixin(BUFPlayerLeaderAndGuideIcon.optionsOrder, ns.defaultOrderMap)
+BUFPlayerLeaderAndGuideIcon.optionsOrder.SEPARATE_GUIDE_STYLE = BUFPlayerLeaderAndGuideIcon.optionsOrder.Y_OFFSET + 0.1
+BUFPlayerLeaderAndGuideIcon.optionsOrder.GUIDE = BUFPlayerLeaderAndGuideIcon.optionsOrder.SEPARATE_GUIDE_STYLE + 0.1
 
 BUFPlayerLeaderAndGuideIcon.optionsTable = {
 	type = "group",
@@ -27,20 +26,15 @@ BUFPlayerLeaderAndGuideIcon.optionsTable = {
 		separateGuideStyle = {
 			type = "toggle",
 			name = ns.L["SeparateGuideStyle"],
-			set = function(info, value)
-				ns.db.profile.unitFrames.player.leaderAndGuideIcon.separateGuideStyle = value
-				BUFPlayerLeaderAndGuideIcon:SeparateLeaderAndGuideStyle()
-			end,
-			get = function(info)
-				return ns.db.profile.unitFrames.player.leaderAndGuideIcon.separateGuideStyle
-			end,
-			order = leaderAndGuideIconOrder.SEPARATE_GUIDE_STYLE,
+			set = "SetUseSeparateGuideStyle",
+			get = "GetUseSeparateGuideStyle",
+			order = BUFPlayerLeaderAndGuideIcon.optionsOrder.SEPARATE_GUIDE_STYLE,
 		},
 	},
 }
 
 ---@class BUFDbSchema.UF.Player.LeaderAndGuideIcon
-ns.dbDefaults.profile.unitFrames.player.leaderAndGuideIcon = {
+BUFPlayerLeaderAndGuideIcon.dbDefaults = {
 	anchorPoint = "TOPLEFT",
 	relativeTo = BUFPlayer.relativeToFrames.FRAME,
 	relativePoint = "TOPLEFT",
@@ -49,11 +43,11 @@ ns.dbDefaults.profile.unitFrames.player.leaderAndGuideIcon = {
 	scale = 1,
 	separateGuideStyle = false,
 	guide = {
-		xOffset = 86,
-		yOffset = -10,
 		anchorPoint = "TOPLEFT",
 		relativeTo = BUFPlayer.relativeToFrames.FRAME,
 		relativePoint = "TOPLEFT",
+		xOffset = 86,
+		yOffset = -10,
 		scale = 1,
 	},
 }
@@ -70,10 +64,10 @@ Guide.optionsTable = {
 	handler = Guide,
 	name = ns.L["GuideIcon"],
 	hidden = function()
-		return not ns.db.profile.unitFrames.player.leaderAndGuideIcon.separateGuideStyle
+		Guide:IsHidden()
 	end,
 	inline = true,
-	order = leaderAndGuideIconOrder.GUIDE,
+	order = BUFPlayerLeaderAndGuideIcon.optionsOrder.GUIDE,
 	args = {},
 }
 
@@ -88,6 +82,19 @@ ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.playe
 ns.dbDefaults.profile.unitFrames.player.leaderAndGuideIcon = BUFPlayerLeaderAndGuideIcon.dbDefaults
 
 ns.options.args.player.args.indicators.args.leaderAndGuideIcon = BUFPlayerLeaderAndGuideIcon.optionsTable
+
+function Guide:IsHidden()
+	return not BUFPlayerLeaderAndGuideIcon:GetUseSeparateGuideStyle()
+end
+
+function BUFPlayerLeaderAndGuideIcon:SetUseSeparateGuideStyle(info, value)
+	self:DbSet("separateGuideStyle", value)
+	self:SeparateLeaderAndGuideStyle()
+end
+
+function BUFPlayerLeaderAndGuideIcon:GetUseSeparateGuideStyle(info)
+	return self:DbGet("separateGuideStyle")
+end
 
 function BUFPlayerLeaderAndGuideIcon:RefreshConfig()
 	if not self.initialized then
@@ -104,7 +111,7 @@ function BUFPlayerLeaderAndGuideIcon:RefreshConfig()
 		Guide.texture = BUFPlayer.contentContextual.GuideIcon
 	end
 	self:RefreshScaleTextureConfig()
-	if ns.db.profile.unitFrames.player.leaderAndGuideIcon.separateGuideStyle then
+	if self:DbGet("separateGuideStyle") then
 		self.Guide:RefreshConfig()
 	end
 end
@@ -112,13 +119,13 @@ end
 function BUFPlayerLeaderAndGuideIcon:SetPosition()
 	self:_SetPosition(self.texture)
 
-	if not ns.db.profile.unitFrames.player.leaderAndGuideIcon.separateGuideStyle then
+	if not self:DbGet("separateGuideStyle") then
 		self.Guide:SetPosition()
 	end
 end
 
 function BUFPlayerLeaderAndGuideIcon:SeparateLeaderAndGuideStyle()
-	local isSeparated = ns.db.profile.unitFrames.player.leaderAndGuideIcon.separateGuideStyle
+	local isSeparated = self:DbGet("separateGuideStyle")
 	if isSeparated then
 		self.Guide:RefreshConfig()
 	else

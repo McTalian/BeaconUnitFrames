@@ -43,25 +43,15 @@ local frame = {
 		frameFlash = {
 			type = "toggle",
 			name = ns.L["EnableFrameFlash"],
-			set = function(info, value)
-				ns.db.profile.unitFrames.target.frame.enableFrameFlash = value
-				BUFTargetFrame:SetFrameFlash()
-			end,
-			get = function(info)
-				return ns.db.profile.unitFrames.target.frame.enableFrameFlash
-			end,
+			set = "SetEnableFrameFlash",
+			get = "GetEnableFrameFlash",
 			order = frameOrder.FRAME_FLASH,
 		},
 		frameTexture = {
 			type = "toggle",
 			name = ns.L["EnableFrameTexture"],
-			set = function(info, value)
-				ns.db.profile.unitFrames.target.frame.enableFrameTexture = value
-				BUFTargetFrame:SetFrameTexture()
-			end,
-			get = function(info)
-				return ns.db.profile.unitFrames.target.frame.enableFrameTexture
-			end,
+			set = "SetEnableFrameTexture",
+			get = "GetEnableFrameTexture",
 			order = frameOrder.FRAME_TEXTURE,
 		},
 	},
@@ -72,14 +62,29 @@ ns.AddBackgroundTextureOptions(frame.args, frameOrder)
 
 ns.options.args.target.args.frame = frame
 
-function BUFTargetFrame:RefreshConfig()
-	self:SetSize()
+function BUFTargetFrame:SetEnableFrameFlash(info, value)
+	self:DbSet("enableFrameFlash", value)
 	self:SetFrameFlash()
-	self:SetFrameTexture()
-	self:RefreshBackgroundTexture()
+end
 
+function BUFTargetFrame:GetEnableFrameFlash(info)
+	return self:DbGet("enableFrameFlash")
+end
+
+function BUFTargetFrame:SetEnableFrameTexture(info, value)
+	self:DbSet("enableFrameTexture", value)
+	self:SetFrameTexture()
+end
+
+function BUFTargetFrame:GetEnableFrameTexture(info)
+	return self:DbGet("enableFrameTexture")
+end
+
+function BUFTargetFrame:RefreshConfig()
 	if not self.initialized then
 		self.initialized = true
+
+		self.frame = BUFTarget.frame
 
 		if not BUFTarget:IsHooked(BUFTarget.frame, "AnchorSelectionFrame") then
 			BUFTarget:SecureHook(BUFTarget.frame, "AnchorSelectionFrame", function()
@@ -90,19 +95,19 @@ function BUFTargetFrame:RefreshConfig()
 			end)
 		end
 	end
+	self:SetSize()
+	self:SetFrameFlash()
+	self:SetFrameTexture()
+	self:RefreshBackgroundTexture()
 end
 
 function BUFTargetFrame:SetSize()
-	local target = BUFTarget
-	local width = ns.db.profile.unitFrames.target.frame.width
-	local height = ns.db.profile.unitFrames.target.frame.height
-	PixelUtil.SetWidth(target.frame, width, 18)
-	PixelUtil.SetHeight(target.frame, height, 18)
+	self:_SetSize(self.frame)
 end
 
 function BUFTargetFrame:SetFrameFlash()
 	local target = BUFTarget
-	local enable = ns.db.profile.unitFrames.target.frame.enableFrameFlash
+	local enable = self:DbGet("enableFrameFlash")
 	if enable then
 		target:Unhook(target.container.Flash, "Show")
 		target.container.Flash:Show()
@@ -117,7 +122,7 @@ function BUFTargetFrame:SetFrameFlash()
 end
 
 function BUFTargetFrame:SetFrameTexture()
-	local enable = ns.db.profile.unitFrames.target.frame.enableFrameTexture
+	local enable = self:DbGet("enableFrameTexture")
 	local texture = BUFTarget.container.FrameTexture
 	local healthBarMask = BUFTarget.healthBarContainer.HealthBarMask
 	local manaBarMask = BUFTarget.manaBar.ManaBarMask
@@ -154,7 +159,7 @@ function BUFTargetFrame:SetFrameTexture()
 end
 
 function BUFTargetFrame:RefreshBackgroundTexture()
-	local useBackgroundTexture = ns.db.profile.unitFrames.target.frame.useBackgroundTexture
+	local useBackgroundTexture = self:DbGet("useBackgroundTexture")
 	if not useBackgroundTexture then
 		if self.backdropFrame then
 			self.backdropFrame:Hide()
@@ -167,7 +172,7 @@ function BUFTargetFrame:RefreshBackgroundTexture()
 		self.backdropFrame:SetFrameStrata("BACKGROUND")
 	end
 
-	local backgroundTexture = ns.db.profile.unitFrames.target.frame.backgroundTexture
+	local backgroundTexture = self:DbGet("backgroundTexture")
 	local bgTexturePath = ns.lsm:Fetch(ns.lsm.MediaType.BACKGROUND, backgroundTexture)
 	if not bgTexturePath then
 		bgTexturePath = "Interface/None"

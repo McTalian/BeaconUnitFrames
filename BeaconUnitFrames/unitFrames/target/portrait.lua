@@ -20,13 +20,8 @@ BUFTargetPortrait.optionsTable = {
 			type = "toggle",
 			name = ENABLE,
 			desc = ns.L["EnablePlayerPortrait"],
-			set = function(info, value)
-				ns.db.profile.unitFrames.target.portrait.enabled = value
-				BUFTargetPortrait:ShowHidePortrait()
-			end,
-			get = function(info)
-				return ns.db.profile.unitFrames.target.portrait.enabled
-			end,
+			set = "SetEnable",
+			get = "GetEnabled",
 			order = ns.defaultOrderMap.ENABLE,
 		},
 	},
@@ -58,7 +53,17 @@ ns.Mixin(BUFTargetPortrait, ns.BoxMaskable)
 ns.dbDefaults.profile.unitFrames.target = ns.dbDefaults.profile.unitFrames.target
 ns.dbDefaults.profile.unitFrames.target.portrait = BUFTargetPortrait.dbDefaults
 
+ns.AddBoxMaskableOptions(BUFTargetPortrait.optionsTable.args)
 ns.options.args.target.args.portrait = BUFTargetPortrait.optionsTable
+
+function BUFTargetPortrait:SetEnabled(info, value)
+	self:DbSet("enabled", value)
+	self:ShowHidePortrait()
+end
+
+function BUFTargetPortrait:GetEnabled(info)
+	return self:DbGet("enabled")
+end
 
 function BUFTargetPortrait:RefreshConfig()
 	if not self.initialized then

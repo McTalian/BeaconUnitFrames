@@ -4,41 +4,23 @@ local ns = select(2, ...)
 ---@class BUFTarget
 local BUFTarget = ns.BUFTarget
 
----@class BUFTarget.ReputationBar: Positionable, Sizable, Colorable, ReactionColorable, ClassColorable
+---@class BUFTarget.ReputationBar: BUFTexture, Colorable, ReactionColorable, ClassColorable
 local BUFTargetReputationBar = {
 	configPath = "unitFrames.target.reputationBar",
 	frameKey = BUFTarget.relativeToFrames.REPUTATION_BAR,
 }
 
-ns.Mixin(BUFTargetReputationBar, ns.Sizable, ns.Positionable, ns.Colorable, ns.ClassColorable, ns.ReactionColorable)
-
-BUFTarget.ReputationBar = BUFTargetReputationBar
-
----@class BUFDbSchema.UF.Target
-ns.dbDefaults.profile.unitFrames.target = ns.dbDefaults.profile.unitFrames.target
-
----@class BUFDbSchema.UF.Target.ReputationBar
-ns.dbDefaults.profile.unitFrames.target.reputationBar = {
-	width = 134,
-	height = 10,
-	anchorPoint = "TOPRIGHT",
-	relativeTo = "TargetFrame",
-	relativePoint = "TOPRIGHT",
-	xOffset = -75,
-	yOffset = -25,
-	atlasTexture = "UI-HUD-UnitFrame-Target-PortraitOn-Type",
-	useCustomColor = false,
-	customColor = { 0.8, 0.8, 0.2, 1 },
-	useReactionColor = true,
-	useClassColor = false,
-}
-
-local repBar = {
+BUFTargetReputationBar.optionsTable = {
 	type = "group",
 	name = ns.L["Reputation Bar"],
 	handler = BUFTargetReputationBar,
 	order = BUFTarget.optionsOrder.REPUTATION_BAR,
 	args = {
+		texturing = {
+			type = "header",
+			name = ns.L["Texturing"],
+			order = ns.defaultOrderMap.TEXTURING_HEADER,
+		},
 		atlasTexture = {
 			type = "select",
 			name = ns.L["Atlas Texture"],
@@ -49,34 +31,55 @@ local repBar = {
 				["_ItemUpgradeTooltip-NineSlice-EdgeBottom"] = "Bottom Glow",
 				["Interface/AddOns/BeaconUnitFrames/icons/underhighlight_mask.png"] = "Custom Bottom Glow",
 			},
-			get = function(info)
-				return ns.db.profile.unitFrames.target.reputationBar.atlasTexture
-			end,
-			set = function(info, value)
-				ns.db.profile.unitFrames.target.reputationBar.atlasTexture = value
-				BUFTargetReputationBar:SetTexture()
-			end,
+			set = "SetAtlasTexture",
+			get = "GetAtlasTexture",
 		},
 	},
 }
 
-repBar.args.texturing = {
-	type = "header",
-	name = ns.L["Texturing"],
-	order = ns.defaultOrderMap.TEXTURING_HEADER,
+---@class BUFDbSchema.UF.Target.ReputationBar
+BUFTargetReputationBar.dbDefaults = {
+	width = 134,
+	height = 10,
+	anchorPoint = "TOPRIGHT",
+	relativeTo = BUFTarget.relativeToFrames.FRAME,
+	relativePoint = "TOPRIGHT",
+	xOffset = -75,
+	yOffset = -25,
+	atlasTexture = "UI-HUD-UnitFrame-Target-PortraitOn-Type",
+	useCustomColor = false,
+	customColor = { 0.8, 0.8, 0.2, 1 },
+	useReactionColor = true,
+	useClassColor = false,
 }
 
-ns.AddPositionableOptions(repBar.args)
-ns.AddSizableOptions(repBar.args)
-ns.AddColorOptions(repBar.args)
-ns.AddClassColorOptions(repBar.args)
-ns.AddReactionColorOptions(repBar.args)
+ns.BUFTexture:ApplyMixin(BUFTargetReputationBar)
+ns.Mixin(BUFTargetReputationBar, ns.Colorable, ns.ClassColorable, ns.ReactionColorable)
 
-ns.options.args.target.args.reputationBar = repBar
+---@class BUFDbSchema.UF.Target
+ns.dbDefaults.profile.unitFrames.target = ns.dbDefaults.profile.unitFrames.target
+ns.dbDefaults.profile.unitFrames.target.reputationBar = BUFTargetReputationBar.dbDefaults
+
+ns.AddColorOptions(BUFTargetReputationBar.optionsTable.args)
+ns.AddClassColorOptions(BUFTargetReputationBar.optionsTable.args)
+ns.AddReactionColorOptions(BUFTargetReputationBar.optionsTable.args)
+
+ns.options.args.target.args.reputationBar = BUFTargetReputationBar.optionsTable
+
+function BUFTargetReputationBar:SetAtlasTexture(info, value)
+	self:DbSet("atlasTexture", value)
+	self:SetTexture()
+end
+
+function BUFTargetReputationBar:GetAtlasTexture(info)
+	return self:DbGet("atlasTexture")
+end
 
 function BUFTargetReputationBar:RefreshConfig()
 	if not self.initialized then
-		self.initialized = true
+		BUFTarget.FrameInit(self)
+
+		self.texture = TargetFrame.TargetFrameContent.TargetFrameContentMain.ReputationColor
 
 		if not BUFTarget:IsHooked(TargetFrame, "CheckFaction") then
 			BUFTarget:SecureHook(TargetFrame, "CheckFaction", function()
@@ -91,46 +94,32 @@ function BUFTargetReputationBar:RefreshConfig()
 end
 
 function BUFTargetReputationBar:SetSize()
-	local repColorBar = ns.BUFTarget.contentMain.ReputationColor
-	local width = ns.db.profile.unitFrames.target.reputationBar.width
-	local height = ns.db.profile.unitFrames.target.reputationBar.height
-	repColorBar:SetWidth(width)
-	repColorBar:SetHeight(height)
+	self:_SetSize(self.texture)
 end
 
 function BUFTargetReputationBar:SetPosition()
-	local repColorBar = ns.BUFTarget.contentMain.ReputationColor
-	local xOffset = ns.db.profile.unitFrames.target.reputationBar.xOffset
-	local yOffset = ns.db.profile.unitFrames.target.reputationBar.yOffset
-	local point = ns.db.profile.unitFrames.target.reputationBar.anchorPoint
-	local relativeTo = ns.db.profile.unitFrames.target.reputationBar.relativeTo
-	local relativePoint = ns.db.profile.unitFrames.target.reputationBar.relativePoint
-	repColorBar:ClearAllPoints()
-	repColorBar:SetPoint(point, _G[relativeTo], relativePoint, xOffset, yOffset)
+	self:_SetPosition(self.texture)
 end
 
 function BUFTargetReputationBar:SetTexture()
-	local repColorBar = ns.BUFTarget.contentMain.ReputationColor
-	local atlasTexture = ns.db.profile.unitFrames.target.reputationBar.atlasTexture
+	local atlasTexture = self:DbGet("atlasTexture")
 	local sPos, ePos = string.find(atlasTexture, "%.")
 	if not sPos then
-		repColorBar:SetAtlas(atlasTexture, false)
+		self.texture:SetAtlas(atlasTexture, false)
 	else
 		-- If there's a dot, it's a file path
-		repColorBar:SetTexture(atlasTexture)
+		self.texture:SetTexture(atlasTexture)
 	end
 end
 
 function BUFTargetReputationBar:RefreshColor()
-	local parent = ns.BUFTarget
-	local repColorBar = ns.BUFTarget.contentMain.ReputationColor
-	local useCustomColor = ns.db.profile.unitFrames.target.reputationBar.useCustomColor
-	local useClassColor = ns.db.profile.unitFrames.target.reputationBar.useClassColor
-	local useReactionColor = ns.db.profile.unitFrames.target.reputationBar.useReactionColor
+	local useCustomColor = self:DbGet("useCustomColor")
+	local useClassColor = self:DbGet("useClassColor")
+	local useReactionColor = self:DbGet("useReactionColor")
 
 	local r, g, b, a = nil, nil, nil, 1
 	if useCustomColor then
-		r, g, b, a = unpack(ns.db.profile.unitFrames.target.reputationBar.customColor)
+		r, g, b, a = unpack(self:DbGet("customColor"))
 	elseif useClassColor and (not useReactionColor or UnitPlayerControlled("target")) then
 		local _, class = UnitClass("target")
 		r, g, b = GetClassColor(class)
@@ -140,5 +129,7 @@ function BUFTargetReputationBar:RefreshColor()
 		return
 	end
 
-	repColorBar:SetVertexColor(r, g, b, a)
+	self.texture:SetVertexColor(r, g, b, a)
 end
+
+BUFTarget.ReputationBar = BUFTargetReputationBar

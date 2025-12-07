@@ -22,13 +22,8 @@ BUFPlayerHitIndicator.optionsTable = {
 			type = "toggle",
 			name = ENABLE,
 			desc = ns.L["EnablePlayerPortrait"],
-			set = function(info, value)
-				ns.db.profile.unitFrames.player.hitIndicator.enabled = value
-				BUFPlayerHitIndicator:ShowHide()
-			end,
-			get = function(info)
-				return ns.db.profile.unitFrames.player.hitIndicator.enabled
-			end,
+			set = "SetEnabled",
+			get = "GetEnabled",
 			order = ns.defaultOrderMap.ENABLE,
 		},
 	},
@@ -61,10 +56,18 @@ ns.BUFFontString:ApplyMixin(BUFPlayerHitIndicator)
 
 ---@class BUFDbSchema.UF.Player
 ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
-
 ns.dbDefaults.profile.unitFrames.player.hitIndicator = BUFPlayerHitIndicator.dbDefaults
 
 ns.options.args.player.args.indicators.args.hitIndicator = BUFPlayerHitIndicator.optionsTable
+
+function BUFPlayerHitIndicator:SetEnabled(info, value)
+	self:DbSet("enabled", value)
+	self:ShowHide()
+end
+
+function BUFPlayerHitIndicator:GetEnabled(info)
+	return self:DbGet("enabled")
+end
 
 function BUFPlayerHitIndicator:ToggleDemoMode()
 	if not self.demoMode then
@@ -100,7 +103,7 @@ function BUFPlayerHitIndicator:RefreshConfig()
 end
 
 function BUFPlayerHitIndicator:ShowHide()
-	if ns.db.profile.unitFrames.player.hitIndicator.enabled then
+	if self:GetEnabled() then
 		if BUFPlayer:IsHooked(self.fontString, "Hide") then
 			BUFPlayer:Unhook(self.fontString, "Hide")
 		end

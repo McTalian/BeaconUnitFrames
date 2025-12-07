@@ -74,7 +74,7 @@ function StatusBarForeground:RefreshStatusBarForegroundConfig()
 	self:RefreshColor()
 end
 
-function StatusBarForeground:RefreshStatusBarTexture()
+function StatusBarForeground:_RefreshStatusBarTexture(statusBar)
 	local useCustomTexture = self:GetUseStatusBarTexture()
 	if useCustomTexture then
 		local textureName = self:GetStatusBarTexture() or "Blizzard"
@@ -82,12 +82,16 @@ function StatusBarForeground:RefreshStatusBarTexture()
 		if not texturePath then
 			texturePath = ns.lsm:Fetch(ns.lsm.MediaType.STATUSBAR, "Blizzard") or "Interface\\Buttons\\WHITE8x8"
 		end
-		self.statusBar:SetStatusBarTexture(texturePath)
+		statusBar:SetStatusBarTexture(texturePath)
 	else
 		if self.defaultStatusBarTexture then
-			self.statusBar:SetStatusBarTexture(self.defaultStatusBarTexture)
+			statusBar:SetStatusBarTexture(self.defaultStatusBarTexture)
 		end
 	end
+end
+
+function StatusBarForeground:RefreshStatusBarTexture()
+	self:_RefreshStatusBarTexture(self.statusBar)
 end
 
 function StatusBarForeground:_GetEffectiveUnit()
@@ -138,13 +142,17 @@ function StatusBarForeground:_GetOptionsBasedColor()
 	return r, g, b, a
 end
 
-function StatusBarForeground:RefreshColor()
+function StatusBarForeground:_RefreshColor(statusBar)
 	local r, g, b, a = self:_GetOptionsBasedColor()
 	a = a or 1.0
 	if not r or not g or not b then
 		return
 	end
-	self.statusBar:SetStatusBarColor(r, g, b, a)
+	statusBar:SetStatusBarColor(r, g, b, a)
+end
+
+function StatusBarForeground:RefreshColor()
+	self:_RefreshColor(self.statusBar)
 end
 
 ns.StatusBarForeground = StatusBarForeground

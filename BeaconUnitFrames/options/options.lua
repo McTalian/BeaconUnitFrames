@@ -96,6 +96,8 @@ function ns.NewFeatureModule(moduleName)
 	---@type BUFFeatureModule
 	local module = ns.BUF:NewModule(moduleName, "AceHook-3.0", "AceEvent-3.0") --[[@as BUFFeatureModule]]
 
+	Mixin(module, ns.ProfileDbBackedHandler)
+
 	function module.FrameInit(s)
 		s.initialized = true
 
