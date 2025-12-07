@@ -49,6 +49,7 @@ end
 -- L["EnableFrameTexture"] = "Enable Frame Texture"
 -- L["EnableStatusTexture"] = "Enable Status Texture"
 -- L["FlatTopHexagonShape"] = "Flat Top Hexagon"
+-- L["Focus Crosshair"] = "Focus Crosshair"
 -- L["FocusHealthBar"] = "Focus Health Bar"
 -- L["FocusLevel"] = "Focus Level"
 -- L["FocusManaBar"] = "Focus Power Bar"
