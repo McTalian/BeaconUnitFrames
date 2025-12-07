@@ -90,6 +90,7 @@ BUFTarget.optionsOrder = {
 	INDICATORS = 6,
 	HEALTH = 7,
 	POWER = 8,
+	BUFFS = 9,
 }
 
 function BUFTarget:OnEnable()
@@ -129,6 +130,7 @@ function BUFTarget:RefreshConfig()
 	self.Health:RefreshConfig()
 	self.Power:RefreshConfig()
 	self.ReputationBar:RefreshConfig()
+	self.Buffs:RefreshConfig()
 
 	if not self.initialized then
 		self.initialized = true

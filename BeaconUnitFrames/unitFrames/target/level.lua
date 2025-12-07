@@ -18,15 +18,8 @@ BUFTargetLevel.optionsTable = {
 	args = {},
 }
 
-ns.BUFFontString:ApplyMixin(BUFTargetLevel)
-
-BUFTarget.Level = BUFTargetLevel
-
----@class BUFDbSchema.UF.Target
-ns.dbDefaults.profile.unitFrames.target = ns.dbDefaults.profile.unitFrames.target
-
 ---@class BUFDbSchema.UF.Target.Level
-ns.dbDefaults.profile.unitFrames.target.level = {
+BUFTargetLevel.dbDefaults = {
 	anchorPoint = "TOPLEFT",
 	relativeTo = BUFTarget.relativeToFrames.REPUTATION_BAR,
 	relativePoint = "TOPRIGHT",
@@ -48,6 +41,12 @@ ns.dbDefaults.profile.unitFrames.target.level = {
 	justifyH = "CENTER",
 }
 
+ns.BUFFontString:ApplyMixin(BUFTargetLevel)
+
+---@class BUFDbSchema.UF.Target
+ns.dbDefaults.profile.unitFrames.target = ns.dbDefaults.profile.unitFrames.target
+ns.dbDefaults.profile.unitFrames.target.level = BUFTargetLevel.dbDefaults
+
 ns.options.args.target.args.level = BUFTargetLevel.optionsTable
 
 function BUFTargetLevel:RefreshConfig()
@@ -62,3 +61,5 @@ function BUFTargetLevel:RefreshConfig()
 	end
 	self:RefreshFontStringConfig()
 end
+
+BUFTarget.Level = BUFTargetLevel
