@@ -24,7 +24,7 @@ function FramePortrait:AddFramePortraitOptions(optionsTable, _orderMap)
 		type = "toggle",
 		name = ENABLE,
 		desc = ns.L["EnableFramePortrait"],
-		set = "SetEnable",
+		set = "SetEnabled",
 		get = "GetEnabled",
 		order = orderMap.ENABLE,
 	}

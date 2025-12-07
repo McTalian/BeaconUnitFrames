@@ -8,6 +8,7 @@ local BUFFocus = ns.BUFFocus
 local BUFFocusIndicators = {}
 
 BUFFocusIndicators.optionsOrder = {
+	FOCUS_CROSSHAIR = 0.1,
 	BOSS_PORTRAIT_FRAME_TEXTURE = 0.5,
 	HIGH_LEVEL_TEXTURE = 1,
 	LEADER_AND_GUIDE_ICON = 2,
@@ -30,6 +31,7 @@ local indicators = {
 ns.options.args.focus.args.indicators = indicators
 
 function BUFFocusIndicators:RefreshConfig()
+	self.FocusCrosshair:RefreshConfig()
 	self.BossPortraitFrameTexture:RefreshConfig()
 	self.HighLevelTexture:RefreshConfig()
 	self.LeaderAndGuideIcon:RefreshConfig()

@@ -9,4 +9,5 @@
     <Script file="pvpIcon.lua"/>
     <Script file="prestigePortrait.lua"/>
     <Script file="petBattleIcon.lua"/>
+    <Script file="focusCrosshair.lua"/>
 </Ui>

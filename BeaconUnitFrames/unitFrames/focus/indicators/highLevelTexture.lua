@@ -39,7 +39,6 @@ ns.options.args.focus.args.indicators.args.highLevelTexture = BUFFocusHighLevelT
 
 ---@class BUFDbSchema.UF.Focus
 ns.dbDefaults.profile.unitFrames.focus = ns.dbDefaults.profile.unitFrames.focus
-
 ns.dbDefaults.profile.unitFrames.focus.highLevelTexture = BUFFocusHighLevelTexture.dbDefaults
 
 function BUFFocusHighLevelTexture:RefreshConfig()

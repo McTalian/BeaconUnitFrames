@@ -6,7 +6,7 @@ local ns = select(2, ...)
 --- @param _orderMap BUFOptionsOrder?
 function ns.AddDemoOptions(optionsTable, _orderMap)
 	local orderMap = _orderMap or ns.defaultOrderMap
-	optionsTable.enable = {
+	optionsTable.demo = {
 		type = "execute",
 		name = ns.L["Demo"],
 		desc = ns.L["DemoDesc"],
