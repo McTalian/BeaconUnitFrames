@@ -54,10 +54,7 @@ end
 
 function BUFPlayerPrestigePortrait:RefreshConfig()
 	if not self.initialized then
-		self.initialized = true
-
-		self.customRelativeToOptions = BUFPlayer.customRelativeToOptions
-		self.customRelativeToSorting = BUFPlayer.customRelativeToSorting
+		BUFPlayer.FrameInit(self)
 
 		self.texture = BUFPlayer.contentContextual.PrestigePortrait
 		self.secondaryTexture = BUFPlayer.contentContextual.PrestigeBadge

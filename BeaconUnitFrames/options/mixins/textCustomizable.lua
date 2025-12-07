@@ -4,7 +4,7 @@ local ns = select(2, ...)
 --- Add text customizable options to the given options table
 --- @param optionsTable table
 --- @param _orderMap BUFOptionsOrder?
-ns.AddTextCustomizableOptions = function(optionsTable, _orderMap)
+function ns.AddTextCustomizableOptions(optionsTable, _orderMap)
 	local orderMap = _orderMap or ns.defaultOrderMap
 
 	optionsTable.customization = optionsTable.customization

@@ -54,16 +54,10 @@ BUFTargetPower.topGroupOrder = powerBarOrder
 ns.options.args.target.args.powerBar = BUFTargetPower.optionsTable
 
 function BUFTargetPower:RefreshConfig()
-	self:InitializeTargetPower()
-	self:RefreshStatusBarConfig()
-end
+	if not self.initialized then
+		BUFTarget.FrameInit(self)
 
-function BUFTargetPower:InitializeTargetPower()
-	if self.initialized then
-		return
+		self.barOrContainer = BUFTarget.manaBar
 	end
-
-	BUFTarget.FrameInit(self)
-
-	self.barOrContainer = BUFTarget.manaBar
+	self:RefreshStatusBarConfig()
 end

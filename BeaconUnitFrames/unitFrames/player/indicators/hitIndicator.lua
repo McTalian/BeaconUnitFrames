@@ -21,7 +21,6 @@ BUFPlayerHitIndicator.optionsTable = {
 		enabled = {
 			type = "toggle",
 			name = ENABLE,
-			desc = ns.L["EnablePlayerPortrait"],
 			set = "SetEnabled",
 			get = "GetEnabled",
 			order = ns.defaultOrderMap.ENABLE,

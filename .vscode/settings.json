@@ -2,8 +2,8 @@
   "wowAPI.luals.frameXML": true,
   "wowAPI.luals.configurationScope": "User",
   "Lua.workspace.checkThirdParty": false,
-  "Lua.workspace.preloadFileSize": 1000,
-  "Lua.workspace.maxPreload": 3000,
+  "Lua.workspace.preloadFileSize": 5000,
+  "Lua.workspace.maxPreload": 5000,
   "Lua.diagnostics.workspaceDelay": 1500,
   "Lua.workspace.ignoreDir": [
     ".*",
@@ -131,6 +131,7 @@
     "TargetFrame",
     "SetCVar",
     "GetCVar",
-    "OKAY"
+    "OKAY",
+    "FOCUS"
   ]
 }

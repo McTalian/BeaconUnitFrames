@@ -44,6 +44,7 @@ function foregroundHandler:RefreshConfig()
 
 		self.unit = "target"
 		self.statusBar = BUFTarget.healthBar
+		self.defaultStatusBarTexture = "UI-HUD-UnitFrame-Target-PortraitOn-Bar-Health"
 	end
 	self:RefreshStatusBarForegroundConfig()
 end

@@ -82,7 +82,7 @@ end
 
 function BUFTargetFrame:RefreshConfig()
 	if not self.initialized then
-		self.initialized = true
+		BUFTarget.FrameInit(self)
 
 		self.frame = BUFTarget.frame
 

@@ -98,7 +98,7 @@ end
 
 function BUFPlayerFrame:RefreshConfig()
 	if not self.initialized then
-		self.initialized = true
+		BUFPlayer.FrameInit(self)
 
 		self.frame = BUFPlayer.frame
 

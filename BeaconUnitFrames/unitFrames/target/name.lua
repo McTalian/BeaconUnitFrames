@@ -13,7 +13,7 @@ local BUFTargetName = {
 BUFTargetName.optionsTable = {
 	type = "group",
 	handler = BUFTargetName,
-	name = ns.L["Target Name"],
+	name = ns.L["TargetName"],
 	order = BUFTarget.optionsOrder.NAME,
 	args = {},
 }

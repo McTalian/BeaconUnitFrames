@@ -30,9 +30,9 @@ ns.dbDefaults.profile.unitFrames.target = ns.dbDefaults.profile.unitFrames.targe
 ns.dbDefaults.profile.unitFrames.target.healthBar = {
 	width = 126,
 	height = 20,
-	anchorPoint = "TOPLEFT",
-	relativeTo = "TargetFrame",
-	relativePoint = "TOPLEFT",
+	anchorPoint = "BOTTOMRIGHT",
+	relativeTo = BUFTarget.relativeToFrames.FRAME,
+	relativePoint = "LEFT",
 	xOffset = 148,
 	yOffset = 2,
 	frameLevel = 3,
@@ -53,15 +53,10 @@ BUFTargetHealth.topGroupOrder = healthBarOrder
 ns.options.args.target.args.healthBar = BUFTargetHealth.optionsTable
 
 function BUFTargetHealth:RefreshConfig()
-	self:InitializeTargetHealth()
-	self:RefreshStatusBarConfig()
-end
+	if not self.initialized then
+		BUFTarget.FrameInit(self)
 
-function BUFTargetHealth:InitializeTargetHealth()
-	if self.isInitialized then
-		return
+		self.barOrContainer = BUFTarget.healthBar
 	end
-
-	self.isInitialized = true
-	self.barOrContainer = BUFTarget.healthBar
+	self:RefreshStatusBarConfig()
 end

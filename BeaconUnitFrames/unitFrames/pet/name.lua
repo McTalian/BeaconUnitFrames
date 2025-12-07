@@ -13,7 +13,7 @@ local BUFPetName = {
 BUFPetName.optionsTable = {
 	type = "group",
 	handler = BUFPetName,
-	name = ns.L["Pet Name"],
+	name = ns.L["PetName"],
 	order = BUFPet.optionsOrder.NAME,
 	args = {},
 }

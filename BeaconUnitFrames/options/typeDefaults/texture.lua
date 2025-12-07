@@ -28,7 +28,11 @@ local BUFTexture = {}
 --- @param self BUFTexture
 --- @param handler BUFConfigHandler
 function BUFTexture:ApplyMixin(handler)
-	ns.AtlasSizable:ApplyMixin(handler, ns.AtlasSizableFlags.SIZABLE + ns.AtlasSizableFlags.SCALABLE)
+	if handler.noAtlas then
+		ns.Mixin(handler, ns.Sizable, ns.Scalable)
+	else
+		ns.AtlasSizable:ApplyMixin(handler, ns.AtlasSizableFlags.SIZABLE + ns.AtlasSizableFlags.SCALABLE)
+	end
 	ns.Mixin(handler, ns.Demoable, ns.Positionable, self)
 
 	if handler.optionsTable then

@@ -14,12 +14,24 @@ UnitFrames.optionsOrder = {
 	PLAYER = 1,
 	TARGET = 2,
 	PET = 3,
+	FOCUS = 4,
 }
 
+-- Each unit frame module registers itself
+local registeredFrames = {}
+
+function UnitFrames:RegisterFrame(frameModule)
+	table.insert(registeredFrames, frameModule)
+end
+
 function UnitFrames:RefreshConfig()
-	ns.BUFPlayer:RefreshConfig()
-	ns.BUFTarget:RefreshConfig()
-	ns.BUFPet:RefreshConfig()
+	for _, frameModule in ipairs(registeredFrames) do
+		if frameModule.RefreshConfig then
+			frameModule:RefreshConfig()
+		else
+			error("Frame module " .. tostring(frameModule) .. " is missing RefreshConfig method")
+		end
+	end
 end
 
 ns.BUFUnitFrames = UnitFrames

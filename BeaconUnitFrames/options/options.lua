@@ -63,7 +63,7 @@ end
 
 ---@class BUFOptions: AceConfig.OptionsTable
 ns.options = {
-	name = format("%s %s", addonName, OPTIONS_MENU),
+	name = addonName,
 	type = "group",
 	childGroups = "select",
 	args = {},
@@ -81,6 +81,7 @@ ns.options = {
 
 ---@class BUFConfigHandler: BUFBaseHandler
 ---@field frameKey? string
+---@field module? BUFFeatureModule
 ---@field noAtlas boolean?
 
 ---@class BUFParentHandler: BUFBaseHandler

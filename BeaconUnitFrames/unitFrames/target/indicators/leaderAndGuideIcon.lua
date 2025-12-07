@@ -64,9 +64,7 @@ Guide.optionsTable = {
 	type = "group",
 	handler = Guide,
 	name = ns.L["GuideIcon"],
-	hidden = function()
-		return not BUFTargetLeaderAndGuideIcon:GetUseSeparateGuideStyle()
-	end,
+	hidden = Guide.IsHidden,
 	inline = true,
 	order = leaderAndGuideIconOrder.GUIDE,
 	args = {},
@@ -83,6 +81,10 @@ ns.dbDefaults.profile.unitFrames.target = ns.dbDefaults.profile.unitFrames.targe
 ns.dbDefaults.profile.unitFrames.target.leaderAndGuideIcon = BUFTargetLeaderAndGuideIcon.dbDefaults
 
 ns.options.args.target.args.indicators.args.leaderAndGuideIcon = BUFTargetLeaderAndGuideIcon.optionsTable
+
+function Guide.IsHidden()
+	return not BUFTargetLeaderAndGuideIcon:GetUseSeparateGuideStyle()
+end
 
 function BUFTargetLeaderAndGuideIcon:SetUseSeparateGuideStyle(info, value)
 	self:DbSet("separateGuideStyle", value)

@@ -53,6 +53,13 @@ Positionable.relativeToFrames = {
 	PLAYER_POWER_BAR = "PlayerFrameManaBar",
 	-- PLAYER_CAST_BAR = "PlayerCastingBar",
 	FOCUS_FRAME = "FocusFrame",
+	FOCUS_REPUTATION_BAR = "FocusReputationBar",
+	FOCUS_PORTRAIT = "FocusPortrait",
+	FOCUS_NAME = "FocusName",
+	FOCUS_LEVEL = "FocusLevel",
+	FOCUS_HEALTH_BAR = "FocusFrameHealthBar",
+	FOCUS_POWER_BAR = "FocusFrameManaBar",
+	-- FOCUS_CAST_BAR = "FocusCastingBar",
 	PET_FRAME = "PetFrame",
 	PET_PORTRAIT = "PetPortrait",
 	PET_NAME = "PetName",
@@ -106,6 +113,18 @@ function ns.GetRelativeFrame(strKey)
 		return PlayerFrame_GetManaBar()
 	elseif strKey == frames.FOCUS_FRAME then
 		return _G.FocusFrame
+	elseif strKey == frames.FOCUS_REPUTATION_BAR then
+		return _G.FocusFrame.TargetFrameContent.TargetFrameContentMain.ReputationColor
+	elseif strKey == frames.FOCUS_PORTRAIT then
+		return _G.FocusFrame.TargetFrameContainer.Portrait
+	elseif strKey == frames.FOCUS_NAME then
+		return _G.FocusFrame.TargetFrameContent.TargetFrameContentMain.Name
+	elseif strKey == frames.FOCUS_LEVEL then
+		return _G.FocusFrame.TargetFrameContent.TargetFrameContentMain.LevelText
+	elseif strKey == frames.FOCUS_HEALTH_BAR then
+		return _G.FocusFrame.TargetFrameContent.TargetFrameContentMain.HealthBarsContainer.HealthBar
+	elseif strKey == frames.FOCUS_POWER_BAR then
+		return _G.FocusFrame.TargetFrameContent.TargetFrameContentMain.ManaBar
 	elseif strKey == frames.PET_FRAME then
 		return _G.PetFrame
 	elseif strKey == frames.PET_PORTRAIT then

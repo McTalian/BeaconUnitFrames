@@ -40,10 +40,7 @@ ns.options.args.player.args.indicators.args.roleIcon = BUFPlayerRoleIcon.options
 
 function BUFPlayerRoleIcon:RefreshConfig()
 	if not self.initialized then
-		self.initialized = true
-
-		self.customRelativeToOptions = BUFPlayer.customRelativeToOptions
-		self.customRelativeToSorting = BUFPlayer.customRelativeToSorting
+		BUFPlayer.FrameInit(self)
 
 		self.texture = BUFPlayer.contentContextual.RoleIcon
 	end

@@ -4,10 +4,11 @@ local ns = select(2, ...)
 ---@class BUFPlayer
 local BUFPlayer = ns.BUFPlayer
 
----@class BUFPlayer.Portrait: BUFTexture, BoxMaskable
+---@class BUFPlayer.Portrait: BUFFramePortrait
 local BUFPlayerPortrait = {
 	configPath = "unitFrames.player.portrait",
 	frameKey = BUFPlayer.relativeToFrames.PORTRAIT,
+	module = BUFPlayer,
 }
 
 BUFPlayerPortrait.optionsOrder = {}
@@ -20,15 +21,7 @@ BUFPlayerPortrait.optionsTable = {
 	name = ns.L["Portrait"],
 	order = BUFPlayer.optionsOrder.PORTRAIT,
 	args = {
-		enabled = {
-			type = "toggle",
-			name = ENABLE,
-			desc = ns.L["EnablePlayerPortrait"],
-			set = "SetEnabled",
-			get = "GetEnabled",
-			order = BUFPlayerPortrait.optionsOrder.ENABLE,
-		},
-		-- TODO: Move this to indicators file with more options
+		-- TODO: maybe move this to indicators file with more options
 		cornerIndicator = {
 			type = "toggle",
 			name = ns.L["EnableCornerIndicator"],
@@ -58,26 +51,13 @@ BUFPlayerPortrait.dbDefaults = {
 	alpha = 1.0,
 }
 
-BUFPlayerPortrait.noAtlas = true
-
-ns.BUFTexture:ApplyMixin(BUFPlayerPortrait)
-ns.Mixin(BUFPlayerPortrait, ns.BoxMaskable)
+ns.BUFFramePortrait:ApplyMixin(BUFPlayerPortrait)
 
 ---@class BUFDbSchema.UF.Player
 ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
 ns.dbDefaults.profile.unitFrames.player.portrait = BUFPlayerPortrait.dbDefaults
 
-ns.AddBoxMaskableOptions(BUFPlayerPortrait.optionsTable.args)
 ns.options.args.player.args.portrait = BUFPlayerPortrait.optionsTable
-
-function BUFPlayerPortrait:SetEnabled(info, value)
-	self:DbSet("enabled", value)
-	self:ShowHidePortrait()
-end
-
-function BUFPlayerPortrait:GetEnabled(info)
-	return self:DbGet("enabled")
-end
 
 function BUFPlayerPortrait:SetEnableCornerIndicator(info, value)
 	self:DbSet("enableCornerIndicator", value)
@@ -96,50 +76,12 @@ function BUFPlayerPortrait:RefreshConfig()
 		self.maskTexture = BUFPlayer.container.PlayerPortraitMask
 		self.cornerIcon = BUFPlayer.contentContextual.PlayerPortraitCornerIcon
 	end
-	self:ShowHidePortrait()
-	self:SetPosition()
-	self:SetSize()
+	self:RefreshPortraitConfig()
 	self:SetCornerIndicator()
 end
 
-function BUFPlayerPortrait:SetSize()
-	self:_SetSize(self.texture)
-
-	self:RefreshMask()
-end
-
-function BUFPlayerPortrait:SetPosition()
-	self:_SetPosition(self.texture)
-
-	self.maskTexture:ClearAllPoints()
-	self.maskTexture:SetPoint("CENTER", self.texture, "CENTER")
-end
-
-function BUFPlayerPortrait:ShowHidePortrait()
-	local show = self:DbGet("enabled")
-	if show then
-		BUFPlayer:Unhook(self.texture, "Show")
-		BUFPlayer:Unhook(self.maskTexture, "Show")
-		self.texture:Show()
-		self.maskTexture:Show()
-	else
-		self.texture:Hide()
-		self.maskTexture:Hide()
-		if not BUFPlayer:IsHooked(self.texture, "Show") then
-			BUFPlayer:SecureHook(self.texture, "Show", function(s)
-				s:Hide()
-			end)
-		end
-		if not BUFPlayer:IsHooked(self.maskTexture, "Show") then
-			BUFPlayer:SecureHook(self.maskTexture, "Show", function(s)
-				s:Hide()
-			end)
-		end
-	end
-end
-
 function BUFPlayerPortrait:SetCornerIndicator()
-	local enable = self:DbGet("enableCornerIndicator")
+	local enable = self:GetEnableCornerIndicator()
 	if enable then
 		BUFPlayer:Unhook(self.cornerIcon, "Show")
 		self.cornerIcon:Show()
@@ -151,15 +93,6 @@ function BUFPlayerPortrait:SetCornerIndicator()
 			end)
 		end
 	end
-end
-
-function BUFPlayerPortrait:RefreshMask()
-	self:_RefreshMask(self.maskTexture)
-
-	local width, height = self:GetWidth(), self:GetHeight()
-	local widthScale = self:GetMaskWidthScale() or 1
-	local heightScale = self:GetMaskHeightScale() or 1
-	self.maskTexture:SetSize(width * widthScale, height * heightScale)
 end
 
 BUFPlayer.Portrait = BUFPlayerPortrait

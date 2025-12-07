@@ -39,9 +39,7 @@ BUFPet.optionsTable = {
 	name = HUD_EDIT_MODE_PET_FRAME_LABEL,
 	order = ns.BUFUnitFrames.optionsOrder.PET,
 	childGroups = "tree",
-	disabled = function()
-		BUFPet:IsDisabled()
-	end,
+	disabled = BUFPet.IsDisabled,
 	args = {
 		title = {
 			type = "header",
@@ -81,8 +79,8 @@ BUFPet.optionsOrder = {
 	CLASS_RESOURCES = 8,
 }
 
-function BUFPet:IsDisabled()
-	return not self:DbGet("enabled")
+function BUFPet.IsDisabled()
+	return not BUFPet:DbGet("enabled")
 end
 
 function BUFPet:SetEnabled(info, value)
@@ -151,5 +149,7 @@ function BUFPet:RefreshConfig(_eName)
 		end)
 	end
 end
+
+ns.BUFUnitFrames:RegisterFrame(BUFPet)
 
 ns.BUFPet = BUFPet

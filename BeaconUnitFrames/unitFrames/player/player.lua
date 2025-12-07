@@ -38,9 +38,7 @@ BUFPlayer.optionsTable = {
 	handler = BUFPlayer,
 	order = ns.BUFUnitFrames.optionsOrder.PLAYER,
 	childGroups = "tree",
-	disabled = function()
-		BUFPlayer:IsDisabled()
-	end,
+	disabled = BUFPlayer.IsDisabled,
 	args = {
 		title = {
 			type = "header",
@@ -80,8 +78,8 @@ BUFPlayer.optionsOrder = {
 	CLASS_RESOURCES = 8,
 }
 
-function BUFPlayer:IsDisabled()
-	return not self:DbGet("enabled")
+function BUFPlayer.IsDisabled()
+	return not BUFPlayer:DbGet("enabled")
 end
 
 function BUFPlayer:SetEnabled(info, value)
@@ -225,5 +223,7 @@ function BUFPlayer:RefreshConfig()
 		end)
 	end
 end
+
+ns.BUFUnitFrames:RegisterFrame(BUFPlayer)
 
 ns.BUFPlayer = BUFPlayer

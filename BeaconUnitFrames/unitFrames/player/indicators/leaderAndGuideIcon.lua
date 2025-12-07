@@ -63,9 +63,7 @@ Guide.optionsTable = {
 	type = "group",
 	handler = Guide,
 	name = ns.L["GuideIcon"],
-	hidden = function()
-		Guide:IsHidden()
-	end,
+	hidden = Guide.IsHidden,
 	inline = true,
 	order = BUFPlayerLeaderAndGuideIcon.optionsOrder.GUIDE,
 	args = {},
@@ -83,7 +81,7 @@ ns.dbDefaults.profile.unitFrames.player.leaderAndGuideIcon = BUFPlayerLeaderAndG
 
 ns.options.args.player.args.indicators.args.leaderAndGuideIcon = BUFPlayerLeaderAndGuideIcon.optionsTable
 
-function Guide:IsHidden()
+function Guide.IsHidden()
 	return not BUFPlayerLeaderAndGuideIcon:GetUseSeparateGuideStyle()
 end
 

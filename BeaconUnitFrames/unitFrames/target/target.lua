@@ -44,9 +44,7 @@ BUFTarget.optionsTable = {
 	handler = BUFTarget,
 	order = ns.BUFUnitFrames.optionsOrder.TARGET,
 	childGroups = "tree",
-	disabled = function()
-		BUFTarget:IsDisabled()
-	end,
+	disabled = BUFTarget.IsDisabled,
 	args = {
 		title = {
 			type = "header",
@@ -87,8 +85,8 @@ BUFTarget.optionsOrder = {
 	BUFFS = 9,
 }
 
-function BUFTarget:IsDisabled()
-	return not self:DbGet("enabled")
+function BUFTarget.IsDisabled()
+	return not BUFTarget:DbGet("enabled")
 end
 
 function BUFTarget:SetEnabled(info, value)
@@ -201,5 +199,7 @@ function BUFTarget:RefreshConfig()
 		-- but for now, we'll just completely ignore healthBarsContainer in anchors
 	end
 end
+
+ns.BUFUnitFrames:RegisterFrame(BUFTarget)
 
 ns.BUFTarget = BUFTarget

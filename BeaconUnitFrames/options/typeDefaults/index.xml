@@ -5,4 +5,5 @@
     <Script file="statusBarForeground.lua"/>
     <Script file="statusBarBackground.lua"/>
     <Script file="scaleOnlyTexture.lua"/>
+    <Script file="framePortrait.lua"/>
 </Ui>
