@@ -134,6 +134,8 @@
     "OKAY",
     "FOCUS",
     "TargetFrameToT",
-    "TargetFrameToTDebuff1"
+    "TargetFrameToTDebuff1",
+    "FocusFrameToTDebuff1",
+    "FocusFrameToT"
   ]
 }

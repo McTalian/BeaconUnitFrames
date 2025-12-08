@@ -5,4 +5,5 @@
     <Include file="pet/index.xml"/>
     <Include file="focus/index.xml"/>
     <Include file="targetOfTarget/index.xml"/>
+    <Include file="targetOfFocus/index.xml"/>
 </Ui>
