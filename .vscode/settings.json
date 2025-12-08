@@ -132,6 +132,8 @@
     "SetCVar",
     "GetCVar",
     "OKAY",
-    "FOCUS"
+    "FOCUS",
+    "TargetFrameToT",
+    "TargetFrameToTDebuff1"
   ]
 }

@@ -7,7 +7,7 @@ local ns = select(2, ...)
 local FramePortrait = {}
 
 function FramePortrait:ApplyMixin(handler)
-	ns.BUFTexture:ApplyMixin(handler)
+	ns.BUFTexture:ApplyMixin(handler, true)
 	ns.Mixin(handler, ns.BoxMaskable, self)
 
 	if handler.optionsTable then

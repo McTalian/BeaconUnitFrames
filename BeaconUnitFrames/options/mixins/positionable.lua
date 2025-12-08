@@ -66,6 +66,12 @@ Positionable.relativeToFrames = {
 	PET_HEALTH_BAR = "PetHealthBar",
 	PET_POWER_BAR = "PetManaBar",
 	PET_CAST_BAR = "PetCastingBarFrame",
+	TOT_FRAME = "TargetOfTargetFrame",
+	TOT_PORTRAIT = "TargetOfTargetPortrait",
+	TOT_NAME = "TargetOfTargetName",
+	TOT_HEALTH_BAR = "TargetOfTargetHealthBar",
+	TOT_POWER_BAR = "TargetOfTargetManaBar",
+	-- TOT_CAST_BAR = "TargetOfTargetCastingBar",
 }
 
 Positionable.anchorRelativeToOptions = {
@@ -74,6 +80,7 @@ Positionable.anchorRelativeToOptions = {
 	[Positionable.relativeToFrames.PLAYER_FRAME] = HUD_EDIT_MODE_PLAYER_FRAME_LABEL,
 	[Positionable.relativeToFrames.FOCUS_FRAME] = HUD_EDIT_MODE_FOCUS_FRAME_LABEL,
 	[Positionable.relativeToFrames.PET_FRAME] = HUD_EDIT_MODE_PET_FRAME_LABEL,
+	[Positionable.relativeToFrames.TOT_FRAME] = ns.L["ToTFrame"],
 }
 
 --- Helper to get the relative frame from a string key
@@ -137,6 +144,16 @@ function ns.GetRelativeFrame(strKey)
 		return _G.PetFrameManaBar
 	elseif strKey == frames.PET_CAST_BAR then
 		return _G.PetCastingBarFrame
+	elseif strKey == frames.TOT_FRAME then
+		return TargetFrameToT
+	elseif strKey == frames.TOT_PORTRAIT then
+		return TargetFrameToT.Portrait
+	elseif strKey == frames.TOT_NAME then
+		return TargetFrameToT.Name
+	elseif strKey == frames.TOT_HEALTH_BAR then
+		return TargetFrameToT.HealthBar
+	elseif strKey == frames.TOT_POWER_BAR then
+		return TargetFrameToT.ManaBar
 	else
 		if _G[strKey] == nil then
 			error("Relative frame '" .. strKey .. "' does not exist.")

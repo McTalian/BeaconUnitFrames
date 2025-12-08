@@ -27,7 +27,8 @@ local BUFTexture = {}
 --- Apply mixins to a BUFTexture
 --- @param self BUFTexture
 --- @param handler BUFConfigHandler
-function BUFTexture:ApplyMixin(handler)
+--- @param skipOptions boolean?
+function BUFTexture:ApplyMixin(handler, skipOptions)
 	if handler.noAtlas then
 		ns.Mixin(handler, ns.Sizable, ns.Scalable)
 	else
@@ -35,7 +36,7 @@ function BUFTexture:ApplyMixin(handler)
 	end
 	ns.Mixin(handler, ns.Demoable, ns.Positionable, self)
 
-	if handler.optionsTable then
+	if handler.optionsTable and not skipOptions then
 		ns.AddTextureOptions(handler.optionsTable.args, handler.optionsOrder, handler.noAtlas)
 	end
 end
