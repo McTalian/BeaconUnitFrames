@@ -351,12 +351,12 @@ end
 
 ---@class AnchorInfo
 ---@field point string
----@field relativeTo Frame
+---@field relativeTo Object
 ---@field relativePoint string
 ---@field xOffset number
 ---@field yOffset number
 
-function Positionable:GetPositionAnchorInfo()
+function Positionable:GetPositionAnchorInfo(_parentFrame)
 	---@type string | Frame
 	local relativeTo = self:GetRelativeFrame()
 
@@ -397,7 +397,7 @@ function Positionable:GetPositionAnchorInfo()
 end
 
 function Positionable:_SetPosition(positionable)
-	local anchorInfo = self:GetPositionAnchorInfo()
+	local anchorInfo = self:GetPositionAnchorInfo(positionable.bufOverrideParentFrame)
 
 	local anchorPoint = anchorInfo.point
 	local relativeTo = anchorInfo.relativeTo

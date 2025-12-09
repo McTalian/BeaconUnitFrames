@@ -6,4 +6,5 @@
     <Include file="focus/index.xml"/>
     <Include file="targetOfTarget/index.xml"/>
     <Include file="targetOfFocus/index.xml"/>
+    <Include file="boss/index.xml"/>
 </Ui>

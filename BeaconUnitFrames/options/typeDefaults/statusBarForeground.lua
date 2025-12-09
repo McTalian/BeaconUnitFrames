@@ -94,29 +94,29 @@ function StatusBarForeground:RefreshStatusBarTexture()
 	self:_RefreshStatusBarTexture(self.statusBar)
 end
 
-function StatusBarForeground:_GetEffectiveUnit()
-	local trackedUnit = self.unit
+function StatusBarForeground:_GetEffectiveUnit(unit)
+	local trackedUnit = unit
 	if UnitInVehicle("player") then
-		if self.unit == "player" then
+		if unit == "player" then
 			trackedUnit = "vehicle"
-		elseif self.unit == "pet" then
+		elseif unit == "pet" then
 			trackedUnit = "player"
 		end
 	end
 	return trackedUnit
 end
 
-function StatusBarForeground:_GetOptionsBasedColor()
+function StatusBarForeground:_GetOptionsBasedColor(unit)
 	local useClassColor = self.classColorable and self:GetUseClassColor()
 	local useReactionColor = self.reactionColorable and self:GetUseReactionColor()
 	local usePowerColor = self.powerColorable and self:GetUsePowerColor()
 	local useCustomColor = self:GetUseCustomColor()
 
-	local trackedUnit = self:_GetEffectiveUnit()
+	local trackedUnit = self:_GetEffectiveUnit(unit)
 	local r, g, b, a = nil, nil, nil, 1
 	if useCustomColor then
 		r, g, b, a = self:GetCustomColor()
-	elseif useClassColor and (not useReactionColor or UnitPlayerControlled(self.unit)) then
+	elseif useClassColor and (not useReactionColor or UnitPlayerControlled(unit)) then
 		local _, class = UnitClass(trackedUnit)
 		r, g, b = GetClassColor(class)
 	elseif useReactionColor then
@@ -142,8 +142,10 @@ function StatusBarForeground:_GetOptionsBasedColor()
 	return r, g, b, a
 end
 
-function StatusBarForeground:_RefreshColor(statusBar)
-	local r, g, b, a = self:_GetOptionsBasedColor()
+---@param statusBar StatusBar
+---@param unit string
+function StatusBarForeground:_RefreshColor(statusBar, unit)
+	local r, g, b, a = self:_GetOptionsBasedColor(unit)
 	a = a or 1.0
 	if not r or not g or not b then
 		return
@@ -152,7 +154,7 @@ function StatusBarForeground:_RefreshColor(statusBar)
 end
 
 function StatusBarForeground:RefreshColor()
-	self:_RefreshColor(self.statusBar)
+	self:_RefreshColor(self.statusBar, self.unit)
 end
 
 ns.StatusBarForeground = StatusBarForeground

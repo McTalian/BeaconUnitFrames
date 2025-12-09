@@ -36,7 +36,7 @@ function MaskableBase:GetMaskHeightScale(info)
 	return self:DbGet("maskHeightScale")
 end
 
-function MaskableBase:_RefreshMask(maskTexture)
+function MaskableBase:__RefreshMask(maskTexture)
 	local maskPath = self:GetMask()
 
 	if not maskPath then

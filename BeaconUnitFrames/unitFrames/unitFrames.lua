@@ -17,6 +17,7 @@ UnitFrames.optionsOrder = {
 	FOCUS = 4,
 	TOT = 5,
 	TOFOCUS = 6,
+	BOSS = 7,
 }
 
 -- Each unit frame module registers itself

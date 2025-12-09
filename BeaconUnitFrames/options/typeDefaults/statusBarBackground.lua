@@ -37,6 +37,10 @@ function StatusBarBackground:RefreshStatusBarBackgroundConfig()
 end
 
 function StatusBarBackground:RefreshBackgroundTexture()
+	self:_RefreshBackgroundTexture(self.background)
+end
+
+function StatusBarBackground:_RefreshBackgroundTexture(background)
 	local useCustomTexture = self:GetUseBackgroundTexture()
 	if useCustomTexture then
 		local textureName = self:GetBackgroundTexture() or "Blizzard"
@@ -44,16 +48,20 @@ function StatusBarBackground:RefreshBackgroundTexture()
 		if not texturePath then
 			texturePath = ns.lsm:Fetch(ns.lsm.MediaType.STATUSBAR, "Blizzard") or "Interface\\Buttons\\WHITE8x8"
 		end
-		self.background:SetTexture(texturePath)
-		self.background:Show()
+		background:SetTexture(texturePath)
+		background:Show()
 	else
 		self:RestoreDefaultBackgroundTexture()
 	end
 end
 
 function StatusBarBackground:RefreshColor()
+	self:_RefreshColor(self.background)
+end
+
+function StatusBarBackground:_RefreshColor(background)
 	local r, g, b, a = self:GetCustomColor()
-	self.background:SetVertexColor(r, g, b, a)
+	background:SetVertexColor(r, g, b, a)
 end
 
 ns.StatusBarBackground = StatusBarBackground

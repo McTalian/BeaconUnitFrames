@@ -46,42 +46,58 @@ function FramePortrait:RefreshPortraitConfig()
 end
 
 function FramePortrait:SetSize()
-	self:_SetSize(self.texture)
-	self:RefreshMask()
+	self:_SetPortraitSize(self.texture, self.maskTexture)
+end
+
+function FramePortrait:_SetPortraitSize(texture, maskTexture)
+	self:_SetSize(texture)
+	self:_RefreshMask(maskTexture)
 end
 
 function FramePortrait:SetScaleFactor()
-	self:_SetScaleFactor(self.texture)
-	self:RefreshMask()
+	self:_SetPortraitScaleFactor(self.texture, self.maskTexture)
+end
+
+function FramePortrait:_SetPortraitScaleFactor(texture, maskTexture)
+	self:_SetScaleFactor(texture)
+	self:_RefreshMask(maskTexture)
 end
 
 function FramePortrait:SetPosition()
-	self:_SetPosition(self.texture)
-	self.maskTexture:ClearAllPoints()
-	self.maskTexture:SetPoint("CENTER", self.texture, "CENTER")
+	self:_SetPortraitPosition(self.texture, self.maskTexture)
+end
+
+function FramePortrait:_SetPortraitPosition(texture, maskTexture)
+	self:_SetPosition(texture)
+	maskTexture:ClearAllPoints()
+	maskTexture:SetPoint("CENTER", texture, "CENTER")
 end
 
 function FramePortrait:ShowHidePortrait()
+	self:_ShowHidePortrait(self.texture, self.maskTexture)
+end
+
+function FramePortrait:_ShowHidePortrait(texture, maskTexture)
 	local show = self:GetEnabled()
 	if show then
-		if self.module:IsHooked(self.texture, "Show") then
-			self.module:Unhook(self.texture, "Show")
+		if self.module:IsHooked(texture, "Show") then
+			self.module:Unhook(texture, "Show")
 		end
-		if self.module:IsHooked(self.maskTexture, "Show") then
-			self.module:Unhook(self.maskTexture, "Show")
+		if self.module:IsHooked(maskTexture, "Show") then
+			self.module:Unhook(maskTexture, "Show")
 		end
-		self.texture:Show()
-		self.maskTexture:Show()
+		texture:Show()
+		maskTexture:Show()
 	else
-		self.texture:Hide()
-		self.maskTexture:Hide()
-		if not self.module:IsHooked(self.texture, "Show") then
-			self.module:SecureHook(self.texture, "Show", function(s)
+		texture:Hide()
+		maskTexture:Hide()
+		if not self.module:IsHooked(texture, "Show") then
+			self.module:SecureHook(texture, "Show", function(s)
 				s:Hide()
 			end)
 		end
-		if not self.module:IsHooked(self.maskTexture, "Show") then
-			self.module:SecureHook(self.maskTexture, "Show", function(s)
+		if not self.module:IsHooked(maskTexture, "Show") then
+			self.module:SecureHook(maskTexture, "Show", function(s)
 				s:Hide()
 			end)
 		end
@@ -90,11 +106,15 @@ end
 
 function FramePortrait:RefreshMask()
 	self:_RefreshMask(self.maskTexture)
+end
+
+function FramePortrait:_RefreshMask(maskTexture)
+	self:__RefreshMask(maskTexture)
 	local width, height, scale = self:GetWidth(), self:GetHeight(), self:GetScale()
 	local widthScale = self:GetMaskWidthScale() or 1
 	local heightScale = self:GetMaskHeightScale() or 1
-	self.maskTexture:SetSize(width * widthScale, height * heightScale)
-	self.maskTexture:SetScale(scale)
+	maskTexture:SetSize(width * widthScale, height * heightScale)
+	maskTexture:SetScale(scale)
 end
 
 ns.BUFFramePortrait = FramePortrait
