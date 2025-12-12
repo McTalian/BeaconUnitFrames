@@ -1,7 +1,7 @@
-package = "rpglootfeed"
+package = "buf"
 version = "1-1"
 source = {
-   url = "https://github.com/Mctalian/RPGLootFeed.git"
+   url = "https://github.com/Mctalian/BeaconUnitFrames.git"
 }
 dependencies = {
    "lua >= 5.3",

@@ -104,7 +104,7 @@ def main():
             except Exception as e:
                 print("Failed to delete %s. Reason: %s" % (file_path, e))
 
-    locales_xml = f"{locale_dir}/locales.xml"
+    locales_xml = f"{locale_dir}/index.xml"
     locale_files = parse_locales_xml(locales_xml)
 
     # Reference locale (enUS.lua)
