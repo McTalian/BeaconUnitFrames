@@ -25,6 +25,10 @@ Once you've installed the addon, use `/buf` to open the options menu. There you 
 * Party Frames
 * Raid Frames
 
+## Translations and Internationalization (i18n)
+
+This project is set up to fully support translations into all WoW-supported locales. Missing translations will be available for each locale in the issues page (link below). I'm choosing not to use Curse's platform because it's quite cumbersome for both sides. I am looking into easier ways to manage this, but this is what has worked for my prior projects.
+
 ## Bugs and Feature Requests
 
 Please submit bugs and feature requests on the [GitHub issues page](https://github.com/McTalian/BeaconUnitFrames/issues). I want to support as many options as possible with this addon.
