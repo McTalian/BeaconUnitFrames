@@ -27,9 +27,9 @@ BUFBossReputationBar.optionsTable = {
 			desc = ns.L["AtlasTextureDesc"],
 			order = ns.defaultOrderMap.ATLAS_TEXTURE,
 			values = {
-				["UI-HUD-UnitFrame-Target-PortraitOn-Type"] = "Default",
-				["_ItemUpgradeTooltip-NineSlice-EdgeBottom"] = "Bottom Glow",
-				["Interface/AddOns/BeaconUnitFrames/icons/underhighlight_mask.png"] = "Custom Bottom Glow",
+				["UI-HUD-UnitFrame-Target-PortraitOn-Type"] = DEFAULT,
+				["_ItemUpgradeTooltip-NineSlice-EdgeBottom"] = ns.L["Bottom Glow"],
+				["Interface/AddOns/BeaconUnitFrames/icons/underhighlight_mask.png"] = ns.L["Custom Bottom Glow"],
 			},
 			set = "SetAtlasTexture",
 			get = "GetAtlasTexture",

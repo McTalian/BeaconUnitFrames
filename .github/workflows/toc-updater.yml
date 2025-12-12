@@ -1,0 +1,48 @@
+name: Update TOC Interface version(s)
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: 0 12 * * *
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone project
+        uses: actions/checkout@v4
+
+      - name: Update TOC Interface version
+        uses: McTalian/wow-toc-updater@v1
+        with:
+          flavor: retail
+          ptr: true
+          beta: true
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GH_PAT }}
+          title: "build(toc): updates supported interface versions"
+          body: |
+            ## Requirements
+
+            - [ ] Download test package in the comments below
+            - [ ] Test for all applicable game clients
+              - [ ] Retail
+              - [ ] Retail PTR
+              - [ ] Classic
+              - [ ] Classic PTR
+              - [ ] Classic Era
+              - [ ] Classic Era PTR
+            - [ ] Check for new Hidden Currencies
+
+            ----------------------------------------------------
+            _This PR was automatically created to update the supported interface versions in BeaconUnitFrames.toc._
+          commit-message: "build(BeaconUnitFrames.toc): updates supported interface versions"
+          branch: interface-version
+          delete-branch: true
