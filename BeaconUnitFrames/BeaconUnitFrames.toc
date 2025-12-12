@@ -18,7 +18,7 @@
 ## Category-zhTW: 單位框架
 ## X-GitHub: https://github.com/Mctalian/BeaconUnitFrames
 ## X-Discord: https://discord.gg/czRYVWhe33
-## X-Curse-Project-ID: 
+## X-Curse-Project-ID: 1403133
 ## X-WoWI-ID: 
 ## X-Wago-ID: 
 
