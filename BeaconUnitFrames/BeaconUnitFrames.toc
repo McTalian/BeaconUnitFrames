@@ -19,7 +19,7 @@
 ## X-GitHub: https://github.com/McTalian/BeaconUnitFrames
 ## X-Discord: https://discord.gg/czRYVWhe33
 ## X-Curse-Project-ID: 1403133
-## X-WoWI-ID: 
+## X-WoWI-ID: 26998
 ## X-Wago-ID: n6VPoOGd
 
 #@no-lib-strip@
