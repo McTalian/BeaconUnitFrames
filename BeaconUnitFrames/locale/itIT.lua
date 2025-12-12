@@ -34,6 +34,7 @@ end
 -- L["BOTTOMRIGHT"] = "BOTTOMRIGHT"
 -- L["Buffs"] = "Buffs"
 -- L["BuyMeACoffee"] = "Buy me a coffee or a beer: |cFF00AFF0https://www.buymeacoffee.com/mctalian|r"
+-- L["CastBar"] = "Cast Bar"
 -- L["CENTER"] = "CENTER"
 -- L["Center Text"] = "Center Text"
 -- L["CircleShape"] = "Circle"
