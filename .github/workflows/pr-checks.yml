@@ -91,9 +91,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          nolib_size=$(gh release view --json assets -q '.assets[] | select(.name | endswith("nolib.zip")) | .size')
+          nolib_size=$(gh release view --json assets -q '.assets[] | select(.name | endswith("nolib.zip")) | .size' || 0)
           echo "NoLibSize: $nolib_size"
-          lib_size=$(gh release view --json assets -q '.assets[] | select(.name | endswith(".zip")) | select(.name | contains("-nolib") | not) | .size')
+          lib_size=$(gh release view --json assets -q '.assets[] | select(.name | endswith(".zip")) | select(.name | contains("-nolib") | not) | .size' || 0)
           echo "LibSize: $lib_size"
           echo "LATEST_RELEASE_NOLIB_SIZE=$nolib_size" >> $GITHUB_OUTPUT
           echo "LATEST_RELEASE_LIBS_SIZE=$lib_size" >> $GITHUB_OUTPUT

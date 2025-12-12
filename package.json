@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Mctalian/BeaconUnitFrames.git"
+    "url": "https://github.com/McTalian/BeaconUnitFrames.git"
   },
   "keywords": [
     "world of warcraft",
@@ -25,9 +25,9 @@
   "author": "Rob Anderson \"McTalian\" <McTalian@users.noreply.github.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Mctalian/BeaconUnitFrames/issues"
+    "url": "https://github.com/McTalian/BeaconUnitFrames/issues"
   },
-  "homepage": "https://github.com/Mctalian/BeaconUnitFrames#readme",
+  "homepage": "https://github.com/McTalian/BeaconUnitFrames#readme",
   "devDependencies": {
     "@semantic-release/commit-analyzer": "^13.0.1",
     "@semantic-release/github": "^11.0.1",
