@@ -66,9 +66,14 @@ function rightTextHandler:RefreshConfig()
 end
 
 function rightTextHandler:ToggleDemoMode()
+	self.demoMode = not self.demoMode
 	for _, bbi in ipairs(BUFBoss.frames) do
-		self:_ToggleDemoMode(bbi.health.rightText.fontString)
-		bbi.health.rightText.fontString:SetText(self.demoText)
+		if self.demoMode then
+			bbi.health.rightText.fontString:Show()
+			bbi.health.rightText.fontString:SetText(self.demoText)
+		else
+			bbi.health.rightText.fontString:Hide()
+		end
 	end
 end
 

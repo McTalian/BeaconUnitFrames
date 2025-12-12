@@ -36,7 +36,7 @@ function BUFBossIndicators:RefreshConfig()
 	self.BossPortraitFrameTexture:RefreshConfig()
 	self.HighLevelTexture:RefreshConfig()
 	self.RaidTargetIcon:RefreshConfig()
-	self.BossIcon:RefreshConfig()
+	-- self.BossIcon:RefreshConfig()
 	self.QuestIcon:RefreshConfig()
 end
 

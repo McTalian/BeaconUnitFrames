@@ -40,8 +40,13 @@ ns.dbDefaults.profile.unitFrames.boss.questIcon = BUFBossQuestIcon.dbDefaults
 ns.options.args.boss.args.indicators.args.questIcon = BUFBossQuestIcon.optionsTable
 
 function BUFBossQuestIcon:ToggleDemoMode()
+	self.demoMode = not self.demoMode
 	for _, bbi in ipairs(BUFBoss.frames) do
-		self:_ToggleDemoMode(bbi.indicators.questIcon.texture)
+		if self.demoMode then
+			bbi.indicators.questIcon.texture:Show()
+		else
+			bbi.indicators.questIcon.texture:Hide()
+		end
 	end
 end
 

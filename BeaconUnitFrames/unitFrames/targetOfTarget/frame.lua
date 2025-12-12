@@ -66,16 +66,19 @@ end
 function BUFToTFrame:RefreshConfig()
 	if not self.initialized then
 		BUFToT.FrameInit(self)
-
+	end
+	if not self.frame then
 		self.frame = BUFToT.frame
 
-		if not BUFToT:IsHooked(BUFToT.frame, "AnchorSelectionFrame") then
-			BUFToT:SecureHook(BUFToT.frame, "AnchorSelectionFrame", function()
-				if BUFToT.frame.Selection then
-					BUFToT.frame.Selection:ClearAllPoints()
-					BUFToT.frame.Selection:SetAllPoints(BUFToT.frame)
-				end
-			end)
+		if self.frame then
+			if not BUFToT:IsHooked(BUFToT.frame, "AnchorSelectionFrame") then
+				BUFToT:SecureHook(BUFToT.frame, "AnchorSelectionFrame", function()
+					if BUFToT.frame.Selection then
+						BUFToT.frame.Selection:ClearAllPoints()
+						BUFToT.frame.Selection:SetAllPoints(BUFToT.frame)
+					end
+				end)
+			end
 		end
 	end
 	self:SetSize()

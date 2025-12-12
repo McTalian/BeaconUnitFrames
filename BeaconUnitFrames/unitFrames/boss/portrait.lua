@@ -60,9 +60,24 @@ function BUFBossPortrait:RefreshConfig()
 	self:RefreshPortraitConfig()
 end
 
+function BUFBossPortrait:ToggleDemoMode()
+	self.demoMode = not self.demoMode
+	for _, bbi in ipairs(BUFBoss.frames) do
+		if self.demoMode then
+			bbi.portrait.texture:Show()
+			bbi.portrait.maskTexture:Show()
+			SetPortraitTexture(bbi.portrait.texture, "player")
+		else
+			bbi.portrait.texture:Hide()
+			bbi.portrait.maskTexture:Hide()
+		end
+	end
+end
+
 function BUFBossPortrait:ShowHidePortrait()
 	for _, bbi in ipairs(BUFBoss.frames) do
 		self:_ShowHidePortrait(bbi.portrait.texture, bbi.portrait.maskTexture)
+		bbi.frame.showPortrait = self:GetEnabled()
 	end
 end
 

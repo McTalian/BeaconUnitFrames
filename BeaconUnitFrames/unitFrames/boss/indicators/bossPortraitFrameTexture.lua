@@ -40,8 +40,13 @@ ns.dbDefaults.profile.unitFrames.boss.bossPortraitFrameTexture = BUFBossBossPort
 ns.options.args.boss.args.indicators.args.bossPortraitFrameTexture = BUFBossBossPortraitFrameTexture.optionsTable
 
 function BUFBossBossPortraitFrameTexture:ToggleDemoMode()
+	self.demoMode = not self.demoMode
 	for _, bbi in ipairs(BUFBoss.frames) do
-		self:_ToggleDemoMode(bbi.indicators.bossPortraitFrameTexture.texture)
+		if self.demoMode then
+			bbi.indicators.bossPortraitFrameTexture.texture:Show()
+		else
+			bbi.indicators.bossPortraitFrameTexture.texture:Hide()
+		end
 	end
 end
 

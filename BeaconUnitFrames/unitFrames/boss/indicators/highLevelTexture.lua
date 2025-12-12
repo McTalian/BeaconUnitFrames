@@ -44,8 +44,13 @@ ns.dbDefaults.profile.unitFrames.boss = ns.dbDefaults.profile.unitFrames.boss
 ns.dbDefaults.profile.unitFrames.boss.highLevelTexture = BUFBossHighLevelTexture.dbDefaults
 
 function BUFBossHighLevelTexture:ToggleDemoMode()
+	self.demoMode = not self.demoMode
 	for _, bbi in ipairs(BUFBoss.frames) do
-		self:_ToggleDemoMode(bbi.indicators.highLevelTexture.texture)
+		if self.demoMode then
+			bbi.indicators.highLevelTexture.texture:Show()
+		else
+			bbi.indicators.highLevelTexture.texture:Hide()
+		end
 	end
 end
 

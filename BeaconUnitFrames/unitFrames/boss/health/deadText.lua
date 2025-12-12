@@ -65,8 +65,14 @@ function deadTextHandler:RefreshConfig()
 end
 
 function deadTextHandler:ToggleDemoMode()
+	self.demoMode = not self.demoMode
 	for _, bbi in ipairs(BUFBoss.frames) do
-		self:_ToggleDemoMode(bbi.health.deadText.fontString)
+		if self.demoMode then
+			bbi.health.deadText.fontString:Show()
+			bbi.health.deadText.fontString:SetText(self.demoText)
+		else
+			bbi.health.deadText.fontString:Hide()
+		end
 	end
 end
 

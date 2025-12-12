@@ -66,9 +66,14 @@ function leftTextHandler:RefreshConfig()
 end
 
 function leftTextHandler:ToggleDemoMode()
+	self.demoMode = not self.demoMode
 	for _, bbi in ipairs(BUFBoss.frames) do
-		self:_ToggleDemoMode(bbi.health.leftText.fontString)
-		bbi.health.leftText.fontString:SetText(self.demoText)
+		if self.demoMode then
+			bbi.health.leftText.fontString:Show()
+			bbi.health.leftText.fontString:SetText(self.demoText)
+		else
+			bbi.health.leftText.fontString:Hide()
+		end
 	end
 end
 

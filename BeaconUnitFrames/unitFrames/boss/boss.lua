@@ -80,7 +80,8 @@ BUFBoss.optionsOrder = {
 	INDICATORS = 6,
 	HEALTH = 7,
 	POWER = 8,
-	BUFFS = 9,
+	SPELL = 9,
+	BUFFS = 10,
 }
 
 function BUFBoss.IsDisabled()
@@ -166,6 +167,7 @@ function BUFBossInstance:New(index)
 	---@field indicators? table
 	---@field health? table
 	---@field power? table
+	---@field castBar? table
 	local bbi = {}
 	bbi.frame = _G["Boss" .. index .. "TargetFrame"]
 	bbi.container = bbi.frame.TargetFrameContainer
@@ -201,6 +203,7 @@ function BUFBoss:RefreshConfig()
 	self.Health:RefreshConfig()
 	self.Power:RefreshConfig()
 	self.ReputationBar:RefreshConfig()
+	self.CastBar:RefreshConfig()
 
 	if not self.initialized then
 		self.initialized = true

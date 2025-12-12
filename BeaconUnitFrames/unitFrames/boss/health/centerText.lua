@@ -66,9 +66,14 @@ function centerTextHandler:RefreshConfig()
 end
 
 function centerTextHandler:ToggleDemoMode()
+	self.demoMode = not self.demoMode
 	for _, bbi in ipairs(BUFBoss.frames) do
-		self:_ToggleDemoMode(bbi.health.centerText.fontString)
-		bbi.health.centerText.fontString:SetText(self.demoText)
+		if self.demoMode then
+			bbi.health.centerText.fontString:Show()
+			bbi.health.centerText.fontString:SetText(self.demoText)
+		else
+			bbi.health.centerText.fontString:Hide()
+		end
 	end
 end
 

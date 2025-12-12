@@ -40,8 +40,13 @@ ns.dbDefaults.profile.unitFrames.boss.bossIcon = BUFBossBossIcon.dbDefaults
 ns.options.args.boss.args.indicators.args.bossIcon = BUFBossBossIcon.optionsTable
 
 function BUFBossBossIcon:ToggleDemoMode()
+	self.demoMode = not self.demoMode
 	for _, bbi in ipairs(BUFBoss.frames) do
-		self:_ToggleDemoMode(bbi.indicators.bossIcon.texture)
+		if self.demoMode then
+			bbi.indicators.bossIcon.texture:Show()
+		else
+			bbi.indicators.bossIcon.texture:Hide()
+		end
 	end
 end
 

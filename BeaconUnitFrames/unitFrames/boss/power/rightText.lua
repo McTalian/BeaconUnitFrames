@@ -66,9 +66,14 @@ function rightTextHandler:RefreshConfig()
 end
 
 function rightTextHandler:ToggleDemoMode()
+	self.demoMode = not self.demoMode
 	for _, bbi in ipairs(BUFBoss.frames) do
-		self:_ToggleDemoMode(bbi.power.rightText.fontString)
-		bbi.power.rightText.fontString:SetText(self.demoText)
+		if self.demoMode then
+			bbi.power.rightText.fontString:Show()
+			bbi.power.rightText.fontString:SetText(self.demoText)
+		else
+			bbi.power.rightText.fontString:Hide()
+		end
 	end
 end
 

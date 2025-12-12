@@ -5,6 +5,7 @@
     <Script file="name.lua"/>
     <Script file="level.lua"/>
     <Script file="portrait.lua"/>
+    <Script file="castBar.lua"/>
     <Script file="reputationBar.lua"/>
     <Include file="health/index.xml"/>
     <Include file="power/index.xml"/>

@@ -65,8 +65,14 @@ function unconsciousTextHandler:RefreshConfig()
 end
 
 function unconsciousTextHandler:ToggleDemoMode()
+	self.demoMode = not self.demoMode
 	for _, bbi in ipairs(BUFBoss.frames) do
-		self:_ToggleDemoMode(bbi.health.unconsciousText.fontString)
+		if self.demoMode then
+			bbi.health.unconsciousText.fontString:Show()
+			bbi.health.unconsciousText.fontString:SetText(self.demoText)
+		else
+			bbi.health.unconsciousText.fontString:Hide()
+		end
 	end
 end
 

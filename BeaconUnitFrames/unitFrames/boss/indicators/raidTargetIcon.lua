@@ -40,8 +40,13 @@ ns.dbDefaults.profile.unitFrames.boss = ns.dbDefaults.profile.unitFrames.boss
 ns.dbDefaults.profile.unitFrames.boss.raidTargetIcon = BUFBossRaidTargetIcon.dbDefaults
 
 function BUFBossRaidTargetIcon:ToggleDemoMode()
+	self.demoMode = not self.demoMode
 	for _, bbi in ipairs(BUFBoss.frames) do
-		self:_ToggleDemoMode(bbi.indicators.raidTargetIcon.texture)
+		if self.demoMode then
+			bbi.indicators.raidTargetIcon.texture:Show()
+		else
+			bbi.indicators.raidTargetIcon.texture:Hide()
+		end
 	end
 end
 

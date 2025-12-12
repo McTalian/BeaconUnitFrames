@@ -82,14 +82,31 @@ function BUFBossFrame:GetEnableFrameTexture(info)
 end
 
 function BUFBossFrame:ToggleDemoMode()
+	self:_ToggleDemoMode(self.frame)
 	for _, bbi in ipairs(BUFBoss.frames) do
-		self:_ToggleDemoMode(bbi.frame)
+		if self.demoMode then
+			bbi.frame:Show()
+		else
+			bbi.frame:Hide()
+		end
 	end
 end
 
 function BUFBossFrame:RefreshConfig()
 	if not self.initialized then
 		BUFBoss.FrameInit(self)
+
+		self.frame = BossTargetFrameContainer
+
+		if not BUFBoss:IsHooked(self.frame, "AnchorSelectionFrame") then
+			BUFBoss:SecureHook(self.frame, "AnchorSelectionFrame", function()
+				if self.frame.Selection then
+					self.frame.Selection:ClearAllPoints()
+					self.frame.Selection:SetPoint("TOPLEFT", BUFBoss.frames[1].frame, "TOPLEFT")
+					self.frame.Selection:SetPoint("BOTTOMRIGHT", BUFBoss.frames[#BUFBoss.frames].frame, "BOTTOMRIGHT")
+				end
+			end)
+		end
 	end
 	self:SetSize()
 	self:SetFrameFlash()
@@ -101,6 +118,9 @@ function BUFBossFrame:SetSize()
 	for _, bbi in ipairs(BUFBoss.frames) do
 		self:_SetSize(bbi.frame)
 	end
+	local width = self:GetWidth()
+	local height = self:GetHeight() * #BUFBoss.frames
+	self.frame:SetSize(width, height)
 end
 
 function BUFBossFrame:SetFrameFlash()
@@ -169,30 +189,29 @@ function BUFBossFrame:RefreshBackgroundTexture()
 			if bbi.backdropFrame then
 				bbi.backdropFrame:Hide()
 			end
-			return
+		else
+			if not bbi.backdropFrame then
+				bbi.backdropFrame = CreateFrame("Frame", nil, bbi.frame, "BackdropTemplate")
+				bbi.backdropFrame:SetFrameStrata("BACKGROUND")
+			end
+
+			local bgTexturePath = ns.lsm:Fetch(ns.lsm.MediaType.BACKGROUND, backgroundTexture)
+			if not bgTexturePath then
+				bgTexturePath = "Interface/None"
+			end
+
+			bbi.backdropFrame:ClearAllPoints()
+			bbi.backdropFrame:SetAllPoints(bbi.frame)
+
+			bbi.backdropFrame:SetBackdrop({
+				bgFile = bgTexturePath,
+				edgeFile = nil,
+				tile = true,
+				tileSize = 16,
+				edgeSize = 0,
+				insets = { left = 0, right = 0, top = 0, bottom = 0 },
+			})
+			bbi.backdropFrame:Show()
 		end
-
-		if not bbi.backdropFrame then
-			bbi.backdropFrame = CreateFrame("Frame", nil, bbi.frame, "BackdropTemplate")
-			bbi.backdropFrame:SetFrameStrata("BACKGROUND")
-		end
-
-		local bgTexturePath = ns.lsm:Fetch(ns.lsm.MediaType.BACKGROUND, backgroundTexture)
-		if not bgTexturePath then
-			bgTexturePath = "Interface/None"
-		end
-
-		bbi.backdropFrame:ClearAllPoints()
-		bbi.backdropFrame:SetAllPoints(bbi.frame)
-
-		bbi.backdropFrame:SetBackdrop({
-			bgFile = bgTexturePath,
-			edgeFile = nil,
-			tile = true,
-			tileSize = 16,
-			edgeSize = 0,
-			insets = { left = 0, right = 0, top = 0, bottom = 0 },
-		})
-		bbi.backdropFrame:Show()
 	end
 end
