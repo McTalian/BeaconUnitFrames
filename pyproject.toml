@@ -4,4 +4,4 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.14.0"
-dependencies = ["defusedxml>=0.7.1"]
+dependencies = ["defusedxml>=0.7.1", "md2bbcode>=1.0.9"]
