@@ -12,18 +12,18 @@ Once you've installed the addon, use `/buf` to open the options menu. There you 
 
 ## Supported Frames
 
-* Player Frame
-* Target Frame
-* Pet Frame
-* Focus Frame
-* Target of Target
-* Target of Focus
-* Boss Frames
+- Player Frame
+- Target Frame
+- Pet Frame
+- Focus Frame
+- Target of Target
+- Target of Focus
+- Boss Frames
 
 ### Coming Soon
 
-* Party Frames
-* Raid Frames
+- Party Frames
+- Raid Frames
 
 ## Translations and Internationalization (i18n)
 

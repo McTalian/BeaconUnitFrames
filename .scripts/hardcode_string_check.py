@@ -73,8 +73,7 @@ def scan_directory(directory, ignore_files=None, ignore_dirs=None):
 
 
 def main():
-    ignore_files = [
-    ]
+    ignore_files = []
     ignore_dirs = [
         "icons",
         "locale",
