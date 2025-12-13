@@ -2,11 +2,6 @@
     <Script file="indicators.lua"/>
     <Script file="bossPortraitFrameTexture.lua"/>
     <Script file="highLevelTexture.lua"/>
-    <!-- <Script file="leaderAndGuideIcon.lua"/> -->
     <Script file="raidTargetIcon.lua"/>
-    <!-- <Script file="bossIcon.lua"/> -->
     <Script file="questIcon.lua"/>
-    <!-- <Script file="pvpIcon.lua"/> -->
-    <!-- <Script file="prestigePortrait.lua"/> -->
-    <!-- <Script file="petBattleIcon.lua"/> -->
 </Ui>
