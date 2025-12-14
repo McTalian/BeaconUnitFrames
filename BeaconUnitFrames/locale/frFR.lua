@@ -10,6 +10,13 @@ end
 --- You may translate these comments, but do not translate "region" or "endregion" as they are used by the localization tool to determine where to place the translations.
 --- To add translations, simply uncomment the line(s) and replace the English text after the equal sign (=) with the translated value.
 
+--#region v1.1.0
+-- L["PartyHealthBar"] = "Party Health Bar"
+-- L["PartyManaBar"] = "Party Power Bar"
+-- L["PartyName"] = "Party Name"
+-- L["PartyPortrait"] = "Party Portrait"
+--#endregion
+
 --#region v1.0.0
 -- L["Anchor Point"] = "Anchor Point"
 -- L["Atlas Texture"] = "Atlas Texture"

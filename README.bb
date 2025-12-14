@@ -19,13 +19,13 @@ Once you've installed the addon, use [FONT="Courier New"]/buf[/FONT] to open the
 [*]Focus Frame
 [*]Target of Target
 [*]Target of Focus
+[*]Party Frames
 [*]Boss Frames
 [/LIST]
 
 [SIZE=4]Coming Soon[/SIZE]
 
 [LIST]
-[*]Party Frames
 [*]Raid Frames
 [/LIST]
 
