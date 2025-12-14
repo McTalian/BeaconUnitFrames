@@ -69,8 +69,7 @@ end
 
 function FramePortrait:_SetPortraitPosition(texture, maskTexture)
 	self:_SetPosition(texture)
-	maskTexture:ClearAllPoints()
-	maskTexture:SetPoint("CENTER", texture, "CENTER")
+	maskTexture:SetAllPoints(texture)
 end
 
 function FramePortrait:ShowHidePortrait()

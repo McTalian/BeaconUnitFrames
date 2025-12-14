@@ -18,11 +18,11 @@ Once you've installed the addon, use `/buf` to open the options menu. There you 
 - Focus Frame
 - Target of Target
 - Target of Focus
+- Party Frames
 - Boss Frames
 
 ### Coming Soon
 
-- Party Frames
 - Raid Frames
 
 ## Translations and Internationalization (i18n)

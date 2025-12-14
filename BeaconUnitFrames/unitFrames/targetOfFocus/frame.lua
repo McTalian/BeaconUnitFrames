@@ -66,14 +66,17 @@ end
 function BUFToFocusFrame:RefreshConfig()
 	if not self.initialized then
 		BUFToFocus.FrameInit(self)
+	end
 
+	if not self.frame then
 		self.frame = BUFToFocus.frame
-
-		if not BUFToFocus:IsHooked(BUFToFocus.frame, "AnchorSelectionFrame") then
-			BUFToFocus:SecureHook(BUFToFocus.frame, "AnchorSelectionFrame", function()
-				if BUFToFocus.frame.Selection then
-					BUFToFocus.frame.Selection:ClearAllPoints()
-					BUFToFocus.frame.Selection:SetAllPoints(BUFToFocus.frame)
+	end
+	if self.frame and self.frame.AnchorSelectionFrame then
+		if not BUFToFocus:IsHooked(self.frame, "AnchorSelectionFrame") then
+			BUFToFocus:SecureHook(self.frame, "AnchorSelectionFrame", function()
+				if self.frame.Selection then
+					self.frame.Selection:ClearAllPoints()
+					self.frame.Selection:SetAllPoints(self.frame)
 				end
 			end)
 		end

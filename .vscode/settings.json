@@ -137,6 +137,7 @@
     "TargetFrameToTDebuff1",
     "FocusFrameToTDebuff1",
     "FocusFrameToT",
-    "DEFAULT"
+    "DEFAULT",
+    "HUD_EDIT_MODE_PARTY_FRAMES_LABEL"
   ]
 }
