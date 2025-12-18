@@ -1,4 +1,4 @@
-.PHONY: lua_deps watch dev build check_untracked_files toc_check i18n_check i18n_fmt
+.PHONY: lua_deps watch dev build check_untracked_files toc_check toc_update i18n_check i18n_fmt
 
 # Variables
 ROCKSBIN := $(HOME)/.luarocks/bin
@@ -18,8 +18,15 @@ build: check_untracked_files toc_check i18n_check
 	@wow-build-tools build -d -t BeaconUnitFrames -r ./.release
 
 toc_check:
-	@uv run .scripts/check_toc_includes.py \
-		--ignore libs/index.xml
+	@wow-build-tools toc check \
+		-a BeaconUnitFrames \
+		-x libs/index.xml \
+		-b -p
+
+toc_update:
+	@wow-build-tools toc update \
+		-a BeaconUnitFrames \
+		-b -p
 
 check_untracked_files:
 	@if [ -n "$$(git ls-files --others --exclude-standard)" ]; then \
