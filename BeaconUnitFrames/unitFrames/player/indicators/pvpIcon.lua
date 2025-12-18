@@ -35,6 +35,7 @@ BUFPlayerIndicators.PvPIcon = BUFPlayerPvPIcon
 
 ---@class BUFDbSchema.UF.Player
 ns.dbDefaults.profile.unitFrames.player = ns.dbDefaults.profile.unitFrames.player
+ns.dbDefaults.profile.unitFrames.player.pvpIcon = BUFPlayerPvPIcon.dbDefaults
 ns.options.args.player.args.indicators.args.pvpIcon = BUFPlayerPvPIcon.optionsTable
 
 function BUFPlayerPvPIcon:ToggleDemoMode()
