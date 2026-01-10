@@ -2,9 +2,6 @@
   "wowAPI.luals.frameXML": true,
   "wowAPI.luals.configurationScope": "User",
   "Lua.workspace.checkThirdParty": false,
-  "Lua.workspace.preloadFileSize": 5000,
-  "Lua.workspace.maxPreload": 5000,
-  "Lua.diagnostics.workspaceDelay": 1500,
   "Lua.workspace.ignoreDir": [
     ".*",
     "*_spec/",

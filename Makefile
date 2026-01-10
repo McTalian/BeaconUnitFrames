@@ -9,7 +9,7 @@ lua_deps:
 	@luarocks install luacov-html --local
 
 watch: check_untracked_files toc_check i18n_check
-	@wow-build-tools watch -t BeaconUnitFrames -r ./.release
+	@wow-build-tools build watch -t BeaconUnitFrames -r ./.release
 
 dev: check_untracked_files toc_check i18n_check
 	@wow-build-tools build -d -t BeaconUnitFrames -r ./.release --skipChangelog

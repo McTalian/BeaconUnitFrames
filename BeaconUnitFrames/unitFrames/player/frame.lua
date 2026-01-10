@@ -151,27 +151,38 @@ end
 function BUFPlayerFrame:SetFrameTexture()
 	local enable = self:DbGet("enableFrameTexture")
 	local texture = BUFPlayer.container.FrameTexture
+	local altPowerFrameTexture = BUFPlayer.container.AlternatePowerFrameTexture
 	local vehicleTexture = BUFPlayer.container.VehicleFrameTexture
 	local healthBarMask = BUFPlayer.healthBarContainer.HealthBarMask
 	local manaBarMask = BUFPlayer.manaBar.ManaBarMask
+	local altPowerMask = AlternatePowerBar.PowerBarMask
 
 	if enable then
 		BUFPlayer:Unhook(texture, "Show")
 		BUFPlayer:Unhook(vehicleTexture, "Show")
+		BUFPlayer:Unhook(altPowerFrameTexture, "Show")
 		BUFPlayer:Unhook(healthBarMask, "Show")
 		BUFPlayer:Unhook(manaBarMask, "Show")
+		BUFPlayer:Unhook(altPowerMask, "Show")
 		if UnitInVehicle("player") then
 			vehicleTexture:Show()
 		else
-			texture:Show()
+			if PlayerFrame.activeAlternatePowerBar then
+				altPowerFrameTexture:Show()
+				altPowerMask:Show()
+			else
+				texture:Show()
+			end
 		end
 		healthBarMask:Show()
 		manaBarMask:Show()
 	else
 		texture:Hide()
 		vehicleTexture:Hide()
+		altPowerFrameTexture:Hide()
 		healthBarMask:Hide()
 		manaBarMask:Hide()
+		altPowerMask:Hide()
 
 		local function HideOnShow(s)
 			s:Hide()
@@ -185,6 +196,14 @@ function BUFPlayerFrame:SetFrameTexture()
 			BUFPlayer:SecureHook(vehicleTexture, "Show", HideOnShow)
 		end
 
+		if not BUFPlayer:IsHooked(altPowerFrameTexture, "Show") then
+			BUFPlayer:SecureHook(altPowerFrameTexture, "Show", HideOnShow)
+		end
+
+		if not BUFPlayer:IsHooked(altPowerFrameTexture, "SetShown") then
+			BUFPlayer:SecureHook(altPowerFrameTexture, "SetShown", HideOnShow)
+		end
+
 		if not BUFPlayer:IsHooked(healthBarMask, "Show") then
 			BUFPlayer:SecureHook(healthBarMask, "Show", HideOnShow)
 		end
@@ -195,6 +214,10 @@ function BUFPlayerFrame:SetFrameTexture()
 
 		if not BUFPlayer:IsHooked(manaBarMask, "SetShown") then
 			BUFPlayer:SecureHook(manaBarMask, "SetShown", HideOnShow)
+		end
+
+		if not BUFPlayer:IsHooked(altPowerMask, "Show") then
+			BUFPlayer:SecureHook(altPowerMask, "Show", HideOnShow)
 		end
 	end
 end
