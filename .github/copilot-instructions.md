@@ -1,6 +1,6 @@
 # BeaconUnitFrames — AI Coding Instructions
 
-> Additional context loads automatically for unit frame files (`.github/instructions/unitframes.instructions.md`), options files (`options.instructions.md`), and build/packaging files (`build.instructions.md`).
+> Additional context loads automatically for unit frame files (`.github/instructions/unitframes.instructions.md`), options files (`options.instructions.md`), mixin files (`mixins.instructions.md`), locale files (`locale.instructions.md`), core files (`core.instructions.md`), build/packaging files (`build.instructions.md`), and all addon files for WoW UI source navigation (`wow-ui-source.instructions.md`).
 
 ## Project Overview
 WoW addon (Lua) for the Midnight expansion using the **Ace3 framework**. Modifies and skins the 8 default unit frames (Player, Target, Pet, Focus, ToT, ToFocus, Party, Boss). Entry point: `BeaconUnitFrames/core/core.lua`.
@@ -51,4 +51,3 @@ All user-facing strings must use `ns.L["Key"]`. Add new keys to `locale/enUS.lua
 - `options/mixins/` — cross-cutting option+behavior pairs
 - `options/typeDefaults/` — reusable default config blocks for component types (statusBar, fontString, texture)
 - `libs/` — vendored libraries; **do not modify**; managed via `.pkgmeta` and fetched by `wow-build-tools` during build
-- `LibPixelPerfect-1.0` — a WIP custom library (in `libs/`); treat as unstable API

@@ -14,5 +14,4 @@
   <Script file="LibDataBroker-1.1\LibDataBroker-1.1.lua"/>
   <Script file="LibDBIcon-1.0\LibDBIcon-1.0.lua"/>
   <Script file="LibEasyMenu\LibEasyMenu.lua"/>
-  <Include file="LibPixelPerfect-1.0\lib.xml"/>
 </Ui>

@@ -1,5 +1,5 @@
 ---
-applyTo: "Makefile,**/*.toc,**/.pkgmeta,**/*.rockspec,**/pyproject.toml"
+applyTo: "Makefile,**/*.toc,**/.pkgmeta,**/*.rockspec,**/pyproject.toml,.release/**"
 ---
 
 ## Build Tool
@@ -17,6 +17,11 @@ make lua_deps       # install busted/luacov for Lua testing
 ```
 
 For the typical dev loop: `wow-build-tools build link` creates symlinks from the WoW AddOns directory into `.release/`, then `make watch` keeps the build hot — a `/reload` in-game picks up changes immediately.
+
+## Output Directory (`.release/`)
+`.release/` is **fully generated output** — every build wipes and recreates it. **Never edit files inside `.release/` directly.** All changes must be made to source files under `BeaconUnitFrames/`.
+
+The symlink created by `wow-build-tools build link` points WoW's AddOns directory at `.release/BeaconUnitFrames/`, so the game always runs the build output. Edits made directly to `.release/` will be silently overwritten on the next build.
 
 ## Build-time Tokens
 `wow-build-tools` performs keyword substitution in `.toc`, `.lua`, `.xml`, `.md`, and `.txt` files. **Never modify or remove any `@token@` string.**
