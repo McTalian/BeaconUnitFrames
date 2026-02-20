@@ -99,15 +99,15 @@ end
 function BUFToFocus:OnEnable()
 	self.frame = FocusFrameToT
 	if not self.frame then
-		error("Target of Target frame not found")
+		error("Target of Focus frame not found")
 	end
 	self.healthBar = self.frame.HealthBar
 	if not self.healthBar then
-		error("Target of Target HealthBar not found")
+		error("Target of Focus HealthBar not found")
 	end
 	self.manaBar = self.frame.ManaBar
 	if not self.manaBar then
-		error("Target of Target ManaBar not found")
+		error("Target of Focus ManaBar not found")
 	end
 end
 

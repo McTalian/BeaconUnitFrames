@@ -1,6 +1,9 @@
 ---@class BUFNamespace
 local ns = select(2, ...)
 
+---@type BUFDbBackedHandler
+local cvarsDb = Mixin({ configPath = "restoreCvars" }, ns.GlobalDbBackedHandler)
+
 ---@class BUFTarget: BUFFeatureModule
 local BUFTarget = ns.NewFeatureModule("BUFTarget")
 
@@ -143,16 +146,11 @@ function BUFTarget:RefreshConfig()
 
 	if not self.initialized then
 		self.initialized = true
-		if not ns.db.global.restoreCvars.showTempMaxHealthLoss then
-			print("Storing original 'showTempMaxHealthLoss' CVar for restoration on shutdown.")
-			ns.db.global.restoreCvars.showTempMaxHealthLoss = GetCVar("showTempMaxHealthLoss")
+		if not cvarsDb:DbGet("showTempMaxHealthLoss") then
+			cvarsDb:DbSet("showTempMaxHealthLoss", GetCVar("showTempMaxHealthLoss"))
 		end
 		ns.db.RegisterCallback(ns, "OnDatabaseShutdown", function()
-			print(
-				"Restoring 'showTempMaxHealthLoss' CVar to original value:",
-				ns.db.global.restoreCvars.showTempMaxHealthLoss
-			)
-			SetCVar("showTempMaxHealthLoss", ns.db.global.restoreCvars.showTempMaxHealthLoss)
+			SetCVar("showTempMaxHealthLoss", cvarsDb:DbGet("showTempMaxHealthLoss"))
 		end)
 		SetCVar("showTempMaxHealthLoss", "0")
 
