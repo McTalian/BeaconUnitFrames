@@ -3,6 +3,7 @@
 Welcome! This guide explains how BeaconUnitFrames works under the hood, the code flow, directory structure, and how it differs from oUF-style addons.
 
 ## Table of Contents
+
 1. [High-Level Overview](#high-level-overview)
 2. [Directory Structure](#directory-structure)
 3. [Code Flow & Initialization](#code-flow--initialization)
@@ -16,12 +17,14 @@ Welcome! This guide explains how BeaconUnitFrames works under the hood, the code
 ## High-Level Overview
 
 **BeaconUnitFrames (BUF)** is a WoW addon that **modifies and skins Blizzard's default unit frames** rather than replacing them. Unlike oUF, which creates entirely new frames from scratch, BUF:
+
 - **Hooks into existing Blizzard frames** (`PlayerFrame`, `TargetFrame`, etc.)
 - **Reskins and repositions** their sub-components (health bars, portraits, names, etc.)
 - Uses **Ace3 framework** for addon structure, config management, and options UI
 - **Stores configuration in a database** (AceDB) and applies it via `RefreshConfig()` cascades
 
 **Key Difference from oUF:**
+
 - **oUF**: Creates new frames, you write a layout file that spawns custom frames
 - **BUF**: Modifies existing frames, you write feature modules that skin/reposition Blizzard's frames
 
@@ -29,7 +32,7 @@ Welcome! This guide explains how BeaconUnitFrames works under the hood, the code
 
 ## Directory Structure
 
-```
+```plain text
 BeaconUnitFrames/
 ├── core/                          # Addon bootstrap & database management
 │   ├── core.lua                   # Entry point: OnInitialize, PLAYER_ENTERING_WORLD
@@ -87,7 +90,7 @@ BeaconUnitFrames/
 
 ### 1. Addon Load Sequence
 
-```
+```plain text
 WoW loads BeaconUnitFrames.toc
   ↓
 Files loaded in order declared in index.xml files
@@ -112,6 +115,7 @@ PLAYER_ENTERING_WORLD fires (login or /reload)
 ### 2. First-Time Initialization (per module)
 
 Each feature module has a `RefreshConfig()` method that:
+
 1. **First call only:** Runs `FrameInit()` to set up `customRelativeToOptions` and cache frame references
 2. **Every call:** Applies all DB settings to the cached WoW frames
 
@@ -139,7 +143,7 @@ end
 
 **All state lives in the database.** Never directly call `SetWidth()`, `SetFont()`, etc. outside of a `RefreshConfig` path. The flow is:
 
-```
+```plain text
 User changes option in UI
   ↓
 Option setter (e.g., SetWidth)
@@ -160,6 +164,7 @@ This ensures the DB is always the **source of truth** and state is never out of 
 ## Feature Module Pattern
 
 Every component in BUF is a **feature module** created via `ns.NewFeatureModule(name)`. This wraps Ace3's module system and automatically mixes in:
+
 - `ProfileDbBackedHandler` — `DbGet`/`DbSet`/`DbClear` methods
 - `AceHook-3.0` — Hook Blizzard functions without tainting
 - `AceEvent-3.0` — Register/Unregister WoW events
@@ -255,7 +260,7 @@ Keys are relative to `configPath` and use dotted notation. Numeric segments (e.g
 
 These manage **one WoW frame**. Structure:
 
-```
+```plain text
 BUFPlayer (top-level module)
   ├─ BUFPlayerFrame         # Main container positioning
   ├─ BUFPlayerPortrait      # Portrait texture
@@ -276,7 +281,7 @@ Each sub-component is a separate feature module with its own `RefreshConfig()`.
 
 These manage **multiple WoW frames** (up to 5 bosses, 4 party members). Structure:
 
-```
+```plain text
 BUFBoss (top-level module)
   └─ self.frames = { [1] = bbi, [2] = bbi, ... }  # Array of instance tables
        bbi = {
@@ -303,11 +308,13 @@ The `bbi` (boss/party instance) table holds references to that specific frame's 
 ### Positioning System
 
 BUF uses a **relative positioning system** where every component can anchor to:
+
 - `UIParent` (screen)
 - The main frame
 - Other sub-components (portrait, health bar, etc.)
 
 Each top-level module defines:
+
 ```lua
 BUFPlayer.relativeToFrames = {
     FRAME    = "PlayerFrame",
@@ -332,6 +339,7 @@ Sub-components call `BUFPlayer.FrameInit(self)` in their `RefreshConfig` guard t
 ## How Skinning Works (vs oUF)
 
 ### oUF Approach
+
 ```lua
 -- You create NEW frames from scratch
 local frame = oUF:Spawn("player")
@@ -342,6 +350,7 @@ frame.Health:SetAllPoints()
 ```
 
 ### BUF Approach
+
 ```lua
 -- You MODIFY existing Blizzard frames
 function BUFPlayer:OnEnable()
@@ -353,7 +362,7 @@ function BUFPlayer:RefreshConfig()
     -- Read settings from DB
     local width = self:DbGet("frame.width")
     local height = self:DbGet("frame.height")
-    
+
     -- Apply to Blizzard's frame
     self.frame:SetSize(width, height)
     self.healthBar:SetStatusBarColor(...)
@@ -363,6 +372,7 @@ end
 ```
 
 **Key Points:**
+
 1. **BUF never creates frames** — it modifies existing ones
 2. **Blizzard still updates them** — you hook into their update code
 3. **You apply visual changes** — size, color, font, position, texture
@@ -387,11 +397,13 @@ BUF uses `AceHook-3.0` for safe, non-taint hooking.
 ### Combat Lockdown
 
 Blizzard's unit frames are **secure** (protected during combat). You cannot:
+
 - Move them during combat
 - Change their size during combat
 - Hook certain secure functions during combat
 
 BUF handles this by:
+
 1. Using `SecureHandlerAttributeTemplate` for combat-safe hooks
 2. Deferring changes with `RegisterAttributeDriver`
 3. Listening to `PLAYER_REGEN_ENABLED` (exiting combat) to apply deferred changes
@@ -407,6 +419,7 @@ See [unitFrames/player/player.lua](BeaconUnitFrames/unitFrames/player/player.lua
 1. **Find the module:** `unitFrames/player/name/name.lua`
 
 2. **Add DB default:**
+
 ```lua
 BUFPlayerName.dbDefaults = {
     enabled = true,
@@ -415,6 +428,7 @@ BUFPlayerName.dbDefaults = {
 ```
 
 3. **Add option control:**
+
 ```lua
 BUFPlayerName.optionsTable.args.showServerName = {
     type = "toggle",
@@ -426,6 +440,7 @@ BUFPlayerName.optionsTable.args.showServerName = {
 ```
 
 4. **Add getter/setter:**
+
 ```lua
 function BUFPlayerName:GetShowServerName(info)
     return self:DbGet("showServerName")
@@ -438,10 +453,11 @@ end
 ```
 
 5. **Update RefreshConfig to apply the setting:**
+
 ```lua
 function BUFPlayerName:RefreshConfig()
     -- ... existing code ...
-    
+
     if self:DbGet("showServerName") then
         self.fontString:SetText(UnitName("player") .. "-" .. GetRealmName())
     else
@@ -451,12 +467,14 @@ end
 ```
 
 6. **Add locale string:** In `locale/enUS.lua`:
+
 ```lua
 L["Show Server Name"] = true
 ```
 
 7. **Test in-game:**
-```
+
+```plain text
 /reload
 /buf  # Opens options panel
 ```
@@ -470,7 +488,7 @@ L["Show Server Name"] = true
 - [unitframes.instructions.md](.github/instructions/unitframes.instructions.md) — Frame architecture
 - [options.instructions.md](.github/instructions/options.instructions.md) — Options system
 - [mixins.instructions.md](.github/instructions/mixins.instructions.md) — Mixin reference
-- [wow-ui-source/](.../wow-ui-source/) — Blizzard's FrameXML source (read-only reference)
+- [wow-ui-source/](../wow-ui-source/) — Blizzard's FrameXML source (read-only reference)
 
 ## Questions?
 
