@@ -5,7 +5,6 @@ local ns = select(2, ...)
 
 ns.addonVersion = "@project-version@"
 ns.acd = LibStub("AceConfigDialog-3.0") --[[@as AceConfigDialog-3.0]]
-ns.PP = LibStub("LibPixelPerfect-1.0")
 
 function ns.TableToCommaSeparatedString(tbl)
 	local result = {}

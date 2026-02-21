@@ -253,7 +253,6 @@ function BUFParty:RefreshConfig()
 				"OnShow",
 				ArtUpdater,
 				[[
-				print("PartyFrame Background OnShow triggered")
 				control:RunAttribute("buf_restore_size_position")
 			]]
 			)
@@ -263,7 +262,6 @@ function BUFParty:RefreshConfig()
 				"OnHide",
 				ArtUpdater,
 				[[
-				print("PartyFrame Background OnHide triggered")
 				control:RunAttribute("buf_restore_size_position")
 			]]
 			)
