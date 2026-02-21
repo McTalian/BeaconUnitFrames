@@ -23,7 +23,11 @@ def load_lua_file(lua_file):
     with open(lua_file, "r") as file:
         for line in file:
             # Use regex to capture the key and value correctly
-            match = re.match(r'L\["(.+)"\]\s*=\s*(true|"[^"]*")', line.strip())
+            # Matches: true, double-quoted strings, or single-quoted strings (with escape sequences)
+            match = re.match(
+                r"""L\["([^"]+)"\]\s*=\s*(true|"[^"]*"|'(?:[^'\\]|\\.)*')""",
+                line.strip(),
+            )
             if match:
                 key = match[1]
                 value = match[2]
@@ -40,7 +44,7 @@ def compare_translations(reference_dict, target_dict, locale):
     for key, value in reference_dict.items():
         if key not in target_dict:
             # If the reference value is True, use the key as the value
-            enUS_value = key if value.lower() == "true" else value.strip('"')
+            enUS_value = key if value.lower() == "true" else value.strip("\"'")
             missing_keys.append(f"| {key} | {enUS_value} |")
 
     # Check for extra keys in the target dictionary
