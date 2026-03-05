@@ -14,5 +14,5 @@ jobs:
     uses: McTalian-WoW-Addons/wow-build-tools/.github/workflows/package-and-distribute.yml@v1-beta
     with:
       addon-name: BeaconUnitFrames
-      avatar-url: https://raw.githubusercontent.com/McTalian-WoW-Addons/BeaconUnitFrames/refs/heads/main/BeaconUnitFrames/Icons/logo.png
+      avatar-url: https://raw.githubusercontent.com/McTalian-WoW-Addons/BeaconUnitFrames/main/BeaconUnitFrames/icons/logo.png
     secrets: inherit
