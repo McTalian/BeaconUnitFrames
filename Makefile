@@ -2,7 +2,7 @@
 
 # Variables
 ROCKSBIN := $(HOME)/.luarocks/bin
-WBT_REF ?= v1-beta
+WBT_REF ?= v1
 WBT_DIR := ../wow-build-tools
 
 lua_deps:
