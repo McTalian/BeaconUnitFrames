@@ -25,4 +25,5 @@ jobs:
       i18n-enabled: true
       trunk-enabled: true
       wbt-ref: v1
+      boot-sim-enabled: true
     secrets: inherit
