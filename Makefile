@@ -1,4 +1,4 @@
-.PHONY: lua_deps watch dev build check_untracked_files toc_check toc_update i18n_check i18n_fmt wbt_setup test-ci
+.PHONY: lua_deps watch dev build boot_sim check_untracked_files toc_check toc_update i18n_check i18n_fmt wbt_setup test-ci
 
 # Variables
 ROCKSBIN := $(HOME)/.luarocks/bin
@@ -18,6 +18,14 @@ dev: check_untracked_files toc_check i18n_check
 
 build: check_untracked_files toc_check i18n_check
 	@wow-build-tools build -d -t BeaconUnitFrames -r ./.release
+
+# Simulate a client login against a built package to catch Lua load errors
+# before a player does. Builds first (skipping packaging) to resolve libs/
+# externals, since boot-sim needs those on disk to follow real Include
+# chains -- then points boot-sim at the result rather than the source tree.
+boot_sim:
+	@wow-build-tools build -t BeaconUnitFrames -r ./.release --skipZip --skipUpload --skipChangelog --no-splash
+	@wow-build-tools boot-sim -t ./.release/BeaconUnitFrames --no-splash
 
 toc_check:
 	@wow-build-tools toc check \
