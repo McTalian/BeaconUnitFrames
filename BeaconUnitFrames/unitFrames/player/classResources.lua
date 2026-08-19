@@ -41,7 +41,7 @@ function BUFPlayerClassResources:RefreshConfig()
 	if not self.initialized then
 		BUFPlayer.FrameInit(self)
 
-		self.frame = PlayerFrameBottomManagedFramesContainer
+		self.frame = PlayerBottomManagedFrameContainer
 	end
 	self:SetPosition()
 	self:SetScaleFactor()

@@ -107,7 +107,7 @@
 				"PetFrameManaBarText",
 				"PetFrameManaBarTextLeft",
 				"PetFrameManaBarTextRight",
-				"PlayerFrameBottomManagedFramesContainer",
+				"PlayerBottomManagedFrameContainer",
 				"BLACK_FONT_COLOR",
 				"PlayerFrameGroupIndicatorText",
 				"READY_CHECK_READY_TEXTURE",
