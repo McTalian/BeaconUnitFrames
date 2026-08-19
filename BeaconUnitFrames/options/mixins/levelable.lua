@@ -49,7 +49,7 @@ end
 --- @param frame Frame
 function Levelable:_SetLevel(frame)
 	local frameLevel = self:GetFrameLevel()
-	if frame and frame.IsUsingParentLevel and frame:IsUsingParentLevel() then
+	if frame and frame.SetUsingParentLevel then
 		frame:SetUsingParentLevel(false)
 	end
 	frame:SetFrameLevel(frameLevel)

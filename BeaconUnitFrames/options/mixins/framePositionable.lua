@@ -310,7 +310,7 @@ function FramePositionable:_ApplyFramePosition(targetFrame)
 	end
 
 	if level then
-		if targetFrame.IsUsingParentLevel and targetFrame:IsUsingParentLevel() then
+		if targetFrame.SetUsingParentLevel then
 			targetFrame:SetUsingParentLevel(false)
 		end
 		targetFrame:SetFrameLevel(level)
